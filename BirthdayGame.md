@@ -44,6 +44,7 @@ class GameScene: SKScene {
         hideCakes()
     }
     
+    // Create a 4x4 map of random cakes (2 cakes of each type)
     func bakeCakes() {
         let cakos = (1...8).map { "Cake\($0)" }.reduce([String]()) { $0 + [$1, $1] }.shuffled()
         
@@ -55,6 +56,7 @@ class GameScene: SKScene {
         ]
     }
     
+    // Create [?] images for each cake
     func hideCakes() {
         let magicNode = SKNode()
         
@@ -78,7 +80,7 @@ class GameScene: SKScene {
     var cakesRevealed: [CakeNode] = []
     var correctMatch: Bool = false
     var matchesFound: Set<String> = []
-    var cakesSeen: [String] = []
+    var cakesSeen: [CakeNode] = []
     var chances = 0
     var rehideCakes: [CakeNode] = []
     var mistakes = 0
@@ -99,7 +101,7 @@ class GameScene: SKScene {
                 if matchesFound.contains(cakeNode.cakeNumber) { return }
                 
                 cakeNode.revealCake()
-                cakesSeen.append(cakeNode.cakeNumber)
+                cakesSeen.append(cakeNode)
                 cakesRevealed.append(cakeNode)
                 
                 if cakesRevealed.count == 2 {
@@ -117,14 +119,23 @@ class GameScene: SKScene {
             } else {
                 rehideCakes = cakesRevealed
                 
-                if cakesSeen.filter({ $0 == cakesRevealed[0].cakeNumber }).count > 1 {
+                // If first cake is a duplicate: mistake
+                if cakesSeen.filter({ $0 == cakesRevealed[0] }).count > 1 {
+                    print("MISTAKE")
+                    mistakes += 1
+                    
+                // If a match wasn't selected when there was a possibility to: mistake
+                } else if cakesSeen.filter({ $0.cakeNumber == cakesRevealed[0].cakeNumber }).count > 1 {
                     print("MISTAKE")
                     mistakes += 1
                 }
-                if cakesSeen.filter({ $0 == cakesRevealed[1].cakeNumber }).count > 1 {
+                
+                // If second cake pressed is a duplicate: mistake
+                if cakesSeen.filter({ $0 == cakesRevealed[1] }).count > 1 {
                     print("MISTAKE")
                     mistakes += 1
                 }
+                
                 print("–––––")
             }
             cakesRevealed.removeAll()
