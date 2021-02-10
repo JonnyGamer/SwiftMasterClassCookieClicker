@@ -2,5 +2,5 @@
 
 Here is a list of projects we will be doing!
 
-Project 1 - [CoockieClicker](/CookieClicker.md)  
-Project 2 - [BirthdayGame](/BirthdayGame.md)
+Project 1 - [Coockie Clicker](/CookieClicker.md)  
+Project 2 - [Birthday Game](/BirthdayGame.md)
