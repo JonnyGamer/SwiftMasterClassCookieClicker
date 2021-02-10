@@ -78,14 +78,16 @@ class GameScene: SKScene {
     var cakesRevealed: [CakeNode] = []
     var correctMatch: Bool = false
     var matchesFound: Set<String> = []
+    var cakesSeen: [String] = []
     var chances = 0
     var rehideCakes: [CakeNode] = []
+    var mistakes = 0
     
     override func mouseDown(with event: NSEvent) {
         
         // Remove wrong choices
-        for cake in rehideCakes {
-            cake.hideCake()
+        for cakeNode in rehideCakes {
+            cakeNode.hideCake()
         }
         rehideCakes.removeAll()
         
@@ -97,6 +99,7 @@ class GameScene: SKScene {
                 if matchesFound.contains(cakeNode.cakeNumber) { return }
                 
                 cakeNode.revealCake()
+                cakesSeen.append(cakeNode.cakeNumber)
                 cakesRevealed.append(cakeNode)
                 
                 if cakesRevealed.count == 2 {
@@ -113,6 +116,16 @@ class GameScene: SKScene {
                 print("YAY")
             } else {
                 rehideCakes = cakesRevealed
+                
+                if cakesSeen.filter({ $0 == cakesRevealed[0].cakeNumber }).count > 1 {
+                    print("MISTAKE")
+                    mistakes += 1
+                }
+                if cakesSeen.filter({ $0 == cakesRevealed[1].cakeNumber }).count > 1 {
+                    print("MISTAKE")
+                    mistakes += 1
+                }
+                print("–––––")
             }
             cakesRevealed.removeAll()
         }
@@ -120,8 +133,7 @@ class GameScene: SKScene {
         
         // Win the Game
         if matchesFound.count == 8, childNode(withName: "Winner") == nil {
-            print("YOU WON IN \(chances) MOVES!")
-            let label = SKLabelNode(text: "YOU WON IN \(chances) MOVES!")
+            let label = SKLabelNode(text: "YOU WON IN \(chances) MOVES! (\(mistakes) mistakes\(mistakes == 1 ? "" : "s")!)")
             label.horizontalAlignmentMode = .center
             label.verticalAlignmentMode = .top
             label.fontColor = .black
