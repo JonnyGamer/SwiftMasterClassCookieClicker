@@ -47,8 +47,8 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         
         // Step 1 - Save the screen size
-        let screenWidth = view.bounds.size.width
-        let screenHeight = view.bounds.size.height
+        let screenWidth = frame.size.width
+        let screenHeight = frame.size.height
         
         // Step 2 - Set the background color to white
         scene?.backgroundColor = .white
