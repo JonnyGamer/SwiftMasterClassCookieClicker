@@ -1,0 +1,2 @@
+# SwiftMasterClassCookieClicker
+Cookie Clicker Demo
