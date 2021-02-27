@@ -15,13 +15,17 @@ struct GameManager {
         "Tiny", "2Tiny", "3Tiny", "4Tiny",
         "Mega", "2Mega", "3Mega", "4Mega"
     ]
+    static func birdIsNormal() -> Bool { (0...3).contains(birdIndex) }
+    static func birdIsTiny() -> Bool { (4...7).contains(birdIndex) }
+    static func birdIsMega() -> Bool { (8...11).contains(birdIndex) }
+    
     static func getBird() -> String {
         return birds[birdIndex]
     }
     static func getDifficulty() -> Int {
         return birdIndex % (birds.count / 3)
     }
-    static func incrementIndex() {
+    static func changeDifficulty() {
         birdIndex += 1
         birdIndex %= birds.count
     }
@@ -31,6 +35,9 @@ struct GameManager {
         "Tiny Easy", "Tiny Medium", "Tiny Hard", "Tiny Purple",
         "Huge Easy", "Huge Medium", "Huge Hard", "Huge Purple"
     ]
+    static func getLevel() -> String {
+        return levels[birdIndex]
+    }
     
     static var night = false
     static var gravity = true
@@ -38,7 +45,7 @@ struct GameManager {
     static func pipeImageName() -> String { return night ? "2" : "1" }
     
     static var invisi = false
-    static func getHighscore(Bird: String) -> Int {
+    static func getHighscore(_ Bird: String = getBird()) -> Int {
         if night {
             if invisi {
                 return UserDefaults.standard.integer(forKey: "Invisi Dark Highscore \(Bird)")

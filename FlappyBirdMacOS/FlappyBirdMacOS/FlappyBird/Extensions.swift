@@ -44,3 +44,15 @@ extension SKLabelNode {
         return SKLabelNode(fontNamed: "04b_19")
     }
 }
+
+extension SKAction {
+    static var birdFadeOut: SKAction {
+        return .fadeOut(withDuration: 0.25)
+    }
+    static var birdFadeIn: SKAction {
+        return .fadeIn(withDuration: 0.25)
+    }
+    static var waitForOneSecond: SKAction {
+        return .wait(forDuration: 1)
+    }
+}

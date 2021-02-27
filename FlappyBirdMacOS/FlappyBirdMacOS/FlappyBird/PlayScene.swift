@@ -364,7 +364,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         highscoreLabel.zPosition = 6
         highscoreLabel.position = CGPoint(x: 0, y: 400)
         highscoreLabel.fontSize = 40
-        highscoreLabel.text = String(GameManager.getHighscore(Bird: GameManager.getBird()))
+        highscoreLabel.text = String(GameManager.getHighscore())
         self.addChild(highscoreLabel)
     }
     
@@ -393,7 +393,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         isAlive = false
         bird.texture = bird.diedTexture
-        let highscore = GameManager.getHighscore(Bird: GameManager.getBird())
+        let highscore = GameManager.getHighscore()
         if highscore < score {
             GameManager.setHighscore(highscore: score, Bird: GameManager.getBird())
             niceGoing.zPosition = 11
