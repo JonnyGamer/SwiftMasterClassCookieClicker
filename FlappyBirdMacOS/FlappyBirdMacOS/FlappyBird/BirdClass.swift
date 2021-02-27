@@ -65,8 +65,11 @@ class Bird: SKSpriteNode {
     }
     
     func flap() {
-        self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 125))
+        physicsBody?.affectedByGravity = true
+        physicsBody?.restitution = 0
+        
+        physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        physicsBody?.applyImpulse(CGVector(dx: 0, dy: 125))
         if GameManager.birdIndex > (2*(GameManager.birds.count/3)) - 1 {
             self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))

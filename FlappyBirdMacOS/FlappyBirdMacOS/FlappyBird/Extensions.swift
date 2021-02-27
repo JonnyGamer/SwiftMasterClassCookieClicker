@@ -55,4 +55,15 @@ extension SKAction {
     static var waitForOneSecond: SKAction {
         return .wait(forDuration: 1)
     }
+    
+    static func moveBackGroundAction(_ width: CGFloat) -> SKAction {
+        let moveX = SKAction.moveBy(x: width * -2, y: 0, duration: 20)
+        let reset = SKAction.moveBy(x: width * 2, y: 0, duration: 0)
+        return .repeatForever(.sequence([moveX, reset]))
+    }
+    static func moveGroundAction(_ width: CGFloat) -> SKAction {
+        let moveX = SKAction.moveBy(x: width * -2, y: 0, duration: 10)
+        let reset = SKAction.moveBy(x: width * 2, y: 0, duration: 0)
+        return .repeatForever(.sequence([moveX, reset]))
+    }
 }

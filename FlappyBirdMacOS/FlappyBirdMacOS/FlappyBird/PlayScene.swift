@@ -11,7 +11,7 @@ import SpriteKit
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
-    var bird = Bird()
+    var bird = Bird(imageNamed: "\(GameManager.getBird()) 1")
     
     var pipesHolder = SKNode()
     var darkPipesHolder = SKNode()
@@ -21,46 +21,52 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var press = SKSpriteNode()
     var highscoreLabel = SKLabelNode.flappyFont()
     var niceGoing = SKLabelNode.flappyFont()
-    var check = true
     
     override func didMove(to view: SKView) {
-        
-        // let scene11 = GameplayScene(fileNamed: "GameplayScene")
-        // scene11?.physicsWorld.gravity = CGVector(dx: 110.0, dy: -100.0)
-        //initialize()
         reset()
     }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if isAlive {
-            moveBackgroundsAndGrounds()
-        }
-        if GameManager.birdIndex < 2*(GameManager.birds.count/3) {
-            bird.zRotation = ((bird.physicsBody?.velocity.dy)! / 2000) * 1.5
-        }
-    }
-    
     func reset() {
         self.removeAllActions()
         self.removeAllChildren()
         initialize()
     }
+    func initialize() {
+        gameStarted = false
+        isAlive = false
+        score = 0
+        physicsWorld.contactDelegate = self
+        
+        createInstrctions()
+        createBackgrounds()
+        createGrounds()
+        createBird()
+        createLabel()
+        createBounce()
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if GameManager.birdIndex < 2*(GameManager.birds.count/3) {
+            bird.zRotation = ((bird.physicsBody?.velocity.dy)! / 2000) * 1.5
+        }
+    }
+
+    func beginGame() {
+        isAlive = true
+        gameStarted = true
+        press.removeFromParent()
+        
+        bird.flap()
+        spawnObsticles()
+    }
     
     var gameStarted = false
     override func mouseDown(with event: NSEvent) {
         if !gameStarted {
-            isAlive = true
-            gameStarted = true
-            press.removeFromParent()
-            spawnObsticles()
-            bird.physicsBody?.affectedByGravity = true
-            bird.physicsBody?.restitution = 0
-            bird.flap()
+            beginGame()
         }
         if isAlive {
             bird.flap()
         }
-        
         
         let location = event.location(in: self)
         let nodesFound = nodes(at: location)
@@ -69,9 +75,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             presentScene(.play)
         } else if nodesFound.contains(quit) {
             presentScene(.mainMenu)
-            //let mainMenu = MainMenuScene(fileNamed: "MainMenuScene")
-            //mainMenu!.scaleMode = .aspectFit
-            //self.view?.presentScene(mainMenu!, transition: SKTransition.fade(withDuration: TimeInterval(1)))
         } else if nodesFound.contains(bounce) {
             if isAlive {
                 bird.superFlap()
@@ -82,96 +85,51 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
+        let contacts = [contact.bodyA.node, contact.bodyB.node].compactMap { $0 }
         
-        var firstBody = SKPhysicsBody()
-        var secondBody = SKPhysicsBody()
+        let hitObstacle = contacts.contains(where: { ["Pipe", "Ground"].contains($0.name) })
+        let hitScore = contacts.first(where: { ["Score"].contains($0.name) })
         
-        if contact.bodyA.node?.name == "Bird" {
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        } else {
-            secondBody = contact.bodyA
-            firstBody = contact.bodyB
-        }
-        
-        if firstBody.node?.name == "Bird" && secondBody.node?.name == "Score" {
-            if check {
-                check = false
+        if contacts.contains(bird) {
+            if hitObstacle, isAlive {
+                birdDied()
+            } else if let scoreNode = hitScore {
                 incrementScore()
-                secondBody.node?.removeFromParent()
-            } else {
-                check = true
-                if GameManager.birdIndex < 2*(GameManager.birds.count/3) {
-                    incrementScore()
-                }
-            }
-
-        } else if firstBody.node?.name == "Bird" && secondBody.node?.name == "Pipe" {
-            if isAlive {
-                birdDied()
-            }
-        } else if firstBody.node?.name == "Bird" && secondBody.node?.name == "Ground" {
-            if isAlive {
-                birdDied()
+                scoreNode.removeFromParent()
             }
         }
     }
     
-    func initialize() {
-        gameStarted = false
-        isAlive = false
-        score = 0
-        physicsWorld.contactDelegate = self
-        createInstrctions()
-        createBackgrounds()
-        createGrounds()
-        createBird()
-        createLabel()
-        createBounce()
-    }
     
     func createInstrctions() {
         press = SKSpriteNode(imageNamed: "Press")
-        press.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         press.position = CGPoint(x: 0, y: 0)
         press.setScale(1.8)
-        press.zPosition = 10
-        self.addChild(press)
-        
+        addChild(press)
     }
     
     func createBird() {
-        bird = Bird(imageNamed: "\(GameManager.getBird()) 1")
-        if GameManager.night {
-            bird.position = CGPoint(x: 0, y: 0)
-        } else {
-            bird.position = CGPoint(x: -50, y: 0)
+        if !GameManager.night {
+            bird.position.x = -50
         }
-        bird.physicsBody?.restitution = 0
-        self.addChild(bird)
+        addChild(bird)
         bird.initialize()
         
-        if GameManager.birdIndex > ((GameManager.birds.count/3) - 1) && GameManager.birdIndex < (2*(GameManager.birds.count/3))  {
-            bird.setScale(0.6)
-        } else if GameManager.birdIndex < (GameManager.birds.count/3) + 1 {
-            bird.setScale(1.0)
-        } else if GameManager.birdIndex > (2*(GameManager.birds.count/3)) - 1 {
-            bird.setScale(0.8)
-        }
-        
+        GameManager.birdIsTiny() ? bird.setScale(0.6) : ()
+        GameManager.birdIsMega() ? bird.setScale(0.8) : ()
     }
     
+    
     func createBackgrounds() {
-        
         let bgTime = GameManager.backgroundImageName()
-        
         for i in 0...2 {
             let bg = SKSpriteNode(imageNamed: bgTime)
             bg.name = "BG"
-            bg.zPosition = 0.1
-            bg.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            bg.position = CGPoint(x: CGFloat(i) * bg.size.width, y: 0)
-            self.addChild(bg)
+            bg.zPosition = -2
+            bg.position.x = CGFloat(i) * bg.size.width
+            addChild(bg)
+            
+            bg.run(.moveBackGroundAction(bg.size.width))
         }
     }
     
@@ -179,33 +137,17 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         for i in 0...2 {
             let ground = SKSpriteNode(imageNamed: "Ground")
             ground.name = "Ground"
-            ground.zPosition = 4
-            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: -(self.frame.size.height / 2))
             ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
             ground.physicsBody?.affectedByGravity = false
             ground.physicsBody?.isDynamic = false
             ground.physicsBody?.categoryBitMask = ColliderType.Ground
             ground.physicsBody?.restitution = 0
+            ground.zPosition = -1
             self.addChild(ground)
+            
+            ground.run(.moveGroundAction(ground.size.width))
         }
-    }
-    
-    func moveBackgroundsAndGrounds() {
-        enumerateChildNodes(withName: "BG", using: ({
-            (node, Error) in
-            node.position.x -= 1
-            if node.position.x < -(self.frame.width) {
-                node.position.x += self.frame.width * 3
-            }
-        }))
-        enumerateChildNodes(withName: "Ground", using: ({
-            (node, Error) in
-            node.position.x -= 2
-            if node.position.x < -(self.frame.width) {
-                node.position.x += self.frame.width * 3
-            }
-        }))
     }
     
     func createPipes() {
@@ -238,7 +180,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         // scoreNode.color = SKColor.red
         
         scoreNode.name = "Score"
-        scoreNode.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         scoreNode.position = CGPoint(x: 0, y: 0)
         scoreNode.size = CGSize(width: 5, height: 300)
         scoreNode.physicsBody = SKPhysicsBody(rectangleOf: scoreNode.size)
@@ -249,7 +190,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
         
         pipeUp.name = "Pipe"
-        pipeUp.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         pipeUp.position = CGPoint(x: 0, y: 630 - pipeDistance)
         pipeUp.setScale(0.8)
         pipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size)
@@ -262,7 +202,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
         pipeDown.name = "Pipe"
-        pipeDown.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         pipeDown.position = CGPoint(x: 0, y: -630 + pipeDistance)
         pipeDown.setScale(0.8)
         pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
@@ -271,7 +210,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         pipeDown.physicsBody?.categoryBitMask = ColliderType.Pipes
         pipeDown.physicsBody?.restitution = 0
         
-        pipesHolder.zPosition = 5
         pipesHolder.position.x = self.frame.width + 100
         pipesHolder.position.y = .random(-300...300)
         pipesHolder.addChild(pipeUp)
@@ -280,7 +218,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         if GameManager.night {
             darkPipeUp.name = "Pipe"
-            darkPipeUp.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             darkPipeUp.position = CGPoint(x: 0, y: 630 - pipeDistance)
             darkPipeUp.setScale(0.8)
             darkPipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size)
@@ -292,7 +229,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
             
             darkPipeDown.name = "Pipe"
-            darkPipeDown.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             darkPipeDown.position = CGPoint(x: 0, y: -630 + pipeDistance)
             darkPipeDown.setScale(0.8)
             darkPipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
@@ -302,7 +238,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             darkPipeDown.physicsBody?.restitution = 0
             
             
-            darkPipesHolder.zPosition = 5
             darkPipesHolder.position.x = -self.frame.width - 100
             darkPipesHolder.position.y = pipesHolder.position.y
             darkPipesHolder.addChild(darkPipeUp)
@@ -408,13 +343,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         
         retry.name = "Retry"
-        retry.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         retry.position = CGPoint(x: 0, y: -100)
         retry.zPosition = 7
         retry.setScale(0)
         
         quit.name = "Quit"
-        quit.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         quit.position = CGPoint(x: 0, y: -250)
         quit.zPosition = 7
         quit.setScale(0)
