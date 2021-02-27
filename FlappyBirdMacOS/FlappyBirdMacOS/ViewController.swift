@@ -18,9 +18,11 @@ class ViewController: NSViewController {
 
         if let view = self.skView {
             // Load the SKScene from 'GameScene.sks'
-            let scene = SKScene(size: CGSize(width: 750, height: 1334))
-            scene.scaleMode = .aspectFit
-            view.presentScene(scene)
+            if let scene = scenesLoaded[.mainMenu] {
+                scene.scaleMode = .aspectFit
+                scene.anchorPoint = CGPoint.init(x: 0.5, y: 0.5)
+                view.presentScene(scene)
+            }
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
