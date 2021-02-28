@@ -13,9 +13,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
     let dieAction = SKAction.playSoundFileNamed("sounds/sfx_die.caf", waitForCompletion: false)
-    //let pointAction = SKAction.playSoundFileNamed("sounds/sfx_point.wav", waitForCompletion: false)
-    //let hitAction = SKAction.playSoundFileNamed("sounds/sfx_hit.caf", waitForCompletion: false)
-    //let swooshAction = SKAction.playSoundFileNamed("sounds/sfx_swooshing.caf", waitForCompletion: false)
     
     var bird = Bird.Make()
     var score = 0
@@ -257,7 +254,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         addChild(node)
     }
     func incrementScore() {
-        //playSound(pointAction)
         score += 1
         scoreLabel.text = String(score)
     }
