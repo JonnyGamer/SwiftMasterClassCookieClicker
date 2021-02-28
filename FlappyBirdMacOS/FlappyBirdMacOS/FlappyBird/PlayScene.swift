@@ -41,11 +41,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        
+        // Official Bird Rotation
         if isAlive, !GameManager.birdIsMega() {
-            bird.zRotation = ((bird.physicsBody?.velocity.dy)! / 2000) * 1.5
-            bird.zRotation = max(-.pi / 2, bird.zRotation)
-            bird.zRotation = min(.pi / 2, bird.zRotation)
+            let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0.4 ? 0.003 : 0.001)
+            bird.run(SKAction.rotate(toAngle: min(max(-1.57, birdRotation), 0.6), duration: 0.08))
         }
+        
     }
 
     func beginGame() {
@@ -53,7 +55,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         gameStarted = true
         press.removeFromParent()
         getReady.removeFromParent()
-        bird.removeAllActions()
+        //bird.removeAllActions()
         bird.flap()
         
         spawnObsticles()
@@ -98,11 +100,18 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         let contacts = [contact.bodyA.node, contact.bodyB.node].compactMap { $0 }
         
         let hitObstacle = contacts.contains(where: { ["Pipe", "Ground"].contains($0.name) })
+        let hitPipe = contacts.contains(where: { ["Pipe"].contains($0.name) })
         let hitScore = contacts.first(where: { ["Score"].contains($0.name) })
         
         if contacts.contains(bird) {
             if hitObstacle, isAlive {
-                birdDied()
+                if hitPipe {
+                    bird.smackedPipe()
+                    birdDied()
+                } else {
+                    bird.die()
+                    birdDied()
+                }
             } else if let scoreNode = hitScore {
                 incrementScore()
                 scoreNode.removeFromParent()
@@ -263,7 +272,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let quit = SKSpriteNode(imageNamed: "Quit")
     func birdDied() {
         playSound(dieAction)
-        bird.physicsBody = nil
         isAlive = false
         
         removeAction(forKey: "Spawn")

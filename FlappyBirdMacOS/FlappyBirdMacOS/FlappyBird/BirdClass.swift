@@ -17,7 +17,13 @@ struct ColliderType {
 
 class Bird: SKSpriteNode {
     
-    var birdAnimationAction = SKAction()
+    var birdAnimationAction: ((Double) -> SKAction)!// = SKAction()
+    
+    func die() {
+        physicsBody = nil
+        removeAllActions()
+        runAnimationOnce()
+    }
     
     static func Make() -> Bird {
         let b = Bird(imageNamed: "\(GameManager.getBird()) 1")
@@ -30,18 +36,19 @@ class Bird: SKSpriteNode {
         GameManager.birdIsTiny() ? setScale(0.6) : ()
         GameManager.birdIsMega() ? setScale(0.8) : ()
         
-        makeAnimation(withoutPhysics: withoutPhysics)
+        makeAnimation()
         runAnimationForever()
         self.name = "Bird"
         birdPhysics()
     }
     
-    func makeAnimation(withoutPhysics: Bool = false) {
-        
+    func makeAnimation() {
         let birdAnimation: [SKTexture] = (1...3).map {
             SKTexture(imageNamed: GameManager.getBird() + " \($0)")
         }
-        birdAnimationAction = SKAction.animate(with: birdAnimation, timePerFrame: withoutPhysics ? 0.1 : 0.08, resize: true, restore: true)
+        birdAnimationAction = {
+            return SKAction.animate(with: birdAnimation, timePerFrame: $0, resize: true, restore: true)
+        }
         
         let invisiActionKey = "InvisiSequence"
         if GameManager.invisi {
@@ -53,11 +60,11 @@ class Bird: SKSpriteNode {
         alpha = 1
     }
     func runAnimationForever() {
-        run(.repeatForever(birdAnimationAction))
+        run(.repeatForever(birdAnimationAction(0.08)))
     }
     func runAnimationOnce() {
         removeAction(forKey: "Flap")
-        run(birdAnimationAction, withKey: "Flap")
+        run(birdAnimationAction(0.2), withKey: "Flap")
     }
     
     func birdPhysics() {
@@ -73,6 +80,12 @@ class Bird: SKSpriteNode {
         physicsBody?.collisionBitMask = ColliderType.Ground | ColliderType.Pipes
         physicsBody?.contactTestBitMask = ColliderType.Ground | ColliderType.Pipes | ColliderType.Score
     }
+    func smackedPipe() {
+//        physicsBody?.collisionBitMask = ColliderType.Ground
+//        physicsBody?.contactTestBitMask = ColliderType.Ground
+//        physicsBody?.velocity = .zero
+//        physicsBody?.applyImpulse(.init(dx: 0, dy: 100))
+    }
     
     func flap() {
         physicsBody?.affectedByGravity = true
@@ -83,7 +96,6 @@ class Bird: SKSpriteNode {
         } else {
             physicsBody?.velocity.dy = 588 + (newVel/2)
         }
-        runAnimationOnce()
     }
     
 }
