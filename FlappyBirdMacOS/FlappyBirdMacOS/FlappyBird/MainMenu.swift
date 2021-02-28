@@ -65,30 +65,11 @@ class MainMenu: SKScene {
     }
     
     // Bird Character!
-    let bird = SKSpriteNode()
+    let bird = Bird.Make()
     func createBirdButton() {
-        bird.position = CGPoint(x: 0, y: 200)
-        bird.setScale(1.3)
-        GameManager.birdIsTiny() ? bird.setScale(0.6) : ()
-        GameManager.birdIsMega() ? bird.setScale(0.8) : ()
+        bird.initialize(withoutPhysics: true)
+        bird.position.y = 200
         addChild(bird)
-        
-        // Bird Animation
-        let birdAnim: [SKTexture] = (1...3).map {
-            SKTexture(imageNamed: GameManager.getBird() + " \($0)")
-        }
-        let animateBird = SKAction.animate(with: birdAnim, timePerFrame: 0.1, resize: true, restore: true)
-        bird.run(.repeatForever(animateBird))
-        
-        // Invisi Action
-        let invisiActionKey = "InvisiSequence"
-        if GameManager.invisi {
-            let invisiSequence = SKAction.sequence([.birdFadeOut, .waitForOneSecond, .birdFadeIn])
-            bird.run(.repeatForever(invisiSequence), withKey: invisiActionKey)
-        } else {
-            bird.removeAction(forKey: invisiActionKey)
-            bird.alpha = 1
-        }
     }
     
     func createLabel() {

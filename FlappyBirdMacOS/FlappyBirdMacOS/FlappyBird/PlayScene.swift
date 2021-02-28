@@ -11,15 +11,9 @@ import SpriteKit
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
-    var bird = Bird(imageNamed: "\(GameManager.getBird()) 1")
-    
-    
-    var scoreLabel = SKLabelNode.flappyFont()
+    var bird = Bird.Make()
     var score = 0
     var isAlive = false
-    var press = SKSpriteNode()
-    var highscoreLabel = SKLabelNode.flappyFont()
-    
     var pipeSpeed: Double {
         return [10.0, 5, 20, 10][GameManager.getDifficulty()]
     }
@@ -30,9 +24,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func reset() {
         self.removeAllActions()
         self.removeAllChildren()
-        initialize()
-    }
-    func initialize() {
+        
         gameStarted = false
         isAlive = false
         score = 0
@@ -43,12 +35,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         createBird()
         createInstrctions()
         createLabel()
-        createBounce()
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if GameManager.birdIndex < 2*(GameManager.birds.count/3) {
+        if isAlive, !GameManager.birdIsMega() {
             bird.zRotation = ((bird.physicsBody?.velocity.dy)! / 2000) * 1.5
+            bird.zRotation = max(-.pi / 2, bird.zRotation)
+            bird.zRotation = min(.pi / 2, bird.zRotation)
         }
     }
 
@@ -64,7 +57,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             bg.run(.moveGroundAction(bg.size.width, duration: pipeSpeed * 2), withKey: "Move")
         }
         for ground in groundObjects {
-            ground.run(.moveGroundAction(ground.size.width, duration: pipeSpeed), withKey: "Move")
+            ground.run(.moveGroundAction(ground.size.width, duration: pipeSpeed / 1.55), withKey: "Move")
         }
     }
     
@@ -72,8 +65,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     override func mouseDown(with event: NSEvent) {
         if !gameStarted {
             beginGame()
-        }
-        if isAlive {
+        } else if isAlive {
             bird.flap()
         }
         
@@ -84,10 +76,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             presentScene(.play)
         } else if nodesFound.contains(quit) {
             presentScene(.mainMenu)
-        } else if nodesFound.contains(bounce) {
-            if isAlive {
-                bird.superFlap()
-            }
         }
     }
     
@@ -109,12 +97,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
+    var press = SKSpriteNode(imageNamed: "Press")
     func createInstrctions() {
-        press = SKSpriteNode(imageNamed: "Press")
         press.anchorPoint.y = 1
-        press.position.x = bird.position.x
-        press.position.y = bird.frame.minY - 20
+        press.position = CGPoint(x: bird.position.x, y: bird.frame.minY - 20)
         press.setScale(1.8)
         addChild(press)
     }
@@ -125,18 +111,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         addChild(bird)
         bird.initialize()
-        
-        GameManager.birdIsTiny() ? bird.setScale(0.6) : ()
-        GameManager.birdIsMega() ? bird.setScale(0.8) : ()
     }
     
     
     var backgroundObjects: [SKSpriteNode] = []
     func createBackgrounds() {
+        backgroundObjects.removeAll()
         let bgTime = GameManager.backgroundImageName()
         for i in 0...2 {
             let bg = SKSpriteNode(imageNamed: bgTime)
-            bg.name = "BG"
             bg.zPosition = -2
             bg.position.x = CGFloat(i) * bg.size.width
             addChild(bg)
@@ -146,15 +129,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     var groundObjects: [SKSpriteNode] = []
     func createGrounds() {
+        groundObjects.removeAll()
         for i in 0...2 {
             let ground = SKSpriteNode(imageNamed: "Ground")
             ground.name = "Ground"
-            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: -(self.frame.size.height / 2))
-            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
-            ground.physicsBody?.affectedByGravity = false
-            ground.physicsBody?.isDynamic = false
+            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: self.frame.size.height / -2)
+            ground.hardObject()
             ground.physicsBody?.categoryBitMask = ColliderType.Ground
-            ground.physicsBody?.restitution = 0
             ground.zPosition = -1
             addChild(ground)
             groundObjects.append(ground)
@@ -182,7 +163,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         scoreNode.size = CGSize(width: 5, height: 300)
         scoreNode.hardObject()
         scoreNode.physicsBody?.categoryBitMask = ColliderType.Score
-        scoreNode.physicsBody?.collisionBitMask = 0
+        //scoreNode.physicsBody?.collisionBitMask = 0
     
         
         func makeDoublePipe(_ pipeHolderParent: SKNode) {
@@ -238,20 +219,19 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         run(.repeatForever(sequence), withKey: "Spawn")
     }
     
+    var scoreLabel = SKLabelNode.flappyFont()
     func createLabel() {
-        scoreLabel.zPosition = 1
-        scoreLabel.position.y = 450
-        scoreLabel.fontSize = 120
-        scoreLabel.text = "0"
-        addChild(scoreLabel)
-        
-        highscoreLabel.zPosition = 1
-        highscoreLabel.position.y = 400
-        highscoreLabel.fontSize = 40
-        highscoreLabel.text = String(GameManager.getHighscore())
-        addChild(highscoreLabel)
+        regularLabel(scoreLabel, "0", 450, 120)
+        let highscoreLabel = SKLabelNode.flappyFont()
+        regularLabel(highscoreLabel, String(GameManager.getHighscore()), 400, 40)
     }
-    
+    func regularLabel(_ node: SKLabelNode,_ text: String,_ y: CGFloat,_ fontSize: CGFloat) {
+        node.zPosition = 1
+        node.position.y = y
+        node.fontSize = fontSize
+        node.text = text
+        addChild(node)
+    }
     func incrementScore() {
         score += 1
         scoreLabel.text = String(score)
@@ -286,21 +266,12 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func gameOverButton(_ node: SKNode,_ nodeName: String,_ y: CGFloat) {
         node.name = nodeName
         node.position.y = y
-        node.zPosition = 2
+        node.zPosition = 3
         node.setScale(0)
         addChild(node)
         
         let scaleUp = SKAction.scale(to: 0.7, duration: TimeInterval(0.5))
         node.run(scaleUp)
-    }
-    
-    let bounce = SKSpriteNode(imageNamed: "Button")
-    func createBounce() {
-        bounce.name = "Bounce"
-        bounce.position = CGPoint(x: 250, y: -500)
-        bounce.zPosition = 2
-        bounce.setScale(0.5)
-        addChild(bounce)
     }
     
 }
