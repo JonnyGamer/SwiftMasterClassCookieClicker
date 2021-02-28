@@ -3,29 +3,48 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1BE0786B25EB5F4C002A3AC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0786A25EB5F4C002A3AC9 /* AppDelegate.swift */; };
-		1BE0786D25EB5F4C002A3AC9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0786C25EB5F4C002A3AC9 /* GameScene.sks */; };
-		1BE0786F25EB5F4C002A3AC9 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0786E25EB5F4C002A3AC9 /* Actions.sks */; };
-		1BE0787125EB5F4C002A3AC9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0787025EB5F4C002A3AC9 /* GameScene.swift */; };
 		1BE0787325EB5F4C002A3AC9 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0787225EB5F4C002A3AC9 /* GameViewController.swift */; };
 		1BE0787625EB5F4C002A3AC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0787425EB5F4C002A3AC9 /* Main.storyboard */; };
 		1BE0787825EB5F4D002A3AC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0787725EB5F4D002A3AC9 /* Assets.xcassets */; };
+		1BE0788125EB5F8C002A3AC9 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0788025EB5F8C002A3AC9 /* fonts */; };
+		1BE0788F25EB5FAE002A3AC9 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788425EB5FAE002A3AC9 /* SettingsPanel.swift */; };
+		1BE0789025EB5FAE002A3AC9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788525EB5FAE002A3AC9 /* Reachability.swift */; };
+		1BE0789125EB5FAE002A3AC9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0788625EB5FAE002A3AC9 /* GameScene.sks */; };
+		1BE0789225EB5FAE002A3AC9 /* ResultBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788725EB5FAE002A3AC9 /* ResultBoard.swift */; };
+		1BE0789325EB5FAE002A3AC9 /* TapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788925EB5FAE002A3AC9 /* TapViewController.swift */; };
+		1BE0789425EB5FAE002A3AC9 /* ScreenMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788A25EB5FAE002A3AC9 /* ScreenMirror.swift */; };
+		1BE0789525EB5FAE002A3AC9 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788B25EB5FAE002A3AC9 /* ControlCentre.swift */; };
+		1BE0789625EB5FAE002A3AC9 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788C25EB5FAE002A3AC9 /* SKButtonNode.swift */; };
+		1BE0789725EB5FAE002A3AC9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE0788D25EB5FAE002A3AC9 /* GameScene.swift */; };
+		1BE0789825EB5FAE002A3AC9 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0788E25EB5FAE002A3AC9 /* Actions.sks */; };
+		1BE0789D25EB5FDE002A3AC9 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 1BE0789C25EB5FDE002A3AC9 /* Then */; };
+		1BE078A325EB6038002A3AC9 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1BE078A225EB6038002A3AC9 /* sounds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1BE0786725EB5F4C002A3AC9 /* FlappyBirdiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBirdiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE0786A25EB5F4C002A3AC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1BE0786C25EB5F4C002A3AC9 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		1BE0786E25EB5F4C002A3AC9 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
-		1BE0787025EB5F4C002A3AC9 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		1BE0787225EB5F4C002A3AC9 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		1BE0787525EB5F4C002A3AC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1BE0787725EB5F4D002A3AC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BE0787925EB5F4D002A3AC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BE0788025EB5F8C002A3AC9 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		1BE0788425EB5FAE002A3AC9 /* SettingsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
+		1BE0788525EB5FAE002A3AC9 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		1BE0788625EB5FAE002A3AC9 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		1BE0788725EB5FAE002A3AC9 /* ResultBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultBoard.swift; sourceTree = "<group>"; };
+		1BE0788925EB5FAE002A3AC9 /* TapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapViewController.swift; sourceTree = "<group>"; };
+		1BE0788A25EB5FAE002A3AC9 /* ScreenMirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMirror.swift; sourceTree = "<group>"; };
+		1BE0788B25EB5FAE002A3AC9 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
+		1BE0788C25EB5FAE002A3AC9 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
+		1BE0788D25EB5FAE002A3AC9 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		1BE0788E25EB5FAE002A3AC9 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		1BE078A225EB6038002A3AC9 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE0789D25EB5FDE002A3AC9 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,16 +78,41 @@
 		1BE0786925EB5F4C002A3AC9 /* FlappyBirdiOS */ = {
 			isa = PBXGroup;
 			children = (
+				1BE0788325EB5FAE002A3AC9 /* game */,
+				1BE0788025EB5F8C002A3AC9 /* fonts */,
+				1BE078A225EB6038002A3AC9 /* sounds */,
 				1BE0786A25EB5F4C002A3AC9 /* AppDelegate.swift */,
-				1BE0786C25EB5F4C002A3AC9 /* GameScene.sks */,
-				1BE0786E25EB5F4C002A3AC9 /* Actions.sks */,
-				1BE0787025EB5F4C002A3AC9 /* GameScene.swift */,
 				1BE0787225EB5F4C002A3AC9 /* GameViewController.swift */,
 				1BE0787425EB5F4C002A3AC9 /* Main.storyboard */,
 				1BE0787725EB5F4D002A3AC9 /* Assets.xcassets */,
 				1BE0787925EB5F4D002A3AC9 /* Info.plist */,
 			);
 			path = FlappyBirdiOS;
+			sourceTree = "<group>";
+		};
+		1BE0788325EB5FAE002A3AC9 /* game */ = {
+			isa = PBXGroup;
+			children = (
+				1BE0788425EB5FAE002A3AC9 /* SettingsPanel.swift */,
+				1BE0788525EB5FAE002A3AC9 /* Reachability.swift */,
+				1BE0788625EB5FAE002A3AC9 /* GameScene.sks */,
+				1BE0788725EB5FAE002A3AC9 /* ResultBoard.swift */,
+				1BE0788825EB5FAE002A3AC9 /* External Display */,
+				1BE0788D25EB5FAE002A3AC9 /* GameScene.swift */,
+				1BE0788E25EB5FAE002A3AC9 /* Actions.sks */,
+			);
+			path = game;
+			sourceTree = "<group>";
+		};
+		1BE0788825EB5FAE002A3AC9 /* External Display */ = {
+			isa = PBXGroup;
+			children = (
+				1BE0788925EB5FAE002A3AC9 /* TapViewController.swift */,
+				1BE0788A25EB5FAE002A3AC9 /* ScreenMirror.swift */,
+				1BE0788B25EB5FAE002A3AC9 /* ControlCentre.swift */,
+				1BE0788C25EB5FAE002A3AC9 /* SKButtonNode.swift */,
+			);
+			path = "External Display";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +131,9 @@
 			dependencies = (
 			);
 			name = FlappyBirdiOS;
+			packageProductDependencies = (
+				1BE0789C25EB5FDE002A3AC9 /* Then */,
+			);
 			productName = FlappyBirdiOS;
 			productReference = 1BE0786725EB5F4C002A3AC9 /* FlappyBirdiOS.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +161,9 @@
 				Base,
 			);
 			mainGroup = 1BE0785E25EB5F4C002A3AC9;
+			packageReferences = (
+				1BE0789B25EB5FDE002A3AC9 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			productRefGroup = 1BE0786825EB5F4C002A3AC9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,10 +178,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE0789825EB5FAE002A3AC9 /* Actions.sks in Resources */,
 				1BE0787625EB5F4C002A3AC9 /* Main.storyboard in Resources */,
-				1BE0786D25EB5F4C002A3AC9 /* GameScene.sks in Resources */,
+				1BE078A325EB6038002A3AC9 /* sounds in Resources */,
+				1BE0788125EB5F8C002A3AC9 /* fonts in Resources */,
 				1BE0787825EB5F4D002A3AC9 /* Assets.xcassets in Resources */,
-				1BE0786F25EB5F4C002A3AC9 /* Actions.sks in Resources */,
+				1BE0789125EB5FAE002A3AC9 /* GameScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,9 +194,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BE0787125EB5F4C002A3AC9 /* GameScene.swift in Sources */,
+				1BE0789425EB5FAE002A3AC9 /* ScreenMirror.swift in Sources */,
+				1BE0789525EB5FAE002A3AC9 /* ControlCentre.swift in Sources */,
+				1BE0789325EB5FAE002A3AC9 /* TapViewController.swift in Sources */,
 				1BE0787325EB5F4C002A3AC9 /* GameViewController.swift in Sources */,
+				1BE0789725EB5FAE002A3AC9 /* GameScene.swift in Sources */,
 				1BE0786B25EB5F4C002A3AC9 /* AppDelegate.swift in Sources */,
+				1BE0789025EB5FAE002A3AC9 /* Reachability.swift in Sources */,
+				1BE0789625EB5FAE002A3AC9 /* SKButtonNode.swift in Sources */,
+				1BE0788F25EB5FAE002A3AC9 /* SettingsPanel.swift in Sources */,
+				1BE0789225EB5FAE002A3AC9 /* ResultBoard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +345,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R3PU6JKY2A;
 				INFOPLIST_FILE = FlappyBirdiOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,6 +365,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R3PU6JKY2A;
 				INFOPLIST_FILE = FlappyBirdiOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -337,6 +399,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1BE0789B25EB5FDE002A3AC9 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1BE0789C25EB5FDE002A3AC9 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BE0789B25EB5FDE002A3AC9 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1BE0785F25EB5F4C002A3AC9 /* Project object */;
 }
