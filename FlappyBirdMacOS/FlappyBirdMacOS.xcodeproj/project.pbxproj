@@ -67,7 +67,7 @@
 		1B71F3E525EACA1800A69F1C /* FlappyBirdMacOS */ = {
 			isa = PBXGroup;
 			children = (
-				1B71F40D25EAD29600A69F1C /* FlappyFont.ttf */,
+				1BE0782F25EB2FE3002A3AC9 /* Assets */,
 				1B71F3E625EACA1800A69F1C /* AppDelegate.swift */,
 				1B71F3EE25EACA1800A69F1C /* ViewController.swift */,
 				1B71F41725EAD31100A69F1C /* FlappyBird */,
@@ -90,6 +90,14 @@
 				1B71F41D25EAD5DA00A69F1C /* Extensions.swift */,
 			);
 			path = FlappyBird;
+			sourceTree = "<group>";
+		};
+		1BE0782F25EB2FE3002A3AC9 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				1B71F40D25EAD29600A69F1C /* FlappyFont.ttf */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

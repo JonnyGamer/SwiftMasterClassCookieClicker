@@ -136,7 +136,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: self.frame.size.height / -2)
             ground.hardObject()
             ground.physicsBody?.categoryBitMask = ColliderType.Ground
-            ground.zPosition = -1
+            ground.zPosition = 0.1
             addChild(ground)
             groundObjects.append(ground)
         }
@@ -240,7 +240,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let retry = SKSpriteNode(imageNamed: "Retry")
     let quit = SKSpriteNode(imageNamed: "Quit")
     func birdDied() {
-        bird.died()
+        bird.physicsBody = nil
         isAlive = false
         
         removeAction(forKey: "Spawn")

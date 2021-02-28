@@ -18,12 +18,6 @@ struct ColliderType {
 class Bird: SKSpriteNode {
     
     var birdAnimationAction = SKAction()
-    var diedTexture = SKTexture(imageNamed: "\(GameManager.getBird()) 1")
-    
-    func died() {
-        texture = diedTexture
-        physicsBody = nil
-    }
     
     static func Make() -> Bird {
         let b = Bird(imageNamed: "\(GameManager.getBird()) 1")
