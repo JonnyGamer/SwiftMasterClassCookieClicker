@@ -18,6 +18,7 @@
 		1B71F41A25EAD32900A69F1C /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71F41925EAD32900A69F1C /* GameManager.swift */; };
 		1B71F41E25EAD5DA00A69F1C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B71F41D25EAD5DA00A69F1C /* Extensions.swift */; };
 		1B71F42225EADBC500A69F1C /* Birds.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B71F42125EADBC500A69F1C /* Birds.xcassets */; };
+		1BE0785325EB5547002A3AC9 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1BE0785225EB5547002A3AC9 /* sounds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		1B71F41925EAD32900A69F1C /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		1B71F41D25EAD5DA00A69F1C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1B71F42125EADBC500A69F1C /* Birds.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Birds.xcassets; sourceTree = "<group>"; };
+		1BE0785225EB5547002A3AC9 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 		1B71F3E525EACA1800A69F1C /* FlappyBirdMacOS */ = {
 			isa = PBXGroup;
 			children = (
+				1BE0785225EB5547002A3AC9 /* sounds */,
 				1BE0782F25EB2FE3002A3AC9 /* Assets */,
 				1B71F3E625EACA1800A69F1C /* AppDelegate.swift */,
 				1B71F3EE25EACA1800A69F1C /* ViewController.swift */,
@@ -160,6 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BE0785325EB5547002A3AC9 /* sounds in Resources */,
 				1B71F3F125EACA1900A69F1C /* Assets.xcassets in Resources */,
 				1B71F3F425EACA1900A69F1C /* Main.storyboard in Resources */,
 				1B71F42225EADBC500A69F1C /* Birds.xcassets in Resources */,

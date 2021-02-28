@@ -11,6 +11,12 @@ import SpriteKit
 
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     
+    let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
+    let dieAction = SKAction.playSoundFileNamed("sounds/sfx_die.caf", waitForCompletion: false)
+    //let pointAction = SKAction.playSoundFileNamed("sounds/sfx_point.wav", waitForCompletion: false)
+    //let hitAction = SKAction.playSoundFileNamed("sounds/sfx_hit.caf", waitForCompletion: false)
+    //let swooshAction = SKAction.playSoundFileNamed("sounds/sfx_swooshing.caf", waitForCompletion: false)
+    
     var bird = Bird.Make()
     var score = 0
     var isAlive = false
@@ -49,8 +55,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         isAlive = true
         gameStarted = true
         press.removeFromParent()
-        
+        getReady.removeFromParent()
+        bird.removeAllActions()
         bird.flap()
+        
         spawnObsticles()
         
         for bg in backgroundObjects {
@@ -61,11 +69,19 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func playSound(_ sound: SKAction) {
+        DispatchQueue.main.async {
+            self.run(sound)
+        }
+    }
+    
     var gameStarted = false
     override func mouseDown(with event: NSEvent) {
         if !gameStarted {
+            playSound(flapAction)
             beginGame()
         } else if isAlive {
+            playSound(flapAction)
             bird.flap()
         }
         
@@ -98,11 +114,19 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     var press = SKSpriteNode(imageNamed: "Press")
+    var getReady = SKSpriteNode(imageNamed: "get-ready")
     func createInstrctions() {
         press.anchorPoint.y = 1
         press.position = CGPoint(x: bird.position.x, y: bird.frame.minY - 20)
         press.setScale(1.8)
+        press.texture?.filteringMode = .nearest
         addChild(press)
+        
+        getReady.anchorPoint.y = 0
+        getReady.position = CGPoint(x: bird.position.x, y: bird.frame.maxY + 20)
+        getReady.setScale(1.8)
+        getReady.texture?.filteringMode = .nearest
+        addChild(getReady)
     }
     
     func createBird() {
@@ -233,13 +257,16 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         addChild(node)
     }
     func incrementScore() {
+        //playSound(pointAction)
         score += 1
         scoreLabel.text = String(score)
     }
     
+    let gameover = SKSpriteNode(imageNamed: "gameover")
     let retry = SKSpriteNode(imageNamed: "Retry")
     let quit = SKSpriteNode(imageNamed: "Quit")
     func birdDied() {
+        playSound(dieAction)
         bird.physicsBody = nil
         isAlive = false
         
@@ -261,16 +288,18 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         gameOverButton(retry, "Retry", -100)
         gameOverButton(quit, "Quit", -250)
+        gameOverButton(gameover, "gameover", 100, 3)
     }
     
-    func gameOverButton(_ node: SKNode,_ nodeName: String,_ y: CGFloat) {
+    func gameOverButton(_ node: SKSpriteNode,_ nodeName: String,_ y: CGFloat,_ scaleTo: CGFloat = 0.7) {
         node.name = nodeName
         node.position.y = y
         node.zPosition = 3
         node.setScale(0)
+        node.texture?.filteringMode = .nearest
         addChild(node)
         
-        let scaleUp = SKAction.scale(to: 0.7, duration: TimeInterval(0.5))
+        let scaleUp = SKAction.scale(to: scaleTo, duration: 0.25)
         node.run(scaleUp)
     }
     

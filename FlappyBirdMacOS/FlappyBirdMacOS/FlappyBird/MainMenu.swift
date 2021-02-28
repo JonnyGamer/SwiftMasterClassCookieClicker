@@ -58,10 +58,14 @@ class MainMenu: SKScene {
     
     // Play Button
     let play = SKSpriteNode(imageNamed: "Play")
+    let flappyBirdLogo = SKSpriteNode(imageNamed: "flappybird")
     func createButtons() {
         play.position.y = -50
         play.setScale(0.7)
         addChild(play)
+        
+        flappyBirdLogo.position.y = -400
+        addChild(flappyBirdLogo)
     }
     
     // Bird Character!
@@ -76,7 +80,7 @@ class MainMenu: SKScene {
         // Highscore Label
         let scoreLabel = SKLabelNode.flappyFont()
         scoreLabel.fontSize = 120
-        scoreLabel.position.y = -400
+        scoreLabel.position.y = -550
         scoreLabel.text = String(GameManager.getHighscore())
         addChild(scoreLabel)
         

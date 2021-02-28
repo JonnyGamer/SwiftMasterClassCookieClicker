@@ -31,10 +31,7 @@ class Bird: SKSpriteNode {
         GameManager.birdIsMega() ? setScale(0.8) : ()
         
         makeAnimation(withoutPhysics: withoutPhysics)
-        if withoutPhysics {
-            runAnimationForever()
-            return
-        }
+        runAnimationForever()
         self.name = "Bird"
         birdPhysics()
     }
