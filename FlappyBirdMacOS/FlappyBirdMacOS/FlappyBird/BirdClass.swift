@@ -9,18 +9,22 @@ import Foundation
 import SpriteKit
 
 struct ColliderType {
-    static let Bird: UInt32 = 1
-    static let Ground: UInt32 = 2
-    static let Pipes: UInt32 = 3
-    static let Score: UInt32 = 4
+    static let Bird: UInt32 =  0b001
+    static let Ground:UInt32 = 0b010
+    static let Pipes: UInt32 = 0b011
+    static let Score: UInt32 = 0b100//4
 }
 
 class Bird: SKSpriteNode {
     
     var birdAnimation = [SKTexture]()
     var birdAnimationAction = SKAction()
-    var diedTexture = SKTexture()
+    var diedTexture = SKTexture(imageNamed: "\(GameManager.getBird()) 1")
     var complete = true
+    
+    func died() {
+        texture = diedTexture
+    }
     
     func initialize() {
         
@@ -43,8 +47,6 @@ class Bird: SKSpriteNode {
             let invisiSequence = SKAction.sequence([invisiAnim, invisiAnim1, invisiAnim2])
             self.run(SKAction.repeatForever(invisiSequence), withKey: "InvisiSequence")
         }
-        
-        diedTexture = SKTexture(imageNamed: "\(GameManager.getBird()) 1")
         
         self.name = "Bird"
         self.zPosition = 3

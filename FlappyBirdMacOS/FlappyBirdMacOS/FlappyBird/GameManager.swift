@@ -62,8 +62,15 @@ struct GameManager {
             }
         }
     }
+    static func newHighscore(_ score: Int) -> Bool {
+        let w = score > GameManager.getHighscore()
+        setHighscore(highscore: score)
+        return w
+    }
     
-    static func setHighscore(highscore: Int, Bird: String) {
+    static func setHighscore(highscore: Int, Bird: String = GameManager.getBird()) {
+        if highscore < getHighscore() { return }
+        
         if night {
             
             if invisi {

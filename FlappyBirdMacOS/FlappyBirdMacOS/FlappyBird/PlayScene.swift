@@ -13,14 +13,16 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     var bird = Bird(imageNamed: "\(GameManager.getBird()) 1")
     
-    var pipesHolder = SKNode()
-    var darkPipesHolder = SKNode()
+    
     var scoreLabel = SKLabelNode.flappyFont()
     var score = 0
     var isAlive = false
     var press = SKSpriteNode()
     var highscoreLabel = SKLabelNode.flappyFont()
-    var niceGoing = SKLabelNode.flappyFont()
+    
+    var pipeSpeed: Double {
+        return [10.0, 5, 20, 10][GameManager.getDifficulty()]
+    }
     
     override func didMove(to view: SKView) {
         reset()
@@ -36,10 +38,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         score = 0
         physicsWorld.contactDelegate = self
         
-        createInstrctions()
         createBackgrounds()
         createGrounds()
         createBird()
+        createInstrctions()
         createLabel()
         createBounce()
     }
@@ -57,6 +59,13 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         bird.flap()
         spawnObsticles()
+        
+        for bg in backgroundObjects {
+            bg.run(.moveGroundAction(bg.size.width, duration: pipeSpeed * 2), withKey: "Move")
+        }
+        for ground in groundObjects {
+            ground.run(.moveGroundAction(ground.size.width, duration: pipeSpeed), withKey: "Move")
+        }
     }
     
     var gameStarted = false
@@ -103,7 +112,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     func createInstrctions() {
         press = SKSpriteNode(imageNamed: "Press")
-        press.position = CGPoint(x: 0, y: 0)
+        press.anchorPoint.y = 1
+        press.position.x = bird.position.x
+        press.position.y = bird.frame.minY - 20
         press.setScale(1.8)
         addChild(press)
     }
@@ -120,6 +131,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    var backgroundObjects: [SKSpriteNode] = []
     func createBackgrounds() {
         let bgTime = GameManager.backgroundImageName()
         for i in 0...2 {
@@ -128,11 +140,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             bg.zPosition = -2
             bg.position.x = CGFloat(i) * bg.size.width
             addChild(bg)
-            
-            bg.run(.moveBackGroundAction(bg.size.width))
+            backgroundObjects.append(bg)
         }
     }
     
+    var groundObjects: [SKSpriteNode] = []
     func createGrounds() {
         for i in 0...2 {
             let ground = SKSpriteNode(imageNamed: "Ground")
@@ -144,163 +156,100 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             ground.physicsBody?.categoryBitMask = ColliderType.Ground
             ground.physicsBody?.restitution = 0
             ground.zPosition = -1
-            self.addChild(ground)
-            
-            ground.run(.moveGroundAction(ground.size.width))
+            addChild(ground)
+            groundObjects.append(ground)
         }
     }
     
     func createPipes() {
         
-        let pipeNum = GameManager.pipeImageName()
-        
-        var pipeDistance = Int()
-        if GameManager.birdIndex < (GameManager.birds.count/3) {
+        var pipeDistance: CGFloat = 0
+        if GameManager.birdIsNormal() {
             pipeDistance = -100
-        } else if GameManager.birdIndex > (2*(GameManager.birds.count/3)) - 1  {
+        } else if GameManager.birdIsMega() {
             pipeDistance = -125
         } else {
             pipeDistance = -55
         }
-        
         if GameManager.getDifficulty() == 3 {
             pipeDistance += 15
         }
         
-        pipesHolder = SKNode()
-        darkPipesHolder = SKNode()
-        pipesHolder.name = "Holder"
-        darkPipesHolder.name = "Dark Holder"
-        
-        let pipeUp = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
-        let pipeDown = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
-        let darkPipeUp = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
-        let darkPipeDown = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
+        // Invisible Score Node!
         let scoreNode = SKSpriteNode()
-        // scoreNode.color = SKColor.red
-        
         scoreNode.name = "Score"
         scoreNode.position = CGPoint(x: 0, y: 0)
         scoreNode.size = CGSize(width: 5, height: 300)
-        scoreNode.physicsBody = SKPhysicsBody(rectangleOf: scoreNode.size)
+        scoreNode.hardObject()
         scoreNode.physicsBody?.categoryBitMask = ColliderType.Score
         scoreNode.physicsBody?.collisionBitMask = 0
-        scoreNode.physicsBody?.affectedByGravity = false
-        scoreNode.physicsBody?.isDynamic = false
     
         
-        pipeUp.name = "Pipe"
-        pipeUp.position = CGPoint(x: 0, y: 630 - pipeDistance)
-        pipeUp.setScale(0.8)
-        pipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size)
-        pipeUp.physicsBody?.affectedByGravity = false
-        pipeUp.physicsBody?.isDynamic = false
-        pipeUp.physicsBody?.categoryBitMask = ColliderType.Pipes
-        pipeUp.zRotation = CGFloat(Double.pi)
-        pipeUp.physicsBody?.restitution = 0
-
-        
-        
-        pipeDown.name = "Pipe"
-        pipeDown.position = CGPoint(x: 0, y: -630 + pipeDistance)
-        pipeDown.setScale(0.8)
-        pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
-        pipeDown.physicsBody?.affectedByGravity = false
-        pipeDown.physicsBody?.isDynamic = false
-        pipeDown.physicsBody?.categoryBitMask = ColliderType.Pipes
-        pipeDown.physicsBody?.restitution = 0
-        
-        pipesHolder.position.x = self.frame.width + 100
-        pipesHolder.position.y = .random(-300...300)
-        pipesHolder.addChild(pipeUp)
-        pipesHolder.addChild(pipeDown)
-        pipesHolder.addChild(scoreNode)
-        
-        if GameManager.night {
-            darkPipeUp.name = "Pipe"
-            darkPipeUp.position = CGPoint(x: 0, y: 630 - pipeDistance)
-            darkPipeUp.setScale(0.8)
-            darkPipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size)
-            darkPipeUp.physicsBody?.affectedByGravity = false
-            darkPipeUp.physicsBody?.isDynamic = false
-            darkPipeUp.physicsBody?.categoryBitMask = ColliderType.Pipes
-            darkPipeUp.zRotation = CGFloat(Double.pi )
-            darkPipeUp.physicsBody?.restitution = 0
-
+        func makeDoublePipe(_ pipeHolderParent: SKNode) {
+            let pipeNum = GameManager.pipeImageName()
+            let pipe1 = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
+            let pipe2 = SKSpriteNode(imageNamed: "Pipe \(pipeNum)")
             
-            darkPipeDown.name = "Pipe"
-            darkPipeDown.position = CGPoint(x: 0, y: -630 + pipeDistance)
-            darkPipeDown.setScale(0.8)
-            darkPipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
-            darkPipeDown.physicsBody?.affectedByGravity = false
-            darkPipeDown.physicsBody?.isDynamic = false
-            darkPipeDown.physicsBody?.categoryBitMask = ColliderType.Pipes
-            darkPipeDown.physicsBody?.restitution = 0
-            
-            
-            darkPipesHolder.position.x = -self.frame.width - 100
-            darkPipesHolder.position.y = pipesHolder.position.y
-            darkPipesHolder.addChild(darkPipeUp)
-            darkPipesHolder.addChild(darkPipeDown)
-            self.addChild(darkPipesHolder)
+            let differentPipes: [(pipe: SKSpriteNode, y: CGFloat, rotation: CGFloat)] = [(pipe1, 630 - pipeDistance, .pi), (pipe2, -630 + pipeDistance, 0)]
+            for i in differentPipes {
+                i.pipe.name = "Pipe"
+                i.pipe.position.y = i.y
+                i.pipe.setScale(0.8)
+                i.pipe.hardObject()
+                i.pipe.physicsBody?.categoryBitMask = ColliderType.Pipes
+                i.pipe.zRotation = i.rotation
+                pipeHolderParent.addChild(i.pipe)
+            }
         }
         
-        self.addChild(pipesHolder)
+        let pipeYPosition = CGFloat.random(-300...300)
         
-        var speed: Double = 10
-        if GameManager.getDifficulty() == 1 {
-            speed = 5
-        } else if GameManager.getDifficulty() == 2 {
-            speed = 20
-        } else if GameManager.getDifficulty() == 3 {
-            speed = 10
+        func makePipeHolder(reverseMode: Bool = false) -> SKNode {
+            let pipeHolder = SKNode()
+            let t: CGFloat = reverseMode ? -1 : 1
+            
+            pipeHolder.position.x = (t * self.frame.width) + (t * 100)
+            pipeHolder.position.y = pipeYPosition
+            addChild(pipeHolder)
+            makeDoublePipe(pipeHolder)
+            
+            let move = SKAction.moveTo(x: -t * self.frame.width * 2, duration: pipeSpeed)
+            pipeHolder.run(SKAction.sequence([move, .removeFromParent()]), withKey: "Move")
+            
+            return pipeHolder
         }
         
-        let destination = self.frame.width * 2
-        let move = SKAction.moveTo(x: -destination, duration: TimeInterval(speed))
-        let nightMove = SKAction.moveTo(x: destination, duration: TimeInterval(speed))
-        let remove = SKAction.removeFromParent()
-        
-        pipesHolder.run(SKAction.sequence([move, remove]), withKey: "Move")
+        let pipeHolder = makePipeHolder()
+        pipeHolder.addChild(scoreNode)
         
         if GameManager.night {
-            darkPipesHolder.run(SKAction.sequence([nightMove, remove]), withKey: "Dark Move")
+            _ = makePipeHolder(reverseMode: true)
         }
         
     }
     
     func spawnObsticles() {
+        let spawnDistance = [2, 1, 2, 1.5][GameManager.getDifficulty()]
+        let delay = SKAction.wait(forDuration: spawnDistance)
         
-        var time: Double = 2
-        if GameManager.getDifficulty() == 1 {
-            time = 1
-        } else if GameManager.getDifficulty() == 2 {
-            time = 2
-        } else if GameManager.getDifficulty() == 3 {
-            time = 1.5
-        }
+        let spawn = SKAction.run { self.createPipes() }
         
-        let spawn = SKAction.run({ () -> Void in
-            self.createPipes()
-        })
-        
-        let delay = SKAction.wait(forDuration: TimeInterval(time))
         let sequence = SKAction.sequence([spawn, delay])
-        self.run(SKAction.repeatForever(sequence), withKey: "Spawn")
+        run(.repeatForever(sequence), withKey: "Spawn")
     }
     
     func createLabel() {
-        scoreLabel.zPosition = 6
-        scoreLabel.position = CGPoint(x: 0, y: 450)
+        scoreLabel.zPosition = 1
+        scoreLabel.position.y = 450
         scoreLabel.fontSize = 120
         scoreLabel.text = "0"
-        self.addChild(scoreLabel)
+        addChild(scoreLabel)
         
-        highscoreLabel.zPosition = 6
-        highscoreLabel.position = CGPoint(x: 0, y: 400)
+        highscoreLabel.zPosition = 1
+        highscoreLabel.position.y = 400
         highscoreLabel.fontSize = 40
         highscoreLabel.text = String(GameManager.getHighscore())
-        self.addChild(highscoreLabel)
+        addChild(highscoreLabel)
     }
     
     func incrementScore() {
@@ -311,64 +260,47 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let retry = SKSpriteNode(imageNamed: "Retry")
     let quit = SKSpriteNode(imageNamed: "Quit")
     func birdDied() {
-        
-        self.removeAction(forKey: "Spawn")
-        
-        for child in children {
-            if child.name == "Holder" {
-                child.removeAction(forKey: "Move")
-            }
-        }
-        
-        for child in children {
-            if child.name == "Dark Holder" {
-                child.removeAction(forKey: "Dark Move")
-            }
-        }
-        
+        bird.died()
         isAlive = false
-        bird.texture = bird.diedTexture
-        let highscore = GameManager.getHighscore()
-        if highscore < score {
-            GameManager.setHighscore(highscore: score, Bird: GameManager.getBird())
-            niceGoing.zPosition = 11
-            niceGoing.position = CGPoint(x: 0, y: 0)
+        
+        removeAction(forKey: "Spawn")
+        for child in children {
+            child.removeAction(forKey: "Move")
+        }
+        
+        if GameManager.newHighscore(score) {
+            let niceGoing = SKLabelNode.flappyFont()
+            niceGoing.zPosition = 1
             niceGoing.fontSize = 90
             if !GameManager.night {
-                niceGoing.fontColor = SKColor.black
+                niceGoing.fontColor = .black
             }
             niceGoing.text = "New Highscore!"
-            self.addChild(niceGoing)
+            addChild(niceGoing)
         }
         
-        
-        retry.name = "Retry"
-        retry.position = CGPoint(x: 0, y: -100)
-        retry.zPosition = 7
-        retry.setScale(0)
-        
-        quit.name = "Quit"
-        quit.position = CGPoint(x: 0, y: -250)
-        quit.zPosition = 7
-        quit.setScale(0)
+        gameOverButton(retry, "Retry", -100)
+        gameOverButton(quit, "Quit", -250)
+    }
+    
+    func gameOverButton(_ node: SKNode,_ nodeName: String,_ y: CGFloat) {
+        node.name = nodeName
+        node.position.y = y
+        node.zPosition = 2
+        node.setScale(0)
+        addChild(node)
         
         let scaleUp = SKAction.scale(to: 0.7, duration: TimeInterval(0.5))
-        
-        retry.run(scaleUp)
-        quit.run(scaleUp)
-        
-        self.addChild(retry)
-        self.addChild(quit)
-        
+        node.run(scaleUp)
     }
     
     let bounce = SKSpriteNode(imageNamed: "Button")
     func createBounce() {
         bounce.name = "Bounce"
         bounce.position = CGPoint(x: 250, y: -500)
-        bounce.zPosition = 10
+        bounce.zPosition = 2
         bounce.setScale(0.5)
-        self.addChild(bounce)
+        addChild(bounce)
     }
     
 }
