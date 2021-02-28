@@ -79,12 +79,14 @@ public class ResultBoard: SKSpriteNode {
     }
     
     private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then {
+        $0.texture?.filteringMode = .nearest
         $0.zPosition = GamezPosition.resultText
         $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
         $0.setScale(0)
     }
     
     private lazy var sparkle = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle")).then {
+        $0.texture?.filteringMode = .nearest
         $0.setScale(0)
         $0.zPosition = GamezPosition.resultText+1
     }
@@ -136,6 +138,7 @@ public class ResultBoard: SKSpriteNode {
             
             if canShowScore {
                 let medalTexture = score == 0 ? SKTexture() : (score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed:"platinum-medal")))))
+                medalTexture.filteringMode = .nearest
                 medal.run(SKAction.setTexture(medalTexture, resize: true))
                 
                 sparkle.setScale(0)
