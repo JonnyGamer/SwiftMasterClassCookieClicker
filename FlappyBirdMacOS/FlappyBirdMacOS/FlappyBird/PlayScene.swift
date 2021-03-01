@@ -105,13 +105,14 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         if contacts.contains(bird) {
             if hitObstacle, isAlive {
-                if hitPipe {
-                    bird.smackedPipe()
-                    birdDied()
-                } else {
-                    bird.die()
-                    birdDied()
-                }
+                bird.die()
+                birdDied()
+//                if hitPipe {
+//                    bird.smackedPipe()
+//                    birdDied()
+//                } else {
+//
+//                }
             } else if let scoreNode = hitScore {
                 incrementScore()
                 scoreNode.removeFromParent()
@@ -283,6 +284,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             let niceGoing = SKLabelNode.flappyFont()
             niceGoing.zPosition = 1
             niceGoing.fontSize = 90
+            niceGoing.position.y = 300
             if !GameManager.night {
                 niceGoing.fontColor = .black
             }

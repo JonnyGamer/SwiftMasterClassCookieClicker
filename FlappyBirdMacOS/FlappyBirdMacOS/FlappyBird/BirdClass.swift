@@ -79,6 +79,7 @@ class Bird: SKSpriteNode {
         physicsBody?.categoryBitMask = ColliderType.Bird
         physicsBody?.collisionBitMask = ColliderType.Ground | ColliderType.Pipes
         physicsBody?.contactTestBitMask = ColliderType.Ground | ColliderType.Pipes | ColliderType.Score
+        physicsBody?.usesPreciseCollisionDetection = true
     }
     func smackedPipe() {
 //        physicsBody?.collisionBitMask = ColliderType.Ground
@@ -88,6 +89,11 @@ class Bird: SKSpriteNode {
     }
     
     func flap() {
+        // Keep the bird from getting too high
+        if frame.minY > scene?.frame.maxY ?? 0 {
+            return
+        }
+        
         physicsBody?.affectedByGravity = true
         physicsBody?.restitution = 0
         let newVel = max(0, physicsBody?.velocity.dy ?? 0)
