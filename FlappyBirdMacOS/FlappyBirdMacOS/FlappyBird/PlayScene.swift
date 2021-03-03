@@ -31,6 +31,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         gameStarted = false
         isAlive = false
         score = 0
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -12.0)
         physicsWorld.contactDelegate = self
         
         createBackgrounds()
