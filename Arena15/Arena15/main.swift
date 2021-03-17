@@ -10,9 +10,50 @@ import Foundation
 
 
 
-func addNumbers(_ number1: Int, _ number2: Int, _ number3: Int) -> Int {
-    print("I'm adding stuff")
-    return number1 + number2 + number3
+
+
+
+
+
+
+
+
+
+
+
+
+struct Game {
+    var latestGuess: Int
+    var maxNumber: Int = 1000000
+    var minNumber: Int = 1
+    
+    init() {
+        latestGuess = maxNumber / 2
+    }
+    
+    func guessNumber() {
+        print("Is your number higher or lower than \(latestGuess)")
+    }
 }
 
-print(addNumbers(1, 1, 1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

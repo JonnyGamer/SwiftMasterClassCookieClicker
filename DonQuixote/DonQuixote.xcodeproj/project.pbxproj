@@ -30,6 +30,8 @@
 		1BE078D825ED93FC002A3AC9 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		1BE078DB25ED9E06002A3AC9 /* 996es.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996es.txt; sourceTree = "<group>"; };
 		1BE078DD25EDA52C002A3AC9 /* HP.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HP.txt; sourceTree = "<group>"; };
+		1BE0792325F172F0002A3AC9 /* 996 WORKING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "996 WORKING.txt"; sourceTree = "<group>"; };
+		1BE0792425F2A746002A3AC9 /* 996Sally1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996Sally1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,8 @@
 				1BE078DD25EDA52C002A3AC9 /* HP.txt */,
 				1BE078DB25ED9E06002A3AC9 /* 996es.txt */,
 				1BE078D425ED9232002A3AC9 /* 996.txt */,
+				1BE0792425F2A746002A3AC9 /* 996Sally1.txt */,
+				1BE0792325F172F0002A3AC9 /* 996 WORKING.txt */,
 				1BE078CC25ED921E002A3AC9 /* main.swift */,
 				1BE078D825ED93FC002A3AC9 /* extensions.swift */,
 			);

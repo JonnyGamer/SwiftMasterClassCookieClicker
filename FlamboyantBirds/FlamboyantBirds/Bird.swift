@@ -22,6 +22,7 @@ class Bird : SKSpriteNode {
     func makeBird() {
         makeAnimation()
         runAnimationForever()
+        birdPhysics()
     }
     
     
@@ -47,6 +48,25 @@ class Bird : SKSpriteNode {
     }
     
     
+    func birdPhysics() {
+        
+        physicsBody = SKPhysicsBody.init(circleOfRadius: size.height / 2)
+        physicsBody?.allowsRotation = false
+        physicsBody?.affectedByGravity = false
+        physicsBody?.restitution = 0
+    }
+    
+    func flap() {
+        scene?.physicsWorld.gravity.dy = -12
+        
+        if frame.minY > scene?.frame.maxY ?? 0 {
+            return
+        }
+        
+        physicsBody?.affectedByGravity = true
+        physicsBody?.velocity.dy = 732
+        
+    }
     
 }
 

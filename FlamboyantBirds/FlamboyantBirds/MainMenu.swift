@@ -67,7 +67,8 @@ class MainMenu: SKScene {
     // Present new Scenes
     // Animations!
     
-    
+    // Let's do it, I'm ready to go
+    // Let's go, I'm ready to do it
     
     
     
