@@ -54,6 +54,11 @@ class Bird : SKSpriteNode {
         physicsBody?.allowsRotation = false
         physicsBody?.affectedByGravity = false
         physicsBody?.restitution = 0
+        
+        physicsBody?.categoryBitMask = ColliderType.Bird
+        physicsBody?.collisionBitMask = ColliderType.Ground | ColliderType.Pipes
+        physicsBody?.contactTestBitMask = ColliderType.Ground | ColliderType.Pipes | ColliderType.Score
+        physicsBody?.usesPreciseCollisionDetection = true
     }
     
     func flap() {

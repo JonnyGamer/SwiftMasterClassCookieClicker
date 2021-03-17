@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class PlayScene: SKScene {
+class PlayScene: SKScene, SKPhysicsContactDelegate {
     var bird = Bird.Make()
     var gameStarted = false
     var isAlive = true
@@ -20,6 +20,11 @@ class PlayScene: SKScene {
             let birdRotation = one * two
             bird.run(SKAction.rotate(toAngle: min(max(-1.57, birdRotation), 0.6), duration: 0.08))
         }
+        
+//        if bird.frame.maxX < frame.minX {
+//            fatalError()
+//        }
+        
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -29,6 +34,9 @@ class PlayScene: SKScene {
             beginGame()
             gameStarted = true
             bird.flap()
+            
+            run(createPipes())
+            
         } else if isAlive {
             bird.flap()
         }
@@ -41,6 +49,7 @@ class PlayScene: SKScene {
     }
     
     func reset() {
+        physicsWorld.contactDelegate = self
         addChild(bird)
         createBackgrounds()
         createInstrctions()
@@ -54,7 +63,7 @@ class PlayScene: SKScene {
         
         for i in 0...2 {
             let bg = SKSpriteNode(imageNamed: "BG Day")
-            bg.zPosition = -2
+            bg.zPosition = -.infinity
             bg.position.x = CGFloat(i) * bg.size.width
             addChild(bg)
             backgroundObjects.append(bg)
@@ -90,6 +99,7 @@ class PlayScene: SKScene {
             bg.physicsBody?.affectedByGravity = false
             bg.physicsBody?.isDynamic = false
             bg.physicsBody?.restitution = 0
+            bg.physicsBody?.categoryBitMask = ColliderType.Ground
         }
         
     }
@@ -113,4 +123,86 @@ class PlayScene: SKScene {
     }
     
     
+    
+    func createPipes() -> SKAction {
+        let delay = SKAction.wait(forDuration: 1)
+        let spawnPipes = SKAction.run {
+            let parentNode = self.createParentPipe()
+            self.createDoublePipes(parentNode)
+        }
+        return .repeatForever(.sequence([delay, spawnPipes]))
+    }
+    
+    func createParentPipe() -> SKNode {
+        let pipeYPosition = CGFloat.random(in: -300...300)
+        let parentNode = SKNode()
+        parentNode.position.y = pipeYPosition
+        addChild(parentNode)
+        
+        parentNode.position.x = (size.width/2) + 100
+        
+        let move = SKAction.moveTo(x: -(size.width/2) - 100, duration: 2.5)
+        let sequence = SKAction.sequence([move, .removeFromParent()])
+        parentNode.run(sequence)
+        
+        return parentNode
+    }
+    
+    func createDoublePipes(_ parentNode: SKNode) {
+        
+        let pipeDistance: CGFloat = -100
+        let pipe1 = SKSpriteNode(imageNamed: "Pipe 1")
+        let pipe2 = SKSpriteNode(imageNamed: "Pipe 1")
+        
+        pipe1.position.y = -630 + pipeDistance
+        pipe1.setScale(0.8)
+        pipe1.zPosition = -10
+        pipe1.name = "Pipe"
+        parentNode.addChild(pipe1)
+        
+        pipe1.physicsBody = SKPhysicsBody(rectangleOf: pipe1.size)
+        pipe1.physicsBody?.affectedByGravity = false
+        pipe1.physicsBody?.isDynamic = false
+        
+        pipe2.position.y = 630 - pipeDistance
+        pipe2.setScale(-0.8)
+        pipe2.xScale *= -1
+        pipe2.zPosition = -10
+        pipe2.name = "Pipe"
+        parentNode.addChild(pipe2)
+        
+        pipe2.physicsBody = SKPhysicsBody(rectangleOf: pipe1.size)
+        pipe2.physicsBody?.affectedByGravity = false
+        pipe2.physicsBody?.isDynamic = false
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        print("CONATCS?")
+        let contacts: Set = [contact.bodyA.node!, contact.bodyB.node!]
+        
+        if contacts.contains(bird) {
+            
+            if !contacts.union(groundObjects).isEmpty {
+                print("You hit the ground")
+            }
+            
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+}
+
+
+struct ColliderType {
+    static let Bird: UInt32 =  1
+    static let Ground:UInt32 = 2
+    static let Pipes: UInt32 = 3
+    static let Score: UInt32 = 4
 }
