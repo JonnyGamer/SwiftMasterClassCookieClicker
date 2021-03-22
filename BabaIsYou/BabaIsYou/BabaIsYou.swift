@@ -15,12 +15,12 @@ import SpriteKit
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .bush, .flag]
+    static var real: [ObjectType] = [.baba, .wall, .flag]
     
-    case baba = "B"
-    case wall = "w"
-    case bush = "b"
-    case flag = "f"
+    case baba// = "B"
+    case wall// = "w"
+    //case bush = "b"
+    case flag// = "f"
     
     case recursive = "r"
     
@@ -28,29 +28,43 @@ enum ObjectType: String {
     case die
     case win
     case you
-    case `is` = "is"
-    case push = "push"
+    case `is`// = "is"
+    case push// = "push"
 }
 
 
 class Objects {
-    var objectType: ObjectType
+    var objectType: ObjectType {
+        didSet { updateImage() }
+    }
     var position: (x: Int, y: Int) = (0, 0) {
         didSet { sprite.position = .init(x: position.0 * 100, y: position.1 * 100) }
     }
-    var recursiveObjectType: ObjectType = .baba
+    var recursiveObjectType: ObjectType = .baba {
+        didSet { updateImage() }
+    }
     var triedToMove = false
     var sprite: SKSpriteNode// = .init()
     
+    func updateImage() {
+        var imageName = objectType.rawValue
+        if objectType == .recursive { imageName = recursiveObjectType.rawValue + "String" }
+        sprite = .init(imageNamed: imageName)
+        sprite.size = CGSize.init(width: 100, height: 100)
+        sprite.texture?.filteringMode = .nearest
+    }
+    
     required init(_ o: ObjectType) {
         objectType = o
-        sprite = .init(imageNamed: o.rawValue)
+        var imageName = objectType.rawValue
+        if objectType == .recursive { imageName = recursiveObjectType.rawValue + "String" }
+        sprite = .init(imageNamed: imageName)
         sprite.size = CGSize.init(width: 100, height: 100)
         sprite.texture?.filteringMode = .nearest
     }
     
     static func Baba() -> Self { return Self.init(.baba) }
-    static func Bush() -> Self { return Self.init(.bush) }
+    static func Wall() -> Self { return Self.init(.wall) }
     static func Recursive(_ n: ObjectType) -> Self {
         let foo = Self.init(.recursive)
         foo.recursiveObjectType = n
@@ -77,12 +91,14 @@ class Game: CustomStringConvertible {
     
     func start() {
         
+        
+        
         grid = [
-            [nil, nil, nil, nil, nil, .Bush()],
+            [nil, nil, nil, nil, nil, .Wall()],
             [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, .Recursive(.bush), .Recursive(.is), .Recursive(.you)],
-            [.Bush(), nil, nil, nil, nil, nil],
+            [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.you)],
+            [.Wall(), nil, nil, nil, nil, nil],
             [.Baba(), nil, nil, nil, nil, nil],
         ]
         
@@ -115,7 +131,7 @@ class Game: CustomStringConvertible {
     func findAllMatches() {
         var newFlounder: [ObjectType:[ObjectType]] = [
             .recursive:[.push],
-            .bush:[.push],
+            .wall:[.push],
         ]
         
         let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }

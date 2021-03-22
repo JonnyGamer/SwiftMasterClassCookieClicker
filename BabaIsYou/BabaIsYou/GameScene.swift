@@ -49,18 +49,17 @@ class GameScene: SKScene {
     
     var smackKey: Int? = nil
     override func keyDown(with event: NSEvent) {
+        print(event.keyCode)
         if smackKey != nil { return }
         smackKey = Int(event.keyCode)
         
         switch event.keyCode {
-        case 13: game.move(.up)
-        case 0: game.move(.left)
-        case 1: game.move(.down)
-        case 2: game.move(.right)
-        default: game.move(.none)
+        case 126, 13: game.move(.up)
+        case 123, 0: game.move(.left)
+        case 125, 1: game.move(.down)
+        case 124, 2: game.move(.right)
+        default: break// game.move(.none)
         }
-        
-        print(event.keyCode)
     }
     
     override func keyUp(with event: NSEvent) {
