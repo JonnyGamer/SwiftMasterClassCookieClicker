@@ -237,7 +237,7 @@ class Game: CustomStringConvertible {
             return false
         }
         
-        return true
+        return reallyMove(i, dir)
     }
     
     @discardableResult
