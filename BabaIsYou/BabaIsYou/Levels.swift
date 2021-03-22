@@ -29,3 +29,19 @@ struct BabaIsYouLevels {
     
     
 }
+
+//        grid = [
+//            [nil, nil, nil, nil, nil, .Wall()],
+//            [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
+//            [nil, nil, nil, nil, nil, nil],
+//            [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.push)],
+//            [.Wall(), nil, nil, nil, nil, nil],
+//            [.Baba(), nil, nil, nil, nil, nil],
+//            [nil, nil, nil, nil, nil, nil],
+//            [nil, nil, nil, .Recursive(.flag), .Recursive(.is), .Recursive(.win)],
+//            [nil, nil, nil, nil, nil, nil],
+//            [nil, nil, nil, nil, nil, nil],
+//            [nil, nil, nil, nil, .Flag(), nil],
+//            [nil, nil, nil, nil, nil, nil],
+//            [nil, nil, nil, nil, nil, nil],
+//        ]
