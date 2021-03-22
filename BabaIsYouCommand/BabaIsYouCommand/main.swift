@@ -17,6 +17,7 @@ enum ObjectType: String {
     
     case recursive = "r"
     
+    case die
     case win
     case you
     case `is` = "is"
@@ -28,6 +29,7 @@ class Objects {
     var objectType: ObjectType
     var position: CGFloat = (0, 0)
     var recursiveObjectType: ObjectType = .baba
+    var triedToMove = false
     
     required init(_ o: ObjectType) { objectType = o }
     static func Baba() -> Self { return Self.init(.baba) }
@@ -62,7 +64,7 @@ class Game: CustomStringConvertible {
             [nil, nil, nil, nil, nil, nil],
             [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, .Recursive(.bush), .Recursive(.is), .Recursive(.you)],
             [.Bush(), nil, nil, nil, nil, nil],
             [.Baba(), nil, nil, nil, nil, nil],
         ]
@@ -108,7 +110,7 @@ class Game: CustomStringConvertible {
             let check11 = findAtLocation(i.position, moveX: 1, moveY: 0)
             if let c10 = check10?.0, let c11 = check11?.0 {
                 if c10.objectType == .recursive, c11.objectType == .recursive {
-                    newFlounder[c10.recursiveObjectType] = [c11.recursiveObjectType]
+                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 }
             }
             // check n is m (left is right)
@@ -116,7 +118,7 @@ class Game: CustomStringConvertible {
             let check21 = findAtLocation(i.position, moveX: 0, moveY: -1)
             if let c10 = check20?.0, let c11 = check21?.0 {
                 if c10.objectType == .recursive, c11.objectType == .recursive {
-                    newFlounder[c10.recursiveObjectType] = [c11.recursiveObjectType]
+                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 }
             }
             
@@ -138,6 +140,10 @@ class Game: CustomStringConvertible {
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
         
         for i in you {
+            if i.triedToMove {
+                print("\(i.objectType) was already pushed")
+                continue
+            }
             
             if tryToMove(i, dir) {
                 didAnythingMove = true
@@ -146,6 +152,11 @@ class Game: CustomStringConvertible {
             }
             
         }
+        
+        for i in totalObjects {
+            i.triedToMove = false
+        }
+        
         
         findAllMatches()
         return didAnythingMove
@@ -157,10 +168,22 @@ class Game: CustomStringConvertible {
     }
     
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
+        i.triedToMove = true
         
         guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
         guard let found = f.0 else { reallyMove(i, dir); return true }
         
+        // Push YOU is first priority
+        if flounder[found.objectType]?.contains(.you) == true {
+            if tryToMove(found, dir) {
+                reallyMove(i, dir)
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        // Push is first priority
         if flounder[found.objectType]?.contains(.push) == true {
             if tryToMove(found, dir) {
                 reallyMove(i, dir)
@@ -168,6 +191,22 @@ class Game: CustomStringConvertible {
             } else {
                 return false
             }
+        }
+        
+        // Die is 2nd priority (BUG FIXES NEEDED)
+        if flounder[found.objectType]?.contains(.die) == true {
+            reallyMove(i, dir)
+            alive = false
+            print("YOU lose THE GAME")
+            return true
+        }
+        
+        // Win is FINAL priority
+        if flounder[found.objectType]?.contains(.win) == true {
+            reallyMove(i, dir)
+            alive = false
+            print("YOU WIN THE GAME")
+            return true
         }
         
         return false
