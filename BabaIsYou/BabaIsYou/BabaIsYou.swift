@@ -11,15 +11,10 @@ import SpriteKit
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .flag]
-    
-    case baba// = "B"
-    case wall// = "w"
-    //case bush = "b"
-    case flag// = "f"
+    static var real: [ObjectType] = [.baba, .wall, .flag, .rock]
+    case baba, wall, flag, rock
     
     case recursive = "r"
-    
     case stop
     case die
     case win
@@ -57,6 +52,8 @@ class Objects {
     static func Flag() -> Self { return Self.init(.flag) }
     static func Baba() -> Self { return Self.init(.baba) }
     static func Wall() -> Self { return Self.init(.wall) }
+    static func C(_ n: ObjectType) -> Self { return .init(n) }
+    static func R(_ n: ObjectType) -> Self { return Recursive(n) }
     static func Recursive(_ n: ObjectType) -> Self {
         let foo = Self.init(.recursive)
         foo.recursiveObjectType = n
@@ -76,36 +73,19 @@ class Game: CustomStringConvertible {
         return "---\n" + magOP + "---"
     }
     
-    var alive = true
+    var alive = true, win = false
     var gridSize: FakeCGPoint = (0, 0)
     var totalObjects: [Objects] = []
     var grid: [[Objects?]] = []
     
     func start() {
-        
-        grid = [
-            [nil, nil, nil, nil, nil, .Wall()],
-            [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.push)],
-            [.Wall(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, .Recursive(.flag), .Recursive(.is), .Recursive(.win)],
-            [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, .Flag(), nil],
-            [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil],
-        ]
-        
+        grid = BabaIsYouLevels.level1()
         fixGrid()
     }
     
     func fixGrid() {
         gridSize = (grid[0].count, grid.count)
         spriteGrid = 1000 / max(gridSize.x, gridSize.y)
-        //imageGrid = 1000 / min(gridSize.x, gridSize.y)
         grid.forEach { i in i.forEach { j in j?.updateImage() } }
         
         for i in 0..<Int(gridSize.y) {
@@ -131,7 +111,6 @@ class Game: CustomStringConvertible {
     func findAllMatches() {
         var newFlounder: [ObjectType:[ObjectType]] = [
             .recursive:[.push],
-            //.wall:[.push],
         ]
         
         let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }
@@ -205,7 +184,6 @@ class Game: CustomStringConvertible {
             i.triedToMove = false
         }
         
-        
         findAllMatches()
         return didAnythingMove
     }
@@ -254,11 +232,12 @@ class Game: CustomStringConvertible {
         // Win is FINAL priority
         if flounder[found.objectType]?.contains(.win) == true {
             reallyMove(i, dir)
+            win = true
             print("YOU WIN THE GAME")
             return false
         }
         
-        return false
+        return true
     }
     
     @discardableResult

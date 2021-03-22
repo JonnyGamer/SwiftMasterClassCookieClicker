@@ -13,6 +13,7 @@
 		1BBD8D1D26092EFC003A19D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD8D1C26092EFC003A19D3 /* Assets.xcassets */; };
 		1BBD8D2026092EFC003A19D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BBD8D1E26092EFC003A19D3 /* Main.storyboard */; };
 		1BBD8D4026094B0E003A19D3 /* BabaIsYou.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD8D3F26094B0E003A19D3 /* BabaIsYou.swift */; };
+		1BBD8D44260961E6003A19D3 /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBD8D43260961E6003A19D3 /* Levels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		1BBD8D2126092EFC003A19D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1BBD8D2226092EFC003A19D3 /* BabaIsYou.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BabaIsYou.entitlements; sourceTree = "<group>"; };
 		1BBD8D3F26094B0E003A19D3 /* BabaIsYou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabaIsYou.swift; sourceTree = "<group>"; };
+		1BBD8D43260961E6003A19D3 /* Levels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				1BBD8D1826092EFB003A19D3 /* GameScene.swift */,
 				1BBD8D1A26092EFB003A19D3 /* ViewController.swift */,
 				1BBD8D3F26094B0E003A19D3 /* BabaIsYou.swift */,
+				1BBD8D43260961E6003A19D3 /* Levels.swift */,
 				1BBD8D1C26092EFC003A19D3 /* Assets.xcassets */,
 				1BBD8D1E26092EFC003A19D3 /* Main.storyboard */,
 				1BBD8D2126092EFC003A19D3 /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BBD8D44260961E6003A19D3 /* Levels.swift in Sources */,
 				1BBD8D1B26092EFB003A19D3 /* ViewController.swift in Sources */,
 				1BBD8D4026094B0E003A19D3 /* BabaIsYou.swift in Sources */,
 				1BBD8D1926092EFB003A19D3 /* GameScene.swift in Sources */,
