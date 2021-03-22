@@ -54,6 +54,7 @@ class Objects {
         objectType = o
     }
     
+    static func Flag() -> Self { return Self.init(.flag) }
     static func Baba() -> Self { return Self.init(.baba) }
     static func Wall() -> Self { return Self.init(.wall) }
     static func Recursive(_ n: ObjectType) -> Self {
@@ -86,16 +87,16 @@ class Game: CustomStringConvertible {
             [nil, nil, nil, nil, nil, .Wall()],
             [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.you)],
+            [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.push)],
             [.Wall(), nil, nil, nil, nil, nil],
             [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
-            [.Baba(), nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, .Recursive(.flag), .Recursive(.is), .Recursive(.win)],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, .Flag(), nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
         ]
         
         fixGrid()
@@ -130,7 +131,7 @@ class Game: CustomStringConvertible {
     func findAllMatches() {
         var newFlounder: [ObjectType:[ObjectType]] = [
             .recursive:[.push],
-            .wall:[.push],
+            //.wall:[.push],
         ]
         
         let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }
@@ -181,7 +182,7 @@ class Game: CustomStringConvertible {
     func move(_ dir: Cardinal) -> Bool {
         if !alive { return false }
         
-        undo.append(totalObjects.map { ($0, $0.position) })
+        undo.append(totalObjects.map { ($0, $0.position, $0.objectType) })
         var didAnythingMove = false
         
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
@@ -253,9 +254,8 @@ class Game: CustomStringConvertible {
         // Win is FINAL priority
         if flounder[found.objectType]?.contains(.win) == true {
             reallyMove(i, dir)
-            alive = false
             print("YOU WIN THE GAME")
-            return true
+            return false
         }
         
         return false
@@ -282,13 +282,14 @@ class Game: CustomStringConvertible {
         return totalObjects.first(where: { $0.position == currentPos })
     }
     
-    var undo: [[(Objects, FakeCGPoint)]] = []
+    var undo: [[(Objects, FakeCGPoint, ObjectType)]] = []
     func undoMove() {
         if let woah = undo.last {
             print("TRYING TO UNDO")
             undo.removeLast()
             totalObjects = woah.map {
                 $0.0.position = $0.1
+                $0.0.objectType = $0.2
                 return $0.0
             }
             findAllMatches()

@@ -53,6 +53,8 @@ class GameScene: SKScene {
     func resetChildren() {
         superNode.removeAllChildren()
         for i in game.totalObjects {
+            i.sprite.position = .init(x: i.position.x * spriteGrid, y: i.position.y * spriteGrid)
+            print(i.position, i.sprite.position, i.sprite.zPosition)
             superNode.addChild(i.sprite)
         }
     }
@@ -64,11 +66,11 @@ class GameScene: SKScene {
         smackKey = Int(event.keyCode)
         
         switch event.keyCode {
-        case 126, 13: game.move(.up)
-        case 123, 0: game.move(.left)
-        case 125, 1: game.move(.down)
-        case 124, 2: game.move(.right)
-        case 49: game.undoMove()//; resetChildren()
+        case 126, 13: game.move(.up); resetChildren()
+        case 123, 0: game.move(.left); resetChildren()
+        case 125, 1: game.move(.down); resetChildren()
+        case 124, 2: game.move(.right); resetChildren()
+        case 49: game.undoMove(); resetChildren()
         default: break// game.move(.none)
         }
     }
