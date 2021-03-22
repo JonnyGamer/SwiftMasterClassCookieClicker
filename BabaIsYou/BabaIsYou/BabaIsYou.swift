@@ -24,6 +24,7 @@ enum ObjectType: String {
     
     case recursive = "r"
     
+    case stop
     case die
     case win
     case you
@@ -35,13 +36,19 @@ enum ObjectType: String {
 class Objects {
     var objectType: ObjectType
     var position: (x: Int, y: Int) = (0, 0) {
-        didSet { sprite.position = .init(x: position.0, y: position.1) }
+        didSet { sprite.position = .init(x: position.0 * 100, y: position.1 * 100) }
     }
     var recursiveObjectType: ObjectType = .baba
     var triedToMove = false
-    var sprite: SKSpriteNode = .init()
+    var sprite: SKSpriteNode// = .init()
     
-    required init(_ o: ObjectType) { objectType = o }
+    required init(_ o: ObjectType) {
+        objectType = o
+        sprite = .init(imageNamed: o.rawValue)
+        sprite.size = CGSize.init(width: 100, height: 100)
+        sprite.texture?.filteringMode = .nearest
+    }
+    
     static func Baba() -> Self { return Self.init(.baba) }
     static func Bush() -> Self { return Self.init(.bush) }
     static func Recursive(_ n: ObjectType) -> Self {
@@ -71,7 +78,7 @@ class Game: CustomStringConvertible {
     func start() {
         
         grid = [
-            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, .Bush()],
             [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
             [nil, nil, nil, .Recursive(.bush), .Recursive(.is), .Recursive(.you)],
@@ -202,6 +209,11 @@ class Game: CustomStringConvertible {
             }
         }
         
+        // Stop is first priority
+        if flounder[found.objectType]?.contains(.stop) == true {
+            return false
+        }
+        
         // Push is first priority
         if flounder[found.objectType]?.contains(.push) == true {
             if tryToMove(found, dir) {
@@ -268,13 +280,13 @@ class Game: CustomStringConvertible {
 
 //extension Array where Element == [Objects?] {
 //    func findPosition(_ currentPos: FakeCGPoint, moveX: Int, moveY: Int) -> (Element.Element, Bool)? {
-//        
+//
 //        let yo = currentPos.y + moveY
 //        if yo < 0 || yo >= count { return nil }
-//        
+//
 //        let xo = currentPos.x + moveX
 //        if xo < 0 || xo > self[yo].count { return nil }
-//        
+//
 //        return (self[yo][xo], true)
 //    }
 //}
