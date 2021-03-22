@@ -178,6 +178,8 @@ class Game: CustomStringConvertible {
     
     @discardableResult
     func move(_ dir: Cardinal) -> Bool {
+        undo.append(totalObjects.map { ($0, $0.position) })
+        //undo.append((totalObjects.map { ($0, $0.position, $0.objectType) }, flounder))
         var didAnythingMove = false
         
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
@@ -276,6 +278,20 @@ class Game: CustomStringConvertible {
     }
     func trueFindAtLocation(_ currentPos: FakeCGPoint) -> Objects? {
         return totalObjects.first(where: { $0.position == currentPos })
+    }
+    
+    var undo: [[(Objects, FakeCGPoint)]] = []
+    //var undo: [([(Objects, FakeCGPoint, ObjectType)], [ObjectType:[ObjectType]])] = []
+    func undoMove() {
+        if let woah = undo.last {
+            print("TRYING TO UNDO")
+            undo.removeLast()
+            totalObjects = woah.map {
+                $0.0.position = $0.1
+                return $0.0
+            }
+            findAllMatches()
+        }
     }
     
 }

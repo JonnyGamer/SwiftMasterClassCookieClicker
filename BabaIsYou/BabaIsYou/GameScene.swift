@@ -58,6 +58,7 @@ class GameScene: SKScene {
         case 123, 0: game.move(.left)
         case 125, 1: game.move(.down)
         case 124, 2: game.move(.right)
+        case 49: game.undoMove()//; resetChildren()
         default: break// game.move(.none)
         }
     }
