@@ -8,10 +8,6 @@
 import Foundation
 import SpriteKit
 
-//extension CGPoint {
-//    init(_ x: Int,_ y: Int) { self.init(x: x, y: y) }
-//}
-
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
@@ -297,31 +293,3 @@ class Game: CustomStringConvertible {
     }
     
 }
-
-//print("Hello World WASSUP")
-//let game = Game()
-//game.start()
-//
-//while game.alive {
-//    let foo = readLine() ?? " "
-//    let ind = ["w", "s", "a", "d", " "].firstIndex(of: foo) ?? 5
-//
-//    game.move(Game.Cardinal.init(rawValue: ind) ?? .none)
-//    print(game)
-//}
-//
-//print("Good-bye World")
-
-//extension Array where Element == [Objects?] {
-//    func findPosition(_ currentPos: FakeCGPoint, moveX: Int, moveY: Int) -> (Element.Element, Bool)? {
-//
-//        let yo = currentPos.y + moveY
-//        if yo < 0 || yo >= count { return nil }
-//
-//        let xo = currentPos.x + moveX
-//        if xo < 0 || xo > self[yo].count { return nil }
-//
-//        return (self[yo][xo], true)
-//    }
-//}
-
