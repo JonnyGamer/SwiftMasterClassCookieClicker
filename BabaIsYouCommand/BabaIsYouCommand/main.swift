@@ -128,6 +128,10 @@ class Game: CustomStringConvertible {
             print("GAME OVER BRUH")
             alive = false
         }
+        if !totalObjects.contains(where: { newFlounder[$0.objectType]?.contains(.you) == true }) {
+            print("ALSO GAME OVER BRUH")
+            alive = false
+        }
         
         flounder = newFlounder
     }
@@ -176,8 +180,7 @@ class Game: CustomStringConvertible {
         // Push YOU is first priority
         if flounder[found.objectType]?.contains(.you) == true {
             if tryToMove(found, dir) {
-                reallyMove(i, dir)
-                return true
+                return reallyMove(i, dir)
             } else {
                 return false
             }
@@ -186,18 +189,16 @@ class Game: CustomStringConvertible {
         // Push is first priority
         if flounder[found.objectType]?.contains(.push) == true {
             if tryToMove(found, dir) {
-                reallyMove(i, dir)
-                return true
+                return reallyMove(i, dir)
             } else {
                 return false
             }
         }
         
-        // Die is 2nd priority (BUG FIXES NEEDED)
+        // Die is 2nd priority (Destory any objects with a die)
         if flounder[found.objectType]?.contains(.die) == true {
             reallyMove(i, dir)
-            alive = false
-            print("YOU lose THE GAME")
+            totalObjects = totalObjects.filter { $0 !== i }
             return true
         }
         
@@ -212,10 +213,12 @@ class Game: CustomStringConvertible {
         return false
     }
     
-    func reallyMove(_ i: Objects,_ dir: Cardinal) {
+    @discardableResult
+    func reallyMove(_ i: Objects,_ dir: Cardinal) -> Bool {
         i.position.x += dir.xMove()
         i.position.y += dir.yMove()
         print("\(i.objectType) Moved (\(dir.xMove()), \(dir.yMove())) spaces")
+        return true
     }
     
     func findAtLocation(_ currentPos: CGFloat, moveX: Int, moveY: Int) -> (Objects?, Bool)? {
