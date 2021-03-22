@@ -13,6 +13,14 @@ enum ObjectType: String {
     case baba = "B"
     case wall = "w"
     case bush = "b"
+    case flag = "f"
+    
+    case recursive = "r"
+    
+    case win
+    case you
+    case `is` = "is"
+    case push = "push"
     //case you
 }
 
@@ -20,10 +28,16 @@ enum ObjectType: String {
 class Objects {
     var objectType: ObjectType
     var position: CGFloat = (0, 0)
+    var recursiveObjectType: ObjectType = .baba
     
     required init(_ o: ObjectType) { objectType = o }
     static func Baba() -> Self { return Self.init(.baba) }
     static func Bush() -> Self { return Self.init(.bush) }
+    static func Recursive(_ n: ObjectType) -> Self {
+        let foo = Self.init(.recursive)
+        foo.recursiveObjectType = n
+        return foo
+    }
 }
 
 
@@ -38,29 +52,97 @@ class Game: CustomStringConvertible {
         return "---\n" + magOP + "---"
     }
     
-    var baba: [Objects] = []
-    var you: [Objects] = []
+    //var baba: [Objects] = []
+    //var you: [Objects] = []
     
     var gridSize: CGFloat = (10, 10)
     var totalObjects: [Objects] = []
- 
+    var grid: [[Objects?]] = []
+    
     func start() {
-        let baba = Objects.Baba()
-        totalObjects.append(baba)
-        self.baba.append(baba)
-        self.you.append(baba)
         
-        let bush = Objects.Bush()
-        bush.position = (0, 1)
-        totalObjects.append(bush)
+        grid = [
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, .Recursive(.baba), .Recursive(.is), .Recursive(.you), nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [.Bush(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+        ]
         
+//        let baba = Objects.Baba()
+//        totalObjects.append(baba)
+//        self.baba.append(baba)
+//        self.you.append(baba)
+//
+//        let bush = Objects.Bush()
+//        bush.position = (0, 1)
+//        totalObjects.append(bush)
+//
+//        print(self)
+        fixGrid()
+    }
+    
+    func fixGrid() {
+        gridSize.x = grid.count
+        gridSize.y = grid[0].count
+        
+        for i in 0..<gridSize.y {
+            let y = gridSize.y - i - 1
+            
+            for j in 0..<gridSize.x {
+                let x = j//gridSize.x - j - 1
+                
+                if let wow = grid[y][x] {
+                    wow.position = (j, i)
+                    totalObjects.append(wow)
+                }
+                
+            }
+        }
+        
+        findAllMatches()
         print(self)
+    }
+    
+    var flounder: [ObjectType:[ObjectType]] = [:]
+    
+    func findAllMatches() {
+        var newFlounder: [ObjectType:[ObjectType]] = [
+            .recursive:[.push],
+        ]
+        
+        let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }
+        
+        for i in iso {
+            // check up is down
+            let check10 = findAtLocation(i.position, moveX: -1, moveY: 0)
+            let check11 = findAtLocation(i.position, moveX: 1, moveY: 0)
+            if let c10 = check10?.0, let c11 = check11?.0 {
+                if c10.objectType == .recursive, c11.objectType == .recursive {
+                    newFlounder[c10.recursiveObjectType] = [c11.recursiveObjectType]
+                }
+            }
+            // check n is m (left is right)
+            let check20 = findAtLocation(i.position, moveX: 0, moveY: 1)
+            let check21 = findAtLocation(i.position, moveX: 0, moveY: -1)
+            if let c10 = check20?.0, let c11 = check21?.0 {
+                if c10.objectType == .recursive, c11.objectType == .recursive {
+                    newFlounder[c10.recursiveObjectType] = [c11.recursiveObjectType]
+                }
+            }
+            
+        }
+        
+        flounder = newFlounder
     }
     
     
     @discardableResult
     func move(_ dir: Cardinal) -> Bool {
         var didAnythingMove = false
+        
+        let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
         
         for i in you {
             
@@ -85,8 +167,7 @@ class Game: CustomStringConvertible {
         guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
         guard let found = f.0 else { reallyMove(i, dir); return true }
         
-        if found.objectType == .wall { return false }
-        if found.objectType == .bush {
+        if flounder[found.objectType]?.contains(.push) == true {
             if tryToMove(found, dir) {
                 reallyMove(i, dir)
                 return true
@@ -95,7 +176,8 @@ class Game: CustomStringConvertible {
             }
         }
         
-        fatalError()
+        return false
+        //fatalError()
     }
     
     func reallyMove(_ i: Objects,_ dir: Cardinal) {
