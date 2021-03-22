@@ -21,7 +21,6 @@ enum ObjectType: String {
     case you
     case `is` = "is"
     case push = "push"
-    //case you
 }
 
 
@@ -52,9 +51,7 @@ class Game: CustomStringConvertible {
         return "---\n" + magOP + "---"
     }
     
-    //var baba: [Objects] = []
-    //var you: [Objects] = []
-    
+    var alive = true
     var gridSize: CGFloat = (10, 10)
     var totalObjects: [Objects] = []
     var grid: [[Objects?]] = []
@@ -70,16 +67,6 @@ class Game: CustomStringConvertible {
             [.Baba(), nil, nil, nil, nil, nil],
         ]
         
-//        let baba = Objects.Baba()
-//        totalObjects.append(baba)
-//        self.baba.append(baba)
-//        self.you.append(baba)
-//
-//        let bush = Objects.Bush()
-//        bush.position = (0, 1)
-//        totalObjects.append(bush)
-//
-//        print(self)
         fixGrid()
     }
     
@@ -137,6 +124,7 @@ class Game: CustomStringConvertible {
         
         if !newFlounder.contains(where: { $0.value.contains(.you) }) {
             print("GAME OVER BRUH")
+            alive = false
         }
         
         flounder = newFlounder
@@ -183,7 +171,6 @@ class Game: CustomStringConvertible {
         }
         
         return false
-        //fatalError()
     }
     
     func reallyMove(_ i: Objects,_ dir: Cardinal) {
@@ -211,20 +198,13 @@ print("Hello World WASSUP")
 let game = Game()
 game.start()
 
-while true {
+while game.alive {
     let foo = readLine() ?? " "
-    let ind = ["w", "s", "a", "d", " "].index(of: foo) ?? 5
+    let ind = ["w", "s", "a", "d", " "].firstIndex(of: foo) ?? 5
     
     game.move(Game.Cardinal.init(rawValue: ind) ?? .none)
     print(game)
 }
-//
-//while game.move(.up) {
-//    print(game)
-//}
-//while game.move(.right) {
-//    print(game)
-//}
 
 print("Good-bye World")
 
