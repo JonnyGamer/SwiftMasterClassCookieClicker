@@ -63,7 +63,7 @@ class Game: CustomStringConvertible {
         
         grid = [
             [nil, nil, nil, nil, nil, nil],
-            [nil, nil, .Recursive(.baba), .Recursive(.is), .Recursive(.you), nil],
+            [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
             [nil, nil, nil, nil, nil, nil],
             [.Bush(), nil, nil, nil, nil, nil],
@@ -110,6 +110,7 @@ class Game: CustomStringConvertible {
     func findAllMatches() {
         var newFlounder: [ObjectType:[ObjectType]] = [
             .recursive:[.push],
+            .bush:[.push],
         ]
         
         let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }
@@ -134,6 +135,10 @@ class Game: CustomStringConvertible {
             
         }
         
+        if !newFlounder.contains(where: { $0.value.contains(.you) }) {
+            print("GAME OVER BRUH")
+        }
+        
         flounder = newFlounder
     }
     
@@ -154,12 +159,13 @@ class Game: CustomStringConvertible {
             
         }
         
+        findAllMatches()
         return didAnythingMove
     }
     
-    enum Cardinal: Int { case up, down, left, right
-        func xMove() -> Int { return [0, 0, -1, 1][self.rawValue] }
-        func yMove() -> Int { return [1, -1, 0, 0][self.rawValue] }
+    enum Cardinal: Int { case up, down, left, right, none
+        func xMove() -> Int { return [0, 0, -1, 1, 0][self.rawValue] }
+        func yMove() -> Int { return [1, -1, 0, 0, 0][self.rawValue] }
     }
     
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
@@ -205,12 +211,20 @@ print("Hello World WASSUP")
 let game = Game()
 game.start()
 
-while game.move(.up) {
+while true {
+    let foo = readLine() ?? " "
+    let ind = ["w", "s", "a", "d", " "].index(of: foo) ?? 5
+    
+    game.move(Game.Cardinal.init(rawValue: ind) ?? .none)
     print(game)
 }
-while game.move(.right) {
-    print(game)
-}
+//
+//while game.move(.up) {
+//    print(game)
+//}
+//while game.move(.right) {
+//    print(game)
+//}
 
 print("Good-bye World")
 
