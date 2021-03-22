@@ -10,6 +10,8 @@ import Foundation
 typealias CGFloat = (x: Int, y: Int)
 
 enum ObjectType: String {
+    static var real: [ObjectType] = [.baba, .wall, .bush, .flag]
+    
     case baba = "B"
     case wall = "w"
     case bush = "b"
@@ -121,7 +123,14 @@ class Game: CustomStringConvertible {
                     newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 }
             }
-            
+        }
+        
+        for i in totalObjects {
+            if ObjectType.real.contains(i.objectType) {
+                if let cops = newFlounder[i.objectType]?.first(where: { ObjectType.real.contains($0) }) {
+                    i.objectType = cops
+                }
+            }
         }
         
         if !newFlounder.contains(where: { $0.value.contains(.you) }) {
