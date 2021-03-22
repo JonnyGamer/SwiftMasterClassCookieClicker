@@ -8,6 +8,16 @@
 import SpriteKit
 import GameplayKit
 
+var tenth: Int = 10
+var halfSpriteGrid: Int = 50
+var imageGrid: Int = 0
+var spriteGrid: Int = 100 {
+    didSet {
+        halfSpriteGrid = spriteGrid / 2
+        tenth = spriteGrid / 10
+    }
+}
+
 class GameScene: SKScene {
     let game = Game()
     var superNode = SKNode()
@@ -20,11 +30,11 @@ class GameScene: SKScene {
         resetChildren()
         
         superNode.position = .init(x: size.width/2, y: size.height/2)
-        superNode.position.x -= CGFloat(game.gridSize.x * 50) - 50
-        superNode.position.y -= CGFloat(game.gridSize.y * 50) - 50
+        superNode.position.x -= CGFloat(game.gridSize.x * halfSpriteGrid - halfSpriteGrid)
+        superNode.position.y -= CGFloat(game.gridSize.y * halfSpriteGrid - halfSpriteGrid)
         
         //print(game.gridSize.x)
-        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: 10+game.gridSize.x * 100, height: 10+game.gridSize.y * 100))
+        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: tenth+game.gridSize.x * spriteGrid, height: tenth+game.gridSize.y * spriteGrid))
         bgNode.position = .init(x: size.width/2, y: size.height/2)
         bgNode.zPosition = -1
         addChild(bgNode)

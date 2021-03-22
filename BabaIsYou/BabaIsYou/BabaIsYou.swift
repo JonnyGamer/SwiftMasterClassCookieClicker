@@ -34,29 +34,24 @@ class Objects {
         didSet { updateImage() }
     }
     var position: (x: Int, y: Int) = (0, 0) {
-        didSet { sprite.position = .init(x: position.0 * 100, y: position.1 * 100) }
+        didSet { sprite.position = .init(x: position.0 * spriteGrid, y: position.1 * spriteGrid) }
     }
     var recursiveObjectType: ObjectType = .baba {
         didSet { updateImage() }
     }
     var triedToMove = false
-    var sprite: SKSpriteNode// = .init()
+    var sprite: SKSpriteNode!
     
     func updateImage() {
         var imageName = objectType.rawValue
         if objectType == .recursive { imageName = recursiveObjectType.rawValue + "String" }
         sprite = .init(imageNamed: imageName)
-        sprite.size = CGSize.init(width: 100, height: 100)
+        sprite.size = CGSize.init(width: spriteGrid, height: spriteGrid)
         sprite.texture?.filteringMode = .nearest
     }
     
     required init(_ o: ObjectType) {
         objectType = o
-        var imageName = objectType.rawValue
-        if objectType == .recursive { imageName = recursiveObjectType.rawValue + "String" }
-        sprite = .init(imageNamed: imageName)
-        sprite.size = CGSize.init(width: 100, height: 100)
-        sprite.texture?.filteringMode = .nearest
     }
     
     static func Baba() -> Self { return Self.init(.baba) }
@@ -87,8 +82,6 @@ class Game: CustomStringConvertible {
     
     func start() {
         
-        
-        
         grid = [
             [nil, nil, nil, nil, nil, .Wall()],
             [.Recursive(.baba), .Recursive(.is), .Recursive(.you), nil, nil, nil],
@@ -96,13 +89,23 @@ class Game: CustomStringConvertible {
             [nil, nil, nil, .Recursive(.wall), .Recursive(.is), .Recursive(.you)],
             [.Wall(), nil, nil, nil, nil, nil],
             [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
+            [.Baba(), nil, nil, nil, nil, nil],
         ]
         
         fixGrid()
     }
     
     func fixGrid() {
-        gridSize = (grid.count, grid[0].count)
+        gridSize = (grid[0].count, grid.count)
+        spriteGrid = 1000 / max(gridSize.x, gridSize.y)
+        //imageGrid = 1000 / min(gridSize.x, gridSize.y)
+        grid.forEach { i in i.forEach { j in j?.updateImage() } }
         
         for i in 0..<Int(gridSize.y) {
             let y = Int(gridSize.y) - i - 1
