@@ -166,20 +166,23 @@ class Game: CustomStringConvertible {
         if !newFlounder.contains(where: { $0.value.contains(.you) }) {
             print("GAME OVER BRUH")
             alive = false
+            return
         }
         if !totalObjects.contains(where: { newFlounder[$0.objectType]?.contains(.you) == true }) {
             print("ALSO GAME OVER BRUH")
             alive = false
+            return
         }
-        
+        alive = true
         flounder = newFlounder
     }
     
     
     @discardableResult
     func move(_ dir: Cardinal) -> Bool {
+        if !alive { return false }
+        
         undo.append(totalObjects.map { ($0, $0.position) })
-        //undo.append((totalObjects.map { ($0, $0.position, $0.objectType) }, flounder))
         var didAnythingMove = false
         
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
@@ -281,7 +284,6 @@ class Game: CustomStringConvertible {
     }
     
     var undo: [[(Objects, FakeCGPoint)]] = []
-    //var undo: [([(Objects, FakeCGPoint, ObjectType)], [ObjectType:[ObjectType]])] = []
     func undoMove() {
         if let woah = undo.last {
             print("TRYING TO UNDO")
