@@ -80,7 +80,7 @@ class Game: CustomStringConvertible {
     var grid: [[Objects?]] = []
     
     func start() {
-        grid = BabaIsYouLevels.level1()
+        grid = BabaIsYouLevels.getLevel()
         fixGrid()
     }
     

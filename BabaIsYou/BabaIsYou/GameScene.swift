@@ -67,7 +67,10 @@ class GameScene: SKScene {
         superNode.alpha = game.alive ? 1 : 0.5
         if game.win {
             ultimateWin = true
-            //view?.presentScene(SKScene())
+            level += 1
+            let newScene = GameScene.init(size: CGSize(width: 1000, height: 1000))
+            newScene.scaleMode = .aspectFit
+            view?.presentScene(newScene)
         }
     }
     
