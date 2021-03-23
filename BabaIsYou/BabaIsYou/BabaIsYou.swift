@@ -11,12 +11,12 @@ import SpriteKit
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water]
-    case baba, wall, flag, rock, water
+    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull]
+    case baba, wall, flag, rock, water, skull
     
     case recursive = "r"
     case stop
-    case die
+    case defeat
     case win
     case you
     case `is`// = "is"
@@ -45,6 +45,7 @@ class Objects {
         sprite.size = CGSize.init(width: spriteGrid, height: spriteGrid)
         sprite.texture?.filteringMode = .nearest
         if objectType == .baba { sprite.zPosition = 2 }
+        if objectType == .recursive { sprite.zPosition = 1 }
     }
     
     required init(_ o: ObjectType) {
@@ -122,7 +123,7 @@ class Game: CustomStringConvertible {
             // check up is down
             let check10 = findAtLocation(i.position, moveX: -1, moveY: 0)
             let check11 = findAtLocation(i.position, moveX: 1, moveY: 0)
-            if let c10 = check10?.0, let c11 = check11?.0 {
+            if let c10 = check10?.first, let c11 = check11?.first {
                 if c10.objectType == .recursive, c11.objectType == .recursive {
                     newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 }
@@ -130,7 +131,7 @@ class Game: CustomStringConvertible {
             // check n is m (left is right)
             let check20 = findAtLocation(i.position, moveX: 0, moveY: 1)
             let check21 = findAtLocation(i.position, moveX: 0, moveY: -1)
-            if let c10 = check20?.0, let c11 = check21?.0 {
+            if let c10 = check20?.first, let c11 = check21?.first {
                 if c10.objectType == .recursive, c11.objectType == .recursive {
                     newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 }
@@ -200,15 +201,15 @@ class Game: CustomStringConvertible {
         i.triedToMove = true
         
         guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
-        guard let found = f.0 else { reallyMove(i, dir); return true }
+        if f.isEmpty { reallyMove(i, dir); return true }
+        guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
+        
+        //guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
+        //guard let found = f.0 else { reallyMove(i, dir); return true }
         
         // Push YOU is first priority
         if flounder[found.objectType]?.contains(.you) == true {
-            if tryToMove(found, dir) {
-                return reallyMove(i, dir)
-            } else {
-                return false
-            }
+            return reallyMove(i, dir)
         }
         
         // Stop is first priority
@@ -226,7 +227,7 @@ class Game: CustomStringConvertible {
         }
         
         // Die is 2nd priority (Destory any objects with a die)
-        if flounder[found.objectType]?.contains(.die) == true {
+        if flounder[found.objectType]?.contains(.defeat) == true {
             reallyMove(i, dir)
             totalObjects = totalObjects.filter { $0 !== i }
             return true
@@ -259,14 +260,14 @@ class Game: CustomStringConvertible {
         return true
     }
     
-    func findAtLocation(_ currentPos: FakeCGPoint, moveX: Int, moveY: Int) -> (Objects?, Bool)? {
+    func findAtLocation(_ currentPos: FakeCGPoint, moveX: Int, moveY: Int) -> [Objects]? {
         let yo = currentPos.y + moveY
         if yo < 0 || yo >= gridSize.y { return nil }
         
         let xo = currentPos.x + moveX
         if xo < 0 || xo >= gridSize.x { return nil }
         
-        return (totalObjects.first(where: { $0.position == (xo, yo) }), true)
+        return totalObjects.filter { $0.position == (xo, yo) }// (totalObjects.first(where: { $0.position == (xo, yo) }), true)
     }
     func trueFindAtLocation(_ currentPos: FakeCGPoint) -> Objects? {
         return totalObjects.first(where: { $0.position == currentPos })
