@@ -11,8 +11,8 @@ import SpriteKit
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .flag, .rock]
-    case baba, wall, flag, rock
+    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water]
+    case baba, wall, flag, rock, water
     
     case recursive = "r"
     case stop
@@ -21,6 +21,7 @@ enum ObjectType: String {
     case you
     case `is`// = "is"
     case push// = "push"
+    case sink
 }
 
 
@@ -53,6 +54,7 @@ class Objects {
     static func Flag() -> Self { return Self.init(.flag) }
     static func Baba() -> Self { return Self.init(.baba) }
     static func Wall() -> Self { return Self.init(.wall) }
+    static func Water() -> Self { return Self.init(.water) }
     static func C(_ n: ObjectType) -> Self { return .init(n) }
     static func R(_ n: ObjectType) -> Self { return Recursive(n) }
     static func Recursive(_ n: ObjectType) -> Self {
@@ -227,6 +229,14 @@ class Game: CustomStringConvertible {
         if flounder[found.objectType]?.contains(.die) == true {
             reallyMove(i, dir)
             totalObjects = totalObjects.filter { $0 !== i }
+            return true
+        }
+        
+        // Die is 2nd priority (Destory any objects with a die)
+        if flounder[found.objectType]?.contains(.sink) == true {
+            reallyMove(i, dir)
+            totalObjects = totalObjects.filter { $0 !== i }
+            totalObjects = totalObjects.filter { $0 !== found }
             return true
         }
         
