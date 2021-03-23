@@ -63,6 +63,12 @@ class Objects {
         foo.recursiveObjectType = n
         return foo
     }
+    
+    static func buildFrom(this: (ObjectType,ObjectType)?) -> Objects? {
+        if let t = this {
+            return t.0 == .recursive ? .R(t.1) : .C(t.0)
+        }; return nil
+    }
 }
 
 
@@ -200,12 +206,25 @@ class Game: CustomStringConvertible {
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
         i.triedToMove = true
         
-        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
+        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else {
+            return false
+            
+        }
         if f.isEmpty { reallyMove(i, dir); return true }
         guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
+        // But with `found`, on level 2. If you push a `push` and `you` on the same place: it don't know what to do
         
         //guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
         //guard let found = f.0 else { reallyMove(i, dir); return true }
+        
+        // Push is first priority
+        if flounder[found.objectType]?.contains(.push) == true {
+            if tryToMove(found, dir) {
+                return reallyMove(i, dir)
+            } else {
+                return false
+            }
+        }
         
         // Push YOU is first priority
         if flounder[found.objectType]?.contains(.you) == true {
@@ -217,14 +236,6 @@ class Game: CustomStringConvertible {
             return false
         }
         
-        // Push is first priority
-        if flounder[found.objectType]?.contains(.push) == true {
-            if tryToMove(found, dir) {
-                return reallyMove(i, dir)
-            } else {
-                return false
-            }
-        }
         
         // Die is 2nd priority (Destory any objects with a die)
         if flounder[found.objectType]?.contains(.defeat) == true {

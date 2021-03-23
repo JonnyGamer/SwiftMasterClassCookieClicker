@@ -86,7 +86,7 @@ struct BabaIsYouLevels {
         ]
     }
     
-    static func level1() -> [[Objects?]] {
+    static func level0() -> [[Objects?]] {
         return [
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
             [nil, .R(.baba), .R(.is), .R(.you), nil, nil, nil, nil, nil, .R(.flag), .R(.is), .R(.win), nil],
@@ -100,12 +100,76 @@ struct BabaIsYouLevels {
             [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
         ]
+    }
+    
+    static func level1() -> [[Objects?]] {
+        return [
+            "             ", // String.init(repeating: " ", count: 13),
+            " BIY     FIE ",
+            "             ",
+            " wwwwwwwwwww ",
+            "      r      ",
+            "    b r   f  ",
+            "      r      ",
+            " wwwwwwwwwww ",
+            "             ",
+            " WIS     RIP ",
+            "             ",
+            
+        ].level(ruleset: [
+            "w":(.wall,.wall),
+            "r":(.rock,.wall),
+            "b":(.baba,.wall),
+            "f":(.flag,.wall),
+            
+            
+            "R":(.recursive,.rock),
+            "B":(.recursive,.baba),
+            "I":(.recursive,.is),
+            "Y":(.recursive,.you),
+            "F":(.recursive,.flag),
+            "E":(.recursive,.win),
+            "W":(.recursive,.wall),
+            "S":(.recursive,.stop),
+            "P":(.recursive,.push),
+        ])
         
-        
+        return [
+            [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
+            [nil, .R(.baba), .R(.is), .R(.you), nil, nil, nil, nil, nil, .R(.flag), .R(.is), .R(.win), nil],
+            [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
+            [nil, .Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(), nil],
+            [nil, nil, nil, nil, nil, nil, .C(.rock), nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, .Baba(), nil, .C(.rock), nil, nil, nil, .Flag(), nil, nil],
+            [nil, nil, nil, nil, nil, nil, .C(.rock), nil, nil, nil, nil, nil, nil],
+            [nil, .Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(),.Wall(), nil],
+            [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
+            [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
+            [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
+        ]
     }
     
     
 }
+
+extension Array where Element == String {
+    func level(ruleset: [String:(ObjectType,ObjectType)] = [:]) -> [[Objects?]] { return levelFromString(ruleset: ruleset, levelDesign: self) }
+}
+
+let myRuleset: [String:(ObjectType,ObjectType)] = [:]
+func levelFromString(ruleset: [String:(ObjectType,ObjectType)] = [:], levelDesign: [String]) -> [[Objects?]] {
+    var theRuleset = ruleset
+    if ruleset.isEmpty { theRuleset = myRuleset }
+    
+    var level: [[Objects?]] = []
+    
+    for i in levelDesign {
+        let f = i.map { Objects.buildFrom(this: theRuleset[String($0)]) }
+        level.append(f)
+    }
+    return level
+}
+
 
 //        grid = [
 //            [nil, nil, nil, nil, nil, .Wall()],
