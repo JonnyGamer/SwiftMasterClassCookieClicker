@@ -19,6 +19,7 @@ struct BabaIsYouLevels {
         case 4: return level4()
         case 5: return level5()
         case 6: return level6()
+        case 7: return level7()
         default: return [[nil]]
         }
     }
@@ -102,6 +103,45 @@ struct BabaIsYouLevels {
             [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
         ]
+    }
+    
+    static func level7() -> [[Objects?]] {
+        return [
+            "RIS r       s           ",
+            "    r     wwswwwwwww    ",
+            "ZID r     w s  w   w    ",
+            "    r     w s    f w    ",
+            "FIE r wwwww s  w   w    ",
+            "    r w   w s  wwwww    ",
+            "rrrrr w b   swww        ",
+            "      w   w ssssssssssss",
+            "      wwwww    w        ",
+            "          w WISw        ",
+            "        B w    w        ",
+            "        I wwwwww        ",
+            "        Y               ",
+            "                        ",
+            
+        ].level(ruleset: [
+            "r":(.rock,.wall),
+            "w":(.wall,.wall),
+            "b":(.baba,.wall),
+            "s":(.skull,.wall),
+            "f":(.flag,.flag),
+            
+            "B":(.recursive,.baba),
+            "I":(.recursive,.is),
+            "Y":(.recursive,.you),
+            "R":(.recursive,.rock),
+            "S":(.recursive,.stop),
+            "Z":(.recursive,.skull),
+            "D":(.recursive,.defeat),
+            "F":(.recursive,.flag),
+            "E":(.recursive,.win),
+            "W":(.recursive,.wall),
+            
+        ])
+        
     }
     
     static func level6() -> [[Objects?]] {
