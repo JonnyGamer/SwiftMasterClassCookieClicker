@@ -43,6 +43,7 @@ class Objects {
         sprite = .init(imageNamed: imageName)
         sprite.size = CGSize.init(width: spriteGrid, height: spriteGrid)
         sprite.texture?.filteringMode = .nearest
+        if objectType == .baba { sprite.zPosition = 2 }
     }
     
     required init(_ o: ObjectType) {
