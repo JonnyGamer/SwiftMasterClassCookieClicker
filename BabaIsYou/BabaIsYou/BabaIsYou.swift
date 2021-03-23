@@ -295,6 +295,12 @@ class Game: CustomStringConvertible {
             findAllMatches()
         }
     }
+    func reset() {
+        if !undo.isEmpty {
+            undo = [undo[0]]
+            undoMove()
+        }
+    }
     
 }
 
