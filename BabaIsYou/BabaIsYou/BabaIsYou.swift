@@ -11,8 +11,8 @@ import SpriteKit
 typealias FakeCGPoint = (x: Int, y: Int)
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull]
-    case baba, wall, flag, rock, water, skull
+    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull, lava]
+    case baba, wall, flag, rock, water, skull, lava
     
     case recursive = "r"
     case stop
@@ -22,6 +22,8 @@ enum ObjectType: String {
     case `is`// = "is"
     case push// = "push"
     case sink
+    case hot
+    case melt
 }
 
 
@@ -217,8 +219,10 @@ class Game: CustomStringConvertible {
         //guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
         //guard let found = f.0 else { reallyMove(i, dir); return true }
         
+        let foundTypes = flounder[f.objectTypes]
+        
         // Push is first priority
-        if flounder[f.objectTypes].contains(.push) {
+        if foundTypes.contains(.push) {
             if tryToMove(found, dir) {
                 return reallyMove(i, dir)
             } else {
@@ -227,19 +231,19 @@ class Game: CustomStringConvertible {
         }
         
         // Push YOU is first priority
-        if flounder[f.objectTypes].contains(.you) {
+        if foundTypes.contains(.you) {
             return reallyMove(i, dir)
         }
         
         
         // Stop is first priority
-        if flounder[f.objectTypes].contains(.stop) {
+        if foundTypes.contains(.stop) {
             return false
         }
         
         
         // Die is 2nd priority (Destory any objects with a die)
-        if flounder[f.objectTypes].contains(.defeat) {
+        if foundTypes.contains(.defeat) {
             reallyMove(i, dir)
             if flounder[i.objectType]?.contains(.you) == true {
                 totalObjects = totalObjects.filter { $0 !== i }
@@ -248,10 +252,18 @@ class Game: CustomStringConvertible {
         }
         
         // Die is 2nd priority (Destory any objects with a die)
-        if flounder[f.objectTypes].contains(.sink)  {
+        if foundTypes.contains(.sink)  {
             reallyMove(i, dir)
             totalObjects = totalObjects.filter { $0 !== i }
             totalObjects = totalObjects.filter { $0 !== found }
+            return true
+        }
+        
+        if foundTypes.contains(.hot) {
+            reallyMove(i, dir)
+            if flounder[i.objectType]?.contains(.melt) == true {
+                totalObjects = totalObjects.filter { $0 !== i }
+            }
             return true
         }
         

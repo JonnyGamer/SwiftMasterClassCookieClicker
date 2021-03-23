@@ -18,6 +18,7 @@ struct BabaIsYouLevels {
         case 3: return level3()
         case 4: return level4()
         case 5: return level5()
+        case 6: return level6()
         default: return [[nil]]
         }
     }
@@ -101,6 +102,51 @@ struct BabaIsYouLevels {
             [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
         ]
+    }
+    
+    static func level6() -> [[Objects?]] {
+        return [
+            "WISll w     w   w   llllll      ",
+            "llll  w       b w  llllll       ",
+            "ll    w     w   w  llllll       ",
+            "l     w BIY wwwww llllll        ",
+            "      ww   ww     llllll        ",
+            "      w     r     llllll        ",
+            "      wwwwwww    llllll         ",
+            "      wRw        llllll         ",
+            "       I         lllll          ",
+            "       P        lllll           ",
+            "            L   lllll           ",
+            "               lllll            ",
+            "       wBIMw   lllll            ",
+            "       wwwww  lllll     f       ",
+            "       wLIHw  lllll             ",
+            "       wwwww lllll     FIE     l",
+            "            lllll             ll",
+            "           lllll             lll",
+            
+            
+        ].level(ruleset: [
+            "r":(.rock,.wall),
+            "b":(.baba,.wall),
+            "f":(.flag,.wall),
+            "l":(.lava,.skull),
+            "w":(.wall,.wall),
+            
+            "W":(.recursive,.wall),
+            "I":(.recursive,.is),
+            "S":(.recursive,.stop),
+            "B":(.recursive,.baba),
+            "Y":(.recursive,.you),
+            "R":(.recursive,.rock),
+            "P":(.recursive,.push),
+            "L":(.recursive,.lava),
+            "M":(.recursive,.melt),
+            "H":(.recursive,.hot),
+            "F":(.recursive,.flag),
+            "E":(.recursive,.win),
+        ])
+        
     }
     
     static func level5() -> [[Objects?]] {
