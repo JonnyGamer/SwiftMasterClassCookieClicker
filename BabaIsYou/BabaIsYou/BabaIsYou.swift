@@ -9,10 +9,11 @@ import Foundation
 import SpriteKit
 
 typealias FakeCGPoint = (x: Int, y: Int)
+var flounder: [ObjectType:[ObjectType]] = [:]
 
 enum ObjectType: String {
     static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull, lava]
-    case baba, wall, flag, rock, water, skull, lava
+    case baba, wall, flag, rock, water, skull, lava, grass
     
     case recursive = "r"
     case stop
@@ -118,8 +119,6 @@ class Game: CustomStringConvertible {
         print(self)
     }
     
-    var flounder: [ObjectType:[ObjectType]] = [:]
-    
     func findAllMatches() {
         var newFlounder: [ObjectType:[ObjectType]] = [
             .recursive:[.push],
@@ -174,6 +173,7 @@ class Game: CustomStringConvertible {
         if !alive { return false }
         
         undo.append(totalObjects.map { ($0, $0.position, $0.objectType) })
+        for i in totalObjects { i.triedToMove = false }
         var didAnythingMove = false
         
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
@@ -190,10 +190,6 @@ class Game: CustomStringConvertible {
                 print("You did not move up!")
             }
             
-        }
-        
-        for i in totalObjects {
-            i.triedToMove = false
         }
         
         findAllMatches()
@@ -214,65 +210,52 @@ class Game: CustomStringConvertible {
         }
         if f.isEmpty { reallyMove(i, dir); return true }
         guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
-        // But with `found`, on level 2. If you push a `push` and `you` on the same place: it don't know what to do
-        
-        //guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
-        //guard let found = f.0 else { reallyMove(i, dir); return true }
         
         let foundTypes = flounder[f.objectTypes]
         
         // Push is first priority
         if foundTypes.contains(.push) {
-            if tryToMove(found, dir) {
-                return reallyMove(i, dir)
-            } else {
+            if !tryToMove(f.firstWith(.push), dir) {
+                print(f.map { $0.objectType })
                 return false
             }
         }
         
         // Push YOU is first priority
         if foundTypes.contains(.you) {
-            return reallyMove(i, dir)
+            
         }
-        
         
         // Stop is first priority
         if foundTypes.contains(.stop) {
             return false
         }
         
-        
         // Die is 2nd priority (Destory any objects with a die)
         if foundTypes.contains(.defeat) {
-            reallyMove(i, dir)
-            if flounder[i.objectType]?.contains(.you) == true {
+            if flounder[[i.objectType]].contains(.you) {
                 totalObjects = totalObjects.filter { $0 !== i }
             }
-            return true
         }
         
         // Die is 2nd priority (Destory any objects with a die)
         if foundTypes.contains(.sink)  {
-            reallyMove(i, dir)
-            totalObjects = totalObjects.filter { $0 !== i }
-            totalObjects = totalObjects.filter { $0 !== found }
-            return true
+            totalObjects = totalObjects.filter { $0 !== i && $0 !== found }
         }
         
         if foundTypes.contains(.hot) {
-            reallyMove(i, dir)
-            if flounder[i.objectType]?.contains(.melt) == true {
+            if flounder[[i.objectType]].contains(.melt) {
                 totalObjects = totalObjects.filter { $0 !== i }
             }
-            return true
         }
         
         // Win is FINAL priority
         if flounder[f.objectTypes].contains(.win)  {
-            reallyMove(i, dir)
-            win = true
-            print("YOU WIN THE GAME")
-            return false
+            if flounder[i.objectType]?.contains(.you) == true {
+                win = true
+                print("YOU WIN THE GAME")
+                return false
+            }
         }
         
         return reallyMove(i, dir)
@@ -323,5 +306,8 @@ extension Dictionary where Key == ObjectType, Value == [ObjectType] {
 extension Array where Element == Objects {
     var objectTypes: [ObjectType] {
         return self.map { $0.objectType }
+    }
+    func firstWith(_ type: ObjectType) -> Objects {
+        return first(where: { flounder[$0.objectType]?.contains(type) == true })!
     }
 }
