@@ -218,7 +218,7 @@ class Game: CustomStringConvertible {
         //guard let found = f.0 else { reallyMove(i, dir); return true }
         
         // Push is first priority
-        if flounder[found.objectType]?.contains(.push) == true {
+        if flounder[f.objectTypes].contains(.push) {
             if tryToMove(found, dir) {
                 return reallyMove(i, dir)
             } else {
@@ -227,25 +227,28 @@ class Game: CustomStringConvertible {
         }
         
         // Push YOU is first priority
-        if flounder[found.objectType]?.contains(.you) == true {
+        if flounder[f.objectTypes].contains(.you) {
             return reallyMove(i, dir)
         }
         
+        
         // Stop is first priority
-        if flounder[found.objectType]?.contains(.stop) == true {
+        if flounder[f.objectTypes].contains(.stop) {
             return false
         }
         
         
         // Die is 2nd priority (Destory any objects with a die)
-        if flounder[found.objectType]?.contains(.defeat) == true {
+        if flounder[f.objectTypes].contains(.defeat) {
             reallyMove(i, dir)
-            totalObjects = totalObjects.filter { $0 !== i }
+            if flounder[i.objectType]?.contains(.you) == true {
+                totalObjects = totalObjects.filter { $0 !== i }
+            }
             return true
         }
         
         // Die is 2nd priority (Destory any objects with a die)
-        if flounder[found.objectType]?.contains(.sink) == true {
+        if flounder[f.objectTypes].contains(.sink)  {
             reallyMove(i, dir)
             totalObjects = totalObjects.filter { $0 !== i }
             totalObjects = totalObjects.filter { $0 !== found }
@@ -253,7 +256,7 @@ class Game: CustomStringConvertible {
         }
         
         // Win is FINAL priority
-        if flounder[found.objectType]?.contains(.win) == true {
+        if flounder[f.objectTypes].contains(.win)  {
             reallyMove(i, dir)
             win = true
             print("YOU WIN THE GAME")
@@ -298,4 +301,15 @@ class Game: CustomStringConvertible {
         }
     }
     
+}
+
+extension Dictionary where Key == ObjectType, Value == [ObjectType] {
+    subscript(_ this: [ObjectType]) -> Value {
+        return this.map { self[$0] ?? [] }.flatMap { $0 }
+    }
+}
+extension Array where Element == Objects {
+    var objectTypes: [ObjectType] {
+        return self.map { $0.objectType }
+    }
 }

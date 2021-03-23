@@ -17,6 +17,7 @@ struct BabaIsYouLevels {
         case 2: return level2()
         case 3: return level3()
         case 4: return level4()
+        case 5: return level5()
         default: return [[nil]]
         }
     }
@@ -100,6 +101,43 @@ struct BabaIsYouLevels {
             [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
         ]
+    }
+    
+    static func level5() -> [[Objects?]] {
+        return [
+            "FIW                           ",
+            "BIY                           ",
+            "                              ",
+            "              sssssssssssssss ",
+            " RIP          s             s ",
+            "              s S           s ",
+            "              s I           s ",
+            "   s s        s D           s ",
+            "   srs        s             s ",
+            " sssrsss      s        f    s ",
+            " s  r  s      s             s ",
+            " s     s      sssssssssssssss ",
+            " s  b  s                      ",
+            " s     s                      ",
+            
+            
+        ].level(ruleset: [
+            "r":(.rock,.wall),
+            "b":(.baba,.wall),
+            "f":(.flag,.wall),
+            "s":(.skull,.skull),
+            
+            "R":(.recursive,.rock),
+            "B":(.recursive,.baba),
+            "I":(.recursive,.is),
+            "Y":(.recursive,.you),
+            "F":(.recursive,.flag),
+            "W":(.recursive,.win),
+            "S":(.recursive,.skull),
+            "P":(.recursive,.push),
+            "D":(.recursive,.defeat),
+        ])
+        
     }
     
     static func level1() -> [[Objects?]] {
