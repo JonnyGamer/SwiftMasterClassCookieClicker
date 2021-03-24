@@ -8,6 +8,11 @@
 import Foundation
 import SpriteKit
 
+var highestScore: Int {
+    get { UserDefaults.standard.integer(forKey: "HighScore") }
+    set { UserDefaults.standard.setValue(newValue, forKey: "HighScore") }
+}
+
 class PlayScene: SKScene, SKPhysicsContactDelegate {
     var bird = Bird.Make()
     var gameStarted = false
@@ -39,6 +44,22 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             
         } else if isAlive {
             bird.flap()
+        }
+        
+        let location = event.location(in: self)
+        let nodesFound = nodes(at: location)
+        if nodesFound.contains(retry) {
+            // Retry Level
+            let scene = PlayScene.init(size: size)
+            scene.scaleMode = .aspectFit
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            view?.presentScene(scene)
+        } else if nodesFound.contains(quit) {
+            // Quit
+            let scene = MainMenu.init(size: size)
+            scene.scaleMode = .aspectFit
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            view?.presentScene(scene)
         }
         
     }
@@ -80,7 +101,24 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    let score = SKLabelNode(text: "0")
+    let highscore = SKLabelNode(text: "\(highestScore)")
+    
     func beginGame() {
+        addChild(score)
+        score.position.y = 450
+        score.fontColor = .white
+        score.zPosition = 3
+        score.fontSize *= 2
+        score.fontName = ""
+        
+        addChild(highscore)
+        highscore.position.y = 400
+        highscore.fontColor = .white
+        highscore.zPosition = 3
+        // highscore.fontSize *= 2
+        highscore.fontName = ""
+        
         
         for bg in backgroundObjects {
             let moveX = SKAction.moveBy(x: bg.size.width * -2, y: 0, duration: 20)
@@ -154,6 +192,15 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         let pipe1 = SKSpriteNode(imageNamed: "Pipe 1")
         let pipe2 = SKSpriteNode(imageNamed: "Pipe 1")
         
+        // SCORE NODE
+        let scoreNode = SKSpriteNode(color: .clear, size: CGSize(width: 10, height: 200))
+        scoreNode.physicsBody = SKPhysicsBody(rectangleOf: scoreNode.size)
+        scoreNode.physicsBody?.affectedByGravity = false
+        scoreNode.physicsBody?.isDynamic = false
+        scoreNode.name = "Score"
+        parentNode.addChild(scoreNode)
+        scoreNode.physicsBody?.categoryBitMask = ColliderType.Score
+        
         pipe1.position.y = -630 + pipeDistance
         pipe1.setScale(0.8)
         pipe1.zPosition = -10
@@ -163,6 +210,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         pipe1.physicsBody = SKPhysicsBody(rectangleOf: pipe1.size)
         pipe1.physicsBody?.affectedByGravity = false
         pipe1.physicsBody?.isDynamic = false
+        pipe1.physicsBody?.restitution = 0
         
         pipe2.position.y = 630 - pipeDistance
         pipe2.setScale(-0.8)
@@ -174,22 +222,72 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         pipe2.physicsBody = SKPhysicsBody(rectangleOf: pipe1.size)
         pipe2.physicsBody?.affectedByGravity = false
         pipe2.physicsBody?.isDynamic = false
+        pipe2.physicsBody?.restitution = 0
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        print("CONATCS?")
+        print("CONTACT?")
         let contacts: Set = [contact.bodyA.node!, contact.bodyB.node!]
         
         if contacts.contains(bird) {
             
-            if !contacts.union(groundObjects).isEmpty {
+            if !contacts.intersection(groundObjects).isEmpty {
                 print("You hit the ground")
+                gameOver() // <-----------------------------
             }
             
+            if contacts.contains(where: { $0.name == "Pipe" }) {
+                print("You hit a pipe!")
+                gameOver() // <------------------------------
+            }
+            
+            if let score = contacts.first(where: { $0.name == "Score" }) {
+                score.removeFromParent()
+                
+                let scoreName = self.score.text!
+                let addByOne = Int(scoreName)! + 1
+                self.score.text = String(addByOne)
+            }
             
         }
         
+        
+    }
+    
+    
+    let retry = SKSpriteNode(imageNamed: "Retry")
+    let quit = SKSpriteNode(imageNamed: "Quit")
+    
+    func gameOver() {
+        if !isAlive { return }
+        isAlive = false
+        
+        let currentScore = Int(score.text!)!
+        if currentScore > highestScore {
+            highestScore = currentScore
+        }
+        
+        removeAllActions()
+        for i in children {
+            i.removeAllActions()
+        }
+        
+        retry.position.y = -100
+        retry.zPosition = 3
+        retry.setScale(0)
+        retry.texture?.filteringMode = .nearest
+        addChild(retry)
+        
+        quit.position.y = -350
+        quit.zPosition = 3
+        quit.setScale(0)
+        quit.texture?.filteringMode = .nearest
+        addChild(quit)
+        
+        let scaleUp = SKAction.scale(to: 0.7, duration: 0.25)
+        retry.run(scaleUp)
+        quit.run(scaleUp)
         
     }
     
