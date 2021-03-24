@@ -13,7 +13,7 @@ struct BabaIsYouLevels {
     
     static func getLevel() -> [[Objects?]] {
         switch level {
-        case 1: return level8()
+        case 1: return level1()
         case 2: return level2()
         case 3: return level3()
         case 4: return level4()
