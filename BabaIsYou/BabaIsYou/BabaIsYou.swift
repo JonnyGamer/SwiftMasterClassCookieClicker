@@ -12,8 +12,8 @@ typealias FakeCGPoint = (x: Int, y: Int)
 var flounder: [ObjectType:[ObjectType]] = [:]
 
 enum ObjectType: String {
-    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull, lava]
-    case baba, wall, flag, rock, water, skull, lava, grass
+    static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull, lava, ice, jelly, crab, star, keke, love]
+    case baba, wall, flag, rock, water, skull, lava, grass, ice, jelly, crab, star, keke, love, algae, door, key, pillar
     
     case recursive = "r"
     case stop
@@ -21,10 +21,8 @@ enum ObjectType: String {
     case win
     case you
     case `is`// = "is"
-    case push// = "push"
-    case sink
-    case hot
-    case melt
+    case push, sink, hot, melt
+    case and, move, open, shut // Move is the only new one
 }
 
 
@@ -136,18 +134,35 @@ class Game: CustomStringConvertible {
             // check up is down
             let check10 = findAtLocation(i.position, moveX: -1, moveY: 0)
             let check11 = findAtLocation(i.position, moveX: 1, moveY: 0)
-            if let c10 = check10?.first, let c11 = check11?.first {
-                if c10.objectType == .recursive, c11.objectType == .recursive {
-                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
-                }
+            this: do {
+                guard let c10 = check10?.first(where: { $0.objectType == .recursive }) else { break this }
+                guard let c11 = check11?.first(where: { $0.objectType == .recursive }) else { break this }
+                newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
+                
+                // Checking AND
+                let check12 = findAtLocation(i.position, moveX: 2, moveY: 0)
+                let check13 = findAtLocation(i.position, moveX: 3, moveY: 0)
+                guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break this }
+                guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break this }
+                if checkAND.recursiveObjectType != .and { break this }
+                newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
             }
+            
             // check n is m (left is right)
             let check20 = findAtLocation(i.position, moveX: 0, moveY: 1)
             let check21 = findAtLocation(i.position, moveX: 0, moveY: -1)
-            if let c10 = check20?.first, let c11 = check21?.first {
-                if c10.objectType == .recursive, c11.objectType == .recursive {
-                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
-                }
+            this: do {
+                guard let c20 = check20?.first(where: { $0.objectType == .recursive }) else { break this }
+                guard let c21 = check21?.first(where: { $0.objectType == .recursive }) else { break this }
+                newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c21.recursiveObjectType]
+                
+                // Checking AND
+                let check22 = findAtLocation(i.position, moveX: 0, moveY: -2)
+                let check23 = findAtLocation(i.position, moveX: 0, moveY: -3)
+                guard let checkAND = check22?.first(where: { $0.objectType == .recursive }) else { break this }
+                guard let c23 = check23?.first(where: { $0.objectType == .recursive }) else { break this }
+                if checkAND.recursiveObjectType != .and { break this }
+                newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c23.recursiveObjectType]
             }
         }
         
@@ -215,7 +230,15 @@ class Game: CustomStringConvertible {
             
         }
         if f.isEmpty { reallyMove(i, dir); return true }
-        guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
+        guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else {
+            
+            // What if *YOU* are sink?
+            if flounder[[i.objectType]].contains(.sink) {
+                totalObjects = totalObjects.filter { $0 !== i && !f.contains($0) }
+            }
+            reallyMove(i, dir); return true
+        }
+        
         
         let foundTypes = flounder[f.objectTypes]
         

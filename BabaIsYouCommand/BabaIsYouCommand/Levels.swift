@@ -1,8 +1,8 @@
 //
 //  Levels.swift
-//  BabaIsYou
+//  BabaIsYouCommand
 //
-//  Created by Jonathan Pappas on 3/22/21.
+//  Created by Jonathan Pappas on 3/24/21.
 //
 
 import Foundation
@@ -21,7 +21,6 @@ struct BabaIsYouLevels {
         case 6: return level6()
         case 7: return level7()
         case 8: return level8()
-        case 9: return level9()
         default: return [[nil]]
         }
     }
@@ -105,47 +104,6 @@ struct BabaIsYouLevels {
             [nil, .R(.wall), .R(.is), .R(.stop), nil, nil, nil, nil, nil, .R(.rock), .R(.is), .R(.push), nil],
             [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil],
         ]
-    }
-    
-    static func level9() -> [[Objects?]] {
-        return [
-            "FIEiii     iii  ii       JIZ",
-            "iiii        iiiii i         ",
-            "ii           iiii  i   jjj  ",
-            "i    wwwww   iiiiiiii jj jj ",
-            "     w   w    iiiiiii j f j ",
-            "     w b w    iii   iijj jj ",
-            "     w   w    ii     i jjj  ",
-            "     ww ww     i  W  ii     ",
-            "               i     iii    ",
-            "               ii   iiii    ",
-            "        wwww    iiiiiii i   ",
-            "     w  BIYAZw   iiiiii ii  ",
-            "     wwwwwww      iiiiii    ",
-            "i                  iiiiiii  ",
-            "ii                  iiiiiii ",
-            "iiiii i    i         iiiiWIS",
-        ].level(ruleset: [
-            "b":(.baba,.wall),
-            "f":(.flag,.flag),
-            "j":(.jelly,.flag),
-            "i":(.ice,.flag),
-            "w":(.wall,.flag),
-            
-            "B":(.recursive,.baba),
-            "I":(.recursive,.is),
-            "Y":(.recursive,.you),
-            "A":(.recursive,.and),
-            "Z":(.recursive,.sink),
-            "1":(.recursive,.ice),
-            
-            "J":(.recursive,.jelly),
-            "F":(.recursive,.flag),
-            "E":(.recursive,.win),
-            "W":(.recursive,.wall),
-            "S":(.recursive,.stop),
-        ])
-        
     }
     
     static func level8() -> [[Objects?]] {
