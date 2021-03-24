@@ -139,13 +139,39 @@ class Game: CustomStringConvertible {
                 guard let c11 = check11?.first(where: { $0.objectType == .recursive }) else { break this }
                 newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
                 
-                // Checking AND
-                let check12 = findAtLocation(i.position, moveX: 2, moveY: 0)
-                let check13 = findAtLocation(i.position, moveX: 3, moveY: 0)
-                guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break this }
-                guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break this }
-                if checkAND.recursiveObjectType != .and { break this }
-                newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
+                // MASSIVE CHECKING FOR AND
+                var findingValues: [ObjectType] = [c11.recursiveObjectType]
+                var n = 2
+                me: while true {
+                    // Checking AND
+                    let check12 = findAtLocation(i.position, moveX: n, moveY: 0)
+                    let check13 = findAtLocation(i.position, moveX: n+1, moveY: 0)
+                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
+                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
+                    if checkAND.recursiveObjectType != .and { break me }
+                    findingValues.append(c13.recursiveObjectType)
+                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
+                    n += 2
+                }
+                
+                var assigningValues: [ObjectType] = [c10.recursiveObjectType]
+                n = -2
+                me: while true {
+                    // Checking AND
+                    let check12 = findAtLocation(i.position, moveX: n, moveY: 0)
+                    let check13 = findAtLocation(i.position, moveX: n-1, moveY: 0)
+                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
+                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
+                    if checkAND.recursiveObjectType != .and { break me }
+                    assigningValues.append(c13.recursiveObjectType)
+                    n -= 2
+                }
+                
+                // Assigning them
+                for i in assigningValues {
+                    newFlounder[i] = (newFlounder[i] ?? []) + findingValues
+                }
+                
             }
             
             // check n is m (left is right)
@@ -156,13 +182,38 @@ class Game: CustomStringConvertible {
                 guard let c21 = check21?.first(where: { $0.objectType == .recursive }) else { break this }
                 newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c21.recursiveObjectType]
                 
-                // Checking AND
-                let check22 = findAtLocation(i.position, moveX: 0, moveY: -2)
-                let check23 = findAtLocation(i.position, moveX: 0, moveY: -3)
-                guard let checkAND = check22?.first(where: { $0.objectType == .recursive }) else { break this }
-                guard let c23 = check23?.first(where: { $0.objectType == .recursive }) else { break this }
-                if checkAND.recursiveObjectType != .and { break this }
-                newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c23.recursiveObjectType]
+                // MASSIVE CHECKING FOR AND
+                var findingValues: [ObjectType] = [c21.recursiveObjectType]
+                var n = -2
+                me: while true {
+                    // Checking AND
+                    let check12 = findAtLocation(i.position, moveX: 0, moveY: n)
+                    let check13 = findAtLocation(i.position, moveX: 0, moveY: n-1)
+                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
+                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
+                    if checkAND.recursiveObjectType != .and { break me }
+                    findingValues.append(c13.recursiveObjectType)
+                    newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
+                    n -= 2
+                }
+                
+                var assigningValues: [ObjectType] = [c20.recursiveObjectType]
+                n = 2
+                me: while true {
+                    // Checking AND
+                    let check12 = findAtLocation(i.position, moveX: 0, moveY: n)
+                    let check13 = findAtLocation(i.position, moveX: 0, moveY: n+1)
+                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
+                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
+                    if checkAND.recursiveObjectType != .and { break me }
+                    assigningValues.append(c13.recursiveObjectType)
+                    n += 2
+                }
+                
+                // Assigning them
+                for i in assigningValues {
+                    newFlounder[i] = (newFlounder[i] ?? []) + findingValues
+                }
             }
         }
         
@@ -231,7 +282,6 @@ class Game: CustomStringConvertible {
         }
         if f.isEmpty { reallyMove(i, dir); return true }
         guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else {
-            
             // What if *YOU* are sink?
             if flounder[[i.objectType]].contains(.sink) {
                 totalObjects = totalObjects.filter { $0 !== i && !f.contains($0) }
@@ -273,6 +323,13 @@ class Game: CustomStringConvertible {
         if foundTypes.contains(.sink)  {
             if !f.allThatAre(.sink).allContain(.push) {
                 totalObjects = totalObjects.filter { $0 !== i && $0 !== found }
+            }
+        }
+        // What if *YOU* are sink?
+        if flounder[[i.objectType]].contains(.sink) {
+            let woah = f.allThatAreNot([.push, .stop])
+            if !woah.isEmpty {
+                totalObjects = totalObjects.filter { $0 !== i && !woah.contains($0) }
             }
         }
         
@@ -353,6 +410,9 @@ extension Array where Element == Objects {
     }
     func allThatAre(_ type: ObjectType) -> [Objects] {
         return filter { flounder[$0.objectType]?.contains(type) == true }
+    }
+    func allThatAreNot(_ type: [ObjectType]) -> [Objects] {
+        return filter { Set(type).intersection(flounder[$0.objectType] ?? []).isEmpty }
     }
     func allContain(_ type: ObjectType) -> Bool {
         return filter { flounder[$0.objectType]?.contains(type) == false }.isEmpty
