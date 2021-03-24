@@ -9,11 +9,63 @@ import Foundation
 
 var level = 1
 
+var flounder: [ObjectType:[ObjectType]] = [
+    .recursive:[.push],
+    .baba:[.you],
+    .wall:[.stop],
+    .rock:[.push],
+    .algae:[.collect],
+    .skull:[.defeat],
+]
+
 struct BabaIsYouLevels {
+    
+    static func newLevel() -> [[Objects?]] {
+        return [
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwww                     wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwww                           wwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwww                               wwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwww                               wwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwww                            wwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "www           wwwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "www     wwwww wwwwwwww              wwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "www     wwwww     wwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "www     wwwwwwwww wwwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "www wwwwwwwwwwwww wwwwwwwwwwww             wwwwwwwwwwwwwwwwwwww",
+            "www wwwwwwwwwwwww wwwwwwwwwwwwwwww              s    wwwwwwwwww",
+            "www wwwwwwwwwwwww wwwwwwwwwwwwwwww       a      s   awwwwwwwwww",
+            "www wwwwwwwwwwww   wwwwwwwwwwwwwww              s    wwwwwwwwww",
+            "wwwwwwwwwwww     r                         wwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwww   r             a      wwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwww   r    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwww   a    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwww   a    wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "w wwwwwwwwww wwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "w    ww   a  wwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "w ww ww wwwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "w ww  a  wwwwwwwwww wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wba wwwwa  wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+        ].level(ruleset: [
+            "w":(.wall,.wall),
+            "b":(.baba,.wall),
+            "r":(.rock,.wall),
+            "a":(.algae,.collect),
+            "s":(.skull,.collect)
+        ])
+        
+        
+    }
     
     static func getLevel() -> [[Objects?]] {
         switch level {
-        case 1: return level1()
+        case 1: return newLevel()
         case 2: return level2()
         case 3: return level3()
         case 4: return level4()

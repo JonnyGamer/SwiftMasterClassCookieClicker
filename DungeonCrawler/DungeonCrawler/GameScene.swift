@@ -24,10 +24,10 @@ class GameScene: SKScene {
         resetChildren()
         
         superNode.position = .init(x: size.width/2, y: size.height/2)
-        superNode.position.x -= CGFloat(game.gridSize.x * halfSpriteGrid - halfSpriteGrid)
-        superNode.position.y -= CGFloat(game.gridSize.y * halfSpriteGrid - halfSpriteGrid)
+        superNode.position.x -= CGFloat(game.gridSize.x * halfSpriteGrid) + 3.5 * CGFloat(halfSpriteGrid)
+        superNode.position.y -= CGFloat(game.gridSize.y * halfSpriteGrid) + CGFloat(halfSpriteGrid)
         
-        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: tenth+game.gridSize.x * spriteGrid, height: tenth+game.gridSize.y * spriteGrid))
+        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: game.gridSize.x * spriteGrid, height: game.gridSize.y * spriteGrid))
         bgNode.position = .init(x: size.width/2, y: size.height/2)
         bgNode.zPosition = -1
         addChild(bgNode)

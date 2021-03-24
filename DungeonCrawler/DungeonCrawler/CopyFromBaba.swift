@@ -9,7 +9,6 @@ import Foundation
 import SpriteKit
 
 typealias FakeCGPoint = (x: Int, y: Int)
-var flounder: [ObjectType:[ObjectType]] = [:]
 
 enum ObjectType: String {
     static var real: [ObjectType] = [.baba, .wall, .flag, .rock, water, skull, lava, ice, jelly, crab, star, keke, love]
@@ -22,7 +21,7 @@ enum ObjectType: String {
     case you
     case `is`// = "is"
     case push, sink, hot, melt
-    case and, move, open, shut // Move is the only new one
+    case and, move, open, shut, collect // Move is the only new one
 }
 
 
@@ -124,98 +123,12 @@ class Game: CustomStringConvertible {
     }
     
     func findAllMatches() {
-        var newFlounder: [ObjectType:[ObjectType]] = [
-            .recursive:[.push],
-        ]
-        
-        let iso = totalObjects.filter { $0.objectType == .recursive && $0.recursiveObjectType == .is }
-        
-        for i in iso {
-            // check up is down
-            let check10 = findAtLocation(i.position, moveX: -1, moveY: 0)
-            let check11 = findAtLocation(i.position, moveX: 1, moveY: 0)
-            this: do {
-                guard let c10 = check10?.first(where: { $0.objectType == .recursive }) else { break this }
-                guard let c11 = check11?.first(where: { $0.objectType == .recursive }) else { break this }
-                newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c11.recursiveObjectType]
-                
-                // MASSIVE CHECKING FOR AND
-                var findingValues: [ObjectType] = [c11.recursiveObjectType]
-                var n = 2
-                me: while true {
-                    // Checking AND
-                    let check12 = findAtLocation(i.position, moveX: n, moveY: 0)
-                    let check13 = findAtLocation(i.position, moveX: n+1, moveY: 0)
-                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
-                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
-                    if checkAND.recursiveObjectType != .and { break me }
-                    findingValues.append(c13.recursiveObjectType)
-                    newFlounder[c10.recursiveObjectType] = (newFlounder[c10.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
-                    n += 2
-                }
-                
-                var assigningValues: [ObjectType] = [c10.recursiveObjectType]
-                n = -2
-                me: while true {
-                    // Checking AND
-                    let check12 = findAtLocation(i.position, moveX: n, moveY: 0)
-                    let check13 = findAtLocation(i.position, moveX: n-1, moveY: 0)
-                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
-                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
-                    if checkAND.recursiveObjectType != .and { break me }
-                    assigningValues.append(c13.recursiveObjectType)
-                    n -= 2
-                }
-                
-                // Assigning them
-                for i in assigningValues {
-                    newFlounder[i] = (newFlounder[i] ?? []) + findingValues
-                }
-                
-            }
-            
-            // check n is m (left is right)
-            let check20 = findAtLocation(i.position, moveX: 0, moveY: 1)
-            let check21 = findAtLocation(i.position, moveX: 0, moveY: -1)
-            this: do {
-                guard let c20 = check20?.first(where: { $0.objectType == .recursive }) else { break this }
-                guard let c21 = check21?.first(where: { $0.objectType == .recursive }) else { break this }
-                newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c21.recursiveObjectType]
-                
-                // MASSIVE CHECKING FOR AND
-                var findingValues: [ObjectType] = [c21.recursiveObjectType]
-                var n = -2
-                me: while true {
-                    // Checking AND
-                    let check12 = findAtLocation(i.position, moveX: 0, moveY: n)
-                    let check13 = findAtLocation(i.position, moveX: 0, moveY: n-1)
-                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
-                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
-                    if checkAND.recursiveObjectType != .and { break me }
-                    findingValues.append(c13.recursiveObjectType)
-                    newFlounder[c20.recursiveObjectType] = (newFlounder[c20.recursiveObjectType] ?? []) + [c13.recursiveObjectType]
-                    n -= 2
-                }
-                
-                var assigningValues: [ObjectType] = [c20.recursiveObjectType]
-                n = 2
-                me: while true {
-                    // Checking AND
-                    let check12 = findAtLocation(i.position, moveX: 0, moveY: n)
-                    let check13 = findAtLocation(i.position, moveX: 0, moveY: n+1)
-                    guard let checkAND = check12?.first(where: { $0.objectType == .recursive }) else { break me }
-                    guard let c13 = check13?.first(where: { $0.objectType == .recursive }) else { break me }
-                    if checkAND.recursiveObjectType != .and { break me }
-                    assigningValues.append(c13.recursiveObjectType)
-                    n += 2
-                }
-                
-                // Assigning them
-                for i in assigningValues {
-                    newFlounder[i] = (newFlounder[i] ?? []) + findingValues
-                }
-            }
-        }
+        var newFlounder = flounder
+//        var newFlounder: [ObjectType:[ObjectType]] = [
+//            .recursive:[.push],
+//            .baba:[.you],
+//            .wall:[.stop]
+//        ]
         
         for i in totalObjects {
             if ObjectType.real.contains(i.objectType) {
@@ -276,21 +189,20 @@ class Game: CustomStringConvertible {
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
         i.triedToMove = true
         
-        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else {
-            return false
-            
-        }
+        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
         if f.isEmpty { reallyMove(i, dir); return true }
-        guard let found = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else {
-            // What if *YOU* are sink?
-            if flounder[[i.objectType]].contains(.sink) {
-                totalObjects = totalObjects.filter { $0 !== i && !f.contains($0) }
-            }
-            reallyMove(i, dir); return true
-        }
+        guard let _ = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
         
         
         let foundTypes = flounder[f.objectTypes]
+        
+        if foundTypes.contains(.collect) {
+            totalObjects = totalObjects.filter { j in !f.allThatAre(.collect).contains(where: { m in j === m }) }
+        }
+        if foundTypes.contains(.sink) {
+            totalObjects = totalObjects.filter { j in j !== i && !f.allThatAre(.sink).contains(where: { m in j === m }) }
+        }
+        
         
         // Push is first priority
         if foundTypes.contains(.push) {
@@ -300,44 +212,15 @@ class Game: CustomStringConvertible {
             }
         }
         
-        // Push YOU is first priority
-        if foundTypes.contains(.you) {
-            
-        }
-        
-        // Stop is first priority
+        // Stop is NEXT priority
         if foundTypes.contains(.stop) {
             return false
         }
         
-        // Die is 2nd priority (Destory any objects with a die)
+        // Die is 2nd priority (Destory `.you` objects with a defeat)
         if foundTypes.contains(.defeat) {
-            if !f.allThatAre(.defeat).allContain(.push) {
-                if flounder[[i.objectType]].contains(.you) {
-                    totalObjects = totalObjects.filter { $0 !== i }
-                }
-            }
-        }
-        
-        // Die is 2nd priority (Destory any objects with a die)
-        if foundTypes.contains(.sink)  {
-            if !f.allThatAre(.sink).allContain(.push) {
-                totalObjects = totalObjects.filter { $0 !== i && $0 !== found }
-            }
-        }
-        // What if *YOU* are sink?
-        if flounder[[i.objectType]].contains(.sink) {
-            let woah = f.allThatAreNot([.push, .stop])
-            if !woah.isEmpty {
-                totalObjects = totalObjects.filter { $0 !== i && !woah.contains($0) }
-            }
-        }
-        
-        if foundTypes.contains(.hot) {
-            if !f.allThatAre(.hot).allContain(.push) {
-                if flounder[[i.objectType]].contains(.melt) {
-                    totalObjects = totalObjects.filter { $0 !== i }
-                }
+            if flounder[[i.objectType]].contains(.you) {
+                totalObjects = totalObjects.filter { $0 !== i }
             }
         }
         
