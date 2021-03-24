@@ -28,7 +28,13 @@ enum ObjectType: String {
 }
 
 
-class Objects {
+class Objects: Equatable {
+    
+    static func == (lhs: Objects, rhs: Objects) -> Bool {
+        if lhs.objectType == .recursive, rhs.objectType == .recursive { return lhs.recursiveObjectType == rhs.recursiveObjectType }
+        return lhs.objectType == rhs.objectType
+    }
+    
     var objectType: ObjectType {
         didSet { updateImage() }
     }
@@ -233,19 +239,25 @@ class Game: CustomStringConvertible {
         
         // Die is 2nd priority (Destory any objects with a die)
         if foundTypes.contains(.defeat) {
-            if flounder[[i.objectType]].contains(.you) {
-                totalObjects = totalObjects.filter { $0 !== i }
+            if !f.allThatAre(.defeat).allContain(.push) {
+                if flounder[[i.objectType]].contains(.you) {
+                    totalObjects = totalObjects.filter { $0 !== i }
+                }
             }
         }
         
         // Die is 2nd priority (Destory any objects with a die)
         if foundTypes.contains(.sink)  {
-            totalObjects = totalObjects.filter { $0 !== i && $0 !== found }
+            if !f.allThatAre(.sink).allContain(.push) {
+                totalObjects = totalObjects.filter { $0 !== i && $0 !== found }
+            }
         }
         
         if foundTypes.contains(.hot) {
-            if flounder[[i.objectType]].contains(.melt) {
-                totalObjects = totalObjects.filter { $0 !== i }
+            if !f.allThatAre(.hot).allContain(.push) {
+                if flounder[[i.objectType]].contains(.melt) {
+                    totalObjects = totalObjects.filter { $0 !== i }
+                }
             }
         }
         
@@ -315,5 +327,11 @@ extension Array where Element == Objects {
     }
     func firstWith(_ type: ObjectType) -> Objects {
         return first(where: { flounder[$0.objectType]?.contains(type) == true })!
+    }
+    func allThatAre(_ type: ObjectType) -> [Objects] {
+        return filter { flounder[$0.objectType]?.contains(type) == true }
+    }
+    func allContain(_ type: ObjectType) -> Bool {
+        return filter { flounder[$0.objectType]?.contains(type) == false }.isEmpty
     }
 }
