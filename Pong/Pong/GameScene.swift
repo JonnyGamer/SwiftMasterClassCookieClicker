@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func reset() {
+        backgroundColor = .black
         gameBegin = false
         removeAllChildren()
         player1 = createPaddle()
@@ -79,7 +80,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var pressing = false
     var pressing2 = false
     override func keyDown(with event: NSEvent) {
-        print(event.keyCode)
         switch event.keyCode {
         
         case 49: startGame() // Press the Space Bar to begin
@@ -146,10 +146,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player2.position.y = 500 - player2.frame.size.height/2
         }
         
-        if pong.frame.maxX < -500 {
+        if pong.frame.maxX < -550 {
             p2 += 1
             reset()
-        } else if pong.frame.minX > 500 {
+        } else if pong.frame.minX > 550 {
             p1 += 1
             reset()
         }

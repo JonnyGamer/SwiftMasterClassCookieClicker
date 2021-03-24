@@ -26,7 +26,7 @@ class ViewController: NSViewController {
             
             view.preferredFramesPerSecond = 120
             view.ignoresSiblingOrder = true
-            view.showsPhysics = true
+            view.showsPhysics = false
             view.showsFPS = true
             view.showsNodeCount = true
         }
