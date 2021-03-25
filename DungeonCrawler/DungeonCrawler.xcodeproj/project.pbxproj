@@ -14,6 +14,7 @@
 		1BBB32E7260BDBEB00E0D7A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BBB32E5260BDBEB00E0D7A3 /* Main.storyboard */; };
 		1BBB32F2260BDC0200E0D7A3 /* CopyFromBaba.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB32F1260BDC0200E0D7A3 /* CopyFromBaba.swift */; };
 		1BBB32F5260BDC1C00E0D7A3 /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB32F4260BDC1C00E0D7A3 /* Levels.swift */; };
+		1BD28801260D01DF00382E68 /* MazeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD28800260D01DF00382E68 /* MazeGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		1BBB32E9260BDBEB00E0D7A3 /* DungeonCrawler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DungeonCrawler.entitlements; sourceTree = "<group>"; };
 		1BBB32F1260BDC0200E0D7A3 /* CopyFromBaba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyFromBaba.swift; sourceTree = "<group>"; };
 		1BBB32F4260BDC1C00E0D7A3 /* Levels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; };
+		1BD28800260D01DF00382E68 /* MazeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MazeGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				1BBB32E1260BDBE900E0D7A3 /* ViewController.swift */,
 				1BBB32F1260BDC0200E0D7A3 /* CopyFromBaba.swift */,
 				1BBB32F4260BDC1C00E0D7A3 /* Levels.swift */,
+				1BD28800260D01DF00382E68 /* MazeGenerator.swift */,
 				1BBB32E3260BDBEB00E0D7A3 /* Assets.xcassets */,
 				1BBB32E5260BDBEB00E0D7A3 /* Main.storyboard */,
 				1BBB32E8260BDBEB00E0D7A3 /* Info.plist */,
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BD28801260D01DF00382E68 /* MazeGenerator.swift in Sources */,
 				1BBB32F5260BDC1C00E0D7A3 /* Levels.swift in Sources */,
 				1BBB32E2260BDBE900E0D7A3 /* ViewController.swift in Sources */,
 				1BBB32E0260BDBE900E0D7A3 /* GameScene.swift in Sources */,

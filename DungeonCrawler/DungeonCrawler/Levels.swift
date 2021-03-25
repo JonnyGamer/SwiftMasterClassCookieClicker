@@ -11,16 +11,117 @@ var level = 1
 
 var flounder: [ObjectType:[ObjectType]] = [
     .recursive:[.push],
-    .baba:[.you],
+    .baba:[.you, .push],
     .wall:[.stop],
     .rock:[.push],
     .algae:[.collect],
-    .skull:[.defeat],
+    .skull:[.defeat, .push],
 ]
+
+
+struct CustomLevel {
+    static var cachedLevels: [String:[[Objects?]]] = [:]
+    static var currentPosition = (0, 0)
+    
+    static func randomLevel(_ moved: Game.Cardinal) -> [[Objects?]] {
+        currentPosition.0 += moved.inverse().xMove()
+        currentPosition.1 += moved.inverse().yMove()
+        
+//        if let wow = cachedLevels["\(currentPosition)"] {
+//            var savedLevel = wow
+//
+//            if moved == .right { savedLevel[10][1] = .Baba() }
+//            if moved == .left { savedLevel[10][19] = .Baba() }
+//            if moved == .up || moved == .none { savedLevel[19][10] = .Baba() }
+//            if moved == .down { savedLevel[1][10] = .Baba() }
+//            return savedLevel
+//        }
+        
+        let myLevel = [
+            "wwwwwwwww   wwwwwwwww",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "                     ",
+            "                     ", // 10y
+            "                     ",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w",
+            "w                   w", // 19
+            "wwwwwwwww   wwwwwwwww",
+                    // 10
+        ]
+        
+        var myRealLevel = myLevel.level(ruleset: [
+            "w":(.wall,.wall),
+            "b":(.baba,.wall),
+            "r":(.rock,.wall),
+            "a":(.algae,.collect),
+            "s":(.skull,.collect)
+        ])
+        
+        for i in 1..<myRealLevel.count-1 {
+            for j in 1..<myRealLevel[i].count-1 {
+                if .random(), .random(), .random() {
+                    myRealLevel[i][j] = .Wall()
+                    if .random() {
+                        if j+1>18{continue}
+                        myRealLevel[i][j+1] = .Wall()
+                        if j+2>18{continue}
+                        myRealLevel[i][j+2] = .Wall()
+                        if j+3>18{continue}
+                        myRealLevel[i][j+3] = .Wall()
+                    }
+                }
+            }
+        }
+        
+        
+        for i in 1...10 {
+            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.algae)
+        }
+        for i in 1...30 {
+            let yChoice = Int.random(in: 2...18)
+            let xChoice = Int.random(in: 2...18)
+            myRealLevel[yChoice][xChoice] = .C(.rock)
+            myRealLevel[yChoice][xChoice+1] = nil
+            myRealLevel[yChoice][xChoice-1] = nil
+        }
+        for i in 1...10 {
+            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.skull)
+        }
+        
+        
+        cachedLevels["\(currentPosition)"] = myRealLevel
+        
+        if moved == .right { myRealLevel[10][1] = .Baba() }
+        if moved == .left { myRealLevel[10][19] = .Baba() }
+        if moved == .up || moved == .none { myRealLevel[19][10] = .Baba() }
+        if moved == .down { myRealLevel[1][10] = .Baba() }
+        
+        return myRealLevel
+        
+    }
+    
+}
+
+
 
 struct BabaIsYouLevels {
     
-    static func newLevel() -> [[Objects?]] {
+    static func newLevel(_ dir: Game.Cardinal) -> [[Objects?]] {
+        
+        return CustomLevel.randomLevel(dir)
         return [
             "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
             "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
@@ -63,9 +164,9 @@ struct BabaIsYouLevels {
         
     }
     
-    static func getLevel() -> [[Objects?]] {
+    static func getLevel(_ dir: Game.Cardinal) -> [[Objects?]] {
         switch level {
-        case 1: return newLevel()
+        case 1: return newLevel(dir)
         case 2: return level2()
         case 3: return level3()
         case 4: return level4()

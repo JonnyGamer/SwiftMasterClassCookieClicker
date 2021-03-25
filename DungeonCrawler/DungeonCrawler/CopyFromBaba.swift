@@ -77,7 +77,7 @@ class Objects: Equatable {
     }
 }
 
-
+var winDir = Game.Cardinal.none
 class Game: CustomStringConvertible {
     var description: String {
         var magOP = ""
@@ -90,12 +90,12 @@ class Game: CustomStringConvertible {
     }
     
     var alive = true, win = false
-    var gridSize: FakeCGPoint = (0, 0)
     var totalObjects: [Objects] = []
     var grid: [[Objects?]] = []
+    var gridSize: FakeCGPoint = (0, 0)
     
     func start() {
-        grid = BabaIsYouLevels.getLevel()
+        grid = BabaIsYouLevels.getLevel(winDir)
         fixGrid()
     }
     
@@ -124,11 +124,6 @@ class Game: CustomStringConvertible {
     
     func findAllMatches() {
         var newFlounder = flounder
-//        var newFlounder: [ObjectType:[ObjectType]] = [
-//            .recursive:[.push],
-//            .baba:[.you],
-//            .wall:[.stop]
-//        ]
         
         for i in totalObjects {
             if ObjectType.real.contains(i.objectType) {
@@ -162,6 +157,7 @@ class Game: CustomStringConvertible {
         var didAnythingMove = false
         
         let you = totalObjects.filter { $0.objectType == .you || flounder[$0.objectType]?.contains(.you) == true }
+        let baddies = totalObjects.filter { $0.objectType == .defeat || flounder[$0.objectType]?.contains(.defeat) == true }
         
         for i in you {
             if i.triedToMove {
@@ -174,26 +170,49 @@ class Game: CustomStringConvertible {
             } else {
                 print("You did not move up!")
             }
+        }
+        
+        for i in baddies {
+            if i.triedToMove {
+                print("\(i.objectType) was already pushed")
+                continue
+            }
             
+            if tryToMove(i, Game.Cardinal.allCases.randomElement()!) {
+                didAnythingMove = true
+            } else {
+                print("You did not move up!")
+            }
         }
         
         findAllMatches()
         return didAnythingMove
     }
     
-    enum Cardinal: Int { case up, down, left, right, none
+    enum Cardinal: Int, CaseIterable { case up, down, left, right, none
         func xMove() -> Int { return [0, 0, -1, 1, 0][self.rawValue] }
         func yMove() -> Int { return [1, -1, 0, 0, 0][self.rawValue] }
+        func inverse() -> Self { return [Self.up:Self.down,Self.down:Self.up,Self.left:Self.right,Self.right:Self.left][self] ?? .none }
     }
     
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
-        i.triedToMove = true
+        //i.triedToMove = true
         
-        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else { return false }
+        guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else {
+            if flounder[[i.objectType]].contains(.you) {
+                win = true
+                winDir = dir
+                return false
+            } else {
+                totalObjects = totalObjects.filter { $0 !== i }
+                return true
+            }
+        }
+        
         if f.isEmpty { reallyMove(i, dir); return true }
         guard let _ = f.first(where: { flounder[$0.objectType]?.isEmpty == false }) else { reallyMove(i, dir); return true }
         
-        
+        let myTypes = flounder[[i.objectType]]
         let foundTypes = flounder[f.objectTypes]
         
         if foundTypes.contains(.collect) {
@@ -203,9 +222,16 @@ class Game: CustomStringConvertible {
             totalObjects = totalObjects.filter { j in j !== i && !f.allThatAre(.sink).contains(where: { m in j === m }) }
         }
         
+        if foundTypes.contains(.you) {
+            if myTypes.contains(.defeat) {
+                totalObjects = totalObjects.filter { j in !f.allThatAre(.you).contains(j) }
+            }
+        }
+        
         
         // Push is first priority
         if foundTypes.contains(.push) {
+            if f.firstWith(.push) === i { return false }
             if !tryToMove(f.firstWith(.push), dir) {
                 print(f.map { $0.objectType })
                 return false
@@ -238,6 +264,7 @@ class Game: CustomStringConvertible {
     
     @discardableResult
     func reallyMove(_ i: Objects,_ dir: Cardinal) -> Bool {
+        i.triedToMove = true
         i.position.x += dir.xMove()
         i.position.y += dir.yMove()
         print("\(i.objectType) Moved (\(dir.xMove()), \(dir.yMove())) spaces")

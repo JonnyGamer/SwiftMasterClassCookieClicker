@@ -2,13 +2,13 @@
 import SpriteKit
 import GameplayKit
 
-var tenth: Int = 10
-var halfSpriteGrid: Int = 50
+var tenth: CGFloat = 10
+var halfSpriteGrid: CGFloat = 50
 var imageGrid: Int = 0
 var spriteGrid: Int = 100 {
     didSet {
-        halfSpriteGrid = spriteGrid / 2
-        tenth = spriteGrid / 10
+        halfSpriteGrid = CGFloat(spriteGrid) / 2
+        tenth = CGFloat(spriteGrid) / 10
     }
 }
 
@@ -17,18 +17,19 @@ class GameScene: SKScene {
     var superNode = SKNode()
     
     override func didMove(to view: SKView) {
-        addChild(superNode)
-        
         print("Hello World WASSUP")
         game.start()
         resetChildren()
         
-        superNode.position = .init(x: size.width/2, y: size.height/2)
-        superNode.position.x -= CGFloat(game.gridSize.x * halfSpriteGrid) + 3.5 * CGFloat(halfSpriteGrid)
-        superNode.position.y -= CGFloat(game.gridSize.y * halfSpriteGrid) + CGFloat(halfSpriteGrid)
+        addChild(superNode)
+        superNode.position.x = CGFloat(game.gridSize.x) * -halfSpriteGrid + halfSpriteGrid
+        superNode.position.y = CGFloat(game.gridSize.y) * -halfSpriteGrid + halfSpriteGrid
         
-        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: game.gridSize.x * spriteGrid, height: game.gridSize.y * spriteGrid))
-        bgNode.position = .init(x: size.width/2, y: size.height/2)
+        let bgNodeWidth = CGFloat(game.gridSize.x * spriteGrid) + tenth
+        let bgNodeHeight = CGFloat(game.gridSize.y * spriteGrid) + tenth
+        let bgNode = SKSpriteNode.init(color: .black, size: .init(width: bgNodeWidth, height: bgNodeHeight))
+        
+        bgNode.position = .zero
         bgNode.zPosition = -1
         addChild(bgNode)
     }
@@ -41,15 +42,43 @@ class GameScene: SKScene {
         }
     }
     
+    
+    
+    // Keys
+    var workingOnMoving: Bool = false
     var ultimateWin = false
     var smackKey: Int? = nil
+    var previousTime: Double = 0
+}
+extension GameScene {
+
     override func keyDown(with event: NSEvent) {
         if ultimateWin { return }
         print(event.keyCode)
         if smackKey != nil { return }
         smackKey = Int(event.keyCode)
         
-        switch event.keyCode {
+        if workingOnMoving { return }
+        workingOnMoving = true
+        
+        previousTime = Date().timeIntervalSince1970 + 0.1
+        moveKey(event.keyCode)
+        
+        superNode.alpha = game.alive ? 1 : 0.5
+        if game.win {
+            ultimateWin = true
+            //level += 1 // Maybe increase or decrease position ;) (0, 0)
+            let newScene = GameScene.init(size: CGSize(width: 1000, height: 1000))
+            newScene.anchorPoint = .init(x: 0.5, y: 0.5)
+            newScene.scaleMode = .aspectFit
+            view?.presentScene(newScene)
+        }
+        
+        workingOnMoving = false
+    }
+    
+    func moveKey(_ n: UInt16) {
+        switch n {
         case 126, 13: game.move(.up); resetChildren()
         case 123, 0: game.move(.left); resetChildren()
         case 125, 1: game.move(.down); resetChildren()
@@ -58,14 +87,15 @@ class GameScene: SKScene {
         case 36: game.reset(); resetChildren()
         default: break// game.move(.none)
         }
-        
-        superNode.alpha = game.alive ? 1 : 0.5
-        if game.win {
-            ultimateWin = true
-            level += 1
-            let newScene = GameScene.init(size: CGSize(width: 1000, height: 1000))
-            newScene.scaleMode = .aspectFit
-            view?.presentScene(newScene)
+    }
+    
+    
+    override func update(_ currentTime: TimeInterval) {
+        if let smack = smackKey, !workingOnMoving {
+            let currTime = Date().timeIntervalSince1970
+            if currTime < previousTime + 0.1 { return }
+            previousTime = currTime
+            moveKey(UInt16(smack))
         }
     }
     

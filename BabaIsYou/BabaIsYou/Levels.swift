@@ -7,7 +7,7 @@
 
 import Foundation
 
-var level = 1
+var level = 6
 
 struct BabaIsYouLevels {
     

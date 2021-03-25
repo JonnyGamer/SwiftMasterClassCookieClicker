@@ -19,6 +19,7 @@ class ViewController: NSViewController {
         if let view = self.skView {
             
             let scene = GameScene.init(size: CGSize(width: 1000, height: 1000))
+            scene.anchorPoint = .init(x: 0.5, y: 0.5)
             scene.scaleMode = .aspectFit
             view.presentScene(scene)
             
