@@ -75,7 +75,7 @@ class GameScene: SKScene {
                 addChild(label2)
                 label2.position.y = newYPos
                 label2.fontName = ""
-                label1.zPosition = 1000
+                label2.zPosition = 1000
                 newYPos -= 50
                 
             }
