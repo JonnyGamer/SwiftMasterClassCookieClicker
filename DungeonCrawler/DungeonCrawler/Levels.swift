@@ -15,6 +15,7 @@ var flounder: [ObjectType:[ObjectType]] = [
     .wall:[.stop],
     .rock:[.push],
     .algae:[.collect],
+    .star:[.collect],
     .skull:[.defeat, .push],
 ]
 
@@ -87,10 +88,10 @@ struct CustomLevel {
         }
         
         
-        for i in 1...10 {
+        for i in 1...5 {
             myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.algae)
         }
-        for i in 1...30 {
+        for i in 1...5 {
             let yChoice = Int.random(in: 2...18)
             let xChoice = Int.random(in: 2...18)
             myRealLevel[yChoice][xChoice] = .C(.rock)
@@ -100,14 +101,28 @@ struct CustomLevel {
         for i in 1...10 {
             myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.skull)
         }
-        
+        if .random(), .random() {
+            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.star)
+        }
         
         cachedLevels["\(currentPosition)"] = myRealLevel
         
-        if moved == .right { myRealLevel[10][1] = .Baba() }
-        if moved == .left { myRealLevel[10][19] = .Baba() }
-        if moved == .up || moved == .none { myRealLevel[19][10] = .Baba() }
-        if moved == .down { myRealLevel[1][10] = .Baba() }
+        if moved == .right {
+            myRealLevel[10][1] = .Baba()
+            myRealLevel[10][0] = .Wall();myRealLevel[11][0] = .Wall();myRealLevel[9][0] = .Wall()
+        }
+        if moved == .left {
+            myRealLevel[10][19] = .Baba()
+            myRealLevel[10][20] = .Wall();myRealLevel[11][20] = .Wall();myRealLevel[9][20] = .Wall()
+        }
+        if moved == .up || moved == .none {
+            myRealLevel[19][10] = .Baba()
+            myRealLevel[20][9] = .Wall();myRealLevel[20][10] = .Wall();myRealLevel[20][11] = .Wall()
+        }
+        if moved == .down {
+            myRealLevel[1][10] = .Baba()
+            myRealLevel[0][9] = .Wall();myRealLevel[0][10] = .Wall();myRealLevel[0][11] = .Wall()
+        }
         
         return myRealLevel
         

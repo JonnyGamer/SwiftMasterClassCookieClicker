@@ -49,6 +49,7 @@ class GameScene: SKScene {
     var ultimateWin = false
     var smackKey: Int? = nil
     var previousTime: Double = 0
+    var previousEnemyTime: Double = Date().timeIntervalSince1970
 }
 extension GameScene {
 
@@ -62,7 +63,7 @@ extension GameScene {
         workingOnMoving = true
         
         previousTime = Date().timeIntervalSince1970 + 0.1
-        moveKey(event.keyCode)
+        moveKey(Int(event.keyCode))
         
         superNode.alpha = game.alive ? 1 : 0.5
         if game.win {
@@ -77,8 +78,9 @@ extension GameScene {
         workingOnMoving = false
     }
     
-    func moveKey(_ n: UInt16) {
+    func moveKey(_ n: Int) {
         switch n {
+        case -1: game.move(.none, moveEnemies: true); resetChildren()
         case 126, 13: game.move(.up); resetChildren()
         case 123, 0: game.move(.left); resetChildren()
         case 125, 1: game.move(.down); resetChildren()
@@ -91,11 +93,22 @@ extension GameScene {
     
     
     override func update(_ currentTime: TimeInterval) {
+        
+        let currTime = Date().timeIntervalSince1970
+        
+        // Move Elemies
+        if !workingOnMoving, smackKey != 49 {
+            if currTime > previousEnemyTime + 1 {
+                previousEnemyTime = currTime
+                moveKey(-1)
+            }
+        }
+        
         if let smack = smackKey, !workingOnMoving {
-            let currTime = Date().timeIntervalSince1970
             if currTime < previousTime + 0.1 { return }
             previousTime = currTime
-            moveKey(UInt16(smack))
+            moveKey(smack)
+            
         }
     }
     

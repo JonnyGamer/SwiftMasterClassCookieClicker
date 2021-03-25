@@ -149,7 +149,7 @@ class Game: CustomStringConvertible {
     
     
     @discardableResult
-    func move(_ dir: Cardinal) -> Bool {
+    func move(_ dir: Cardinal, moveEnemies: Bool = false) -> Bool {
         if !alive { return false }
         
         undo.append(totalObjects.map { ($0, $0.position, $0.objectType) })
@@ -172,16 +172,18 @@ class Game: CustomStringConvertible {
             }
         }
         
-        for i in baddies {
-            if i.triedToMove {
-                print("\(i.objectType) was already pushed")
-                continue
-            }
-            
-            if tryToMove(i, Game.Cardinal.allCases.randomElement()!) {
-                didAnythingMove = true
-            } else {
-                print("You did not move up!")
+        if moveEnemies {
+            for i in baddies {
+                if i.triedToMove {
+                    print("\(i.objectType) was already pushed")
+                    continue
+                }
+                
+                if tryToMove(i, Game.Cardinal.allCases.randomElement()!) {
+                    didAnythingMove = true
+                } else {
+                    print("You did not move up!")
+                }
             }
         }
         
@@ -205,6 +207,22 @@ class Game: CustomStringConvertible {
                 return false
             } else {
                 totalObjects = totalObjects.filter { $0 !== i }
+                
+                // When you push a rock off the map, spawn a star!
+                if !flounder[[i.objectType]].contains(.defeat) {
+                    let newObject = Objects.C(.star)
+                    newObject.updateImage()
+                    while true {
+                        let spawnPosition = (Int.random(in: 1...19), Int.random(in: 1...19))
+                        let woah = findAtLocation(spawnPosition, moveX: 0, moveY: 0)
+                        if woah == nil || woah?.isEmpty == true {
+                            newObject.position = spawnPosition
+                            break
+                        }
+                    }
+                    totalObjects.append(newObject)
+                }
+                
                 return true
             }
         }
@@ -216,17 +234,27 @@ class Game: CustomStringConvertible {
         let foundTypes = flounder[f.objectTypes]
         
         if foundTypes.contains(.collect) {
+            if !myTypes.contains(.you) { return false }
             totalObjects = totalObjects.filter { j in !f.allThatAre(.collect).contains(where: { m in j === m }) }
         }
         if foundTypes.contains(.sink) {
             totalObjects = totalObjects.filter { j in j !== i && !f.allThatAre(.sink).contains(where: { m in j === m }) }
         }
         
+        // If skull hits you
         if foundTypes.contains(.you) {
             if myTypes.contains(.defeat) {
                 totalObjects = totalObjects.filter { j in !f.allThatAre(.you).contains(j) }
             }
         }
+        // If you hits skull
+        if foundTypes.contains(.defeat) {
+            if flounder[[i.objectType]].contains(.you) {
+                totalObjects = totalObjects.filter { $0 !== i }
+                return true
+            }
+        }
+        
         
         
         // Push is first priority
@@ -243,13 +271,7 @@ class Game: CustomStringConvertible {
             return false
         }
         
-        // Die is 2nd priority (Destory `.you` objects with a defeat)
-        if foundTypes.contains(.defeat) {
-            if flounder[[i.objectType]].contains(.you) {
-                totalObjects = totalObjects.filter { $0 !== i }
-            }
-        }
-        
+
         // Win is FINAL priority
         if flounder[f.objectTypes].contains(.win)  {
             if flounder[i.objectType]?.contains(.you) == true {
