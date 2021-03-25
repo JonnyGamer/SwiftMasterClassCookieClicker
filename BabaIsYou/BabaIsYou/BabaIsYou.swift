@@ -274,7 +274,7 @@ class Game: CustomStringConvertible {
     }
     
     func tryToMove(_ i: Objects,_ dir: Cardinal) -> Bool {
-        i.triedToMove = true
+        //i.triedToMove = true
         
         guard let f = findAtLocation(i.position, moveX: dir.xMove(), moveY: dir.yMove()) else {
             return false
@@ -355,6 +355,8 @@ class Game: CustomStringConvertible {
     
     @discardableResult
     func reallyMove(_ i: Objects,_ dir: Cardinal) -> Bool {
+        if i.triedToMove { return false }
+        i.triedToMove = true
         i.position.x += dir.xMove()
         i.position.y += dir.yMove()
         print("\(i.objectType) Moved (\(dir.xMove()), \(dir.yMove())) spaces")
