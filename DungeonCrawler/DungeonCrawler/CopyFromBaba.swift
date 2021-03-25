@@ -238,7 +238,7 @@ class Game: CustomStringConvertible {
             totalObjects = totalObjects.filter { j in !f.allThatAre(.collect).contains(where: { m in j === m }) }
             if f.objectTypes.contains(.algae) { algaeEaten += 1 }
             if f.objectTypes.contains(.star) { starsEaten += 1 }
-            if f.objectTypes.contains(.love) { loveEaten += 1; win = true; return true }
+            if f.objectTypes.contains(.love) { loveEaten += 1 }
         }
         if foundTypes.contains(.sink) {
             totalObjects = totalObjects.filter { j in j !== i && !f.allThatAre(.sink).contains(where: { m in j === m }) }

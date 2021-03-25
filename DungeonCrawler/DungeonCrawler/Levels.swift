@@ -103,10 +103,10 @@ struct CustomLevel {
             myRealLevel[yChoice][xChoice-1] = nil
         }
         for i in 1...5+discoveredLevels {
-            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.skull)
+            myRealLevel[Int.random(in: 2...18)][Int.random(in: 2...18)] = .C(.skull)
         }
         if .random(), .random() {
-            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.star)
+            myRealLevel[Int.random(in: 2...18)][Int.random(in: 2...18)] = .C(.star)
         }
         
         if discoveredLevels % 5 == 0 {

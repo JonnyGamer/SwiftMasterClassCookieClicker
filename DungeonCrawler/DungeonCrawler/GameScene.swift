@@ -68,7 +68,7 @@ class GameScene: SKScene {
         label1.zPosition = 1000
         
         var newYPos: CGFloat = 200
-        for i in [("Algae", algaeEaten), ("Stars", starsEaten), ("Love", loveEaten)] {
+        for i in [("Level", CustomLevel.discoveredLevels, totalLevels), ("Algae", algaeEaten, totalAlgaes), ("Stars", starsEaten, totalStars), ("Love", loveEaten, totalLove)] {
             if i.1 > 0 {
                 
                 let label2 = SKLabelNode.init(text: "\(i.0): \(i.1)")
@@ -78,12 +78,50 @@ class GameScene: SKScene {
                 label2.zPosition = 1000
                 newYPos -= 50
                 
+                if i.1 > i.2 {
+                    label2.text! += " (Record!)"
+                }
+                
             }
         }
+        
+        for i in [("Highscores",0), ("Level", totalLevels), ("Algae", totalAlgaes), ("Stars", totalStars), ("Love", totalLove)] {
+            let label2 = SKLabelNode.init(text: "\(i.0): \(i.1)")
+            if i.0 == "Highscores" { label2.text = i.0 }
+            addChild(label2)
+            label2.position.y = newYPos
+            label2.fontName = ""
+            label2.zPosition = 1000
+            newYPos -= 50
+        }
+        
+        if CustomLevel.discoveredLevels > totalLevels { totalLevels = CustomLevel.discoveredLevels }
+        if loveEaten > totalLove { totalLove = loveEaten }
+        if algaeEaten > totalAlgaes { totalAlgaes = algaeEaten }
+        if starsEaten > totalStars { totalStars = starsEaten }
         
     }
     
 }
+
+var totalAlgaes: Int {
+    get { UserDefaults.standard.integer(forKey: "Algae") }
+    set { UserDefaults.standard.set(newValue, forKey: "Algae") }
+}
+var totalStars: Int {
+    get { UserDefaults.standard.integer(forKey: "Stars") }
+    set { UserDefaults.standard.set(newValue, forKey: "Stars") }
+}
+var totalLove: Int {
+    get { UserDefaults.standard.integer(forKey: "Love") }
+    set { UserDefaults.standard.set(newValue, forKey: "Love") }
+}
+var totalLevels: Int {
+    get { UserDefaults.standard.integer(forKey: "Levels") }
+    set { UserDefaults.standard.set(newValue, forKey: "Levels") }
+}
+
+
 extension GameScene {
 
     override func keyDown(with event: NSEvent) {
@@ -119,7 +157,20 @@ extension GameScene {
         case 125, 1: game.move(.down); resetChildren()
         case 124, 2: game.move(.right); resetChildren()
         //case 49: game.undoMove(); resetChildren()
-        case 36: game.reset(); resetChildren()
+        case 36,42:
+            let newScene = GameScene.init(size: CGSize(width: 1000, height: 1000))
+            newScene.anchorPoint = .init(x: 0.5, y: 0.5)
+            newScene.scaleMode = .aspectFit
+            if n != 42 {
+                algaeEaten = 0
+                starsEaten = 0
+                loveEaten = 0
+                CustomLevel.discoveredLevels = 0
+            }
+            view?.presentScene(newScene)
+            return
+            game.reset(); resetChildren()
+            
         default: break// game.move(.none)
         }
     }
