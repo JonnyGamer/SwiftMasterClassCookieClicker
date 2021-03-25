@@ -47,6 +47,7 @@ class GameScene: SKScene {
         }
     }
     
+    var workingOnMoving: Bool = false
     var ultimateWin = false
     var smackKey: Int? = nil
     override func keyDown(with event: NSEvent) {
@@ -55,15 +56,11 @@ class GameScene: SKScene {
         if smackKey != nil { return }
         smackKey = Int(event.keyCode)
         
-        switch event.keyCode {
-        case 126, 13: game.move(.up); resetChildren()
-        case 123, 0: game.move(.left); resetChildren()
-        case 125, 1: game.move(.down); resetChildren()
-        case 124, 2: game.move(.right); resetChildren()
-        case 49: game.undoMove(); resetChildren()
-        case 36: game.reset(); resetChildren()
-        default: break// game.move(.none)
-        }
+        if workingOnMoving { return }
+        workingOnMoving = true
+        
+        previousTime = Date().timeIntervalSince1970 + 0.1
+        moveKey(event.keyCode)
         
         superNode.alpha = game.alive ? 1 : 0.5
         if game.win {
@@ -72,6 +69,30 @@ class GameScene: SKScene {
             let newScene = GameScene.init(size: CGSize(width: 1000, height: 1000))
             newScene.scaleMode = .aspectFit
             view?.presentScene(newScene)
+        }
+        
+        workingOnMoving = false
+    }
+    
+    func moveKey(_ n: UInt16) {
+        switch n {
+        case 126, 13: game.move(.up); resetChildren()
+        case 123, 0: game.move(.left); resetChildren()
+        case 125, 1: game.move(.down); resetChildren()
+        case 124, 2: game.move(.right); resetChildren()
+        case 49: game.undoMove(); resetChildren()
+        case 36: game.reset(); resetChildren()
+        default: break// game.move(.none)
+        }
+    }
+    
+    var previousTime: Double = 0
+    override func update(_ currentTime: TimeInterval) {
+        if let smack = smackKey, !workingOnMoving {
+            let currTime = Date().timeIntervalSince1970
+            if currTime < previousTime + 0.1 { return }
+            previousTime = currTime
+            moveKey(UInt16(smack))
         }
     }
     
