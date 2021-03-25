@@ -17,12 +17,15 @@ var flounder: [ObjectType:[ObjectType]] = [
     .algae:[.collect],
     .star:[.collect],
     .skull:[.defeat, .push],
+    .love:[.collect],
+    .keke:[.defeat, .push],
 ]
 
 
 struct CustomLevel {
     static var cachedLevels: [String:[[Objects?]]] = [:]
     static var currentPosition = (0, 0)
+    static var discoveredLevels = 0
     
     static func randomLevel(_ moved: Game.Cardinal) -> [[Objects?]] {
         currentPosition.0 += moved.inverse().xMove()
@@ -37,6 +40,7 @@ struct CustomLevel {
 //            if moved == .down { savedLevel[1][10] = .Baba() }
 //            return savedLevel
 //        }
+        discoveredLevels += 1
         
         let myLevel = [
             "wwwwwwwww   wwwwwwwww",
@@ -98,11 +102,21 @@ struct CustomLevel {
             myRealLevel[yChoice][xChoice+1] = nil
             myRealLevel[yChoice][xChoice-1] = nil
         }
-        for i in 1...10 {
+        for i in 1...5+discoveredLevels {
             myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.skull)
         }
         if .random(), .random() {
             myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.star)
+        }
+        
+        if discoveredLevels % 5 == 0 {
+            let loveX = Int.random(in: 9...11)
+            let loveY = Int.random(in: 9...11)
+            myRealLevel[loveX][loveY] = .C(.love)
+            myRealLevel[loveX+1][loveY] = .C(.keke)
+            myRealLevel[loveX-1][loveY] = .C(.keke)
+            myRealLevel[loveX][loveY+1] = .C(.keke)
+            myRealLevel[loveX][loveY-1] = .C(.keke)
         }
         
         cachedLevels["\(currentPosition)"] = myRealLevel

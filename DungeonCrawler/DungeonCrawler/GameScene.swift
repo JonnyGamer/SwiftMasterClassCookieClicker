@@ -12,6 +12,10 @@ var spriteGrid: Int = 100 {
     }
 }
 
+var algaeEaten = 0
+var starsEaten = 0
+var loveEaten = 0
+
 class GameScene: SKScene {
     let game = Game()
     var superNode = SKNode()
@@ -50,6 +54,35 @@ class GameScene: SKScene {
     var smackKey: Int? = nil
     var previousTime: Double = 0
     var previousEnemyTime: Double = Date().timeIntervalSince1970
+    var gameover = false
+    
+    func gameOver() {
+        if gameover { return }
+        gameover = true
+        
+        let label1 = SKLabelNode.init(text: "Game Over!")
+        addChild(label1)
+        label1.position.y = 300
+        label1.fontSize *= 3
+        label1.fontName = ""
+        label1.zPosition = 1000
+        
+        var newYPos: CGFloat = 200
+        for i in [("Algae", algaeEaten), ("Stars", starsEaten), ("Love", loveEaten)] {
+            if i.1 > 0 {
+                
+                let label2 = SKLabelNode.init(text: "\(i.0): \(i.1)")
+                addChild(label2)
+                label2.position.y = newYPos
+                label2.fontName = ""
+                label1.zPosition = 1000
+                newYPos -= 50
+                
+            }
+        }
+        
+    }
+    
 }
 extension GameScene {
 
@@ -85,7 +118,7 @@ extension GameScene {
         case 123, 0: game.move(.left); resetChildren()
         case 125, 1: game.move(.down); resetChildren()
         case 124, 2: game.move(.right); resetChildren()
-        case 49: game.undoMove(); resetChildren()
+        //case 49: game.undoMove(); resetChildren()
         case 36: game.reset(); resetChildren()
         default: break// game.move(.none)
         }
@@ -108,8 +141,12 @@ extension GameScene {
             if currTime < previousTime + 0.1 { return }
             previousTime = currTime
             moveKey(smack)
-            
         }
+        
+        if !game.alive {
+            gameOver()
+        }
+        
     }
     
     override func keyUp(with event: NSEvent) {
