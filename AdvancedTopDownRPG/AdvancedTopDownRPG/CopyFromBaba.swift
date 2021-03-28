@@ -36,13 +36,49 @@ class Objects: Equatable {
         didSet { updateImage() }
     }
     var position: (x: Int, y: Int) = (0, 0) {
-        didSet { sprite.position = .init(x: position.0 * spriteGrid, y: position.1 * spriteGrid) }
+        willSet(to) { halfX = position.x - to.x; halfY = position.y - to.y }
+    }
+    var position2: (x: Int, y: Int) = (0, 0) {
+        didSet { sprite.position = .init(x: position2.0 * spriteGrid, y: position2.1 * spriteGrid) }
     }
     var recursiveObjectType: ObjectType = .baba {
         didSet { updateImage() }
     }
     var triedToMove = false
     var sprite: SKSpriteNode!
+    
+    var halfX: Int = 0 {
+        willSet(to) {
+            if to == 0 {
+                position2.x = position2.x
+            } else if to == 1 {
+                sprite.position.x += halfSpriteGrid/4
+            } else if to != 1 {
+                halfX = ((to % 2) + 10) % 2
+                position2.x += to / 2
+            }
+        }
+    }
+    
+    var halfY: Int = 0 {
+        didSet {
+            if halfY == 0 {
+                position2.y = position2.y
+            } else if halfY == 1 {
+                sprite.position.x += halfSpriteGrid/4
+            } else if halfY != 1 {
+                halfY = ((halfY % 2) + 10) % 2
+                position2.y += halfY / 2
+            }
+            
+            if halfY == 0 {
+                position2.y = position2.y
+            } else if halfY == 1 {
+                position2.y = position2.y
+                //sprite.position.y += 100
+            }
+        }
+    }
     
     func updateImage() {
         var imageName = objectType.rawValue
@@ -290,8 +326,9 @@ class Game: CustomStringConvertible {
     @discardableResult
     func reallyMove(_ i: Objects,_ dir: Cardinal) -> Bool {
         i.triedToMove = true
-        i.position.x += dir.xMove()
-        i.position.y += dir.yMove()
+        i.position = (i.position.x + dir.xMove(), i.position.y + dir.yMove())
+        //i.position.x += dir.xMove()
+        //i.position.y += dir.yMove()
         print("\(i.objectType) Moved (\(dir.xMove()), \(dir.yMove())) spaces")
         return true
     }

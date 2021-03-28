@@ -75,49 +75,6 @@ struct CustomLevel {
             "s":(.skull,.collect)
         ])
         
-        for i in 1..<myRealLevel.count-1 {
-            for j in 1..<myRealLevel[i].count-1 {
-                if .random(), .random(), .random() {
-                    myRealLevel[i][j] = .Wall()
-                    if .random() {
-                        if j+1>18{continue}
-                        myRealLevel[i][j+1] = .Wall()
-                        if j+2>18{continue}
-                        myRealLevel[i][j+2] = .Wall()
-                        if j+3>18{continue}
-                        myRealLevel[i][j+3] = .Wall()
-                    }
-                }
-            }
-        }
-        
-        
-        for i in 1...5 {
-            myRealLevel[Int.random(in: 2...19)][Int.random(in: 2...18)] = .C(.algae)
-        }
-        for i in 1...5 {
-            let yChoice = Int.random(in: 2...18)
-            let xChoice = Int.random(in: 2...18)
-            myRealLevel[yChoice][xChoice] = .C(.rock)
-            myRealLevel[yChoice][xChoice+1] = nil
-            myRealLevel[yChoice][xChoice-1] = nil
-        }
-        for i in 1...5+discoveredLevels {
-            myRealLevel[Int.random(in: 2...18)][Int.random(in: 2...18)] = .C(.skull)
-        }
-        if .random(), .random() {
-            myRealLevel[Int.random(in: 2...18)][Int.random(in: 2...18)] = .C(.star)
-        }
-        
-        if discoveredLevels % 5 == 0 {
-            let loveX = Int.random(in: 9...11)
-            let loveY = Int.random(in: 9...11)
-            myRealLevel[loveX][loveY] = .C(.love)
-            myRealLevel[loveX+1][loveY] = .C(.keke)
-            myRealLevel[loveX-1][loveY] = .C(.keke)
-            myRealLevel[loveX][loveY+1] = .C(.keke)
-            myRealLevel[loveX][loveY-1] = .C(.keke)
-        }
         
         cachedLevels["\(currentPosition)"] = myRealLevel
         
