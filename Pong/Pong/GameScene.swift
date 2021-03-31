@@ -10,7 +10,7 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var twoPlayers = true
+    var twoPlayers = false
     var player1: SKNode!
     var player2: SKNode!
     var pong: SKNode!
