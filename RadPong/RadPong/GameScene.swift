@@ -63,7 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createPong() -> SKShapeNode {
-        let pong = createCustomShape(height: 25)
+        let pong = createCustomShape(width: 50, height: 50) // 25
         pong.physicsBody?.linearDamping = 0
         pong.physicsBody?.allowsRotation = false
         pong.physicsBody?.restitution = 1.01
@@ -71,8 +71,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    func createCustomShape(height: Int) -> SKShapeNode {
-        let shape = SKShapeNode(rectOf: CGSize(width: 25, height: height), cornerRadius: 10)
+    func createCustomShape(width: Int = 25, height: Int) -> SKShapeNode {
+        let shape = SKShapeNode(rectOf: CGSize(width: width, height: height), cornerRadius: 10)
         shape.fillColor = .white
         shape.strokeColor = .clear
         shape.physicsBody = SKPhysicsBody(polygonFrom: shape.path!)
@@ -138,6 +138,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         var foundMax = player2!
+        var foundMin = player1!
+        
         var end = false
         pongs.forEach {
             
@@ -147,6 +149,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if $0.position.x > foundMax.position.x {
                     foundMax = $0
                 }
+            }
+            
+            if foundMin === player1 {
+                foundMin = $0
+            } else {
+                if $0.position.x < foundMin.position.x {
+                    foundMin = $0
+                }
+            }
+            
+            if abs($0.physicsBody!.velocity.dx) < 500 {
+                $0.physicsBody?.velocity.dx *= 1.01
+            }
+            if abs($0.physicsBody!.velocity.dy) < 500 {
+                $0.physicsBody?.velocity.dy *= 1.01
             }
             
             
@@ -167,9 +184,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         let dy = Double(abs(player2.position.y - foundMax.position.y))
+        let dy2 = Double(abs(player1.position.y - foundMin.position.y))
         
-        player2.run(.moveTo(y: foundMax.position.y, duration: 0.15)) // dy / 1000 - reg mode
-        
+        player2.run(.moveTo(y: foundMax.position.y, duration: 0.1)) // dy / 1000 - reg mode
+        player1.run(.moveTo(y: foundMin.position.y, duration: 0.1)) // dy / 1000 - reg mode
         
         
         if player2.frame.minY < -500 {
@@ -187,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let wait = SKAction.wait(forDuration: 0.5)
         run(.sequence([wait, .run({
             
-            var xMovement = Bool.random() ? -700 : 700
+            var xMovement = Bool.random() ? -100 : 100
             let yMovement = Int.random(in: -1000...1000)
             
             for i in self.pongs {
