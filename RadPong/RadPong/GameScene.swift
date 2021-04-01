@@ -12,8 +12,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player1: SKNode!
     var player2: SKNode!
-    var pong: SKNode!
-    var pong2: SKNode!
+    var pongs: [SKNode] = []
+    var pongBalls = 2
+    
     var gameBegin = false
     
     override func didMove(to view: SKView) {
@@ -23,7 +24,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func reset() {
         backgroundColor = .black
         removeAllChildren()
+        
         gameBegin = false
+        pongs = []
         
         physicsBody = .init(edgeLoopFrom: CGRect(
                                 origin: .init(x: -10000, y: -size.height/2),
@@ -36,14 +39,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle()
+        player1 = createPaddle(200)
         player1.position = .init(x: -450, y: 0)
         
-        player2 = createPaddle()
+        player2 = createPaddle(200)
         player2.position = .init(x: 450, y: 0)
         
-        pong = createPong()
-        pong2 = createPong()
+        for i in 0..<pongBalls {
+            pongs.append(createPong())
+        }
         
         let scoreNode = SKLabelNode.init(text: "\(p1) - \(p2)")
         addChild(scoreNode)
@@ -52,8 +56,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
-    func createPaddle() -> SKShapeNode {
-        let paddle = createCustomShape(height: 200)
+    func createPaddle(_ height: Int) -> SKShapeNode {
+        let paddle = createCustomShape(height: height) //2 00
         paddle.physicsBody?.isDynamic = false
         return paddle
     }
@@ -125,6 +129,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if !gameBegin { return }
         
         if player1.frame.minY < -500 {
             player1.position.y = -500 + player1.frame.height/2
@@ -132,26 +137,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player1.position.y = 500 - player1.frame.height/2
         }
         
-        if pong.position.x > pong2.position.x {
-            //player2.position.y = pong.position.y
-            player2.run(.moveTo(y: pong.position.y, duration: 0.15))
-        } else {
-            //player2.position.y = pong2.position.y
-            player2.run(.moveTo(y: pong2.position.y, duration: 0.15))
+        var foundMax = player2!
+        var end = false
+        pongs.forEach {
+            
+            if foundMax === player2 {
+                foundMax = $0
+            } else {
+                if $0.position.x > foundMax.position.x {
+                    foundMax = $0
+                }
+            }
+            
+            
+            if !end {
+                if $0.frame.maxX < -550 {
+                    end = true
+                    p2 += 1
+                    reset()
+                } else if $0.frame.minX > 500 {
+                    end = true
+                    p1 += 1
+                    reset()
+                }
+            }
+            
         }
+        if end { return }
+        
+        
+        let dy = Double(abs(player2.position.y - foundMax.position.y))
+        
+        player2.run(.moveTo(y: foundMax.position.y, duration: 0.15)) // dy / 1000 - reg mode
+        
+        
         
         if player2.frame.minY < -500 {
             player2.position.y = -500 + player2.frame.height/2
         } else if player2.frame.maxY > 500 {
             player2.position.y = 500 - player2.frame.height/2
-        }
-        
-        if pong.frame.maxX < -550 || pong2.frame.maxX < -550 {
-            p2 += 1
-            reset()
-        } else if pong.frame.minX > 500 || pong2.frame.minX > 500 {
-            p1 += 1
-            reset()
         }
     }
     
@@ -160,14 +184,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameBegin { return }
         gameBegin = true
         
-        let xMovement = Bool.random() ? -700 : 700
-        let yMovement = Int.random(in: -1000...1000)
-        pong.physicsBody?.velocity = .init(dx: xMovement, dy: yMovement)
-        pong2.physicsBody?.velocity = .init(dx: -xMovement, dy: yMovement)
+        let wait = SKAction.wait(forDuration: 0.5)
+        run(.sequence([wait, .run({
+            
+            var xMovement = Bool.random() ? -700 : 700
+            let yMovement = Int.random(in: -1000...1000)
+            
+            for i in self.pongs {
+                xMovement *= -1
+                i.physicsBody?.velocity = .init(dx: xMovement, dy: 0)
+            }
+            
+        })]))
+        
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        guard let pong = [contact.bodyA.node!, contact.bodyB.node!].first(where: { pongs.contains($0) }) else { return }
         
+        if let _ = [contact.bodyA.node, contact.bodyB.node].first(where: { $0 === player1 }) as? SKNode {
+            if !player1.hasActions() {
+                pong.physicsBody?.velocity.dy = 0
+            } else {
+                pong.physicsBody?.velocity.dy = CGFloat.random(in: -1000...1000)
+            }
+        } else if let _ = [contact.bodyA.node, contact.bodyB.node].first(where: { $0 === player1 || $0 === player2 }) {
+            if !player2.hasActions() {
+                pong.physicsBody?.velocity.dy = 0
+            } else {
+                pong.physicsBody?.velocity.dy = CGFloat.random(in: -1000...1000)
+            }
+        }
     }
     
     
