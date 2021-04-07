@@ -12,8 +12,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player1: SKNode!
     var player2: SKNode!
-    var pong: SKNode!
-    var pong2: SKNode!
+    var players: [SKNode] = []
+    
+    //var pong: SKNode!
+    //var pong2: SKNode!
+    var pongs: [SKNode] = []
+    var pongBalls = 3
+    
     var gameBegin = false
     
     override func didMove(to view: SKView) {
@@ -36,30 +41,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle()
+        player1 = createPaddle(.regular)
         player1.position = .init(x: -450, y: 0)
         
-        player2 = createPaddle()
+        player2 = createPaddle(.auto)
         player2.position = .init(x: 450, y: 0)
         
-        pong = createPong()
-        pong2 = createPong()
+        players = [player1, player2]
+        
+        pongs = []
+        for _ in 1...pongBalls {
+            pongs.append(createPong(.regular))
+        }
         
         let scoreNode = SKLabelNode.init(text: "\(p1) - \(p2)")
         addChild(scoreNode)
         scoreNode.position.y = 450
     }
     
+    enum PaddleDifficulty: Int {
+        case wall = 999
+        case regular = 200
+        case hard = 100
+        case master = 50
+        case auto = 199
+    }
     
-    
-    func createPaddle() -> SKShapeNode {
-        let paddle = createCustomShape(height: 200)
+    func createPaddle(_ difficulty: PaddleDifficulty) -> SKShapeNode {
+        let paddle = createCustomShape(height: difficulty.rawValue)
         paddle.physicsBody?.isDynamic = false
         return paddle
     }
     
-    func createPong() -> SKShapeNode {
-        let pong = createCustomShape(height: 25)
+    enum PongDifficulty: Int {
+        case easy = 50
+        case regular = 25
+        case hard = 10
+        case master = 5
+    }
+    
+    func createPong(_ difficulty: PongDifficulty) -> SKShapeNode {
+        let pong = createCustomShape(width: difficulty.rawValue, height: difficulty.rawValue)
         pong.physicsBody?.linearDamping = 0
         pong.physicsBody?.allowsRotation = false
         pong.physicsBody?.restitution = 1.01
@@ -67,8 +89,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    func createCustomShape(height: Int) -> SKShapeNode {
-        let shape = SKShapeNode(rectOf: CGSize(width: 25, height: height), cornerRadius: 10)
+    func createCustomShape(width: Int = 25, height: Int) -> SKShapeNode {
+        let shape = SKShapeNode(rectOf: CGSize(width: width, height: height), cornerRadius: 10)
         shape.fillColor = .white
         shape.strokeColor = .clear
         shape.physicsBody = SKPhysicsBody(polygonFrom: shape.path!)
@@ -94,10 +116,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if keyCode == 13 || keyCode == 126 {
+            if player1.difficulty(.wall) { return }
             movePaddle(player1, direction: 1000)
         }
         
         if keyCode == 1 || keyCode == 125 {
+            if player1.difficulty(.wall) { return }
             movePaddle(player1, direction: -1000)
         }
             
@@ -125,34 +149,87 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if !gameBegin { return }
         
-        if player1.frame.minY < -500 {
-            player1.position.y = -500 + player1.frame.height/2
-        } else if player1.frame.maxY > 500 {
-            player1.position.y = 500 - player1.frame.height/2
+        var foundMax = player2!
+        var foundMin = player1!
+        
+        var end = false
+        for pong in pongs {
+            
+            if pong.physicsBody!.velocity.dx > 0 {
+                if foundMax === player2 {
+                    foundMax = pong
+                } else {
+//                    if pong.physicsBody!.velocity.dx > foundMin.physicsBody!.velocity.dx{
+//                        foundMax = pong
+//                    }
+                    if pong.position.x > foundMax.position.x {
+                        foundMax = pong
+                    }
+                }
+            }
+            
+            if pong.physicsBody!.velocity.dx < 0 {
+                if foundMin === player1 {
+                    foundMin = pong
+                } else {
+//                    if pong.physicsBody!.velocity.dx < foundMin.physicsBody!.velocity.dx{
+//                        foundMin = pong
+//                    }
+                    if pong.position.x < foundMin.position.x {
+                        foundMin = pong
+                    }
+                }
+            }
+            
+            if abs(pong.physicsBody!.velocity.dx) < 700 {
+                pong.physicsBody?.velocity.dx *= 1.02
+            }
+            
+            if abs(pong.physicsBody!.velocity.dy) > 700 {
+                pong.physicsBody?.velocity.dy /= 1.02
+            }
+            
+            if !end {
+                
+                if pong.frame.maxX < -550 {
+                    // what if player 1 is wall
+                    p2 += 1
+                    end = true
+                    reset()
+                } else if pong.frame.minX > 500 {
+                    // what if player 2 is wall
+                    p1 += 1
+                    end = true
+                    reset()
+                }
+                
+            }
+        }
+        if end { return }
+        
+        
+        if player2.difficulty(.auto) {
+            player2.run(.moveTo(y: foundMax.position.y, duration: 0.1))
         }
         
-        if pong.position.x > pong2.position.x {
-            //player2.position.y = pong.position.y
-            player2.run(.moveTo(y: pong.position.y, duration: 0.15))
-        } else {
-            //player2.position.y = pong2.position.y
-            player2.run(.moveTo(y: pong2.position.y, duration: 0.15))
+        if player1.difficulty(.auto) {
+            player1.run(.moveTo(y: foundMin.position.y, duration: 0.1))
         }
         
-        if player2.frame.minY < -500 {
-            player2.position.y = -500 + player2.frame.height/2
-        } else if player2.frame.maxY > 500 {
-            player2.position.y = 500 - player2.frame.height/2
+        for player in players {
+            if player.difficulty(.wall) {
+                // Do nothing
+            } else if player.frame.minY < -500 {
+                player.position.y = -500 + player.frame.height/2
+            } else if player.frame.maxY > 500 {
+                player.position.y = 500 - player.frame.height/2
+            }
         }
         
-        if pong.frame.maxX < -550 || pong2.frame.maxX < -550 {
-            p2 += 1
-            reset()
-        } else if pong.frame.minX > 500 || pong2.frame.minX > 500 {
-            p1 += 1
-            reset()
-        }
+        
+        
     }
     
     var p1 = 0, p2 = 0
@@ -160,10 +237,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameBegin { return }
         gameBegin = true
         
-        let xMovement = Bool.random() ? -700 : 700
-        let yMovement = Int.random(in: -1000...1000)
-        pong.physicsBody?.velocity = .init(dx: xMovement, dy: yMovement)
-        pong2.physicsBody?.velocity = .init(dx: -xMovement, dy: yMovement)
+        let wait = SKAction.wait(forDuration: 0.5)
+        run(.sequence([wait, .run({
+            
+            var xMovement = Bool.random() ? -100 : 100
+            let yMovement = Int.random(in: -1000...1000)
+            
+            for i in self.pongs {
+                xMovement *= -1
+                i.physicsBody?.velocity = .init(dx: xMovement, dy: yMovement)
+            }
+            
+
+            
+        })]))
+        
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -172,3 +261,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
 }
+
+
+extension SKNode {
+    func difficulty(_ d: GameScene.PaddleDifficulty) -> Bool {
+        return Int(frame.height) == d.rawValue
+    }
+}
+
+
+
