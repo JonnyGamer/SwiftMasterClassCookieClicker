@@ -12,8 +12,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player1: SKNode!
     var player2: SKNode!
+    var players: [SKNode] = []
+    
     var pongs: [SKNode] = []
-    var pongBalls = 2
+    var pongBalls = 50
     
     var gameBegin = false
     
@@ -39,14 +41,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle(200)
+        player1 = createPaddle(.done)
         player1.position = .init(x: -450, y: 0)
         
-        player2 = createPaddle(200)
+        player2 = createPaddle(.done)
         player2.position = .init(x: 450, y: 0)
+        players = [player1, player2]
         
         for i in 0..<pongBalls {
-            pongs.append(createPong())
+            pongs.append(createPong(.master))
         }
         
         let scoreNode = SKLabelNode.init(text: "\(p1) - \(p2)")
@@ -55,18 +58,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    
+    enum PaddleDifficulty: Int {
+        case done = 2000
+        case easy = 250
+        case regular = 200
+        case hard = 100
+        case master = 50
+        case auto = 249
+    }
+    func createPaddle(_ difficulty: PaddleDifficulty) -> SKShapeNode {
+        return createPaddle(difficulty.rawValue)
+    }
     func createPaddle(_ height: Int) -> SKShapeNode {
         let paddle = createCustomShape(height: height) //2 00
         paddle.physicsBody?.isDynamic = false
         return paddle
     }
     
-    func createPong() -> SKShapeNode {
-        let pong = createCustomShape(width: 50, height: 50) // 25
+    enum BallDifficulty: Int {
+        case easy = 50
+        case regular = 25
+        case hard = 10
+        case master = 5
+    }
+    func createPong(_ difficulty: BallDifficulty = .regular) -> SKShapeNode {
+        let pong = createCustomShape(width: difficulty.rawValue, height: difficulty.rawValue) // 25
         pong.physicsBody?.linearDamping = 0
         pong.physicsBody?.allowsRotation = false
         pong.physicsBody?.restitution = 1.01
+        //pong.physicsBody?.usesPreciseCollisionDetection = true
         return pong
     }
     
@@ -76,6 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shape.fillColor = .white
         shape.strokeColor = .clear
         shape.physicsBody = SKPhysicsBody(polygonFrom: shape.path!)
+        shape.physicsBody?.usesPreciseCollisionDetection = true
         
         shape.physicsBody?.affectedByGravity = false
         shape.physicsBody?.friction = 0
@@ -98,10 +119,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if keyCode == 13 || keyCode == 126 {
+            if player1.difficulty(.done) { return }
             movePaddle(player1, direction: 1000)
         }
         
         if keyCode == 1 || keyCode == 125 {
+            if player1.difficulty(.done) { return }
             movePaddle(player1, direction: -1000)
         }
             
@@ -131,12 +154,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         if !gameBegin { return }
         
-        if player1.frame.minY < -500 {
-            player1.position.y = -500 + player1.frame.height/2
-        } else if player1.frame.maxY > 500 {
-            player1.position.y = 500 - player1.frame.height/2
-        }
-        
         var foundMax = player2!
         var foundMin = player1!
         
@@ -159,20 +176,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
             
-            if abs($0.physicsBody!.velocity.dx) < 500 {
-                $0.physicsBody?.velocity.dx *= 1.01
+            if abs($0.physicsBody!.velocity.dx) < 700 {
+                $0.physicsBody?.velocity.dx *= 1.02
             }
-            if abs($0.physicsBody!.velocity.dy) < 500 {
-                $0.physicsBody?.velocity.dy *= 1.01
+            if abs($0.physicsBody!.velocity.dy) < 700 {
+                $0.physicsBody?.velocity.dy *= 1.02
             }
             
             
             if !end {
                 if $0.frame.maxX < -550 {
+                    if player1.difficulty(.done) {
+                        $0.run(.moveTo(x: player1.frame.maxX+50, duration: 0.1))
+                       return
+                    }
                     end = true
                     p2 += 1
                     reset()
                 } else if $0.frame.minX > 500 {
+                    if player2.difficulty(.done) {
+                        $0.run(.moveTo(x: player2.frame.maxX-50, duration: 0.1))
+                       return
+                    }
                     end = true
                     p1 += 1
                     reset()
@@ -186,14 +211,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let dy = Double(abs(player2.position.y - foundMax.position.y))
         let dy2 = Double(abs(player1.position.y - foundMin.position.y))
         
-        player2.run(.moveTo(y: foundMax.position.y, duration: 0.1)) // dy / 1000 - reg mode
-        player1.run(.moveTo(y: foundMin.position.y, duration: 0.1)) // dy / 1000 - reg mode
+        if player2.difficulty(.auto) {
+            player2.run(.moveTo(y: foundMax.position.y, duration: 0.1)) // dy / 1000 - reg mode
+        }
+        if player1.difficulty(.auto) {
+            player1.run(.moveTo(y: foundMin.position.y, duration: 0.1)) // dy / 1000 - reg mode
+        }
         
-        
-        if player2.frame.minY < -500 {
-            player2.position.y = -500 + player2.frame.height/2
-        } else if player2.frame.maxY > 500 {
-            player2.position.y = 500 - player2.frame.height/2
+        for player in players {
+            if player.difficulty(.done) {
+                // Too Big
+            } else if player.frame.minY < -500 {
+                player.position.y = -500 + player.frame.height/2
+            } else if player.frame.maxY > 500 {
+                player.position.y = 500 - player.frame.height/2
+            }
         }
     }
     
@@ -223,18 +255,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let _ = [contact.bodyA.node, contact.bodyB.node].first(where: { $0 === player1 }) as? SKNode {
             if !player1.hasActions() {
+                if player1.difficulty(.done) {
+                    pong.xScale *= 1.1//pong.setScale(1)
+                    pong.yScale *= 1.1//pong.setScale(1)
+                    pong.physicsBody?.velocity.dx = 700
+                    if pong.xScale > 20 {
+                        pong.setScale(20)
+                    }
+                    //pong.run(.move(to: .zero, duration: 1))
+                }
+                pong.physicsBody?.velocity.dx = 700
                 pong.physicsBody?.velocity.dy = 0
             } else {
+                pong.physicsBody?.velocity.dx = 700
                 pong.physicsBody?.velocity.dy = CGFloat.random(in: -1000...1000)
             }
-        } else if let _ = [contact.bodyA.node, contact.bodyB.node].first(where: { $0 === player1 || $0 === player2 }) {
+        } else if let _ = [contact.bodyA.node, contact.bodyB.node].first(where: { $0 === player2 }) {
             if !player2.hasActions() {
+                if player2.difficulty(.done) {
+                    pong.xScale *= 1.1//pong.setScale(1)
+                    pong.physicsBody?.velocity.dx = -700
+                    pong.yScale *= 1.1
+                    if pong.xScale > 20 {
+                        pong.setScale(20)
+                    }
+                    //pong.run(.move(to: .zero, duration: 1))
+                }
                 pong.physicsBody?.velocity.dy = 0
             } else {
+                pong.physicsBody?.velocity.dx = -700
                 pong.physicsBody?.velocity.dy = CGFloat.random(in: -1000...1000)
             }
         }
     }
     
     
+}
+
+extension SKNode {
+    func difficulty(_ d: GameScene.PaddleDifficulty) -> Bool {
+        return Int(frame.height) == d.rawValue
+    }
 }
