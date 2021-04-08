@@ -17,7 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //var pong: SKNode!
     //var pong2: SKNode!
     var pongs: [SKNode] = []
-    var pongBalls = 3
+    var pongBalls = 4
     
     var gameBegin = false
     
@@ -41,17 +41,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle(.regular)
+        player1 = createPaddle(.auto)
         player1.position = .init(x: -450, y: 0)
         
-        player2 = createPaddle(.auto)
+        player2 = createPaddle(.wall)
         player2.position = .init(x: 450, y: 0)
         
         players = [player1, player2]
         
         pongs = []
         for _ in 1...pongBalls {
-            pongs.append(createPong(.regular))
+            pongs.append(createPong(.easy))
         }
         
         let scoreNode = SKLabelNode.init(text: "\(p1) - \(p2)")
@@ -64,7 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case regular = 200
         case hard = 100
         case master = 50
-        case auto = 199
+        case auto = 500//199
     }
     
     func createPaddle(_ difficulty: PaddleDifficulty) -> SKShapeNode {
@@ -89,8 +89,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    func createCustomShape(width: Int = 25, height: Int) -> SKShapeNode {
-        let shape = SKShapeNode(rectOf: CGSize(width: width, height: height), cornerRadius: 10)
+    func createCustomShape(width: Int = 50, height: Int) -> SKShapeNode {
+        let shape = SKShapeNode(rectOf: CGSize(width: width, height: height), cornerRadius: 20) // Corner Radius Causes Leaks
         shape.fillColor = .white
         shape.strokeColor = .clear
         shape.physicsBody = SKPhysicsBody(polygonFrom: shape.path!)
@@ -193,12 +193,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if !end {
                 
-                if pong.frame.maxX < -550 {
+                // TRYING TO BGFIX
+//                if pong.frame.minX > 600 {
+//                    if player2.difficulty(.wall) {
+//                        pong.position.x = player2.position.x - pong.frame.width
+//                        //pong.position.x -= (pong.position.x - player2.position.x) + 50// 400
+//                        pong.physicsBody?.velocity.dx *= -1
+//                        //pong.position.x = 0
+//                        print("AUGH")
+//                    }
+//
+////                    print(pong.position.y)
+////                    pong.removeFromParent()
+////                    pongs = pongs.filter { $0 !== pong }
+//                }
+                
+                if pong.frame.maxX < -600 {
                     // what if player 1 is wall
                     p2 += 1
                     end = true
                     reset()
-                } else if pong.frame.minX > 500 {
+                } else if pong.frame.minX > 600 {
                     // what if player 2 is wall
                     p1 += 1
                     end = true
@@ -210,11 +225,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if end { return }
         
         
+        
+        
+        
+//        if player2.difficulty(.auto) {
+//            //player2.position.y = foundMax.position.y
+//            player2.run(.moveTo(y: foundMax.position.y, duration: 0.1))
+//            if foundMax !== player2, player2.frame.minX < (foundMax.frame.maxX+10) {
+//                //player2.removeAction(forKey: "Hello")
+//
+//                player2.run(.sequence([.moveBy(x: 200, y: 0, duration: 0.1), .moveTo(x: 450, duration: 0.05)]))
+//            }
+//        }
+//
+//        if player1.difficulty(.auto) {
+//            //player2.position.y = foundMax.position.y
+//            player1.run(.moveTo(y: foundMin.position.y, duration: 0.1))
+//            if foundMin !== player1, player1.frame.maxX > (foundMax.frame.minX-10) {
+//                //player1.removeAction(forKey: "Hello")
+//
+//                player1.run(.sequence([.moveBy(x: -200, y: 0, duration: 0.1), .moveTo(x: -450, duration: 0.05)]))
+//            }
+//        }
+        // BUGFIX THE AUTO so that it wont go past the wall
         if player2.difficulty(.auto) {
+            //player1.position.y = foundMax.position.y
             player2.run(.moveTo(y: foundMax.position.y, duration: 0.1))
         }
-        
         if player1.difficulty(.auto) {
+            //player1.position.y = foundMax.position.y
             player1.run(.moveTo(y: foundMin.position.y, duration: 0.1))
         }
         
