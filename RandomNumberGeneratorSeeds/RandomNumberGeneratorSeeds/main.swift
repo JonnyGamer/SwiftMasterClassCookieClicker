@@ -21,3 +21,14 @@ var g = SeededRandomNumberGenerator.init(seed: 3)
 print(Int.random(in: 1...10, using: &g))
 print([233, 2, 2, 2].randomElement(using: &g))
 print(Bool.random(using: &g))
+
+func oneIn(_ n: Int) -> Bool {
+    print(Int.random(in: 1...n, using: &g))
+    return Int.random(in: 1...n, using: &g) == 1
+}
+
+
+for i in 1...1000 {
+    print(oneIn(4))
+    //print(Int.random(in: 1...i, using: &g))
+}
