@@ -15,11 +15,8 @@ enum Button {
 }
 enum Direction {
     case up, down, left, right
-}; extension Array where Element == Direction { static func all() -> Self { return [.up, .down, .left, .right] } }
+}
 
-//enum OnScreenObject {
-//    case wall
-//}
 
 enum UserAction {
     case pressedButton(Button)
@@ -40,23 +37,10 @@ enum When {
     
     case bounceObjectWhen(UserAction)
     
-    case not
 }
 
 
 protocol Spriteable {
-//    var moveJump: When { get set }
-//    var moveLeft: When { get set }
-//    var moveRight: When { get set }
-//
-//    //var stopMovingUp: When { get set }
-//    //var stopMovingDown: When { get set }
-//    //var startMovingDown: When { get set }
-//    //var stopMovingLeft: When { get set }
-//    //var stopMovingRight: When { get set }
-//    var bounceObject: When { get set }
-//    var stopObject: [When] { get set }
-    
     var specificActions: [When] { get }
 }
 
@@ -248,9 +232,3 @@ extension Array where Element == () -> () {
     }
 }
 
-
-//this.doThisWhenCharacterIsLeftOfSelf.append {
-//    if this.players.allSatisfy({ $0.position.x < self.position.x }) {
-//        action()
-//    }
-//}
