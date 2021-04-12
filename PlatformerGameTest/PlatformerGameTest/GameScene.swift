@@ -49,11 +49,25 @@ class Scene: MagicScene {
         enemy.startPosition((64,0))
         add(enemy)
         
+        
+        let enemy2 = Chaser()
+        enemy2.add(self)
+        enemy2.startPosition((64+16+16,0))
+        add(enemy2)
+        
+        let enemy3 = Chaser()
+        enemy3.add(self)
+        enemy3.startPosition((64+16+16+16+16,0))
+        add(enemy3)
+        
+        
         addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
         camera = magicCamera
         magicCamera.position.y += scene!.frame.height/2
+        magicCamera.position.x = woah.position.x
         addChild(magicCamera)
+        
         //addChild(magicCamera)
     }
     
@@ -113,15 +127,47 @@ class Scene: MagicScene {
                 
                 if i.skNode.intersects(j.skNode) {
                     
-                    if i.midX > j.midX {
+                    if i.midY > j.midY {
+                        
+                        if i.maxY > j.minY, i.minY < j.maxY {
+                            
+                            if i.velocity.dy == -j.velocity.dy {
+                                i.position = i.previousPosition
+                                j.position = j.previousPosition
+                            } else if -i.velocity.dy < j.velocity.dy {
+                                print("LANDED ON")
+                                i.onGround = true
+                                i.position.y += j.velocity.dy
+                                
+                            } else {
+                                if !j.onGround {
+                                    j.position.y += i.velocity.dy
+                                } else {
+                                    i.onGround = true
+                                    i.position.y = j.maxY
+                                }
+                                
+                                print("LANDED ON 2")
+                            }
+                        }
+                        
+                    } else if i.midX > j.midX {
+                        if j.midY > i.midY {
+                            if j.minY >= i.maxY { continue }
+                        } else {
+                            if j.maxY <= i.minY { continue }
+                        }
+                        
                         if i.maxX > j.minX, i.minX < j.maxX {
                             if i.velocity.dx == -j.velocity.dx {
                                 i.position = i.previousPosition
                                 j.position = j.previousPosition
                             } else if -i.velocity.dx < j.velocity.dx {
-                                i.position.x = j.maxX
+                                i.position.x += j.velocity.dx
+                                //i.position.x = j.maxX
                             } else {
-                                j.position.x = i.minX - j.frame.x
+                                j.position.x += i.velocity.dx
+                                //j.position.x = i.minX - j.frame.x
                             }
                         }
                     }
