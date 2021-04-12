@@ -9,18 +9,23 @@ import Foundation
 import SpriteKit
 
 
+class GROUND: BasicSprite, Spriteable {
+    var specificActions: [When] { [
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+    ] }
+}
 
 
 
 
-class Sprites: BasicSprite, Spriteable {
+class Sprites: MovableSprite, Spriteable {
     var specificActions: [When] { [
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         
-        .stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
+        //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
         
         .fallWhen(.notOnGround),
     ] }
@@ -41,7 +46,7 @@ class Inky: Sprites {
 
 
 // Rule For All Enemies
-class Enemy: BasicSprite, Spriteable {
+class Enemy: MovableSprite, Spriteable {
     var specificActions: [When] { [] }
 }
 
@@ -53,7 +58,7 @@ class Chaser: Enemy {
         return super.specificActions + [
             .jumpWhen(.pressedButton(.jump)),
             .fallWhen(.notOnGround),
-            .stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
+            //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
             
             .moveLeftWhen(.playerIsLeftOfSelf),
             .moveRightWhen(.playerIsRightOfSelf)

@@ -9,14 +9,18 @@ import Foundation
 
 extension BasicSprite {
     func add(_ this: Scene) {
-        guard let foo = self as? (BasicSprite & Spriteable) else { fatalError() }
+        guard let foo = self as? (MovableSprite & Spriteable) else { return }
         
         for i in foo.specificActions {
-            resolveWhen(this, foo, i)
+            foo.resolveWhen(this, foo, i)
         }
     }
     
-    func resolveWhen(_ this: Scene,_ foo: (BasicSprite & Spriteable),_ when: When) {
+}
+
+extension MovableSprite {
+
+    func resolveWhen(_ this: Scene,_ foo: (MovableSprite & Spriteable),_ when: When) {
         
         switch when {
         case .jumpWhen(let userAction): resolveUserAction(this, userAction, foo.jump)
@@ -33,7 +37,7 @@ extension BasicSprite {
         
     }
     
-    func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (BasicSprite) -> ()) {
+    func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (MovableSprite) -> ()) {
         switch userAction {
         case .thisBumped(let dir): bumpedFromTop.append(action)
             switch dir {
@@ -43,13 +47,13 @@ extension BasicSprite {
             case .right: bumpedFromRight.append(action)
             }
             
-        case .yPositionIsLessThanZeroThenSetPositionToZero:
-            this.annoyance.append {
-                if self.position.y < 0 {
-                    self.position.y = 0
-                    self.stopMoving(.down)
-                }
-            }
+//        case .yPositionIsLessThanZeroThenSetPositionToZero:
+//            this.annoyance.append {
+//                if self.position.y < 0 {
+//                    self.position.y = 0
+//                    self.stopMoving(.down)
+//                }
+//            }
             
         default: fatalError()
         }
@@ -68,8 +72,8 @@ extension BasicSprite {
             this.doThisWhenStanding.append(action)
             
         case .notOnGround:
-            run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
-                if !self.onGround {
+            run(.repeatForever(.sequence([.wait(forDuration: 0.05), .run {
+                if self.onGround.isEmpty {
                     action()
                 }
             }])))

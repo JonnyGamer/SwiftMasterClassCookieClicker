@@ -13,11 +13,13 @@ protocol Spriteable {
 }
 
 class BasicSprite {
-    var isPlayer: Bool { return false }
-    //var position: (x: Int, y: Int) = (0,0)
     
     var frame = (x: 16, y: 16)
-    var skNode: SKNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
+    var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
+    init(box: (Int, Int)) {
+        skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
+        frame = box
+    }
     
     func startPosition(_ n: (x: Int, y: Int)) {
         position = n
@@ -34,21 +36,35 @@ class BasicSprite {
         skNode.run(this)
     }
     
+}
+
+
+class MovableSprite: BasicSprite {
+    var isPlayer: Bool { return false }
+    
+    
+    
     var bounceHeight: Int { 8 }
     
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
-        if onGround {
-            fallingVelocity = height ?? bounceHeight
-            fall()
+        if !onGround.isEmpty {
+            onGround.removeAll(where: { $0.velocity.dy < bounceHeight })
+            if onGround.isEmpty {
+                fallingVelocity = height ?? bounceHeight
+                fall()
+            }
         }
     }
     
     var fallingVelocity = 0
     func fall() {
-        onGround = false
+        //onGround = false
         position.y += fallingVelocity
-        fallingVelocity -= 2
+        fallingVelocity -= 1
+        if fallingVelocity <= -((frame.y/2)+1) {
+            fallingVelocity = -((frame.y/2)+1)
+        }
     }
     
     func move(_ direction: Direction) {
@@ -66,11 +82,11 @@ class BasicSprite {
         previousPosition = position
     }
     
-    var onGround = false
+    var onGround: [BasicSprite] = []// = false
     func stopMoving(_ direction: Direction) {
-        if direction == .down {
-            onGround = true
-        }
+//        if direction == .down {
+//            onGround = true
+//        }
         if direction == .left {
             position.x += Int(velocity.dx)
         }
@@ -78,10 +94,12 @@ class BasicSprite {
             position.x -= Int(velocity.dx)
         }
     }
+    func landedOn(_ this: BasicSprite) {
+        
+    }
     
-    
-    var movingUp: Bool { return !onGround && fallingVelocity >= 0 }
-    var falling: Bool { return !onGround && fallingVelocity < 0 }
+    var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }
+    var falling: Bool { return onGround.isEmpty && fallingVelocity < 0 }
     
     var bumpedFromTop: [(Sprites) -> ()] = []
     var bumpedFromBottom: [(Sprites) -> ()] = []

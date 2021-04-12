@@ -27,7 +27,7 @@ enum UserAction {
     //case touchingNoWall(Direction)
     case notOnGround
     case neitherLeftNorRightButtonsAreBeingClicked
-    case yPositionIsLessThanZeroThenSetPositionToZero
+    //case yPositionIsLessThanZeroThenSetPositionToZero
 }
 
 enum Button {
