@@ -13,73 +13,122 @@ print("Hello, World!")
 enum Button {
     case jump, left, right
 }
+enum Direction {
+    case up, down, left, right
+}; extension Array where Element == Direction { static func all() -> Self { return [.up, .down, .left, .right] } }
 
-enum OnScreenObject {
-    case sideWall
-}
+//enum OnScreenObject {
+//    case wall
+//}
 
 enum UserAction {
     case pressedButton(Button)
     
-    case playerIsInside(OnScreenObject)
-    case playerBumpedLeft(OnScreenObject)
-    case playerBumpedTop(OnScreenObject)
-    case playerBumpedRight(OnScreenObject)
-    case playerBumpedBottom(OnScreenObject)
+    case thisBumped(Direction)
     
     case playerIsLeftOfSelf
     case playerIsRightOfSelf
+    case playerHasSameXPositionAsSelf
 }
 
 enum When {
     case jumpWhen(UserAction)
     case moveLeftWhen(UserAction)
     case moveRightWhen(UserAction)
-    //case dontMoveWhen(UserAction)
     
-    case stopMovingLeftWhen(UserAction)
-    case stopMovingRightWhen(UserAction)
-    case stopFallingWhen(UserAction)
+    case stopObjectFromMoving(Direction, when: UserAction)
+    
+    case bounceObjectWhen(UserAction)
     
     case not
 }
 
 
 protocol Spriteable {
-    var moveJump: When { get set }
-    var moveLeft: When { get set }
-    var moveRight: When { get set }
+//    var moveJump: When { get set }
+//    var moveLeft: When { get set }
+//    var moveRight: When { get set }
+//
+//    //var stopMovingUp: When { get set }
+//    //var stopMovingDown: When { get set }
+//    //var startMovingDown: When { get set }
+//    //var stopMovingLeft: When { get set }
+//    //var stopMovingRight: When { get set }
+//    var bounceObject: When { get set }
+//    var stopObject: [When] { get set }
+    
+    var specificActions: [When] { get }
 }
 
-class Sprites {
-    func jump() {}
-    func move(_ direction: Button) {}
+class BasicSprite {
     var isPlayer: Bool { return false }
     var position: (x: Int, y: Int) = (0,0)
     func run(_ this: SKAction) {}
-    //var whenBumped
+    var bounceHeight = 0
+    
+    func jump() { jump(nil) }
+    func jump(_ height: Int?) {}
+    
+    func move(_ direction: Button) {}
+    func stopMoving(_ direction: Direction) {}
+    
+    var bumpedFromTop: [(Sprites) -> ()] = []
+    var bumpedFromBottom: [(Sprites) -> ()] = []
+    var bumpedFromLeft: [(Sprites) -> ()] = []
+    var bumpedFromRight: [(Sprites) -> ()] = []
+    
 }
 
-class Inky: Sprites, Spriteable {
-    var moveJump: When = .jumpWhen(.pressedButton(.jump))
-    var moveLeft: When = .moveLeftWhen(.pressedButton(.left))
-    var moveRight: When = .moveRightWhen(.pressedButton(.right))
-    
-    var stopMoving: When = .dontMoveWhen(.playerBumped(.sideWall))
+class Sprites: BasicSprite, Spriteable {
+    var specificActions: [When] { [
+        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+    ] }
+}
+
+class Inky: Sprites {
+    override var specificActions: [When] {
+        return super.specificActions + [
+            .jumpWhen(.pressedButton(.jump)),
+            .moveLeftWhen(.pressedButton(.left)),
+            .moveRightWhen(.pressedButton(.right)),
+        ]
+    }
     override var isPlayer: Bool { return true }
 }
 
+
+
 // Rule For All Enemies
-class Enemy: Sprites {
-    var moveJump: When = .not
+class Enemy: BasicSprite, Spriteable {
+    var specificActions: [When] { [] }
 }
 
 // Rule for Specific Enemies
-class Chaser: Enemy, Spriteable {
-    var moveLeft: When = .moveLeftWhen(.playerIsLeftOfSelf)
-    var moveRight: When = .moveRightWhen(.playerIsRightOfSelf)
+class Chaser: Enemy {
+    override var specificActions: [When] {
+        return super.specificActions + [
+            .moveLeftWhen(.playerIsLeftOfSelf),
+            .moveRightWhen(.playerIsRightOfSelf)
+        ]
+    }
 }
 
+class Trampoline: BasicSprite, Spriteable {
+    
+    var bounciness: Int = 0
+    
+    var specificActions: [When] {[
+        .bounceObjectWhen(.thisBumped(.up)),
+            
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+    ]}
+    
+}
 
 
 
@@ -93,9 +142,6 @@ class Scene {
     var doThisWhenJumpButtonIsPressed: [() -> ()] = []
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
-    
-    var doThisWhenCharacterIsLeftOfSelf: [() -> ()] = []
-    var doThisWhenCharacterIsRightOfSelf: [() -> ()] = []
     
     var players: [Sprites] = []
     
@@ -116,48 +162,83 @@ class Scene {
     }
     
     func upate() {
-        doThisWhenCharacterIsLeftOfSelf.run()
-        doThisWhenCharacterIsRightOfSelf.run()
+        
     }
     
 }
 
-extension Sprites {
+extension BasicSprite {
     func add(_ this: Scene) {
-        guard let foo = self as? (Sprites & Spriteable) else { fatalError() }
+        guard let foo = self as? (BasicSprite & Spriteable) else { fatalError() }
         
-        switch foo.moveJump {
-        case .jumpWhen(let j):
-            let action = foo.jump
+        for i in foo.specificActions {
+            resolveWhen(this, foo, i)
+        }
+    }
+    
+    func resolveWhen(_ this: Scene,_ foo: (BasicSprite & Spriteable),_ when: When) {
+        
+        switch when {
+        case .jumpWhen(let userAction): resolveUserAction(this, userAction, foo.jump)
+        case .moveLeftWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.left)})
+        case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
+        
+        case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
             
-            switch j {
-            case .pressedButton(let button):
-                switch button {
-                case .jump: this.doThisWhenJumpButtonIsPressed.append(action)
-                case .left: this.doThisWhenLeftButtonIsPressed.append(action)
-                case .right: this.doThisWhenRightButtonIsPressed.append(action)
-                }
-                
-            case .playerIsLeftOfSelf:
-                run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
-                    if this.players.allSatisfy({ $0.position.x < self.position.x }) {
-                        action()
-                    }
-                }])))
-            case .playerIsRightOfSelf:
-                run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
-                    if this.players.allSatisfy({ self.position.x < $0.position.x }) {
-                        action()
-                    }
-                }])))
-                
-            default: fatalError()
-            }
+        case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(dir) })
             
         default: fatalError()
         }
         
-        
+    }
+    
+    func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (BasicSprite) -> ()) {
+        switch userAction {
+        case .thisBumped(let dir): bumpedFromTop.append(action)
+            switch dir {
+            case .up: bumpedFromTop.append(action)
+            case .down: bumpedFromBottom.append(action)
+            case .left: bumpedFromLeft.append(action)
+            case .right: bumpedFromRight.append(action)
+            }
+            
+        default: fatalError()
+        }
+    }
+    
+    func resolveUserAction(_ this: Scene,_ userAction: UserAction,_ action: @escaping () -> ()) {
+        switch userAction {
+        case .pressedButton(let button):
+            switch button {
+            case .jump: this.doThisWhenJumpButtonIsPressed.append(action)
+            case .left: this.doThisWhenLeftButtonIsPressed.append(action)
+            case .right: this.doThisWhenRightButtonIsPressed.append(action)
+            }
+            
+        //case .playerBumpedBottom(let objectType):
+            
+            
+        case .playerIsLeftOfSelf:
+            run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
+                if this.players.allSatisfy({ $0.position.x < self.position.x }) {
+                    action()
+                }
+            }])))
+        case .playerIsRightOfSelf:
+            run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
+                if this.players.allSatisfy({ self.position.x < $0.position.x }) {
+                    action()
+                }
+            }])))
+        case .playerHasSameXPositionAsSelf:
+            run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {
+                if this.players.allSatisfy({ self.position.x == $0.position.x }) {
+                    action()
+                }
+            }])))
+            
+        default: fatalError()
+        }
     }
 }
 
@@ -166,6 +247,7 @@ extension Array where Element == () -> () {
         forEach { $0() }
     }
 }
+
 
 //this.doThisWhenCharacterIsLeftOfSelf.append {
 //    if this.players.allSatisfy({ $0.position.x < self.position.x }) {
