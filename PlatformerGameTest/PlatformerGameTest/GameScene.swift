@@ -64,6 +64,7 @@ class Scene: MagicScene {
         let g = GROUND(box: (1000, 16))
         g.startPosition((-500, -8))
         g.add(self)
+        g.skNode.alpha = 0.5
         add(g)
         
         
@@ -135,11 +136,23 @@ class Scene: MagicScene {
             for j in sprites {
                 if i === j { continue }
                 
+                
+                // Falling Down
+                if (j.minY + j.velocity.dy) <= j.minY {
+                    print("YEAH!")
+                    if ((j.minY + j.velocity.dy)...j.minY).contains(i.maxY) {
+                        print("YEAH! YEAH!")
+                        (j as? MovableSprite)?.onGround.append(i)
+                        j.position.y = i.maxY
+                    }
+                }
+                
+                
                 if i.skNode.intersects(j.skNode) {
                     
-                    if i.midY > j.midY {
+                    if i.midY > (j.midY - j.velocity.dy) {
                         
-                        if i.maxY > j.minY, i.minY < j.maxY {
+                        if i.maxY > j.minY, i.minY <= j.maxY {
                             
                             if i.velocity.dy == -j.velocity.dy {
                                 i.position = i.previousPosition
@@ -187,6 +200,7 @@ class Scene: MagicScene {
                         }
                     }
                     
+                    print("HITO")
                 }
             }
         }
@@ -205,9 +219,9 @@ class Scene: MagicScene {
                     
                     return false
                 })
-//                if i.onGround.isEmpty, !i.falling {
-//                    i.fall()
-//                }
+                if i.onGround.isEmpty {
+                    i.fall()
+                }
             }
         }
         

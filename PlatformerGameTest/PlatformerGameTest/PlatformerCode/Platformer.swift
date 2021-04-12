@@ -52,7 +52,7 @@ class Enemy: MovableSprite, Spriteable {
 
 // Rule for Specific Enemies
 class Chaser: Enemy {
-    override var bounceHeight: Int { 10 }
+    override var bounceHeight: Int { 16 }
     
     override var specificActions: [When] {
         return super.specificActions + [

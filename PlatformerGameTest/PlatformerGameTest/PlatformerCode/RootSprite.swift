@@ -26,7 +26,10 @@ class BasicSprite {
         position = n
     }
     var position: (x: Int, y: Int) = (0,0) {
-        willSet { previousPosition = position }
+        willSet {
+            //print("-", previousPosition, position)
+            previousPosition = position
+        }
         didSet{ skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2) }
     }
     var previousPosition: (x: Int, y: Int) = (0,0)
@@ -59,11 +62,12 @@ class MovableSprite: BasicSprite {
     
     var fallingVelocity = 0
     func fall() {
+        //print("--", position.y)
         //onGround = false
         position.y += fallingVelocity
         fallingVelocity -= 1
-        if fallingVelocity <= -((frame.y/2)+1) {
-            fallingVelocity = -((frame.y/2)+1)
+        if fallingVelocity <= -7 {
+            fallingVelocity = -7
         }
     }
     
@@ -78,8 +82,10 @@ class MovableSprite: BasicSprite {
     }
     var standing = true
     func stand() {
-        standing = true
-        previousPosition = position
+        if !onGround.isEmpty {
+            standing = true
+            previousPosition = position
+        }
     }
     
     var onGround: [BasicSprite] = []// = false

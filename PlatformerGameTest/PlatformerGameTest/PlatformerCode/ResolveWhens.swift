@@ -71,12 +71,13 @@ extension MovableSprite {
         case .neitherLeftNorRightButtonsAreBeingClicked:
             this.doThisWhenStanding.append(action)
             
-        case .notOnGround:
-            run(.repeatForever(.sequence([.wait(forDuration: 0.05), .run {
-                if self.onGround.isEmpty {
-                    action()
-                }
-            }])))
+        case .notOnGround: break
+//        case .notOnGround:
+//            run(.repeatForever(.sequence([.wait(forDuration: 0.05), .run {
+//                if self.onGround.isEmpty {
+//                    action()
+//                }
+//            }])))
             
         case .playerIsLeftOfSelf:
             run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
