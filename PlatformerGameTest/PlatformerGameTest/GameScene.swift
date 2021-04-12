@@ -21,23 +21,31 @@ class MagicScene: SKScene {
 }
 
 class Scene: MagicScene {
+    var magicCamera: SKCameraNode = .init()
     
     var doThisWhenJumpButtonIsPressed: [() -> ()] = []
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
     
     var players: [Sprites] = []
+    var woah: SKNode!
     
     override func begin() {
         let player = Inky()
         player.add(self)
         players.append(player)
-        player.position.x = 10
+        player.position.x = 16
+        woah = player.skNode
         add(player)
         
         let enemy = Chaser()
         enemy.add(self)
         add(enemy)
+        
+        camera = magicCamera
+        magicCamera.position.y += scene!.frame.height/2
+        addChild(magicCamera)
+        //addChild(magicCamera)
     }
     
     func buttonPressed(_ button: Button) {
@@ -48,21 +56,48 @@ class Scene: MagicScene {
         }
     }
     
+    var pressingUp: Bool = false
+    var pressingLeft: Bool = false
+    var pressingRight: Bool = false
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 123 {
-            doThisWhenLeftButtonIsPressed.run()
+            pressingLeft = true
         }
         if event.keyCode == 124 {
-            doThisWhenRightButtonIsPressed.run()
+            pressingRight = true
         }
         if event.keyCode == 126 {
-            doThisWhenJumpButtonIsPressed.run()
+            pressingUp = true
         }
     }
-    
-    func upate() {
-        
+    override func keyUp(with event: NSEvent) {
+        if event.keyCode == 123 {
+            pressingLeft = false
+        }
+        if event.keyCode == 124 {
+            pressingRight = false
+        }
+//        if event.keyCode == 126 {
+//            pressingUp = false
+//        }
     }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if pressingUp {
+            doThisWhenJumpButtonIsPressed.run()
+            pressingUp = false
+        }
+        if pressingRight { doThisWhenRightButtonIsPressed.run() }
+        if pressingLeft { doThisWhenLeftButtonIsPressed.run() }
+        
+        magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
+    }
+    
+    var annoyance: [() -> ()] = []
+    override func didFinishUpdate() {
+        annoyance.run()
+    }
+    
 }
 
 //let sceno = Scene()

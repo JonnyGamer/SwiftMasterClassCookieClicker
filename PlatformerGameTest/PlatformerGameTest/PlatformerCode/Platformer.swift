@@ -19,6 +19,10 @@ class Sprites: BasicSprite, Spriteable {
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        
+        .stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
+        
+        .fallWhen(.notOnGround),
     ] }
 }
 
@@ -42,8 +46,14 @@ class Enemy: BasicSprite, Spriteable {
 
 // Rule for Specific Enemies
 class Chaser: Enemy {
+    override var bounceHeight: Int { 10 }
+    
     override var specificActions: [When] {
         return super.specificActions + [
+            .jumpWhen(.pressedButton(.jump)),
+            .fallWhen(.notOnGround),
+            .stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
+            
             .moveLeftWhen(.playerIsLeftOfSelf),
             .moveRightWhen(.playerIsRightOfSelf)
         ]
