@@ -53,7 +53,15 @@ class BasicSprite {
     func jump() { jump(nil) }
     func jump(_ height: Int?) {}
     
-    func move(_ direction: Button) {}
+    func move(_ direction: Direction) {
+        if direction == .left {
+            position.x -= 1
+        }
+        if direction == .right {
+            position.x += 1
+        }
+    }
+    
     func stopMoving(_ direction: Direction) {}
     
     var bumpedFromTop: [(Sprites) -> ()] = []
@@ -119,9 +127,6 @@ class Trampoline: BasicSprite, Spriteable {
 
 
 class Scene {
-    var charactersThatJumpWhenJumpButtonIsPressed: [Sprites] = []
-    var charactersThatMoveLeftWhenLeftButtonIsPressed: [Sprites] = []
-    var charactersThatMoveRightWhenRightButtonIsPressed: [Sprites] = []
     
     var doThisWhenJumpButtonIsPressed: [() -> ()] = []
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
@@ -133,8 +138,9 @@ class Scene {
         let player = Inky()
         player.add(self)
         players.append(player)
+        player.position.x += 1
         
-        let enemy = Chaser()
+        let enemy = Chaser().add(self)
     }
     
     func buttonPressed(_ button: Button) {
@@ -148,8 +154,11 @@ class Scene {
     func upate() {
         
     }
-    
 }
+
+let sceno = Scene()
+sceno.begin()
+
 
 extension BasicSprite {
     func add(_ this: Scene) {
@@ -170,8 +179,6 @@ extension BasicSprite {
         case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
             
         case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(dir) })
-            
-        default: fatalError()
         }
         
     }
