@@ -28,7 +28,7 @@ class BasicSprite {
         didSet{ skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2) }
     }
     var previousPosition: (x: Int, y: Int) = (0,0)
-    var velocity: (dx: Int, dy: Int) { return (dx: previousPosition.x - position.x, dy: previousPosition.y - position.y) }
+    var velocity: (dx: Int, dy: Int) { return (dx: position.x - previousPosition.x, dy: position.y - previousPosition.y) }
     
     func run(_ this: SKAction) {
         skNode.run(this)

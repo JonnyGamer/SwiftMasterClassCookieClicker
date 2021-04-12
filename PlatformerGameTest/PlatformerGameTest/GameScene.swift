@@ -46,8 +46,10 @@ class Scene: MagicScene {
         
         let enemy = Chaser()
         enemy.add(self)
-        enemy.startPosition((0,0))
+        enemy.startPosition((-64,0))
         add(enemy)
+        
+        addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
         camera = magicCamera
         magicCamera.position.y += scene!.frame.height/2
@@ -110,17 +112,19 @@ class Scene: MagicScene {
                 if i === j { continue }
                 
                 if i.skNode.intersects(j.skNode) {
-                    i.velocity
                     
-                    
-                    // COLLISION :.
-                    j.stopMoving(.left)
-                    
-                    i.stopMoving(.right)
-                    
-                    print("COLLISION")
+                    if i.maxX > j.minX {
+                        if i.velocity.dx == -j.velocity.dx {
+                            i.position = i.previousPosition
+                            j.position = j.previousPosition
+                            
+                        } else if -i.velocity.dx < j.velocity.dx {
+                            i.position.x = j.maxX// j.velocity.dx//  = (i.position.x + j.velocity.dx, i.position.y)
+                        } else {
+                            j.position.x = i.minX - i.frame.x// += i.velocity.dx
+                        }
+                    }
                 }
-                
             }
         }
         
