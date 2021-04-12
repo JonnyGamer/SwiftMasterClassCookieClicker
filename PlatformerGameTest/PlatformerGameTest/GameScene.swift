@@ -40,13 +40,13 @@ class Scene: MagicScene {
         let player = Inky()
         player.add(self)
         players.append(player)
-        player.startPosition((64,0))
+        player.startPosition((-64,0))
         woah = player.skNode
         add(player)
         
         let enemy = Chaser()
         enemy.add(self)
-        enemy.startPosition((-64,0))
+        enemy.startPosition((64,0))
         add(enemy)
         
         addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
@@ -113,17 +113,19 @@ class Scene: MagicScene {
                 
                 if i.skNode.intersects(j.skNode) {
                     
-                    if i.maxX > j.minX {
-                        if i.velocity.dx == -j.velocity.dx {
-                            i.position = i.previousPosition
-                            j.position = j.previousPosition
-                            
-                        } else if -i.velocity.dx < j.velocity.dx {
-                            i.position.x = j.maxX// j.velocity.dx//  = (i.position.x + j.velocity.dx, i.position.y)
-                        } else {
-                            j.position.x = i.minX - i.frame.x// += i.velocity.dx
+                    if i.midX > j.midX {
+                        if i.maxX > j.minX, i.minX < j.maxX {
+                            if i.velocity.dx == -j.velocity.dx {
+                                i.position = i.previousPosition
+                                j.position = j.previousPosition
+                            } else if -i.velocity.dx < j.velocity.dx {
+                                i.position.x = j.maxX
+                            } else {
+                                j.position.x = i.minX - j.frame.x
+                            }
                         }
                     }
+                    
                 }
             }
         }
