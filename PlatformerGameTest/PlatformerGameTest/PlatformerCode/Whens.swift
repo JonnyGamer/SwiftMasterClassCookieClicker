@@ -14,6 +14,7 @@ enum When {
     case stopObjectFromMoving(Direction, when: UserAction)
     case bounceObjectWhen(UserAction)
     case fallWhen(UserAction)
+    case standWhen(UserAction)
 }
 
 enum UserAction {
@@ -25,6 +26,7 @@ enum UserAction {
     
     //case touchingNoWall(Direction)
     case notOnGround
+    case neitherLeftNorRightButtonsAreBeingClicked
     case yPositionIsLessThanZeroThenSetPositionToZero
 }
 

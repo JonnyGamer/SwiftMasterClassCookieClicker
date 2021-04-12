@@ -32,6 +32,7 @@ class Inky: Sprites {
             .jumpWhen(.pressedButton(.jump)),
             .moveLeftWhen(.pressedButton(.left)),
             .moveRightWhen(.pressedButton(.right)),
+            .standWhen(.neitherLeftNorRightButtonsAreBeingClicked),
         ]
     }
     override var isPlayer: Bool { return true }
@@ -61,17 +62,17 @@ class Chaser: Enemy {
 }
 
 class Trampoline: BasicSprite, Spriteable {
-    
+
     var bounciness: Int = 0
-    
+
     var specificActions: [When] {[
         .bounceObjectWhen(.thisBumped(.up)),
-            
+
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
     ]}
-    
+
 }
 
 

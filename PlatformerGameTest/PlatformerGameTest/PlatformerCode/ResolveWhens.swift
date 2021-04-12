@@ -23,10 +23,12 @@ extension BasicSprite {
         case .moveLeftWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.left)})
         case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
         case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
+        case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
             
         case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
             
         case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(dir) })
+            
         }
         
     }
@@ -48,13 +50,6 @@ extension BasicSprite {
                     self.stopMoving(.down)
                 }
             }
-//            run(.repeatForever(.sequence([.wait(forDuration: 0.01), .run {
-//                if self.position.y < 0 {
-//                    self.position.y = 0
-//                    self.stopMoving(.down)
-//                }
-//            }])))
-            
             
         default: fatalError()
         }
@@ -69,6 +64,8 @@ extension BasicSprite {
             case .right: this.doThisWhenRightButtonIsPressed.append(action)
             }
 
+        case .neitherLeftNorRightButtonsAreBeingClicked:
+            this.doThisWhenStanding.append(action)
             
         case .notOnGround:
             run(.repeatForever(.sequence([.wait(forDuration: 0.1), .run {

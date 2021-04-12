@@ -11,8 +11,11 @@ import GameplayKit
 //class GameScene: SKScene {
 //
 //}
-extension SKScene {
-    func add(_ this: BasicSprite) { addChild(this.skNode) }
+extension Scene {
+    func add(_ this: BasicSprite) {
+        sprites.append(this)
+        addChild(this.skNode)
+    }
 }
 
 class MagicScene: SKScene {
@@ -26,20 +29,24 @@ class Scene: MagicScene {
     var doThisWhenJumpButtonIsPressed: [() -> ()] = []
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
+    var doThisWhenStanding: [() -> ()] = []
     
     var players: [Sprites] = []
     var woah: SKNode!
+    
+    var sprites: [BasicSprite] = []
     
     override func begin() {
         let player = Inky()
         player.add(self)
         players.append(player)
-        player.position.x = 16
+        player.startPosition((64,0))
         woah = player.skNode
         add(player)
         
         let enemy = Chaser()
         enemy.add(self)
+        enemy.startPosition((0,0))
         add(enemy)
         
         camera = magicCamera
@@ -89,6 +96,7 @@ class Scene: MagicScene {
         }
         if pressingRight { doThisWhenRightButtonIsPressed.run() }
         if pressingLeft { doThisWhenLeftButtonIsPressed.run() }
+        if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
     }
@@ -96,6 +104,26 @@ class Scene: MagicScene {
     var annoyance: [() -> ()] = []
     override func didFinishUpdate() {
         annoyance.run()
+        
+        for i in sprites {
+            for j in sprites {
+                if i === j { continue }
+                
+                if i.skNode.intersects(j.skNode) {
+                    i.velocity
+                    
+                    
+                    // COLLISION :.
+                    j.stopMoving(.left)
+                    
+                    i.stopMoving(.right)
+                    
+                    print("COLLISION")
+                }
+                
+            }
+        }
+        
     }
     
 }
