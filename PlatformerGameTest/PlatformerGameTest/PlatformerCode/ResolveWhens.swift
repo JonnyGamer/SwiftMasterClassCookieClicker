@@ -51,9 +51,13 @@ extension BasicSprite {
     
     func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (MovableSprite) -> ()) {
         switch userAction {
-        case .thisBumped(let dir): bumpedFromTop.append(action)
+        case .thisBumped(let dir):
             switch dir {
-            case .up: bumpedFromTop.append(action)
+            case .up:
+                print("OK")
+                print(bumpedFromTop.count)
+                bumpedFromTop.append(action)
+                print(bumpedFromTop.count)
             case .down: bumpedFromBottom.append(action)
             case .left: bumpedFromLeft.append(action)
             case .right: bumpedFromRight.append(action)

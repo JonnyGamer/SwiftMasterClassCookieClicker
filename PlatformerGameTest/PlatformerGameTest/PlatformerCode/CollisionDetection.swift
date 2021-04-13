@@ -22,6 +22,69 @@ extension Scene {
                 if j.onGround.contains(where: { $0 === i }) { break foo }
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
+                if j.velocity.dy < 0, i.velocity.dy >= 0 {
+                    // This line is needed, Otherwise bad bugs when pushing -> then jumping
+                    //if j.maxX - j.velocity.dx <= i.minX { break foo }
+                    //if j.minX - j.velocity.dx >= i.minX { break foo }
+                    if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+                        i.bumpedFromBottom.forEach { $0(j) }
+                    }
+                
+                } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
+                    // This line is needed, Otherwise bad bugs when pushing -> then jumping
+                    //if j.maxX - j.velocity.dx <= i.minX { break foo }
+                    //if j.minX - j.velocity.dx >= i.minX { break foo }
+                    if (j.minY...(j.maxY + j.velocity.dy)).contains(i.minY) {
+                        print(i, j)
+                        i.bumpedFromTop.forEach { $0(j) }
+                    }
+                    
+                // Both are moving downwards
+                } else if j.velocity.dy < 0, i.velocity.dy < 0 {
+                    if i.previousPosition.y < j.previousPosition.y {
+                        if (i.position.y...i.previousPosition.y+i.frame.y).overlaps(j.position.y...j.previousPosition.y+i.frame.y) {
+                            if j.velocity.dy < i.velocity.dy {
+                                i.bumpedFromBottom.forEach { $0(j) }
+                            }
+                        }
+                    } else if i.previousPosition.y > j.previousPosition.y {
+                        
+                    }
+//
+//                    if j.position.y - j.velocity.dy < i.position.y - i.velocity.dy {
+//                        if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+//                            i.bumpedFromTop.forEach { $0(j) }
+//                        }
+//                    } else if j.position.y - j.velocity.dy > i.position.y - i.velocity.dy {
+//                        if let i = i as? MovableSprite {
+//                            if ((i.minY + (i.velocity.dy-1))...(i.maxY)).contains(j.maxY) {
+//                                j.bumpedFromTop.forEach { $0(i) }
+//                            }
+//                        }
+//                    }
+                    
+                // If both are moving upwards
+                } else if j.velocity.dy > 0, i.velocity.dy > 0 {
+                    
+                    // If i was lower than j.
+                    if i.previousPosition.y < j.previousPosition.y {
+                        if i.maxY > j.minY {
+                            i.bumpedFromBottom.forEach {$0(j) }
+                        }
+                        
+                    }
+                }
+                
+            }
+            
+            
+            foo: if let j = j as? MovableSprite, false {
+                if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
+                if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+                
+                if j.onGround.contains(where: { $0 === i }) { break foo }
+                if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
+                
                 if j.velocity.dy < 0 {
                     if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                         i.bumpedFromBottom.forEach { $0(j) }
@@ -161,3 +224,49 @@ extension Scene {
     }
     
 }
+
+
+//if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
+//if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+//
+//if j.onGround.contains(where: { $0 === i }) { break foo }
+//if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
+//
+//
+//
+//if j.velocity.dy < 0, i.velocity.dy == 0 {
+//    // This line is needed, Otherwise bad bugs when pushing -> then jumping
+//    if j.maxX - j.velocity.dx <= i.minX { break foo }
+//    if j.minX - j.velocity.dx >= i.minX { break foo }
+//    if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
+//        i.bumpedFromBottom.forEach { $0(j) }
+//    }
+//
+//} else if j.velocity.dy > 0, i.velocity.dy == 0 {
+//    // This line is needed, Otherwise bad bugs when pushing -> then jumping
+//    if j.maxX - j.velocity.dx <= i.minX { break foo }
+//    if j.minX - j.velocity.dx >= i.minX { break foo }
+//    if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
+//        i.bumpedFromBottom.forEach { $0(j) }
+//    }
+//
+//} else if j.velocity.dy == 0, i.velocity.dy == 0 {
+//
+//
+//// ROUND 2
+//} else if j.velocity.dy < 0, i.velocity.dy < 0 {
+//
+//} else if j.velocity.dy > 0, i.velocity.dy < 0 {
+//
+//} else if j.velocity.dy == 0, i.velocity.dy < 0 {
+//
+//// ROUND 3
+//} else if j.velocity.dy < 0, i.velocity.dy > 0 {
+//
+//} else if j.velocity.dy > 0, i.velocity.dy > 0 {
+//
+//} else if j.velocity.dy == 0, i.velocity.dy > 0 {
+//
+//}
+//
+//break foo
