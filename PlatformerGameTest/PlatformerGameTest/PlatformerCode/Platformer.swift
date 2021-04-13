@@ -24,7 +24,7 @@ class GROUND: BasicSprite, Spriteable {
 
 class Inky: MovableSprite, Spriteable {
     var specificActions: [When] = [
-        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        .allowObjectToPush(.up, when: .thisBumped(.up)),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
@@ -57,6 +57,7 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.right, when: .thisBumped(.right)),
         .allowObjectToPush(.left, when: .thisBumped(.left)),
+        .allowObjectToPush(.up, when: .thisBumped(.up)),
         
         //.moveLeftWhen(.playerIsLeftOfSelf),
         //.moveRightWhen(.playerIsRightOfSelf)

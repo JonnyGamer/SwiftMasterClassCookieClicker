@@ -23,54 +23,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "952502F5-777C-4CBB-AF29-F0D797ABE815"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlatformerGameTest/GameScene.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "didFinishUpdate()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "952502F5-777C-4CBB-AF29-F0D797ABE815 - 768fd7a4667bb742"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PlatformerGameTest.Scene.didFinishUpdate() -&gt; ()"
-                  moduleName = "PlatformerGameTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "4672">
-               </Location>
-               <Location
-                  uuid = "952502F5-777C-4CBB-AF29-F0D797ABE815 - 3234926f43cce1f7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 ((PlatformerGameTest.MovableSprite) -&gt; ()) -&gt; () in PlatformerGameTest.Scene.didFinishUpdate() -&gt; ()"
-                  moduleName = "PlatformerGameTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "41">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "1CB90875-6D05-4F73-BAE1-1D04CC3375B3"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -87,8 +39,8 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FE4A0708-F39E-4D49-8604-1BEF82C0C59C"
-            shouldBeEnabled = "No"
+            uuid = "F3AA5492-B471-4FA7-94A9-AF56733185F5"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PlatformerGameTest/GameScene.swift"
@@ -100,7 +52,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "FE4A0708-F39E-4D49-8604-1BEF82C0C59C - 768fd7a4667b497c"
+                  uuid = "F3AA5492-B471-4FA7-94A9-AF56733185F5 - 768fd7a4667bb604"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -110,12 +62,12 @@
                   urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "6782">
+                  startingLineNumber = "171"
+                  endingLineNumber = "171"
+                  offsetFromSymbolStart = "5804">
                </Location>
                <Location
-                  uuid = "FE4A0708-F39E-4D49-8604-1BEF82C0C59C - c3e52ee2485cf3c7"
+                  uuid = "F3AA5492-B471-4FA7-94A9-AF56733185F5 - c3e52ee2485c0cbf"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -125,11 +77,139 @@
                   urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
+                  startingLineNumber = "171"
+                  endingLineNumber = "171"
                   offsetFromSymbolStart = "41">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "55537B87-D09F-45DF-BBE1-30688E343BD5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "stopMoving(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2446766B-9003-4BCA-84AA-BCD1CB6F4B3E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "pushDirection(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "33024DE6-C262-4BFD-8845-4CA45AFCD844"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/GameScene.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "didFinishUpdate()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "33024DE6-C262-4BFD-8845-4CA45AFCD844 - 768fd7a4667bb788"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PlatformerGameTest.Scene.didFinishUpdate() -&gt; ()"
+                  moduleName = "PlatformerGameTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "159"
+                  endingLineNumber = "159"
+                  offsetFromSymbolStart = "3890">
+               </Location>
+               <Location
+                  uuid = "33024DE6-C262-4BFD-8845-4CA45AFCD844 - 3234926f43cce13d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 ((PlatformerGameTest.MovableSprite) -&gt; ()) -&gt; () in PlatformerGameTest.Scene.didFinishUpdate() -&gt; ()"
+                  moduleName = "PlatformerGameTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/PlatformerGameTest/PlatformerGameTest/GameScene.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "159"
+                  endingLineNumber = "159"
+                  offsetFromSymbolStart = "41">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9585948-719D-41E3-89AD-F3417D8D70D7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "position"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A5CCFE0A-7E74-4C42-AACA-BF933395243C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "position"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6A8A066F-8030-47EE-99D9-A48EBDE1698E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "position"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

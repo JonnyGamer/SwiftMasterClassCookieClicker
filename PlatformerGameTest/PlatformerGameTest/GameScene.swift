@@ -168,7 +168,7 @@ class Scene: MagicScene {
                                 if i.velocity.dy < j.velocity.dy {
                                     if !i.onGround.contains(where: { $0 === j }) {
                                         //i.landedOn(j)
-                                        i.bumpedFromBottom.forEach { $0(j) }
+                                        j.bumpedFromBottom.forEach { $0(i) }
                                         print("-", i)
                                     }
                                 }
@@ -202,8 +202,8 @@ class Scene: MagicScene {
                     // Only Runs When Side by Side
                     if i.maxX > j.minX, i.minX < j.maxX {
                         if i.velocity.dx == -j.velocity.dx {
-                            i.position = i.previousPosition
-                            j.position = j.previousPosition
+                            i.position.x = i.previousPosition.x
+                            j.position.x = j.previousPosition.x
                         } else if -i.velocity.dx < j.velocity.dx {
                             
                             //i.position.x += j.velocity.dx
