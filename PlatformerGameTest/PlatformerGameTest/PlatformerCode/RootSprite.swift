@@ -132,9 +132,10 @@ class MovableSprite: BasicSprite {
         
         // Still working on UP??
         if direction == .up {
-            if velocity.dy > 0 {
+            position.y = hit.minY - frame.y
+            //if velocity.dy > 0 {
                 //hit.position.y += velocity.dy
-            }
+            //}
         }
         
         if direction == .left {

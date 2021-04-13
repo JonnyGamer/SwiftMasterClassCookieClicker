@@ -15,6 +15,7 @@ class GROUND: BasicSprite, Spriteable {
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
     ]
 }
 

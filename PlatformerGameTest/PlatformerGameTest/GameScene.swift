@@ -71,6 +71,13 @@ class Scene: MagicScene {
         g.add(self)
         g.skNode.alpha = 0.5
         add(g)
+        
+        let g4 = GROUND(box: (300, 16))
+        g4.startPosition((-400, -8+16+16))
+        g4.add(self)
+        g4.skNode.alpha = 0.5
+        add(g4)
+        
 
         let g2 = GROUND(box: (16, 1000))
         g2.startPosition((200, -8))
@@ -153,7 +160,7 @@ class Scene: MagicScene {
     override func didFinishUpdate() {
         annoyance.run()
         print("-")
-        
+        print("ok")
         for i in sprites.shuffled() {
             checkForCollision(i)
         }

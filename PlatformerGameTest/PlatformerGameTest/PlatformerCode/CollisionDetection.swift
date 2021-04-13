@@ -33,6 +33,8 @@ extension Scene {
                         //checkForCollision(i) ////
                         print("-", j)
                     }
+                    
+                    
                 } else if j.velocity.dy > 0, let i = i as? MovableSprite {
                     if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
                         if i.velocity.dy < j.velocity.dy {
