@@ -90,13 +90,13 @@ class Scene: MagicScene {
     var pressingLeft: Bool = false
     var pressingRight: Bool = false
     override func keyDown(with event: NSEvent) {
-        if event.keyCode == 123 {
+        if event.keyCode == 123, !pressingLeft {
             pressingLeft = true
         }
-        if event.keyCode == 124 {
+        if event.keyCode == 124, !pressingRight {
             pressingRight = true
         }
-        if event.keyCode == 126 {
+        if event.keyCode == 126, !pressingUp {
             pressingUp = true
         }
     }
@@ -143,9 +143,9 @@ class Scene: MagicScene {
                     if j.onGround.contains(where: { $0 === i }) { break foo }
                     if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                     
-                    if j.velocity.dy < 0 {// (j.minY + j.velocity.dy) <= j.minY {
+                    if j.velocity.dy < 0 {
                         
-                        if (j.minY...(j.maxY - j.velocity.dy)).contains(i.maxY) {
+                        if ((j.minY + (j.velocity.dy+1))...(j.maxY)).contains(i.maxY) {
                             if !j.onGround.contains(where: { $0 === i }) {
                                 if j === players[0], i.frame.x == 16 {
                                     print("Foo")
@@ -153,9 +153,9 @@ class Scene: MagicScene {
                                 j.landedOn(i)
                                 print("-", j)
                             }
+                        } else {
+                            print("HMMM...")
                         }
-                    } else if j.velocity.dy == 0 {
-                        //print("AUGH")
                     } else if j.velocity.dy > 0 {
                         
                         if let i = i as? MovableSprite {
@@ -172,40 +172,7 @@ class Scene: MagicScene {
                         }
                     }
                     
-                    // Coming Up
-                    
                 }
-                
-                if i.skNode.intersects(j.skNode) {
-                    
-//                    if i.midY > (j.midY - j.velocity.dy) {
-//
-//                        if i.maxY > j.minY, i.minY <= j.maxY {
-//
-//                            if i.velocity.dy == -j.velocity.dy {
-//                                i.position = i.previousPosition
-//                                j.position = j.previousPosition
-//                            } else if -i.velocity.dy < j.velocity.dy {
-//                                print("LANDED ON")
-//
-//                                if let i = i as? MovableSprite {
-//                                    i.onGround.append(j)// = true
-//                                    i.position.y += j.velocity.dy
-//                                }
-//
-//                            } else {
-//                                if let j = j as? MovableSprite, j.onGround.isEmpty {
-//                                    j.position.y += i.velocity.dy
-//                                } else if let i = i as? MovableSprite {
-//                                    i.onGround.append(j)// = true
-//                                    i.position.y = j.maxY
-//                                }
-//
-//                                print("LANDED ON 2, \(i.velocity), \(j.velocity)")
-//                            }
-//                        }
-//
-//                    }
                     
                     //if i.minX
                     if i.midX > j.midX {
@@ -231,7 +198,7 @@ class Scene: MagicScene {
                     }
                     
                     //print("HITO")
-                }
+               // }
             }
         }
         print("---", players[0].velocity)
@@ -263,6 +230,10 @@ class Scene: MagicScene {
                     i.fall()
                 }
             }
+        }
+        
+        if players[0].minY < 0 {
+            print("NONONO")
         }
         
     }
