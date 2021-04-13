@@ -149,17 +149,8 @@ class Scene: MagicScene {
                 
                 // Falling Down
                 foo: if let j = j as? MovableSprite {
-                    print(j, i, "PRIMER 1")
-                    print("POOP", j.velocity, j.falling, (j.minY + (j.velocity.dy-1)), j.maxY, i.maxY)
-//                    PlatformerGameTest.Inky PlatformerGameTest.GROUND PRIMER 1
-//                    POOP (dx: 0, dy: 0) 7 12 8
-                    
                     if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
-                    if i.velocity.dy == 0, j.velocity.dy == 0 {
-                        //print("FALSE TEACHER")
-                        //i.bumpedFromBottom.forEach { $0(j) }
-                        break foo
-                    }
+                    if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
                     
                     if j.onGround.contains(where: { $0 === i }) { break foo }
                     if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
@@ -170,14 +161,9 @@ class Scene: MagicScene {
                                 i.bumpedFromBottom.forEach { $0(j) }
                                 print("-", j)
                             }
-                        } else if ((j.minY)...(j.maxY-((j.velocity.dy-1)))).contains(i.maxY) {
-                            print("Portugal")
-                        } else {
-                            
                         }
                     } else if j.velocity.dy > 0 {
-                        //print(j, i, "PRIMER 2")
-                        //print("POOP2", j.velocity, (j.minY + (j.velocity.dy-1)), j.maxY, i.maxY)
+                        
                         if let i = i as? MovableSprite {
                             
                             if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
@@ -194,13 +180,10 @@ class Scene: MagicScene {
                                 }
                             }
                         }
-                    } else {
-                        print("NOT HIT?")
                     }
                     
                 }
                     
-                //if i.minX
                 if i.midX > j.midX {
                     if j.midY > i.midY {
                         if j.minY >= i.maxY { continue }
@@ -217,9 +200,7 @@ class Scene: MagicScene {
                             
                             //i.position.x += j.velocity.dx
                             if let j = j as? MovableSprite {
-                                print("oop first uhoh if both zed", i, j, i.velocity.dy, j.velocity.dy)
                                 i.bumpedFromRight.forEach { $0(j) }
-                                print("oop first uhoh if both zed", i.velocity.dy, j.velocity.dy)
                             }
                             
                             //i.position.x = j.maxX

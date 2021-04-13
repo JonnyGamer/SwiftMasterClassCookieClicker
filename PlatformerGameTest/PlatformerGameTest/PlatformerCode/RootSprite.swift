@@ -131,19 +131,14 @@ class MovableSprite: BasicSprite {
             }
         }
         
-        //if direction == .left || direction == .right {
-            //position.x -= Int(velocity.dx)
-        //}
-        
         if direction == .left {
-            //position.x -= Int(velocity.dx)
             position.x = hit.maxX
-            leftGround.insert(hit)
+            //leftGround.insert(hit)
         }
         
         if direction == .right {
             position.x = hit.minX - frame.x
-            rightGround.insert(hit)
+            //rightGround.insert(hit)
         }
         
         
