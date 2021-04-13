@@ -16,7 +16,14 @@ protocol Spriteable {
     var bumpedFromRight: [(MovableSprite) -> ()] { get set }
 }
 
-class BasicSprite {
+class BasicSprite: Hashable {
+    static func == (lhs: BasicSprite, rhs: BasicSprite) -> Bool {
+        lhs === rhs
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine("\(self)")
+    }
+    
     
     var frame = (x: 16, y: 16)
     var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
@@ -68,7 +75,7 @@ class MovableSprite: BasicSprite {
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
         if !onGround.isEmpty {
-            onGround.removeAll(where: { $0.velocity.dy < bounceHeight })
+            onGround = onGround.filter { !($0.velocity.dy < bounceHeight) }
             if onGround.isEmpty {
                 fallingVelocity = height ?? bounceHeight
                 fall()
@@ -108,7 +115,10 @@ class MovableSprite: BasicSprite {
         }
     }
     
-    var onGround: [BasicSprite] = []// = false
+    var leftGround: Set<BasicSprite> = []// = false
+    var rightGround: Set<BasicSprite> = []// = false
+    
+    var onGround: Set<BasicSprite> = []// = false
     func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
         if direction == .down {
             landedOn(hit)
@@ -121,14 +131,27 @@ class MovableSprite: BasicSprite {
             }
         }
         
-        if direction == .left || direction == .right {
-            position.x -= Int(velocity.dx)
+        //if direction == .left || direction == .right {
+            //position.x -= Int(velocity.dx)
+        //}
+        
+        if direction == .left {
+            //position.x -= Int(velocity.dx)
+            position.x = hit.maxX
+            leftGround.insert(hit)
         }
+        
+        if direction == .right {
+            position.x = hit.minX - frame.x
+            rightGround.insert(hit)
+        }
+        
+        
     }
     
     func landedOn(_ this: BasicSprite) {
         fallingVelocity = 0
-        onGround.append(this)
+        onGround.insert(this)
         position.y = this.maxY
     }
     

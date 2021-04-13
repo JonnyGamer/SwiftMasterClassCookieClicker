@@ -51,14 +51,14 @@ class Chaser: MovableSprite, Spriteable {
     override var bounceHeight: Int { 16 }
     
     var specificActions: [When] = [
-        .jumpWhen(.pressedButton(.jump)),
+        //.jumpWhen(.pressedButton(.jump)),
         .fallWhen(.notOnGround),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         
-        //.stopObjectFromMoving(.left, when: .thisBumped(.left)),
-        //.stopObjectFromMoving(.right, when: .thisBumped(.right)),
-        .allowObjectToPush(.right, when: .thisBumped(.right)),
-        .allowObjectToPush(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        //.allowObjectToPush(.right, when: .thisBumped(.right)),
+        //.allowObjectToPush(.left, when: .thisBumped(.left)),
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         

@@ -139,30 +139,45 @@ class Scene: MagicScene {
     var annoyance: [() -> ()] = []
     override func didFinishUpdate() {
         annoyance.run()
+        print("-")
         
-        for i in sprites {
+        for i in sprites.shuffled() {
             
-            for j in sprites {
+            for j in sprites.shuffled() {
                 if i === j { continue }
                 
                 
                 // Falling Down
                 foo: if let j = j as? MovableSprite {
+                    print(j, i, "PRIMER 1")
+                    print("POOP", j.velocity, j.falling, (j.minY + (j.velocity.dy-1)), j.maxY, i.maxY)
+//                    PlatformerGameTest.Inky PlatformerGameTest.GROUND PRIMER 1
+//                    POOP (dx: 0, dy: 0) 7 12 8
+                    
                     if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
-                    if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+                    if i.velocity.dy == 0, j.velocity.dy == 0 {
+                        //print("FALSE TEACHER")
+                        //i.bumpedFromBottom.forEach { $0(j) }
+                        break foo
+                    }
+                    
                     if j.onGround.contains(where: { $0 === i }) { break foo }
                     if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                     
                     if j.velocity.dy < 0 {
-                        
                         if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                             if !j.onGround.contains(where: { $0 === i }) {
                                 i.bumpedFromBottom.forEach { $0(j) }
                                 print("-", j)
                             }
+                        } else if ((j.minY)...(j.maxY-((j.velocity.dy-1)))).contains(i.maxY) {
+                            print("Portugal")
+                        } else {
+                            
                         }
                     } else if j.velocity.dy > 0 {
-                        
+                        //print(j, i, "PRIMER 2")
+                        //print("POOP2", j.velocity, (j.minY + (j.velocity.dy-1)), j.maxY, i.maxY)
                         if let i = i as? MovableSprite {
                             
                             if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
@@ -171,6 +186,7 @@ class Scene: MagicScene {
                                         
                                         // This line is needed, Otherwise bad bugs when pushing -> then jumping
                                         if j.maxX - j.velocity.dx <= i.minX { break foo }
+                                        if j.minX - j.velocity.dx >= i.minX { break foo }
                                         
                                         j.bumpedFromBottom.forEach { $0(i) }
                                         print("-", i)
@@ -178,6 +194,8 @@ class Scene: MagicScene {
                                 }
                             }
                         }
+                    } else {
+                        print("NOT HIT?")
                     }
                     
                 }
@@ -199,7 +217,9 @@ class Scene: MagicScene {
                             
                             //i.position.x += j.velocity.dx
                             if let j = j as? MovableSprite {
+                                print("oop first uhoh if both zed", i, j, i.velocity.dy, j.velocity.dy)
                                 i.bumpedFromRight.forEach { $0(j) }
+                                print("oop first uhoh if both zed", i.velocity.dy, j.velocity.dy)
                             }
                             
                             //i.position.x = j.maxX
@@ -223,11 +243,12 @@ class Scene: MagicScene {
                 
                 let iOnGround = i.onGround
                 
-                i.onGround.removeAll(where: { j in
+                print(i, iOnGround.count)
+                i.onGround = i.onGround.filter { j in
                     
                     // Only stick on the highest ground.
                     if iOnGround.contains(where: { $0.maxY > j.maxY }) {
-                        return true
+                        return !true
                     }
                     
                     // Move with Ground X
@@ -242,14 +263,14 @@ class Scene: MagicScene {
                     
                     // Check if still on Ground...
                     if j.midX < i.midX {
-                        return i.minX >= j.maxX
+                        return !(i.minX >= j.maxX)
                     }
                     if i.midX < j.midX {
-                        return i.maxX <= j.minX
+                        return !(i.maxX <= j.minX)
                     }
                     
-                    return false
-                })
+                    return !false
+                }
                 
                 // If not on groud, fall
                 if i.onGround.isEmpty {
