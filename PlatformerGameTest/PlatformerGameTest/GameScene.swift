@@ -167,7 +167,10 @@ class Scene: MagicScene {
                             if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
                                 if i.velocity.dy < j.velocity.dy {
                                     if !i.onGround.contains(where: { $0 === j }) {
-                                        //i.landedOn(j)
+                                        
+                                        // This line is needed, Otherwise bad bugs when pushing -> then jumping
+                                        if j.maxX - j.velocity.dx <= i.minX { break foo }
+                                        
                                         j.bumpedFromBottom.forEach { $0(i) }
                                         print("-", i)
                                     }
