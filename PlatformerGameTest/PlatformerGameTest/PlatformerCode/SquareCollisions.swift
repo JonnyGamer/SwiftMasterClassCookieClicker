@@ -13,8 +13,8 @@ extension BasicSprite {
     var minY: Int { return position.y }
     var maxX: Int { return position.x + frame.x }
     var maxY: Int { return position.y + frame.y }
-    var midX: Int { return (position.x + frame.x)/2 }
-    var midY: Int { return (position.y + frame.y)/2 }
+    var midX: Int { return (minX + maxX)/2 }
+    var midY: Int { return (minY + maxY)/2 }
 }
 
 func collide(_ a: BasicSprite,_ b: BasicSprite) -> Direction? {

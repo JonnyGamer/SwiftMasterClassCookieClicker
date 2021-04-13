@@ -38,7 +38,7 @@ class Scene: MagicScene {
     var sprites: [BasicSprite] = []
     
     override func begin() {
-        let player = Inky(box: (16, 16))
+        let player = Inky(box: (4, 4))
         player.add(self)
         players.append(player)
         player.startPosition((-64,50))
@@ -122,63 +122,92 @@ class Scene: MagicScene {
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
+        print("---", players[0].velocity)
     }
     
     var annoyance: [() -> ()] = []
     override func didFinishUpdate() {
         annoyance.run()
         
+        print("---", players[0].velocity)
         for i in sprites {
-            if i === players[0] {
-                print(i.position.y)
-            }
             
             for j in sprites {
                 if i === j { continue }
                 
                 
                 // Falling Down
-                if (j.minY + j.velocity.dy) <= j.minY {
-                    print("YEAH!")
-                    if ((j.minY + j.velocity.dy)...j.minY).contains(i.maxY) {
-                        print("YEAH! YEAH!")
-                        (j as? MovableSprite)?.onGround.append(i)
-                        j.position.y = i.maxY
+                foo: if let j = j as? MovableSprite {
+                    if !(i.minX...i.maxX).overlaps(j.minX...j.maxX) { break foo }
+                    if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+                    if j.onGround.contains(where: { $0 === i }) { break foo }
+                    if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
+                    
+                    if j.velocity.dy < 0 {// (j.minY + j.velocity.dy) <= j.minY {
+                        
+                        if (j.minY...(j.maxY - j.velocity.dy)).contains(i.maxY) {
+                            if !j.onGround.contains(where: { $0 === i }) {
+                                if j === players[0], i.frame.x == 16 {
+                                    print("Foo")
+                                }
+                                j.landedOn(i)
+                                print("-", j)
+                            }
+                        }
+                    } else if j.velocity.dy == 0 {
+                        //print("AUGH")
+                    } else if j.velocity.dy > 0 {
+                        
+                        if let i = i as? MovableSprite {
+                            
+                            if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
+                                if i.velocity.dy < j.velocity.dy {
+                                    if !i.onGround.contains(where: { $0 === j }) {
+                                        i.landedOn(j)
+                                        print("-", i)
+                                    }
+                                }
+                            }
+                            
+                        }
                     }
+                    
+                    // Coming Up
+                    
                 }
-                
                 
                 if i.skNode.intersects(j.skNode) {
                     
-                    if i.midY > (j.midY - j.velocity.dy) {
-                        
-                        if i.maxY > j.minY, i.minY <= j.maxY {
-                            
-                            if i.velocity.dy == -j.velocity.dy {
-                                i.position = i.previousPosition
-                                j.position = j.previousPosition
-                            } else if -i.velocity.dy < j.velocity.dy {
-                                print("LANDED ON")
-                                
-                                if let i = i as? MovableSprite {
-                                    i.onGround.append(j)// = true
-                                    i.position.y += j.velocity.dy
-                                }
-                                
-                            } else {
-                                if let j = j as? MovableSprite, j.onGround.isEmpty {
-                                    j.position.y += i.velocity.dy
-                                } else if let i = i as? MovableSprite {
-                                    i.onGround.append(j)// = true
-                                    i.position.y = j.maxY
-                                }
-                                
-                                print("LANDED ON 2, \(i.velocity), \(j.velocity)")
-                            }
-                        }
-                        
-                    }
+//                    if i.midY > (j.midY - j.velocity.dy) {
+//
+//                        if i.maxY > j.minY, i.minY <= j.maxY {
+//
+//                            if i.velocity.dy == -j.velocity.dy {
+//                                i.position = i.previousPosition
+//                                j.position = j.previousPosition
+//                            } else if -i.velocity.dy < j.velocity.dy {
+//                                print("LANDED ON")
+//
+//                                if let i = i as? MovableSprite {
+//                                    i.onGround.append(j)// = true
+//                                    i.position.y += j.velocity.dy
+//                                }
+//
+//                            } else {
+//                                if let j = j as? MovableSprite, j.onGround.isEmpty {
+//                                    j.position.y += i.velocity.dy
+//                                } else if let i = i as? MovableSprite {
+//                                    i.onGround.append(j)// = true
+//                                    i.position.y = j.maxY
+//                                }
+//
+//                                print("LANDED ON 2, \(i.velocity), \(j.velocity)")
+//                            }
+//                        }
+//
+//                    }
                     
+                    //if i.minX
                     if i.midX > j.midX {
                         if j.midY > i.midY {
                             if j.minY >= i.maxY { continue }
@@ -186,6 +215,7 @@ class Scene: MagicScene {
                             if j.maxY <= i.minY { continue }
                         }
                         
+                        // Only Runs When Side by Side
                         if i.maxX > j.minX, i.minX < j.maxX {
                             if i.velocity.dx == -j.velocity.dx {
                                 i.position = i.previousPosition
@@ -200,22 +230,32 @@ class Scene: MagicScene {
                         }
                     }
                     
-                    print("HITO")
+                    //print("HITO")
                 }
             }
         }
+        print("---", players[0].velocity)
         
         for i in sprites {
             if let i = i as? MovableSprite {
                 i.onGround.removeAll(where: { j in
+                    print("abc", j.velocity.dx)
+                    //if j.velocity.dx != 0 {
+                        print("WOAH!")
+                        i.position.x += j.velocity.dx
+                    //}
+                    print("----", players[0].velocity)
+                    if i.position.y != j.maxY {
+                        i.position.y = j.maxY
+                    }
+                    print("----", players[0].velocity)
+                    
                     if j.midX < i.midX {
                         return i.minX >= j.maxX
                     }
                     if i.midX < j.midX {
                         return i.maxX <= j.minX
                     }
-                    i.position.y = j.maxY
-                    i.position.x += j.velocity.dx
                     
                     return false
                 })

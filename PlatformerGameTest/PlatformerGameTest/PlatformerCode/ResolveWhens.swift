@@ -81,19 +81,19 @@ extension MovableSprite {
             
         case .playerIsLeftOfSelf:
             run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-                if this.players.allSatisfy({ $0.position.x < self.position.x }) {
+                if this.players.allSatisfy({ $0.midX < self.midX }) {
                     action()
                 }
             }])))
         case .playerIsRightOfSelf:
             run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-                if this.players.allSatisfy({ self.position.x < $0.position.x }) {
+                if this.players.allSatisfy({ self.midX < $0.midX }) {
                     action()
                 }
             }])))
         case .playerHasSameXPositionAsSelf:
             run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-                if this.players.allSatisfy({ self.position.x == $0.position.x }) {
+                if this.players.allSatisfy({ self.midX == $0.midX }) {
                     action()
                 }
             }])))

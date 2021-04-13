@@ -27,8 +27,26 @@ class BasicSprite {
     }
     var position: (x: Int, y: Int) = (0,0) {
         willSet {
-            //print("-", previousPosition, position)
-            previousPosition = position
+            if newValue.y != position.y, newValue.x != position.x {
+                previousPosition = position
+            } else if newValue.y != position.y {
+                previousPosition.y = position.y
+            } else if newValue.x != position.x {
+                previousPosition.x = position.x
+            } else {
+                previousPosition = position
+            }
+            
+//            if newValue.y == position.y, newValue.x == position.x {
+//                //previousPosition = position
+//                previousPosition = position
+//            } else if newValue.y == position.y {
+//                previousPosition.x = position.x
+//            } else if newValue.x == position.x {
+//                previousPosition.y = position.y
+//            } else {
+//                previousPosition = position
+//            }
         }
         didSet{ skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2) }
     }
@@ -66,8 +84,8 @@ class MovableSprite: BasicSprite {
         //onGround = false
         position.y += fallingVelocity
         fallingVelocity -= 1
-        if fallingVelocity <= -7 {
-            fallingVelocity = -7
+        if fallingVelocity <= -16 {
+            fallingVelocity = -16
         }
     }
     
@@ -101,7 +119,9 @@ class MovableSprite: BasicSprite {
         }
     }
     func landedOn(_ this: BasicSprite) {
-        
+        fallingVelocity = 0
+        onGround.append(this)
+        position.y = this.maxY
     }
     
     var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }
