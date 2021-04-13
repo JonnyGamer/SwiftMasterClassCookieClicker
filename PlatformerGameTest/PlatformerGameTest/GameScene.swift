@@ -163,7 +163,6 @@ class Scene: MagicScene {
                                 }
                                 
                                 i.bumpedFromBottom.forEach { $0(j) }
-                                //j.landedOn(i)
                                 print("-", j)
                             }
                         } else {
@@ -183,54 +182,74 @@ class Scene: MagicScene {
                                 }
                             }
                             
+                            
+//                            if (j.minY...(j.maxY + j.velocity.dy)).contains(i.minY) {
+//                                if i.velocity.dy < j.velocity.dy {
+//                                    if !i.onGround.contains(where: { $0 === j }) {
+//                                        //i.landedOn(j)
+//                                        //i.bumpedFromTop.forEach { $(j) }
+//                                        //i.bumpedFromBottom.forEach { $0(j) }
+//                                        print("-", i)
+//                                    }
+//                                }
+//                            }
+                            
                         }
                     }
                     
                 }
                     
-                    //if i.minX
-                    if i.midX > j.midX {
-                        if j.midY > i.midY {
-                            if j.minY >= i.maxY { continue }
-                        } else {
-                            if j.maxY <= i.minY { continue }
-                        }
-                        
-                        // Only Runs When Side by Side
-                        if i.maxX > j.minX, i.minX < j.maxX {
-                            if i.velocity.dx == -j.velocity.dx {
-                                i.position = i.previousPosition
-                                j.position = j.previousPosition
-                            } else if -i.velocity.dx < j.velocity.dx {
-                                i.position.x += j.velocity.dx
-                                //i.position.x = j.maxX
-                            } else {
-                                j.position.x += i.velocity.dx
-                                //j.position.x = i.minX - j.frame.x
-                            }
-                        }
+                //if i.minX
+                if i.midX > j.midX {
+                    if j.midY > i.midY {
+                        if j.minY >= i.maxY { continue }
+                    } else {
+                        if j.maxY <= i.minY { continue }
                     }
                     
-                    //print("HITO")
-               // }
+                    // Only Runs When Side by Side
+                    if i.maxX > j.minX, i.minX < j.maxX {
+                        if i.velocity.dx == -j.velocity.dx {
+                            i.position = i.previousPosition
+                            j.position = j.previousPosition
+                        } else if -i.velocity.dx < j.velocity.dx {
+                            i.position.x += j.velocity.dx
+                            //i.position.x = j.maxX
+                        } else {
+                            j.position.x += i.velocity.dx
+                            //j.position.x = i.minX - j.frame.x
+                        }
+                    }
+                }
+                    
+
             }
         }
         print("---", players[0].velocity)
         
         for i in sprites {
             if let i = i as? MovableSprite {
+                
+                let iOnGround = i.onGround
+                
                 i.onGround.removeAll(where: { j in
-                    print("abc", j.velocity.dx)
+                    
+                    // Only stick on the highest ground.
+                    if iOnGround.contains(where: { $0.maxY > j.maxY }) {
+                        return true
+                    }
+                    
+                    // Move with Ground X
                     //if j.velocity.dx != 0 {
-                        print("WOAH!")
                         i.position.x += j.velocity.dx
                     //}
-                    print("----", players[0].velocity)
+                    
+                    // Stick to the highest ground if not already on it.
                     if i.position.y != j.maxY {
                         i.position.y = j.maxY
                     }
-                    print("----", players[0].velocity)
                     
+                    // Check if still on Ground...
                     if j.midX < i.midX {
                         return i.minX >= j.maxX
                     }
@@ -240,6 +259,8 @@ class Scene: MagicScene {
                     
                     return false
                 })
+                
+                // If not on groud, fall
                 if i.onGround.isEmpty {
                     i.fall()
                 }

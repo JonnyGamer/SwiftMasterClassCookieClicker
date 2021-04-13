@@ -122,7 +122,13 @@ class MovableSprite: BasicSprite {
 //        }
         if direction == .down {
             landedOn(hit)
-            print("LANDED ON")
+        }
+        
+        if direction == .up {
+            if velocity.dy > 0 {
+                //hit.position.y += velocity.dy
+            }
+            //print()
         }
         
         if direction == .left {
@@ -136,6 +142,9 @@ class MovableSprite: BasicSprite {
         fallingVelocity = 0
         onGround.append(this)
         position.y = this.maxY
+        if (this as? MovableSprite)?.isPlayer == true {
+            print()
+        }
     }
     
     var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }
