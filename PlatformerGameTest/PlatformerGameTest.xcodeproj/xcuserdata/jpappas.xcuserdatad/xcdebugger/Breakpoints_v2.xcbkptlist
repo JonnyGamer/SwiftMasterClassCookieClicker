@@ -14,8 +14,8 @@
             filePath = "PlatformerGameTest/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "didFinishUpdate()"
             landmarkType = "7">
          </BreakpointContent>
