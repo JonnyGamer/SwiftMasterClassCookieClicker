@@ -121,10 +121,7 @@ class MovableSprite: BasicSprite {
             }
         }
         
-        if direction == .left {
-            position.x += Int(velocity.dx)
-        }
-        if direction == .right {
+        if direction == .left || direction == .right {
             position.x -= Int(velocity.dx)
         }
     }

@@ -133,6 +133,7 @@ class Scene: MagicScene {
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
+        magicCamera.run(.moveTo(y: max(50, woah.position.y), duration: 0.1))
     }
     
     var annoyance: [() -> ()] = []
@@ -176,19 +177,6 @@ class Scene: MagicScene {
                                     }
                                 }
                             }
-                            
-                            
-//                            if (j.minY...(j.maxY + j.velocity.dy)).contains(i.minY) {
-//                                if i.velocity.dy < j.velocity.dy {
-//                                    if !i.onGround.contains(where: { $0 === j }) {
-//                                        //i.landedOn(j)
-//                                        //i.bumpedFromTop.forEach { $(j) }
-//                                        //i.bumpedFromBottom.forEach { $0(j) }
-//                                        print("-", i)
-//                                    }
-//                                }
-//                            }
-                            
                         }
                     }
                     
