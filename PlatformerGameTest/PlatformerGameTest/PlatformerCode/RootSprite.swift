@@ -52,6 +52,12 @@ class BasicSprite: Hashable {
     }
     var previousPosition: (x: Int, y: Int) = (0,0)
     var velocity: (dx: Int, dy: Int) { return (dx: position.x - previousPosition.x, dy: position.y - previousPosition.y) }
+    func stopX() {
+        previousPosition.x = position.x
+    }
+    func stopY() {
+        previousPosition.y = position.y
+    }
     
     func run(_ this: SKAction) {
         skNode.run(this)
@@ -133,11 +139,13 @@ class MovableSprite: BasicSprite {
         
         if direction == .left {
             position.x = hit.maxX
+            stopX()
             //leftGround.insert(hit)
         }
         
         if direction == .right {
             position.x = hit.minX - frame.x
+            stopX()
             //rightGround.insert(hit)
         }
         
