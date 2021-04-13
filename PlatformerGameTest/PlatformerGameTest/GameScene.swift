@@ -133,14 +133,12 @@ class Scene: MagicScene {
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
-        print("---", players[0].velocity)
     }
     
     var annoyance: [() -> ()] = []
     override func didFinishUpdate() {
         annoyance.run()
         
-        print("---", players[0].velocity)
         for i in sprites {
             
             for j in sprites {
@@ -158,15 +156,9 @@ class Scene: MagicScene {
                         
                         if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                             if !j.onGround.contains(where: { $0 === i }) {
-                                if j === players[0], i.frame.x == 16 {
-                                    print("Foo")
-                                }
-                                
                                 i.bumpedFromBottom.forEach { $0(j) }
                                 print("-", j)
                             }
-                        } else {
-                            print("HMMM...")
                         }
                     } else if j.velocity.dy > 0 {
                         
@@ -213,10 +205,19 @@ class Scene: MagicScene {
                             i.position = i.previousPosition
                             j.position = j.previousPosition
                         } else if -i.velocity.dx < j.velocity.dx {
-                            i.position.x += j.velocity.dx
+                            
+                            //i.position.x += j.velocity.dx
+                            if let j = j as? MovableSprite {
+                                i.bumpedFromRight.forEach { $0(j) }
+                            }
+                            
                             //i.position.x = j.maxX
                         } else {
-                            j.position.x += i.velocity.dx
+                            //j.position.x += i.velocity.dx
+                            if let i = i as? MovableSprite {
+                                j.bumpedFromLeft.forEach { $0(i) }
+                            }
+                            
                             //j.position.x = i.minX - j.frame.x
                         }
                     }
@@ -225,7 +226,6 @@ class Scene: MagicScene {
 
             }
         }
-        print("---", players[0].velocity)
         
         for i in sprites {
             if let i = i as? MovableSprite {

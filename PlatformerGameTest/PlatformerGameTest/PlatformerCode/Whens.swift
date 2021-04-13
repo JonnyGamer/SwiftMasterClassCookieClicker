@@ -11,10 +11,15 @@ enum When {
     case jumpWhen(UserAction)
     case moveLeftWhen(UserAction)
     case moveRightWhen(UserAction)
+    
     case stopObjectFromMoving(Direction, when: UserAction)
+    case allowObjectToPush(Direction, when: UserAction)
+    
     case bounceObjectWhen(UserAction)
     case fallWhen(UserAction)
     case standWhen(UserAction)
+    
+    
 }
 
 enum UserAction {

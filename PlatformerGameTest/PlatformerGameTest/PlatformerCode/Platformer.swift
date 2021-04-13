@@ -55,6 +55,9 @@ class Chaser: MovableSprite, Spriteable {
         .fallWhen(.notOnGround),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         
+        .allowObjectToPush(.right, when: .thisBumped(.right)),
+        .allowObjectToPush(.left, when: .thisBumped(.left)),
+        
         //.moveLeftWhen(.playerIsLeftOfSelf),
         //.moveRightWhen(.playerIsRightOfSelf)
     ]

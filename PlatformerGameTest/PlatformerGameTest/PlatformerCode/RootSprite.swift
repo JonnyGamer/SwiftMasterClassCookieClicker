@@ -40,17 +40,6 @@ class BasicSprite {
             } else {
                 previousPosition = position
             }
-            
-//            if newValue.y == position.y, newValue.x == position.x {
-//                //previousPosition = position
-//                previousPosition = position
-//            } else if newValue.y == position.y {
-//                previousPosition.x = position.x
-//            } else if newValue.x == position.x {
-//                previousPosition.y = position.y
-//            } else {
-//                previousPosition = position
-//            }
         }
         didSet{ skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2) }
     }
@@ -89,8 +78,6 @@ class MovableSprite: BasicSprite {
     
     var fallingVelocity = 0
     func fall() {
-        //print("--", position.y)
-        //onGround = false
         position.y += fallingVelocity
         fallingVelocity -= 1
         if fallingVelocity <= -16 {
@@ -115,20 +102,23 @@ class MovableSprite: BasicSprite {
         }
     }
     
+    func pushDirection(_ hit: BasicSprite,_ direction: Direction) {
+        if direction == .right || direction == .left {
+            hit.position.x += velocity.dx
+        }
+    }
+    
     var onGround: [BasicSprite] = []// = false
     func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
-//        if direction == .down {
-//            onGround = true
-//        }
         if direction == .down {
             landedOn(hit)
         }
         
+        // Still working on UP??
         if direction == .up {
             if velocity.dy > 0 {
                 //hit.position.y += velocity.dy
             }
-            //print()
         }
         
         if direction == .left {
@@ -138,13 +128,11 @@ class MovableSprite: BasicSprite {
             position.x -= Int(velocity.dx)
         }
     }
+    
     func landedOn(_ this: BasicSprite) {
         fallingVelocity = 0
         onGround.append(this)
         position.y = this.maxY
-        if (this as? MovableSprite)?.isPlayer == true {
-            print()
-        }
     }
     
     var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }
