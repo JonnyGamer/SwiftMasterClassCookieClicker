@@ -239,13 +239,38 @@ class Scene: MagicScene {
                     if i.velocity.dx == -j.velocity.dx {
                     } else if -i.velocity.dx < j.velocity.dx {
                         return recursiveMiniGeneralPush(i, j, velX: velX, dir: .right, recur: recursiveRightPush)
-                        //return recursiveMiniRightPush(i, j, velX: velX)
                     } else {
                     }
                 }
             }
         }
         return nil
+    }
+    
+    func recursiveLeftPush(_ i: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
+        
+        for j in sprites {
+            if i === j { continue }
+            
+            if i.midX > j.midX {
+                if j.midY > i.midY {
+                    if j.minY >= i.maxY { continue }
+                } else {
+                    if j.maxY <= i.minY { continue }
+                }
+                
+                // Only Runs When Side by Side
+                if i.maxX > j.minX, i.minX < j.maxX {
+                    if i.velocity.dx == -j.velocity.dx {
+                    } else if -i.velocity.dx < j.velocity.dx {
+                    } else {
+                        return recursiveMiniGeneralPush(j, i, velX: velX, dir: .left, recur: recursiveLeftPush)
+                    }
+                }
+            }
+        }
+        return nil
+        
     }
     
     func recursiveMiniGeneralPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int, dir: Direction, recur: (BasicSprite,Int) -> (BasicSprite, Int)?) -> (BasicSprite, Int)? {
@@ -267,64 +292,7 @@ class Scene: MagicScene {
     }
     
     
-//    func recursiveMiniRightPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
-//        if let j = j as? MovableSprite {
-//            i.bumpedFromRight.forEach { $0(j) }
-//            if i.velocity.dx == 0 {
-//                return (j, 0)
-//            }
-//            if let _ = recursiveRightPush(i, velX: velX) {
-//                j.stopMoving(i, .right)
-//                return (j, 0)
-//            }
-//        }
-//        return nil
-//    }
-//    
-//    
-//    func recursiveMiniLeftPush(_ j: BasicSprite, _ i: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
-//        if let i = i as? MovableSprite {
-//            j.bumpedFromLeft.forEach { $0(i) }
-//
-//            if j.velocity.dx == 0 {
-//                return (i, 0)
-//            }
-//            if let _ = recursiveLeftPush(j, velX: velX) {
-//                i.stopMoving(j, .left)
-//                return (i, 0)
-//            }
-//        }
-//        return nil
-//    }
-    
-    
-    func recursiveLeftPush(_ i: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
-        
-        for j in sprites {
-            if i === j { continue }
-            
-            if i.midX > j.midX {
-                if j.midY > i.midY {
-                    if j.minY >= i.maxY { continue }
-                } else {
-                    if j.maxY <= i.minY { continue }
-                }
-                
-                // Only Runs When Side by Side
-                if i.maxX > j.minX, i.minX < j.maxX {
-                    if i.velocity.dx == -j.velocity.dx {
-                    } else if -i.velocity.dx < j.velocity.dx {
-                    } else {
-                        return recursiveMiniGeneralPush(j, i, velX: velX, dir: .left, recur: recursiveLeftPush)
-                        //return recursiveMiniLeftPush(j, i, velX: velX)
 
-                    }
-                }
-            }
-        }
-        return nil
-        
-    }
 
     
 
