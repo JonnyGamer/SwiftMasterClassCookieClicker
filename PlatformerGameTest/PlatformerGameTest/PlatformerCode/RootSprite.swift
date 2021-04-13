@@ -10,6 +10,10 @@ import SpriteKit
 
 protocol Spriteable {
     var specificActions: [When] { get }
+    var bumpedFromTop: [(MovableSprite) -> ()] { get set }
+    var bumpedFromBottom: [(MovableSprite) -> ()] { get set }
+    var bumpedFromLeft: [(MovableSprite) -> ()] { get set }
+    var bumpedFromRight: [(MovableSprite) -> ()] { get set }
 }
 
 class BasicSprite {
@@ -56,6 +60,11 @@ class BasicSprite {
     func run(_ this: SKAction) {
         skNode.run(this)
     }
+    
+    var bumpedFromTop: [(MovableSprite) -> ()] = []
+    var bumpedFromBottom: [(MovableSprite) -> ()] = []
+    var bumpedFromLeft: [(MovableSprite) -> ()] = []
+    var bumpedFromRight: [(MovableSprite) -> ()] = []
     
 }
 
@@ -107,10 +116,15 @@ class MovableSprite: BasicSprite {
     }
     
     var onGround: [BasicSprite] = []// = false
-    func stopMoving(_ direction: Direction) {
+    func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
 //        if direction == .down {
 //            onGround = true
 //        }
+        if direction == .down {
+            landedOn(hit)
+            print("LANDED ON")
+        }
+        
         if direction == .left {
             position.x += Int(velocity.dx)
         }
@@ -127,9 +141,6 @@ class MovableSprite: BasicSprite {
     var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }
     var falling: Bool { return onGround.isEmpty && fallingVelocity < 0 }
     
-    var bumpedFromTop: [(Sprites) -> ()] = []
-    var bumpedFromBottom: [(Sprites) -> ()] = []
-    var bumpedFromLeft: [(Sprites) -> ()] = []
-    var bumpedFromRight: [(Sprites) -> ()] = []
+
     
 }

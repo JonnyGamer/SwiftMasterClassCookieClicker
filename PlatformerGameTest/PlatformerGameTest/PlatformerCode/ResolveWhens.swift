@@ -9,7 +9,7 @@ import Foundation
 
 extension BasicSprite {
     func add(_ this: Scene) {
-        guard let foo = self as? (MovableSprite & Spriteable) else { return }
+        guard let foo = self as? (BasicSprite & Spriteable) else { return }
         
         for i in foo.specificActions {
             foo.resolveWhen(this, foo, i)
@@ -18,22 +18,32 @@ extension BasicSprite {
     
 }
 
-extension MovableSprite {
+extension BasicSprite {
 
-    func resolveWhen(_ this: Scene,_ foo: (MovableSprite & Spriteable),_ when: When) {
+    func resolveWhen(_ this: Scene,_ foo: (BasicSprite & Spriteable),_ when: When) {
         
-        switch when {
-        case .jumpWhen(let userAction): resolveUserAction(this, userAction, foo.jump)
-        case .moveLeftWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.left)})
-        case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
-        case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
-        case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
+        if let foo = foo as? MovableSprite {
             
-        case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
-            
-        case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(dir) })
+            switch when {
+            case .jumpWhen(let userAction): resolveUserAction(this, userAction, foo.jump)
+            case .moveLeftWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.left)})
+            case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
+            case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
+            case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
+            default: break
+            }
             
         }
+            
+            switch when {
+                
+            case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
+                
+            case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
+            default: break
+            }
+        
+        
         
     }
     

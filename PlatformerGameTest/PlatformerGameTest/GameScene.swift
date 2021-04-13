@@ -31,7 +31,7 @@ class Scene: MagicScene {
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
     var doThisWhenStanding: [() -> ()] = []
     
-    var players: [Sprites] = []
+    var players: [Inky] = []
     var woah: SKNode!
     
     var movableSprites: [MovableSprite] = []
@@ -49,6 +49,11 @@ class Scene: MagicScene {
         enemy.add(self)
         enemy.startPosition((0,200))
         add(enemy)
+        print(enemy.bumpedFromBottom)
+//        let enemy2 = Chaser(box: (16, 16))
+//        enemy2.add(self)
+//        enemy2.startPosition((0,300))
+//        add(enemy2)
         
         
 //        let enemy2 = Chaser((box: (16, 16))
@@ -66,7 +71,13 @@ class Scene: MagicScene {
         g.add(self)
         g.skNode.alpha = 0.5
         add(g)
-        
+
+        let g2 = GROUND(box: (16, 1000))
+        g2.startPosition((200, -8))
+        g2.add(self)
+        g2.skNode.alpha = 0.5
+        add(g2)
+
         
         addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
@@ -138,19 +149,21 @@ class Scene: MagicScene {
                 
                 // Falling Down
                 foo: if let j = j as? MovableSprite {
-                    if !(i.minX...i.maxX).overlaps(j.minX...j.maxX) { break foo }
+                    if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
                     if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
                     if j.onGround.contains(where: { $0 === i }) { break foo }
                     if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                     
                     if j.velocity.dy < 0 {
                         
-                        if ((j.minY + (j.velocity.dy+1))...(j.maxY)).contains(i.maxY) {
+                        if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                             if !j.onGround.contains(where: { $0 === i }) {
                                 if j === players[0], i.frame.x == 16 {
                                     print("Foo")
                                 }
-                                j.landedOn(i)
+                                
+                                i.bumpedFromBottom.forEach { $0(j) }
+                                //j.landedOn(i)
                                 print("-", j)
                             }
                         } else {
@@ -163,7 +176,8 @@ class Scene: MagicScene {
                             if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
                                 if i.velocity.dy < j.velocity.dy {
                                     if !i.onGround.contains(where: { $0 === j }) {
-                                        i.landedOn(j)
+                                        //i.landedOn(j)
+                                        i.bumpedFromBottom.forEach { $0(j) }
                                         print("-", i)
                                     }
                                 }

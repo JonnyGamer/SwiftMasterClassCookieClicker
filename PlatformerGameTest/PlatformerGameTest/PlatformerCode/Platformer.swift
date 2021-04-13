@@ -10,60 +10,54 @@ import SpriteKit
 
 
 class GROUND: BasicSprite, Spriteable {
-    var specificActions: [When] { [
+    
+    var specificActions: [When] = [
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-    ] }
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+    ]
 }
 
 
 
 
-class Sprites: MovableSprite, Spriteable {
-    var specificActions: [When] { [
+
+class Inky: MovableSprite, Spriteable {
+    var specificActions: [When] = [
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         
+        .moveLeftWhen(.pressedButton(.left)),
+        .jumpWhen(.pressedButton(.jump)),
+        .moveRightWhen(.pressedButton(.right)),
         //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
         
         .fallWhen(.notOnGround),
-    ] }
-}
-
-class Inky: Sprites {
-    override var specificActions: [When] {
-        return super.specificActions + [
-            .jumpWhen(.pressedButton(.jump)),
-            .moveLeftWhen(.pressedButton(.left)),
-            .moveRightWhen(.pressedButton(.right)),
-            .standWhen(.neitherLeftNorRightButtonsAreBeingClicked),
-        ]
-    }
+    ]
     override var isPlayer: Bool { return true }
 }
 
 
 
 // Rule For All Enemies
-class Enemy: MovableSprite, Spriteable {
-    var specificActions: [When] { [] }
-}
+//class Enemy: Spriteable {
+//    var specificActions: [When] { [] }
+//}
 
 // Rule for Specific Enemies
-class Chaser: Enemy {
+class Chaser: MovableSprite, Spriteable {
     override var bounceHeight: Int { 16 }
     
-    override var specificActions: [When] {
-        return super.specificActions + [
-            .jumpWhen(.pressedButton(.jump)),
-            .fallWhen(.notOnGround),
-            //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
-            
-            .moveLeftWhen(.playerIsLeftOfSelf),
-            .moveRightWhen(.playerIsRightOfSelf)
-        ]
-    }
+    var specificActions: [When] = [
+        //.jumpWhen(.pressedButton(.jump)),
+        .fallWhen(.notOnGround),
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        
+        //.moveLeftWhen(.playerIsLeftOfSelf),
+        //.moveRightWhen(.playerIsRightOfSelf)
+    ]
 }
 
 class Trampoline: BasicSprite, Spriteable {
