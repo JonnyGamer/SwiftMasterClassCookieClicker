@@ -142,154 +142,6 @@ class Scene: MagicScene {
         magicCamera.run(.moveTo(y: max(50, woah.position.y), duration: 0.1))
     }
     
-    func checkForCollision(_ i: BasicSprite) {
-        
-        for j in sprites.shuffled() {
-            if i === j { continue }
-            
-            // Falling Down
-            foo: if let j = j as? MovableSprite {
-                if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
-                if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
-                
-                if j.onGround.contains(where: { $0 === i }) { break foo }
-                if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
-                
-                if j.velocity.dy < 0 {
-                    if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
-                        i.bumpedFromBottom.forEach { $0(j) }
-                        
-                        if "\(i)".contains("C"), "\(j)".contains("C") {
-                            print("ooh")
-                        }
-                        
-                        //checkForCollision(i) ////
-                        print("-", j)
-                    }
-                } else if j.velocity.dy > 0, let i = i as? MovableSprite {
-                    if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
-                        if i.velocity.dy < j.velocity.dy {
-                            
-                            // This line is needed, Otherwise bad bugs when pushing -> then jumping
-                            if j.maxX - j.velocity.dx <= i.minX { break foo }
-                            if j.minX - j.velocity.dx >= i.minX { break foo }
-
-                            j.bumpedFromBottom.forEach { $0(i) }
-                            
-                            if "\(i)".contains("C"), "\(j)".contains("C") {
-                                print("ooh")
-                            }
-                            
-                            //checkForCollision(i) ////
-                            print("-", i)
-                        }
-                    }
-                }
-            }
-                
-            if i.midX > j.midX {
-                if j.midY > i.midY {
-                    if j.minY >= i.maxY { continue }
-                } else {
-                    if j.maxY <= i.minY { continue }
-                }
-                
-                // Only Runs When Side by Side
-                if i.maxX > j.minX, i.minX < j.maxX {
-                    if i.velocity.dx == -j.velocity.dx {
-                        //i.position.x = i.previousPosition.x // Do Noy Delete these yet.
-                        //j.position.x = j.previousPosition.x
-                    } else if -i.velocity.dx < j.velocity.dx {
-                        if let j = j as? MovableSprite {
-                            i.bumpedFromRight.forEach { $0(j) }
-                            // Recursively Push
-                            if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
-                                j.stopMoving(i, .right)
-                            }
-                        }
-                    } else {
-                        if let i = i as? MovableSprite {
-                            j.bumpedFromLeft.forEach { $0(i) }
-                            // Recursively Push
-                            if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
-                                i.stopMoving(j, .left)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    func recursiveRightPush(_ j: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
-        
-        for i in sprites {
-            if i === j { continue }
-            
-            if i.midX > j.midX {
-                if j.midY > i.midY {
-                    if j.minY >= i.maxY { continue }
-                } else {
-                    if j.maxY <= i.minY { continue }
-                }
-                
-                // Only Runs When Side by Side
-                if i.maxX > j.minX, i.minX < j.maxX {
-                    if i.velocity.dx == -j.velocity.dx {
-                    } else if -i.velocity.dx < j.velocity.dx {
-                        return recursiveMiniGeneralPush(i, j, velX: velX, dir: .right, recur: recursiveRightPush)
-                    } else {
-                    }
-                }
-            }
-        }
-        return nil
-    }
-    
-    func recursiveLeftPush(_ i: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
-        
-        for j in sprites {
-            if i === j { continue }
-            
-            if i.midX > j.midX {
-                if j.midY > i.midY {
-                    if j.minY >= i.maxY { continue }
-                } else {
-                    if j.maxY <= i.minY { continue }
-                }
-                
-                // Only Runs When Side by Side
-                if i.maxX > j.minX, i.minX < j.maxX {
-                    if i.velocity.dx == -j.velocity.dx {
-                    } else if -i.velocity.dx < j.velocity.dx {
-                    } else {
-                        return recursiveMiniGeneralPush(j, i, velX: velX, dir: .left, recur: recursiveLeftPush)
-                    }
-                }
-            }
-        }
-        return nil
-        
-    }
-    
-    func recursiveMiniGeneralPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int, dir: Direction, recur: (BasicSprite,Int) -> (BasicSprite, Int)?) -> (BasicSprite, Int)? {
-        if let j = j as? MovableSprite {
-            if dir == .left {
-                i.bumpedFromLeft.forEach { $0(j) }
-            } else if dir == .right {
-                i.bumpedFromRight.forEach { $0(j) }
-            }
-            if i.velocity.dx == 0 {
-                return (j, 0)
-            }
-            if let _ = recur(i, velX) {
-                j.stopMoving(i, dir)
-                return (j, 0)
-            }
-        }
-        return nil
-    }
     
     
 
@@ -303,10 +155,10 @@ class Scene: MagicScene {
         print("-")
         
         for i in sprites.shuffled() {
-            
             checkForCollision(i)
         }
         
+        // Stay on Higher Ground
         for i in sprites {
             if let i = i as? MovableSprite {
                 

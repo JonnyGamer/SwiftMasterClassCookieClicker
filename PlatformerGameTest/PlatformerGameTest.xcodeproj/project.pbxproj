@@ -18,6 +18,7 @@
 		1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24392624B98E00446341 /* RootSprite.swift */; };
 		1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF243F2624C3FD00446341 /* QuadTree.swift */; };
 		1BDF24432624C68C00446341 /* SquareCollisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24422624C68C00446341 /* SquareCollisions.swift */; };
+		1BDF24462626430700446341 /* CollisionDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24452626430700446341 /* CollisionDetection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		1BDF24392624B98E00446341 /* RootSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSprite.swift; sourceTree = "<group>"; };
 		1BDF243F2624C3FD00446341 /* QuadTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTree.swift; sourceTree = "<group>"; };
 		1BDF24422624C68C00446341 /* SquareCollisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareCollisions.swift; sourceTree = "<group>"; };
+		1BDF24452626430700446341 /* CollisionDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				1BDF24332624B86600446341 /* Whens.swift */,
 				1BDF243F2624C3FD00446341 /* QuadTree.swift */,
 				1BDF24422624C68C00446341 /* SquareCollisions.swift */,
+				1BDF24452626430700446341 /* CollisionDetection.swift */,
 			);
 			path = PlatformerCode;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BDF24462626430700446341 /* CollisionDetection.swift in Sources */,
 				1BDF24212624B61500446341 /* ViewController.swift in Sources */,
 				1BDF241F2624B61500446341 /* GameScene.swift in Sources */,
 				1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */,
