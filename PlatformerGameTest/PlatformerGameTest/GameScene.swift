@@ -14,6 +14,11 @@ import GameplayKit
 extension Scene {
     func add(_ this: BasicSprite) {
         sprites.insert(this)
+        if let s = this as? MovableSprite {
+            movableSprites.insert(s)
+        } else {
+            quadtree.insert(this)
+        }
         addChild(this.skNode)
     }
 }
@@ -34,8 +39,9 @@ class Scene: MagicScene {
     var players: [Inky] = []
     var woah: SKNode!
     
-    //var movableSprites: Set<MovableSprite> = []
+    var movableSprites: Set<BasicSprite> = []
     var sprites: Set<BasicSprite> = []
+    var quadtree: QuadTree = QuadTree.init(.init(x: -512000, y: -512000, width: 1024000, height: 1024000))
     
     override func begin() {
         let player = Inky(box: (4, 4))
@@ -91,12 +97,13 @@ class Scene: MagicScene {
         g4.skNode.alpha = 0.5
         add(g4)
         
-
-        let g2 = GROUND(box: (16, 1000))
-        g2.startPosition((200, -8))
-        g2.add(self)
-        g2.skNode.alpha = 0.5
-        add(g2)
+        for i in (0...200) {
+            let g2 = GROUND(box: (16, 1000))
+            g2.startPosition((200 + (i * 16), -8 + (i * 16)))
+            g2.add(self)
+            g2.skNode.alpha = 0.5
+            add(g2)
+        }
         
         let g3 = GROUND(box: (16, 1000))
         g3.startPosition((-200, -8))
@@ -113,6 +120,11 @@ class Scene: MagicScene {
         addChild(magicCamera)
         
         //addChild(magicCamera)
+        print(quadtree)
+        print(quadtree.total)
+        print(quadtree.allObjects.count, movableSprites.count)
+        print("HMM")
+        
     }
     
     func buttonPressed(_ button: Button) {
@@ -182,7 +194,11 @@ class Scene: MagicScene {
         }
         
         // Stay on Higher Ground
-        for i in sprites {
+        for i in movableSprites {
+            print(quadtree.contains(i).count)
+            if quadtree.contains(i).count > 0 {
+                print("OOF!")
+            }
             
             
             if let i = i as? MovableSprite {

@@ -11,7 +11,8 @@ import SpriteKit
 extension Scene {
     func checkForCollision(_ i: BasicSprite,_ curry: [Int] = []) {
         
-        for j in sprites.shuffled() {
+        let superSet = movableSprites.union(quadtree.contains(i))
+        for j in superSet {//} sprites.shuffled() {
             if i === j { continue }
             
             // Falling Down
@@ -155,7 +156,7 @@ extension Scene {
             if i.velocity.dx == 0, j.velocity.dx == 0 {
                 continue
             }
-            newCheckX(i, j)
+            newCheckX(i, j, sprites: superSet)
             
             continue
             if i.velocity.dx == 0, j.velocity.dx == 0 { continue }
@@ -176,7 +177,7 @@ extension Scene {
                         if let j = j as? MovableSprite {
                             i.bumpedFromRight.forEach { $0(j) }
                             // Recursively Push
-                            if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                            if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                 j.stopMoving(i, .right)
                             }
                         }
@@ -192,14 +193,14 @@ extension Scene {
                                 }
                                 
                                 // Recursively Push
-                                if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                     i.stopMoving(j, .left)
                                 }
                                 
                             } else {
                                 j.bumpedFromLeft.forEach { $0(i) }
                                 // Recursively Push
-                                if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                     i.stopMoving(j, .left)
                                 }
                             }
@@ -212,7 +213,7 @@ extension Scene {
     }
     
     
-    func recursiveRightPush(_ j: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
+    func recursiveRightPush(_ j: BasicSprite, velX: Int, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
         
         for i in sprites {
             if i === j { continue }
@@ -228,7 +229,7 @@ extension Scene {
                 if i.maxX > j.minX, i.minX < j.maxX {
                     if i.velocity.dx == -j.velocity.dx {
                     } else if -i.velocity.dx < j.velocity.dx {
-                        return recursiveMiniGeneralPush(i, j, velX: velX, dir: .right, recur: recursiveRightPush)
+                        return recursiveMiniGeneralPush(i, j, velX: velX, dir: .right, recur: recursiveRightPush, sprites: sprites)
                     } else {
                     }
                 }
@@ -237,7 +238,7 @@ extension Scene {
         return nil
     }
     
-    func recursiveLeftPush(_ i: BasicSprite, velX: Int) -> (BasicSprite, Int)? {
+    func recursiveLeftPush(_ i: BasicSprite, velX: Int, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
         
         for j in sprites {
             if i === j { continue }
@@ -254,7 +255,7 @@ extension Scene {
                     if i.velocity.dx == -j.velocity.dx {
                     } else if -i.velocity.dx < j.velocity.dx {
                     } else {
-                        return recursiveMiniGeneralPush(j, i, velX: velX, dir: .left, recur: recursiveLeftPush)
+                        return recursiveMiniGeneralPush(j, i, velX: velX, dir: .left, recur: recursiveLeftPush, sprites: sprites)
                     }
                 }
             }
@@ -264,7 +265,7 @@ extension Scene {
         
     }
     
-    func recursiveMiniGeneralPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int, dir: Direction, recur: (BasicSprite,Int) -> (BasicSprite, Int)?) -> (BasicSprite, Int)? {
+    func recursiveMiniGeneralPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int, dir: Direction, recur: (BasicSprite,Int,Set<BasicSprite>) -> (BasicSprite, Int)?, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
         if let j = j as? MovableSprite {
             if dir == .left {
                 i.bumpedFromLeft.forEach { $0(j) }
@@ -274,7 +275,7 @@ extension Scene {
             if i.velocity.dx == 0 {
                 return (j, 0)
             }
-            if let _ = recur(i, velX) {
+            if let _ = recur(i, velX, sprites) {
                 j.stopMoving(i, dir)
                 return (j, 0)
             }
@@ -283,7 +284,7 @@ extension Scene {
     }
     
     
-    func newCheckX(_ i: BasicSprite,_ j: BasicSprite) {
+    func newCheckX(_ i: BasicSprite,_ j: BasicSprite, sprites: Set<BasicSprite>) {
         foo: if j.midX < i.midX {
             
             do {
@@ -323,7 +324,7 @@ extension Scene {
                         return
                         //continue
                     }
-                    print("HMMM")
+                    //print("HMMM")
                 } else {
                     if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
                         //print("AUGH")
@@ -347,7 +348,7 @@ extension Scene {
                     i.bumpedFromRight.forEach { $0(j) }
                     if let i = i as? MovableSprite { j.bumpedFromLeft.forEach { $0(i) } }
                     
-                    if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                    if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                         j.stopMoving(i, .right)
                     }
                     
@@ -357,7 +358,7 @@ extension Scene {
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
                         j.bumpedFromLeft.forEach { $0(i) }
                         if let j = j as? MovableSprite { i.bumpedFromRight.forEach { $0(j) } }
-                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                             i.stopMoving(j, .left)
                         }
                         
@@ -371,7 +372,7 @@ extension Scene {
                                     
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     j.bumpedFromLeft.forEach { $0(i) }
-                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
                                     }
                                     
@@ -380,7 +381,7 @@ extension Scene {
                                     // <- j <-<- i
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     j.bumpedFromLeft.forEach { $0(i) }
-                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
                                     }
                                     
@@ -405,14 +406,14 @@ extension Scene {
                                         
                                         // j ->-> <- |i|
                                         i.bumpedFromRight.forEach { $0(j) }
-                                        if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                                        if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                             j.stopMoving(i, .right)
                                         }
                                         
                                     } else {
                                         // j -> <-<- i
                                         j.bumpedFromLeft.forEach { $0(i) }
-                                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                             i.stopMoving(j, .left)
                                         }
                                     }
@@ -428,7 +429,7 @@ extension Scene {
                             // j ->-> i ->
                             if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
                             i.bumpedFromRight.forEach { $0(j) }
-                            if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                            if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                 j.stopMoving(i, .right)
                             }
                             

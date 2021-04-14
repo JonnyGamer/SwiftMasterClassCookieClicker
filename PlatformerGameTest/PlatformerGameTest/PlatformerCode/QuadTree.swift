@@ -10,130 +10,180 @@ import SpriteKit
 
 //typealias Ranger = ClosedRange<CGFloat>
 
-//class Box {
-//
-//}
-//
-//class QuadTree {
-//    var qBL: QuadTree?
-//    var qTL: QuadTree?
-//    var qBR: QuadTree?
-//    var qTR: QuadTree?
-//
-//    var elements: Set<Boxen> = []
-//    var jnodes: Set<Boxen> = []
-//    var size: Box
-//    var minSize: CGFloat = 2.0
-//    var split = false
-//    var level = 0
-//
-//    init(_ size: Box) { self.size = size }
-//    init(_ x: Ranger,_ y: Ranger) { size = Box(x, y) }
-//
-//    func contains(_ box: Boxen,_ boxboxx: Ranger,_ boxboxy: Ranger) -> Set<Boxen> {
-//        var seto: Set<Boxen> = []
-//        if level == 0 {
-//            for element in jnodes {
-//                if element.box.x.overlaps(boxboxx) && element.box.y.overlaps(boxboxy) {
-//                    seto.insert(element)
-//                }
-//            }
-//        }
-//
-//        if !elements.isEmpty {
-//            for element in elements {
-//                if element.box.x.overlaps(boxboxx) && element.box.y.overlaps(boxboxy) {
-//                    seto.insert(element)
-//                }
-//            }
-//            return seto
-//        }
-//        if boxboxx.overlaps(size.x.lowerHalf) {
-//            if boxboxy.overlaps(size.y.lowerHalf) {
-//                seto = seto.union(qBL?.contains(box, boxboxx, boxboxy) ?? qBL?.elements ?? [])
-//            }
-//            if boxboxy.overlaps(size.y.upperHalf) {
-//                seto = seto.union(qTL?.contains(box, boxboxx, boxboxy) ?? qTL?.elements ?? [])
-//            }
-//        }
-//        if boxboxx.overlaps(size.x.upperHalf) {
-//            if boxboxy.overlaps(size.y.lowerHalf) {
-//                seto = seto.union(qBR?.contains(box, boxboxx, boxboxy) ?? qBR?.elements ?? [])
-//            }
-//            if boxboxy.overlaps(size.y.upperHalf) {
-//                seto = seto.union(qTR?.contains(box, boxboxx, boxboxy) ?? qTR?.elements ?? [])
-//            }
-//        }
-//        return seto
-//    }
-//
-//    var total: Int {
-//        if !elements.isEmpty { return elements.count }
-//        let bl = qBL?.total ?? 0
-//        let br = qBR?.total ?? 0
-//        let tl = qTL?.total ?? 0
-//        let tr = qTR?.total ?? 0
-//        return bl + br + tl + tr
-//    }
-//
-//    func insert(_ box: Boxen) {
-//
-//        let minSquare = (minSize * minSize)
-//        elements.insert(box)
-//        if size.x.dist < minSquare || size.y.dist < minSquare { return }
-//        if elements.count <= 4 && !split { return }
-//        split = true
-//
-//        let ele = elements; elements = []
-//
-//        for element in ele {
-//            if element.box.x.overlaps(size.x.lowerHalf) {
-//                if element.box.y.overlaps(size.y.lowerHalf) {
-//                    if qBL == nil {
-//                        qBL = QuadTree.init(size.x.lowerHalf, size.y.lowerHalf)
-//                        qBL?.level = level + 1
-//                    }
-//                    qBL?.insert(element)
-//                }
-//                if element.box.y.overlaps(size.y.upperHalf) {
-//                    if qTL == nil {
-//                        qTL = QuadTree.init(size.x.lowerHalf, size.y.upperHalf)
-//                        qTL?.level = level + 1
-//                    }
-//                    qTL?.insert(element)
-//                }
-//            }
-//            if element.box.x.overlaps(size.x.upperHalf) {
-//                if element.box.y.overlaps(size.y.lowerHalf) {
-//                    if qBR == nil {
-//                        qBR = QuadTree.init(size.x.upperHalf, size.y.lowerHalf)
-//                        qBR?.level = level + 1
-//                    }
-//                    qBR?.insert(element)
-//                }
-//                if element.box.y.overlaps(size.y.upperHalf) {
-//                    if qTR == nil {
-//                        qTR = QuadTree.init(size.x.upperHalf, size.y.upperHalf)
-//                        qTR?.level = level + 1
-//                    }
-//                    qTR?.insert(element)
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//
-//extension ClosedRange where Bound == CGFloat {
-//    var dist: CGFloat { return upperBound - lowerBound }
-//    var half: CGFloat { return (upperBound + lowerBound) / 2 }
-//    var upperHalf: Ranger { return half...upperBound }
-//    var lowerHalf: Ranger { return lowerBound...half }
-//
-//    static func < (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
-//        return lhs.upperBound < rhs.lowerBound
-//    }
-//    static func > (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool {
-//        return lhs.lowerBound > rhs.upperBound
-//    }
-//}
+class Box {
+
+}
+
+extension BasicSprite {
+    func couldOverlap(_ with: BasicSprite) -> Bool {
+        return true
+        //return (previousPosition.x...maxX).overlaps((with.previousPosition.minX...with.maxX)) || (minY...maxY).overlaps((with.minY...with.maxY))
+    }
+    func trajectoryX() -> ClosedRange<CGFloat> {
+        if velocity.dx == 0 {
+            return minX.cg...maxX.cg
+        }
+        if velocity.dx < 0 {
+            return minX.cg...(previousPosition.x+frame.x).cg
+        } else {
+            return previousPosition.x.cg...maxX.cg
+        }
+    }
+    func trajectoryY() -> ClosedRange<CGFloat> {
+        if velocity.dy == 0 {
+            return minY.cg...maxY.cg
+        }
+        if velocity.dy < 0 {
+            return minY.cg...(previousPosition.y+frame.y).cg
+        } else {
+            return previousPosition.y.cg...maxY.cg
+        }
+    }
+}
+
+
+
+class QuadTree {
+    var qBL: QuadTree?
+    var qTL: QuadTree?
+    var qBR: QuadTree?
+    var qTR: QuadTree?
+
+    var elements: Set<BasicSprite> = []
+    var jnodes: Set<BasicSprite> = []
+    var size: CGRect
+    var minSize: CGFloat = 1
+    var split = false
+    var level = 0
+
+    init(_ this: CGRect) { size = this }
+
+    // Find all Quadtrees containing box and it's velocity...
+    func contains(_ box: BasicSprite) -> Set<BasicSprite> {
+        var seto: Set<BasicSprite> = []
+        
+        if !elements.isEmpty {
+            return seto
+        }
+        
+        let tX = box.trajectoryX()
+        let tY = box.trajectoryY()
+        
+        if tX.overlaps(size.minX...size.midX) {
+            if tY.overlaps(size.minY...size.midY) {
+                seto = seto.union(qBL?.contains(box) ?? qBL?.elements ?? [])
+            }
+            if tY.overlaps(size.midY...size.maxY) {
+                seto = seto.union(qTL?.contains(box) ?? qTL?.elements ?? [])
+            }
+        }
+        if tX.overlaps(size.midX...size.maxX) {
+            if tY.overlaps(size.minY...size.midY) {
+                seto = seto.union(qBR?.contains(box) ?? qBR?.elements ?? [])
+            }
+            if tY.overlaps(size.midY...size.maxY) {
+                seto = seto.union(qTR?.contains(box) ?? qTR?.elements ?? [])
+            }
+        }
+        
+
+        return seto
+    }
+
+    var total: Int {
+        if !elements.isEmpty { return elements.count }
+        let bl = qBL?.total ?? 0
+        let br = qBR?.total ?? 0
+        let tl = qTL?.total ?? 0
+        let tr = qTR?.total ?? 0
+        return bl + br + tl + tr
+    }
+    var allObjects: Set<BasicSprite> {
+        if !elements.isEmpty { return elements }
+        let bl = qBL?.allObjects ?? []
+        let br = qBR?.allObjects ?? []
+        let tl = qTL?.allObjects ?? []
+        let tr = qTR?.allObjects ?? []
+        return bl.union(br).union(tl).union(tr)// + br + tl + tr
+    }
+    
+
+    func insert(_ box: BasicSprite) {
+
+        let minSquare = (minSize * minSize)
+        elements.insert(box)
+        
+        // Don't include elements that are too small...
+        if size.height < minSquare || size.height < minSquare { return }
+        
+        
+        if elements.count <= 4 && !split { return }
+        split = true
+
+        let ele = elements; elements = []
+
+        for element in ele {
+            
+            if (element.minX.cg...element.maxX.cg).overlaps((size.minX...size.midX)) {
+                
+                if (element.minY.cg...element.maxY.cg).overlaps(size.minY...size.midY) {
+                    if qBL == nil {
+                        qBL = QuadTree(size.lowerLeftQuadrant)
+                        qBL?.level = level + 1
+                    }
+                    qBL?.insert(element)
+                    continue
+                }
+                if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
+                    if qTL == nil {
+                        qTL = QuadTree.init(size.upperLeftQuadrant)
+                        qTL?.level = level + 1
+                    }
+                    qTL?.insert(element)
+                    continue
+                }
+                
+            }
+            
+            
+            if (element.minX.cg...element.maxX.cg).overlaps((size.midX...size.maxX)) {
+                if (element.minY.cg...element.maxY.cg).overlaps(size.minY...size.midY) {
+                    if qBR == nil {
+                        qBR = QuadTree(size.lowerRightQuadrant)
+                        qBR?.level = level + 1
+                    }
+                    qBR?.insert(element)
+                    continue
+                }
+                if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
+                    if qTR == nil {
+                        qTR = QuadTree(size.upperRightQuadrant)
+                        qTR?.level = level + 1
+                    }
+                    qTR?.insert(element)
+                    continue
+                }
+            }
+        }
+    }
+}
+
+
+
+extension Int { var cg: CGFloat { CGFloat(self) } }
+extension CGRect {
+    
+    var lowerLeftQuadrant: CGRect {
+        return CGRect.init(origin: CGPoint(x: minX, y: minY), size: CGSize.init(width: size.width/2, height: size.height/2))
+    }
+    var lowerRightQuadrant: CGRect {
+        return CGRect.init(origin: CGPoint(x: midX, y: minY), size: CGSize.init(width: size.width/2, height: size.height/2))
+    }
+    var upperLeftQuadrant: CGRect {
+        return CGRect.init(origin: CGPoint(x: minX, y: midY), size: CGSize.init(width: size.width/2, height: size.height/2))
+    }
+    var upperRightQuadrant: CGRect {
+        return CGRect.init(origin: CGPoint(x: midX, y: midY), size: CGSize.init(width: size.width/2, height: size.height/2))
+    }
+    
+}
