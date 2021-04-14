@@ -308,7 +308,7 @@ extension Scene {
                             //print("AUGH")
                         }
                         if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                            print("UHHHH")
+                            //print("UHHHH")
                         }
                         return
                         //continue
@@ -318,7 +318,7 @@ extension Scene {
                             //print("AUGH")
                         }
                         if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                            print("UHHHH")
+                            //print("UHHHH")
                         }
                         return
                         //continue
@@ -329,7 +329,7 @@ extension Scene {
                         //print("AUGH")
                     }
                     if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                        print("UHHHH")
+                        //print("UHHHH")
                     }
                     return
                     //continue
@@ -392,8 +392,8 @@ extension Scene {
                                     // j -> <- i
                                     i.position.x = i.previousPosition.x // Do Noy Delete these yet.
                                     j.position.x = j.previousPosition.x
-                                    i.stopMoving(j, .left)
-                                    j.stopMoving(i, .right)
+                                    //i.stopMoving(j, .left)
+                                    //j.stopMoving(i, .right)
                                     i.runWhenBumpRight.run()
                                     j.runWhenBumpLeft.run()
                                     

@@ -81,7 +81,7 @@ class Chaser: MovableSprite, Spriteable {
         
         .killObject(.left, when: .thisBumped(.left)),
         .killObject(.right, when: .thisBumped(.right)),
-        .canDieFrom(.all()),
+        //.canDieFrom(.all()),
     ]
 }
 

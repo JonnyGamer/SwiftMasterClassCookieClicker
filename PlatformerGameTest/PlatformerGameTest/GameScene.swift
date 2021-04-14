@@ -55,13 +55,19 @@ class Scene: MagicScene {
 //        enemy2.startPosition((0,300))
 //        add(enemy2)
         
+        for i in 1...10 {
+            let enemy21 = Chaser(box: (16, 16))
+            enemy21.add(self)
+            enemy21.startPosition((64+16+16+(i * 32),100 + (i*100)))
+            add(enemy21)
+        }
         
-        let enemy2 = Chaser(box: (17, 17))
+        let enemy2 = Chaser(box: (16, 16))
         enemy2.add(self)
         enemy2.startPosition((64+16+16,100))
         add(enemy2)
 
-        let enemy3 = Chaser(box: (18, 18))
+        let enemy3 = Chaser(box: (16, 16))
         enemy3.add(self)
         enemy3.startPosition((64+16+16+16+16,100))
         add(enemy3)
