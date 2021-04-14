@@ -56,21 +56,27 @@ class Scene: MagicScene {
 //        add(enemy2)
         
         
-        let enemy2 = Chaser(box: (17, 17))
-        enemy2.add(self)
-        enemy2.startPosition((64+16+16,100))
-        add(enemy2)
-
-        let enemy3 = Chaser(box: (18, 18))
-        enemy3.add(self)
-        enemy3.startPosition((64+16+16+16+16,100))
-        add(enemy3)
+//        let enemy2 = Chaser(box: (17, 17))
+//        enemy2.add(self)
+//        enemy2.startPosition((64+16+16,100))
+//        add(enemy2)
+//
+//        let enemy3 = Chaser(box: (18, 18))
+//        enemy3.add(self)
+//        enemy3.startPosition((64+16+16+16+16,100))
+//        add(enemy3)
         
         let g = GROUND(box: (1000, 16))
-        g.startPosition((-500, -8))
+        g.startPosition((0, -8))
         g.add(self)
         g.skNode.alpha = 0.5
         add(g)
+        
+        let g0 = GROUND(box: (1000, 16))
+        g0.startPosition((-900, -8))
+        g0.add(self)
+        g0.skNode.alpha = 0.5
+        add(g0)
         
         let g4 = GROUND(box: (300, 16))
         g4.startPosition((-400, -8+16+16))
@@ -167,8 +173,16 @@ class Scene: MagicScene {
         
         // Stay on Higher Ground
         for i in sprites {
+            
+            
             if let i = i as? MovableSprite {
                 
+                // If not on groud, fall
+                if i.onGround.isEmpty {
+                    i.fall()
+                }
+                
+                var groundsRemoved: [BasicSprite] = []
                 let iOnGround = i.onGround
                 
                 print(i, iOnGround.count)
@@ -191,19 +205,21 @@ class Scene: MagicScene {
                     
                     // Check if still on Ground...
                     if j.midX < i.midX {
+                        if !(i.minX >= j.maxX) == false { groundsRemoved.append(j) }
                         return !(i.minX >= j.maxX)
                     }
                     if i.midX < j.midX {
+                        if !(i.maxX <= j.minX) == false { groundsRemoved.append(j) }
                         return !(i.maxX <= j.minX)
                     }
                     
                     return !false
                 }
                 
-                // If not on groud, fall
-                if i.onGround.isEmpty {
-                    i.fall()
-                }
+//                // If not on groud, fall
+//                if i.onGround.isEmpty {
+//                    i.fall()
+//                }
             }
         }
         

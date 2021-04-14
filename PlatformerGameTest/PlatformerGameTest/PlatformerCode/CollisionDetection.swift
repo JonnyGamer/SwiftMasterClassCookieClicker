@@ -18,7 +18,11 @@ extension Scene {
             foo: if let j = j as? MovableSprite {
                 //if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
                 
-                if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+                if i.velocity.dy == 0, j.velocity.dy == 0 {
+                    if (i as? MovableSprite)?.onGround.contains(j) == true { break foo }
+                    if (j as? MovableSprite)?.onGround.contains(i) == true { break foo }
+                    //break foo
+                }
                 
                 do {
                     
@@ -41,13 +45,13 @@ extension Scene {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
                                 //print("AUGH")
                             }
-                            continue
+                            //continue
                         }
                         if jRange.lowerBound == iRange.upperBound {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
                                 //print("AUGH")
                             }
-                            continue
+                            //continue
                         }
                     } else {
                         if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
@@ -62,7 +66,13 @@ extension Scene {
                 if j.onGround.contains(where: { $0 === i }) { break foo }
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
-                if j.velocity.dy < 0, i.velocity.dy >= 0 {
+                if j.velocity.dy == 0, i.velocity.dy == 0 {
+                    if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
+                        i.bumpedFromBottom.forEach { $0(j) }
+                    }
+                    
+                    
+                } else if j.velocity.dy < 0, i.velocity.dy >= 0 {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
