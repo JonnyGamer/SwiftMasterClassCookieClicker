@@ -47,7 +47,21 @@ extension Scene {
                                 i.bumpedFromBottom.forEach { $0(j) }
                             }
                         }
+                    } else if i.previousPosition.y > j.previousPosition.y {
+                        
                     }
+//
+//                    if j.position.y - j.velocity.dy < i.position.y - i.velocity.dy {
+//                        if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+//                            i.bumpedFromTop.forEach { $0(j) }
+//                        }
+//                    } else if j.position.y - j.velocity.dy > i.position.y - i.velocity.dy {
+//                        if let i = i as? MovableSprite {
+//                            if ((i.minY + (i.velocity.dy-1))...(i.maxY)).contains(j.maxY) {
+//                                j.bumpedFromTop.forEach { $0(i) }
+//                            }
+//                        }
+//                    }
                     
                 // If both are moving upwards
                 } else if j.velocity.dy > 0, i.velocity.dy > 0 {
@@ -56,6 +70,49 @@ extension Scene {
                     if i.previousPosition.y < j.previousPosition.y {
                         if i.maxY > j.minY {
                             i.bumpedFromBottom.forEach {$0(j) }
+                        }
+                    }
+                }
+                
+            }
+            
+            
+            foo: if let j = j as? MovableSprite, false {
+                if !(i.minX..<i.maxX).overlaps(j.minX..<j.maxX) { break foo }
+                if i.velocity.dy == 0, j.velocity.dy == 0 { break foo }
+                
+                if j.onGround.contains(where: { $0 === i }) { break foo }
+                if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
+                
+                if j.velocity.dy < 0 {
+                    if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+                        i.bumpedFromBottom.forEach { $0(j) }
+                        
+                        if "\(i)".contains("C"), "\(j)".contains("C") {
+                            print("ooh")
+                        }
+                        
+                        //checkForCollision(i) ////
+                        print("-", j)
+                    }
+                    
+                    
+                } else if j.velocity.dy > 0, let i = i as? MovableSprite {
+                    if (j.minY...(j.maxY + j.velocity.dy)).contains(i.maxY) {
+                        if i.velocity.dy < j.velocity.dy {
+                            
+                            // This line is needed, Otherwise bad bugs when pushing -> then jumping
+                            if j.maxX - j.velocity.dx <= i.minX { break foo }
+                            if j.minX - j.velocity.dx >= i.minX { break foo }
+
+                            j.bumpedFromBottom.forEach { $0(i) }
+                            
+                            if "\(i)".contains("C"), "\(j)".contains("C") {
+                                print("ooh")
+                            }
+                            
+                            //checkForCollision(i) ////
+                            print("-", i)
                         }
                     }
                 }
