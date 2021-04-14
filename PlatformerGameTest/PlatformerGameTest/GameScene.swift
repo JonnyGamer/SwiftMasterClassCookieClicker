@@ -55,10 +55,11 @@ class Scene: MagicScene {
 //        enemy2.startPosition((0,300))
 //        add(enemy2)
         
-        for i in 1...10 {
+        // Around 25 moving things per level is SAFE :)
+        for i in 1...20 {
             let enemy21 = Chaser(box: (16, 16))
             enemy21.add(self)
-            enemy21.startPosition((64+16+16+(i * 32),100 + (i*100)))
+            enemy21.startPosition((64+16+16,100 + (i*100)))
             add(enemy21)
         }
         
