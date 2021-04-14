@@ -13,7 +13,7 @@ import GameplayKit
 //}
 extension Scene {
     func add(_ this: BasicSprite) {
-        sprites.insert(this)
+        //sprites.insert(this)
         if let s = this as? MovableSprite {
             movableSprites.insert(s)
         } else {
@@ -62,7 +62,7 @@ class Scene: MagicScene {
 //        add(enemy2)
         
         // Around 25 moving things per level is SAFE :)
-        for i in 1...20 {
+        for i in 1...1 {
             let enemy21 = Chaser(box: (16, 16))
             enemy21.add(self)
             enemy21.startPosition((64+16+16,100 + (i*100)))
@@ -97,7 +97,7 @@ class Scene: MagicScene {
         g4.skNode.alpha = 0.5
         add(g4)
         
-        for i in (0...200) {
+        for i in (0...1) {
             let g2 = GROUND(box: (16, 1000))
             g2.startPosition((200 + (i * 16), -8 + (i * 16)))
             g2.add(self)
@@ -189,7 +189,7 @@ class Scene: MagicScene {
         
         print("-")
         print("ok")
-        for i in sprites.shuffled() {
+        for i in movableSprites {//} sprites.shuffled() {
             checkForCollision(i)
         }
         

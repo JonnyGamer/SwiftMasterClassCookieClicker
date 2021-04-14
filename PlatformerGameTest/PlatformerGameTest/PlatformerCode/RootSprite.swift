@@ -67,6 +67,7 @@ class BasicSprite: Hashable {
         
         dead = true
         (skNode.scene as? Scene)?.sprites.remove(self)
+        (skNode.scene as? Scene)?.movableSprites.remove(self)
         skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
     }
     
