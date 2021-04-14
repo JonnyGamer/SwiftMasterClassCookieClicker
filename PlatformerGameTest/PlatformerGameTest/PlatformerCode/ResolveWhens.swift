@@ -139,4 +139,9 @@ extension Array where Element == () -> () {
         forEach { $0() }
     }
 }
+extension Array where Element == (BasicSprite) -> () {
+    func run(_ n: BasicSprite) {
+        forEach { $0(n) }
+    }
+}
 

@@ -91,6 +91,8 @@ class MovableSprite: BasicSprite {
     
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
+        if dead { return }
+        
         if !onGround.isEmpty {
             onGround = onGround.filter { !($0.velocity.dy < bounceHeight) }
             if onGround.isEmpty {
@@ -113,6 +115,8 @@ class MovableSprite: BasicSprite {
     var everyFrame = 1
     var xSpeed = 2
     func move(_ direction: Direction) {
+        if dead { return }
+        
         standing = false
         if frameCount % everyFrame == 0 {
             if direction == .left {
@@ -127,6 +131,8 @@ class MovableSprite: BasicSprite {
     
     var standing = true
     func stand() {
+        if dead { return }
+        
         if !onGround.isEmpty {
             standing = true
             previousPosition = position
@@ -138,6 +144,7 @@ class MovableSprite: BasicSprite {
             hit.position.x = maxX
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
+            runWhenBumpRight.run()
             print()
         }
         
@@ -145,6 +152,14 @@ class MovableSprite: BasicSprite {
             hit.position.x = minX - hit.frame.x
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
+            runWhenBumpLeft.run()
+        }
+        
+        if direction == .down {
+            runWhenBumpDown.run()
+        }
+        if direction == .up {
+            runWhenBumpLeft.run()
         }
         
 //        if direction == .right || direction == .left {

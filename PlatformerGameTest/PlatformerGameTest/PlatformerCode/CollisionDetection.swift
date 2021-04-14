@@ -394,6 +394,8 @@ extension Scene {
                                     j.position.x = j.previousPosition.x
                                     i.stopMoving(j, .left)
                                     j.stopMoving(i, .right)
+                                    i.runWhenBumpRight.run()
+                                    j.runWhenBumpLeft.run()
                                     
                                 } else {
                                     
