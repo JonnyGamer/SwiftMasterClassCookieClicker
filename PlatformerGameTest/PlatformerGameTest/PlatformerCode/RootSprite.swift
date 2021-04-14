@@ -59,8 +59,12 @@ class BasicSprite: Hashable {
         previousPosition.y = position.y
     }
     
+    var canDieFrom: [Direction] = []
     var dead = false
     func die(_ direction: Direction?) {
+        // Double check this line of code
+        if direction != nil, !canDieFrom.contains(direction!) { return }
+        
         dead = true
         (skNode.scene as? Scene)?.sprites.remove(self)
         skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()

@@ -345,6 +345,8 @@ extension Scene {
                     // j -> |i|
                     if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX { break foo }
                     i.bumpedFromRight.forEach { $0(j) }
+                    if let i = i as? MovableSprite { j.bumpedFromLeft.forEach { $0(i) } }
+                    
                     if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
                         j.stopMoving(i, .right)
                     }
@@ -354,6 +356,7 @@ extension Scene {
                         // |j| <- i
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
                         j.bumpedFromLeft.forEach { $0(i) }
+                        if let j = j as? MovableSprite { i.bumpedFromRight.forEach { $0(j) } }
                         if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
                             i.stopMoving(j, .left)
                         }

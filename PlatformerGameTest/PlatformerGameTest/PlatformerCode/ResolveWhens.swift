@@ -33,6 +33,7 @@ extension BasicSprite {
             case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
             case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
+            case .canDieFrom(let dir): foo.canDieFrom = dir
             default: break
             }
             

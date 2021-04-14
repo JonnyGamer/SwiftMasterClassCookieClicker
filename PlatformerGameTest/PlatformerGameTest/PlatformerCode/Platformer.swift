@@ -37,8 +37,8 @@ class Inky: MovableSprite, Spriteable {
         .moveRightWhen(.pressedButton(.right)),
         //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
         
-        .die(.pressedButton(.jump)),
-        
+        //.die(.pressedButton(.jump)),
+        .canDieFrom(.all()),
         .fallWhen(.notOnGround),
     ]
     override var isPlayer: Bool { return true }

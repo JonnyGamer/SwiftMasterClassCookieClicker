@@ -23,6 +23,7 @@ enum When {
     case xSpeed(Int, everyFrame: Int)
     case die(UserAction)
     case killObject(Direction, when: UserAction)
+    case canDieFrom([Direction])
 }
 
 enum UserAction {
@@ -46,6 +47,7 @@ enum Button {
 enum Direction {
     case up, down, left, right
 }
+extension Array where Element == Direction { static func all() -> Self { return [.up, .down, .left, .right] } }
 
 
 
