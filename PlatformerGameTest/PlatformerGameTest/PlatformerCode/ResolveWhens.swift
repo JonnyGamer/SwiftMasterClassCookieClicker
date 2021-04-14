@@ -30,7 +30,8 @@ extension BasicSprite {
             case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
             case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
             case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
-            case .xSpeed(let n): foo.xSpeed = n
+            case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
+            case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
             default: break
             }
             
@@ -84,6 +85,9 @@ extension BasicSprite {
             case .left: this.doThisWhenLeftButtonIsPressed.append(action)
             case .right: this.doThisWhenRightButtonIsPressed.append(action)
             }
+            
+        case .onLedge:
+            (self as? MovableSprite)?.standingOnLedgeAction.append(action)
 
         case .neitherLeftNorRightButtonsAreBeingClicked:
             this.doThisWhenStanding.append(action)
@@ -130,7 +134,17 @@ extension BasicSprite {
 //                    action()
 //                }
 //            }])))
-            
+        case .thisBumped(let dir):
+            if dir == .left {
+                (self as? MovableSprite)?.runWhenBumpLeft.append(action)
+            } else if dir == .right {
+                (self as? MovableSprite)?.runWhenBumpRight.append(action)
+            } else if dir == .down {
+                (self as? MovableSprite)?.runWhenBumpDown.append(action)
+            } else if dir == .up {
+                (self as? MovableSprite)?.runWhenBumpUp.append(action)
+            }
+        
         default: fatalError()
         }
     }

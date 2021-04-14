@@ -8,6 +8,7 @@
 import Foundation
 
 enum When {
+    case reverseDirection(UserAction)
     case jumpWhen(UserAction)
     case moveLeftWhen(UserAction)
     case moveRightWhen(UserAction)
@@ -19,7 +20,7 @@ enum When {
     case fallWhen(UserAction)
     case standWhen(UserAction)
     
-    case xSpeed(Int)
+    case xSpeed(Int, everyFrame: Int)
 }
 
 enum UserAction {
@@ -28,10 +29,12 @@ enum UserAction {
     case playerIsLeftOfSelf
     case playerIsRightOfSelf
     case playerHasSameXPositionAsSelf
+    case onLedge
     
     //case touchingNoWall(Direction)
     case notOnGround
     case neitherLeftNorRightButtonsAreBeingClicked
+    case always
     //case yPositionIsLessThanZeroThenSetPositionToZero
 }
 

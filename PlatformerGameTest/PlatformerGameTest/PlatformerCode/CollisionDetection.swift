@@ -389,6 +389,8 @@ extension Scene {
                                     // j -> <- i
                                     i.position.x = i.previousPosition.x // Do Noy Delete these yet.
                                     j.position.x = j.previousPosition.x
+                                    i.stopMoving(j, .left)
+                                    j.stopMoving(i, .right)
                                     
                                 } else {
                                     

@@ -73,7 +73,7 @@ class Scene: MagicScene {
         add(g)
         
         let g0 = GROUND(box: (1000, 16))
-        g0.startPosition((-1020, -8))
+        g0.startPosition((-1100, -8))
         g0.add(self)
         g0.skNode.alpha = 0.5
         add(g0)
@@ -217,8 +217,11 @@ class Scene: MagicScene {
                 }
                 
                 // Check if standing on Ledge
-                if !i.onGround.isEmpty, i.onGround.contains(where: { (i.maxX < $0.maxX) || (i.minX > $0.minX) }) {
-                    i.standingOnLedge()
+                //  !i.onGround.contains(where: { (i.maxX < $0.maxX) && (i.minX > $0.minX) })
+                if !i.onGround.isEmpty, let n = i.onGround.filter { !( (i.maxX < $0.maxX) && (i.minX > $0.minX)) }.first {
+                    i.standingOnLedge(n: n)
+                } else {
+                    i.standingOnLedge(n: nil)
                 }
                 
 //                // If not on groud, fall

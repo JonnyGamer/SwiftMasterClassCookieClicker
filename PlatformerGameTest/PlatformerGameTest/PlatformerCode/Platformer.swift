@@ -51,7 +51,7 @@ class Inky: MovableSprite, Spriteable {
 
 // Rule for Specific Enemies
 class Chaser: MovableSprite, Spriteable {
-    override var bounceHeight: Int { 16 }
+    override var bounceHeight: Int { 10 }
     
     var specificActions: [When] = [
         //.jumpWhen(.pressedButton(.jump)),
@@ -67,7 +67,16 @@ class Chaser: MovableSprite, Spriteable {
         
         .moveLeftWhen(.playerIsLeftOfSelf),
         .moveRightWhen(.playerIsRightOfSelf),
-        .xSpeed(1)
+        .xSpeed(5, everyFrame: 2),
+        
+        //.jumpWhen(.onLedge),
+        .reverseDirection(.onLedge),
+        //.jumpWhen(.thisBumped(.left)),
+        //.jumpWhen(.thisBumped(.right)),
+        .reverseDirection(.thisBumped(.left)),
+        .reverseDirection(.thisBumped(.right)),
+        //.jumpWhen(.thisBumped(.down)),
+        
     ]
 }
 

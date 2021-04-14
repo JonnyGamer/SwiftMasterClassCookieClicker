@@ -98,15 +98,20 @@ class MovableSprite: BasicSprite {
         }
     }
     
+    var frameCount = 0
+    var everyFrame = 1
     var xSpeed = 2
     func move(_ direction: Direction) {
         standing = false
-        if direction == .left {
-            position.x -= xSpeed
+        if frameCount % everyFrame == 0 {
+            if direction == .left {
+                position.x -= xSpeed
+            }
+            if direction == .right {
+                position.x += xSpeed
+            }
         }
-        if direction == .right {
-            position.x += xSpeed
-        }
+        frameCount += 1
     }
     
     var standing = true
@@ -136,8 +141,16 @@ class MovableSprite: BasicSprite {
 //        }
     }
     
-    func standingOnLedge() {
-        
+    var standingOnLedgeAction: [() -> ()] = []
+    var ledgeOn: BasicSprite?
+    func standingOnLedge(n: BasicSprite?) {
+        if n == nil { ledgeOn = nil; return }
+        if ledgeOn !== n {
+            standingOnLedgeAction.run()
+            ledgeOn = n
+        }
+        //print("OK")
+        //jump()
     }
     
     
@@ -149,6 +162,7 @@ class MovableSprite: BasicSprite {
     func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
         if direction == .down {
             landedOn(hit)
+            runWhenBumpDown.run()
         }
         
         // Still working on UP??
@@ -160,26 +174,26 @@ class MovableSprite: BasicSprite {
             fallingVelocity = 0
             stopY()
             print(velocity)
-            
-            //if velocity.dy > 0 {
-                //hit.position.y += velocity.dy
-            //}
+            runWhenBumpUp.run()
         }
         
         if direction == .left {
             position.x = hit.maxX
             stopX()
-            //leftGround.insert(hit)
+            runWhenBumpLeft.run()
         }
         
         if direction == .right {
             position.x = hit.minX - frame.x
             stopX()
-            //rightGround.insert(hit)
+            runWhenBumpRight.run()
         }
-        
-        
     }
+    
+    var runWhenBumpDown: [()->()] = []
+    var runWhenBumpLeft: [()->()] = []
+    var runWhenBumpRight: [()->()] = []
+    var runWhenBumpUp: [()->()] = []
     
     func landedOn(_ this: BasicSprite) {
         fallingVelocity = 0
