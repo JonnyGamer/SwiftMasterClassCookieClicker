@@ -179,9 +179,9 @@ class Scene: MagicScene {
                         return !true
                     }
                     
-                    // Move with Ground X
+                    // TEST LATER: Move with Ground X
                     //if j.velocity.dx != 0 {
-                        i.position.x += j.velocity.dx
+                        // i.position.x += j.velocity.dx
                     //}
                     
                     // Stick to the highest ground if not already on it.
