@@ -40,7 +40,7 @@ class Inky: MovableSprite, Spriteable {
     override var isPlayer: Bool { return true }
 }
 
-// ENDED AROUND 3:30?
+
 
 // Rule For All Enemies
 //class Enemy: Spriteable {
@@ -63,8 +63,6 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        //.moveLeftWhen(.pressedButton(.left)),
-        //.moveRightWhen(.pressedButton(.right)),
         //.moveLeftWhen(.playerIsLeftOfSelf),
         //.moveRightWhen(.playerIsRightOfSelf)
     ]

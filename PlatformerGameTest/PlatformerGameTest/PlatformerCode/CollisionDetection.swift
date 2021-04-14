@@ -57,7 +57,6 @@ extension Scene {
                         if i.maxY > j.minY {
                             i.bumpedFromBottom.forEach {$0(j) }
                         }
-                        
                     }
                 }
    
