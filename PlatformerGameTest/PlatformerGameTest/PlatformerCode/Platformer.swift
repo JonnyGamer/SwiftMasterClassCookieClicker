@@ -65,9 +65,9 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        .moveLeftWhen(.playerIsLeftOfSelf),
-        .moveRightWhen(.playerIsRightOfSelf),
-        .xSpeed(1)
+        //.moveLeftWhen(.playerIsLeftOfSelf),
+        //.moveRightWhen(.playerIsRightOfSelf),
+        //.xSpeed(1)
     ]
 }
 

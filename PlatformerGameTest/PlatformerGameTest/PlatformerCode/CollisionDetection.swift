@@ -39,20 +39,19 @@ extension Scene {
                     if jRange.overlaps(iRange) {
                         if jRange.upperBound == iRange.lowerBound {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                print("AUGH")
+                                //print("AUGH")
                             }
                             continue
                         }
                         if jRange.lowerBound == iRange.upperBound {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                print("AUGH")
+                                //print("AUGH")
                             }
                             continue
                         }
-                        print("HMMM")
                     } else {
                         if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                            print("AUGH")
+                            //print("AUGH")
                         }
                         continue
                     }
@@ -67,27 +66,15 @@ extension Scene {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
-                    if j.previousPosition.x + j.frame.y < i.previousPosition.x {
-                        print("Oke")
-                    } else if i.previousPosition.x + i.frame.y < j.previousPosition.x {
-                        print("Oke")
-                    }
                     
                     if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                         i.bumpedFromBottom.forEach { $0(j) }
-                    } else {
-                        if "\(j)".contains("u"), "\(i)".contains("C") {
-                            print("foo")
-                        } else if "\(i)".contains("u"), "\(j)".contains("C") {
-                            print("foo")
-                        }
                     }
                 
                 } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
-                    print("TRIED.",i, j)
                     if ((j.minY-j.velocity.dy-1)...(j.maxY)).contains(i.minY) {
                         print(i, j)
                         //if curry.contains(0) { break foo }
@@ -98,12 +85,6 @@ extension Scene {
                         //if curry.contains(1) { break foo }
                         i.bumpedFromTop.forEach { $0(j) }
                         //checkForCollision(i, curry + [1])
-                    } else {
-                        if "\(j)".contains("u"), "\(i)".contains("C") {
-                            print("foo")
-                        } else if "\(i)".contains("u"), "\(j)".contains("C") {
-                            print("foo")
-                        }
                     }
                     
                 // Both are moving downwards
@@ -117,19 +98,6 @@ extension Scene {
                     } else if i.previousPosition.y > j.previousPosition.y {
                         
                     }
-//
-//                    if j.position.y - j.velocity.dy < i.position.y - i.velocity.dy {
-//                        if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
-//                            i.bumpedFromTop.forEach { $0(j) }
-//                        }
-//                    } else if j.position.y - j.velocity.dy > i.position.y - i.velocity.dy {
-//                        if let i = i as? MovableSprite {
-//                            if ((i.minY + (i.velocity.dy-1))...(i.maxY)).contains(j.maxY) {
-//                                j.bumpedFromTop.forEach { $0(i) }
-//                            }
-//                        }
-//                    }
-                    
                 // If both are moving upwards
                 } else if j.velocity.dy > 0, i.velocity.dy > 0 {
                     
@@ -154,12 +122,6 @@ extension Scene {
                 if j.velocity.dy < 0 {
                     if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                         i.bumpedFromBottom.forEach { $0(j) }
-                        
-                        if "\(i)".contains("C"), "\(j)".contains("C") {
-                            print("ooh")
-                        }
-                        
-                        //checkForCollision(i) ////
                         print("-", j)
                     }
                     
@@ -173,12 +135,6 @@ extension Scene {
                             if j.minX - j.velocity.dx >= i.minX { break foo }
 
                             j.bumpedFromBottom.forEach { $0(i) }
-                            
-                            if "\(i)".contains("C"), "\(j)".contains("C") {
-                                print("ooh")
-                            }
-                            
-                            //checkForCollision(i) ////
                             print("-", i)
                         }
                     }
@@ -186,126 +142,10 @@ extension Scene {
    
             }
             
-            if i.velocity.dx == 0, j.velocity.dx == 0 { continue }
-            foo: if j.midX < i.midX {
-                
-                do {
-                    
-                    var jRange: ClosedRange<Int> = j.minY...j.maxY
-                    if j.velocity.dy < 0 {
-                        jRange = ((j.minY)...(j.previousPosition.y + j.frame.y))
-                    } else if j.velocity.dy > 0 {
-                        jRange = ((j.previousPosition.y)...(j.maxY))
-                    }
-                    
-                    var iRange: ClosedRange<Int> = i.minY...i.maxY
-                    if i.velocity.dy < 0 {
-                        iRange = ((i.minY)...(i.previousPosition.y + i.frame.y))
-                    } else if i.velocity.dy > 0 {
-                        iRange = ((i.previousPosition.y)...(i.maxY))
-                    }
-                    
-                    if jRange.overlaps(iRange) {
-                        if jRange.upperBound == iRange.lowerBound {
-                            if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                print("AUGH")
-                            }
-                            continue
-                        }
-                        if jRange.lowerBound == iRange.upperBound {
-                            if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                print("AUGH")
-                            }
-                            continue
-                        }
-                        print("HMMM")
-                    } else {
-                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                            print("AUGH")
-                        }
-                        continue
-                    }
-                }
-                
-
-                
-                if i.maxX > j.minX, i.minX < j.maxX {
-                    
-                    
-                    if i.velocity.dx == 0, let j = j as? MovableSprite {
-                        // j -> |i|
-                        if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX { break foo }
-                        i.bumpedFromRight.forEach { $0(j) }
-                        if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
-                            j.stopMoving(i, .right)
-                        }
-                        
-                    } else if let i = i as? MovableSprite {
-                        if j.velocity.dx == 0 {
-                            // |j| <- i
-                            if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
-                            j.bumpedFromLeft.forEach { $0(i) }
-                            if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
-                                i.stopMoving(j, .left)
-                            }
-                            
-                        } else if let j = j as? MovableSprite {
-                            if i.velocity.dx < 0 {
-                                if j.velocity.dx < 0 {
-                                    
-                                    if j.velocity.dx == i.velocity.dx {
-                                        // <- j <- i
-                                        // do nothing
-                                    } else {
-                                        
-                                        // <- j <-<- i
-                                        if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
-                                        j.bumpedFromLeft.forEach { $0(i) }
-                                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
-                                            i.stopMoving(j, .left)
-                                        }
-                                        
-                                    }
-                                    
-                                } else {
-                                    if j.velocity.dx == -i.velocity.dx {
-                                        // Unfinished
-                                        // j -> <- i
-                                        i.position.x = i.previousPosition.x // Do Noy Delete these yet.
-                                        j.position.x = j.previousPosition.x
-                                        
-                                    } else {
-                                        
-                                        if !((j.previousPosition.x + j.frame.x)...j.maxX).overlaps((i.minX...i.previousPosition.x)) { break foo }
-                                        
-                                        if j.velocity.dx > -i.velocity.dx {
-                                            
-                                            // j ->-> <- |i|
-                                            i.bumpedFromRight.forEach { $0(j) }
-                                            if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
-                                                j.stopMoving(i, .right)
-                                            }
-                                            
-                                        } else {
-                                            // j -> <-<- i
-                                            j.bumpedFromLeft.forEach { $0(i) }
-                                            if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
-                                                i.stopMoving(j, .left)
-                                            }
-                                        }
-                                        
-                                    }
-                                    
-                                }
-                                
-                            } else {
-                                // THIS ACTUALLY NEVER HAPPENS
-                            }
-                        }
-                    }
-                    
-                }
+            if i.velocity.dx == 0, j.velocity.dx == 0 {
+                continue
             }
+            newCheckX(i, j)
             
             continue
             if i.velocity.dx == 0, j.velocity.dx == 0 { continue }
@@ -431,6 +271,142 @@ extension Scene {
         }
         return nil
     }
+    
+    
+    func newCheckX(_ i: BasicSprite,_ j: BasicSprite) {
+        foo: if j.midX < i.midX {
+            
+            do {
+                
+                var jRange: ClosedRange<Int> = j.minY...j.maxY
+                if j.velocity.dy < 0 {
+                    jRange = ((j.minY)...(j.previousPosition.y + j.frame.y))
+                } else if j.velocity.dy > 0 {
+                    jRange = ((j.previousPosition.y)...(j.maxY))
+                }
+                
+                var iRange: ClosedRange<Int> = i.minY...i.maxY
+                if i.velocity.dy < 0 {
+                    iRange = ((i.minY)...(i.previousPosition.y + i.frame.y))
+                } else if i.velocity.dy > 0 {
+                    iRange = ((i.previousPosition.y)...(i.maxY))
+                }
+                
+                if jRange.overlaps(iRange) {
+                    if jRange.upperBound == iRange.lowerBound {
+                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
+                            //print("AUGH")
+                        }
+                        if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
+                            print("UHHHH")
+                        }
+                        return
+                        //continue
+                    }
+                    if jRange.lowerBound == iRange.upperBound {
+                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
+                            //print("AUGH")
+                        }
+                        if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
+                            print("UHHHH")
+                        }
+                        return
+                        //continue
+                    }
+                    print("HMMM")
+                } else {
+                    if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
+                        //print("AUGH")
+                    }
+                    if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
+                        print("UHHHH")
+                    }
+                    return
+                    //continue
+                }
+            }
+            
+
+            
+            if i.maxX > j.minX, i.minX < j.maxX {
+                
+                
+                if i.velocity.dx == 0, let j = j as? MovableSprite {
+                    // j -> |i|
+                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX { break foo }
+                    i.bumpedFromRight.forEach { $0(j) }
+                    if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                        j.stopMoving(i, .right)
+                    }
+                    
+                } else if let i = i as? MovableSprite {
+                    if j.velocity.dx == 0 {
+                        // |j| <- i
+                        if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
+                        j.bumpedFromLeft.forEach { $0(i) }
+                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                            i.stopMoving(j, .left)
+                        }
+                        
+                    } else if let j = j as? MovableSprite {
+                        if i.velocity.dx < 0 {
+                            if j.velocity.dx < 0 {
+                                
+                                if j.velocity.dx == i.velocity.dx {
+                                    // <- j <- i
+                                    // do nothing
+                                } else {
+                                    
+                                    // <- j <-<- i
+                                    if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
+                                    j.bumpedFromLeft.forEach { $0(i) }
+                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                        i.stopMoving(j, .left)
+                                    }
+                                    
+                                }
+                                
+                            } else {
+                                if j.velocity.dx == -i.velocity.dx {
+                                    // Unfinished
+                                    // j -> <- i
+                                    i.position.x = i.previousPosition.x // Do Noy Delete these yet.
+                                    j.position.x = j.previousPosition.x
+                                    
+                                } else {
+                                    
+                                    if !((j.previousPosition.x + j.frame.x)...j.maxX).overlaps((i.minX...i.previousPosition.x)) { break foo }
+                                    
+                                    if j.velocity.dx > -i.velocity.dx {
+                                        
+                                        // j ->-> <- |i|
+                                        i.bumpedFromRight.forEach { $0(j) }
+                                        if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                                            j.stopMoving(i, .right)
+                                        }
+                                        
+                                    } else {
+                                        // j -> <-<- i
+                                        j.bumpedFromLeft.forEach { $0(i) }
+                                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                            i.stopMoving(j, .left)
+                                        }
+                                    }
+                                    
+                                }
+                                
+                            }
+                            
+                        } else {
+                            // THIS ACTUALLY NEVER HAPPENS
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
     
 }
 

@@ -122,12 +122,14 @@ class MovableSprite: BasicSprite {
             hit.position.x = maxX
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
+            print()
         }
         
         if direction == .left {
             hit.position.x = minX - hit.frame.x
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
+            print()
         }
         
 //        if direction == .right || direction == .left {
