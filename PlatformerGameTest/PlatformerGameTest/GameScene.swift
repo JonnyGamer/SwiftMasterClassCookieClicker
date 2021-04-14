@@ -56,10 +56,6 @@ class Scene: MagicScene {
         enemy.startPosition((0,200))
         add(enemy)
         print(enemy.bumpedFromBottom)
-//        let enemy2 = Chaser(box: (16, 16))
-//        enemy2.add(self)
-//        enemy2.startPosition((0,300))
-//        add(enemy2)
         
         // Around 25 moving things per level is SAFE :)
         for i in 1...1 {
@@ -96,6 +92,12 @@ class Scene: MagicScene {
         g4.add(self)
         g4.skNode.alpha = 0.5
         add(g4)
+        
+//        let g5 = GROUND(box: (300, 16))
+//        g5.startPosition((400, -8+16+16))
+//        g5.add(self)
+//        g5.skNode.alpha = 0.5
+//        add(g5)
         
 //        for i in (0...1000) {
 //            let g2 = GROUND(box: (16, 16))

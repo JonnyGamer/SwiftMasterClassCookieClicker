@@ -15,7 +15,7 @@ extension Scene {
             print("testing Ink")
         }
         
-        let superSet = quadtree.contains(j)//movableSprites.union(quadtree.contains(i))
+        let superSet = movableSprites.union(quadtree.contains(j))
         for i in superSet {//} sprites.shuffled() {
             if i === j { continue }
 
@@ -161,7 +161,7 @@ extension Scene {
             if i.velocity.dx == 0, j.velocity.dx == 0 {
                 continue
             }
-            newCheckX(i, j, sprites: superSet)
+            newCheckX(j, i, sprites: superSet)
             
             continue
             if i.velocity.dx == 0, j.velocity.dx == 0 { continue }
