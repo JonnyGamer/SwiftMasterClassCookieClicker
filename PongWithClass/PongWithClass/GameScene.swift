@@ -41,7 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle(.auto)
+        player1 = createPaddle(.wall)
         player1.position = .init(x: -450, y: 0)
         
         player2 = createPaddle(.wall)
@@ -280,7 +280,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         run(.sequence([wait, .run({
             
             var xMovement = Bool.random() ? -100 : 100
-            let yMovement = Int.random(in: -1000...1000)
+            let yMovement = 0//Int.random(in: -1000...1000)
             
             for i in self.pongs {
                 xMovement *= -1
