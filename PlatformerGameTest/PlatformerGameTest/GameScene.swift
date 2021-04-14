@@ -56,15 +56,15 @@ class Scene: MagicScene {
 //        add(enemy2)
         
         
-//        let enemy2 = Chaser(box: (17, 17))
-//        enemy2.add(self)
-//        enemy2.startPosition((64+16+16,100))
-//        add(enemy2)
-//
-//        let enemy3 = Chaser(box: (18, 18))
-//        enemy3.add(self)
-//        enemy3.startPosition((64+16+16+16+16,100))
-//        add(enemy3)
+        let enemy2 = Chaser(box: (17, 17))
+        enemy2.add(self)
+        enemy2.startPosition((64+16+16,100))
+        add(enemy2)
+
+        let enemy3 = Chaser(box: (18, 18))
+        enemy3.add(self)
+        enemy3.startPosition((64+16+16+16+16,100))
+        add(enemy3)
         
         let g = GROUND(box: (1000, 16))
         g.startPosition((0, -8))
@@ -73,7 +73,7 @@ class Scene: MagicScene {
         add(g)
         
         let g0 = GROUND(box: (1000, 16))
-        g0.startPosition((-900, -8))
+        g0.startPosition((-1020, -8))
         g0.add(self)
         g0.skNode.alpha = 0.5
         add(g0)
@@ -214,6 +214,11 @@ class Scene: MagicScene {
                     }
                     
                     return !false
+                }
+                
+                // Check if standing on Ledge
+                if !i.onGround.isEmpty, i.onGround.contains(where: { (i.maxX < $0.maxX) || (i.minX > $0.minX) }) {
+                    i.standingOnLedge()
                 }
                 
 //                // If not on groud, fall

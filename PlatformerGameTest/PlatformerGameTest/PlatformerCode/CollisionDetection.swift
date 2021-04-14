@@ -45,13 +45,13 @@ extension Scene {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
                                 //print("AUGH")
                             }
-                            //continue
+                            continue
                         }
                         if jRange.lowerBound == iRange.upperBound {
                             if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
                                 //print("AUGH")
                             }
-                            //continue
+                            continue
                         }
                     } else {
                         if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
@@ -364,7 +364,14 @@ extension Scene {
                                 
                                 if j.velocity.dx == i.velocity.dx {
                                     // <- j <- i
-                                    // do nothing
+                                    // do nothing SAME OLD thing as the one below
+                                    
+                                    if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
+                                    j.bumpedFromLeft.forEach { $0(i) }
+                                    if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+                                        i.stopMoving(j, .left)
+                                    }
+                                    
                                 } else {
                                     
                                     // <- j <-<- i
@@ -408,7 +415,37 @@ extension Scene {
                             }
                             
                         } else {
-                            // THIS ACTUALLY NEVER HAPPENS
+                            // THIS ACTUALLY SOMETIMES HAPPENS
+                            //fatalError()
+                            
+                            // j ->-> i ->
+                            if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
+                            i.bumpedFromRight.forEach { $0(j) }
+                            if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+                                j.stopMoving(i, .right)
+                            }
+                            
+//                            if j.velocity.dx == i.velocity.dx {
+//                                // j -> i ->
+//                                // do nothing SAME OLD thing as the one below
+//
+//                                if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
+//                                j.bumpedFromLeft.forEach { $0(i) }
+//                                if let _ = recursiveLeftPush(j, velX: j.velocity.dx) {
+//                                    i.stopMoving(j, .left)
+//                                }
+//
+//                            } else {
+//
+//                                // j ->-> i ->
+//                                if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
+//                                i.bumpedFromRight.forEach { $0(j) }
+//                                if let _ = recursiveRightPush(i, velX: i.velocity.dx) {
+//                                    j.stopMoving(i, .right)
+//                                }
+//
+                            //}
+                            
                         }
                     }
                 }
