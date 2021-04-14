@@ -23,7 +23,7 @@ class BasicSprite: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine("\(self)")
     }
-    
+    var annoyance: [() -> ()] = []
     
     var frame = (x: 16, y: 16)
     var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
@@ -57,6 +57,13 @@ class BasicSprite: Hashable {
     }
     func stopY() {
         previousPosition.y = position.y
+    }
+    
+    var dead = false
+    func die(_ direction: Direction?) {
+        dead = true
+        (skNode.scene as? Scene)?.sprites.remove(self)
+        skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
     }
     
     func run(_ this: SKAction) {

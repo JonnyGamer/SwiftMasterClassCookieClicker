@@ -13,7 +13,7 @@ import GameplayKit
 //}
 extension Scene {
     func add(_ this: BasicSprite) {
-        sprites.append(this)
+        sprites.insert(this)
         addChild(this.skNode)
     }
 }
@@ -34,8 +34,8 @@ class Scene: MagicScene {
     var players: [Inky] = []
     var woah: SKNode!
     
-    var movableSprites: [MovableSprite] = []
-    var sprites: [BasicSprite] = []
+    //var movableSprites: Set<MovableSprite> = []
+    var sprites: Set<BasicSprite> = []
     
     override func begin() {
         let player = Inky(box: (4, 4))
@@ -73,7 +73,7 @@ class Scene: MagicScene {
         add(g)
         
         let g0 = GROUND(box: (1000, 16))
-        g0.startPosition((-1100, -8))
+        g0.startPosition((-1000, -8))
         g0.add(self)
         g0.skNode.alpha = 0.5
         add(g0)
@@ -162,9 +162,12 @@ class Scene: MagicScene {
     
 
     
-    var annoyance: [() -> ()] = []
+    
     override func didFinishUpdate() {
-        annoyance.run()
+        for i in sprites {
+            i.annoyance.run()
+        }
+        
         print("-")
         print("ok")
         for i in sprites.shuffled() {
@@ -218,8 +221,13 @@ class Scene: MagicScene {
                 
                 // Check if standing on Ledge
                 //  !i.onGround.contains(where: { (i.maxX < $0.maxX) && (i.minX > $0.minX) })
-                if !i.onGround.isEmpty, let n = i.onGround.filter { !( (i.maxX < $0.maxX) && (i.minX > $0.minX)) }.first {
-                    i.standingOnLedge(n: n)
+                if !i.onGround.isEmpty {
+                    let filtered = i.onGround.filter { !( (i.maxX < $0.maxX) && (i.minX > $0.minX)) }
+                    if i.onGround.count == filtered.count {
+                        i.standingOnLedge(n: nil)
+                    } else {
+                        i.standingOnLedge(n: filtered.first)
+                    }
                 } else {
                     i.standingOnLedge(n: nil)
                 }

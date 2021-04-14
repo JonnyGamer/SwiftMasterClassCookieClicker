@@ -37,6 +37,8 @@ class Inky: MovableSprite, Spriteable {
         .moveRightWhen(.pressedButton(.right)),
         //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
         
+        .die(.pressedButton(.jump)),
+        
         .fallWhen(.notOnGround),
     ]
     override var isPlayer: Bool { return true }
@@ -60,13 +62,13 @@ class Chaser: MovableSprite, Spriteable {
         
         //.stopObjectFromMoving(.left, when: .thisBumped(.left)),
         //.stopObjectFromMoving(.right, when: .thisBumped(.right)),
-        .allowObjectToPush(.right, when: .thisBumped(.right)),
-        .allowObjectToPush(.left, when: .thisBumped(.left)),
+        //.allowObjectToPush(.right, when: .thisBumped(.right)),
+        //.allowObjectToPush(.left, when: .thisBumped(.left)),
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        .moveLeftWhen(.playerIsLeftOfSelf),
-        .moveRightWhen(.playerIsRightOfSelf),
+        .moveLeftWhen(.always), // .playerIsLeftOfSelf
+        //.moveRightWhen(.playerIsRightOfSelf),
         .xSpeed(5, everyFrame: 2),
         
         //.jumpWhen(.onLedge),
@@ -77,6 +79,8 @@ class Chaser: MovableSprite, Spriteable {
         .reverseDirection(.thisBumped(.right)),
         //.jumpWhen(.thisBumped(.down)),
         
+        .killObject(.left, when: .thisBumped(.left)),
+        .killObject(.right, when: .thisBumped(.right)),
     ]
 }
 

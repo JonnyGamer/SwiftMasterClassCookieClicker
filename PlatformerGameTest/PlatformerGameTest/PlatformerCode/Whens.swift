@@ -21,6 +21,8 @@ enum When {
     case standWhen(UserAction)
     
     case xSpeed(Int, everyFrame: Int)
+    case die(UserAction)
+    case killObject(Direction, when: UserAction)
 }
 
 enum UserAction {

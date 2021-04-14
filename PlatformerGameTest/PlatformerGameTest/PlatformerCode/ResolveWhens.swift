@@ -32,6 +32,7 @@ extension BasicSprite {
             case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
             case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
+            case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
             default: break
             }
             
@@ -43,6 +44,7 @@ extension BasicSprite {
                 
             case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
             case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
+            case .killObject(let dir, let userAction): resolveUserActionSPRITE(this, userAction, { $0.die(dir) })
                 
             default: break
             }
@@ -93,47 +95,28 @@ extension BasicSprite {
             this.doThisWhenStanding.append(action)
             
         case .notOnGround: break
-//        case .notOnGround:
-//            run(.repeatForever(.sequence([.wait(forDuration: 0.05), .run {
-//                if self.onGround.isEmpty {
-//                    action()
-//                }
-//            }])))
+            
+        case .always:
+            annoyance.append(action)
             
         case .playerIsLeftOfSelf:
-            this.annoyance.append {
+            annoyance.append {
                 if this.players.allSatisfy({ $0.midX < self.midX }) {
                     action()
                 }
             }
-//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-//                if this.players.allSatisfy({ $0.midX < self.midX }) {
-//                    action()
-//                }
-//            }])))
         case .playerIsRightOfSelf:
-            this.annoyance.append {
+            annoyance.append {
                 if this.players.allSatisfy({ self.midX < $0.midX }) {
                     action()
                 }
             }
-//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-//                if this.players.allSatisfy({ self.midX < $0.midX }) {
-//                    action()
-//                }
-//            }])))
         case .playerHasSameXPositionAsSelf:
-            this.annoyance.append {
+            annoyance.append {
                 if this.players.allSatisfy({ self.midX == $0.midX }) {
                     action()
                 }
             }
-            
-//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
-//                if this.players.allSatisfy({ self.midX == $0.midX }) {
-//                    action()
-//                }
-//            }])))
         case .thisBumped(let dir):
             if dir == .left {
                 (self as? MovableSprite)?.runWhenBumpLeft.append(action)
