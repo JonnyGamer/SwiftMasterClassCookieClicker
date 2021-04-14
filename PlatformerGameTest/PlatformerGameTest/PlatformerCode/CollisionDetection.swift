@@ -22,22 +22,13 @@ extension Scene {
                 if j.onGround.contains(where: { $0 === i }) { break foo }
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
-                if j.velocity.dy < 0, i.velocity.dy == 0 {
-                    if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
-                        i.bumpedFromBottom.forEach { $0(j) }
-                    }
-                }
-                
-                else if j.velocity.dy < 0, i.velocity.dy >= 0 {
+                if j.velocity.dy < 0, i.velocity.dy >= 0 {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
                     if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                         i.bumpedFromBottom.forEach { $0(j) }
-                    } //else if ((i.minY)...(i.maxY+(i.velocity.dy+1))).contains(j.minY) {
-//                        i.bumpedFromBottom.forEach { $0(j) }
-//                        print("FOO")
-//                    }
+                    }
                 
                 } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
@@ -66,8 +57,10 @@ extension Scene {
                         if i.maxY > j.minY {
                             i.bumpedFromBottom.forEach {$0(j) }
                         }
+                        
                     }
                 }
+   
             }
                 
             if i.midX > j.midX {
