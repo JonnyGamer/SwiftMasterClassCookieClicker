@@ -9,11 +9,16 @@ import Foundation
 import SpriteKit
 
 extension Scene {
-    func checkForCollision(_ i: BasicSprite,_ curry: [Int] = []) {
+    func checkForCollision(_ j: BasicSprite,_ curry: [Int] = []) {
         
-        let superSet = movableSprites.union(quadtree.contains(i))
-        for j in superSet {//} sprites.shuffled() {
+        if j == players[0] {
+            print("testing Ink")
+        }
+        
+        let superSet = quadtree.contains(j)//movableSprites.union(quadtree.contains(i))
+        for i in superSet {//} sprites.shuffled() {
             if i === j { continue }
+
             
             // Falling Down
             foo: if let j = j as? MovableSprite {

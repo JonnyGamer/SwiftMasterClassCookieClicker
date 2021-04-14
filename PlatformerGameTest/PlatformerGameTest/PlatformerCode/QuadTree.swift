@@ -62,9 +62,9 @@ class QuadTree {
     func contains(_ box: BasicSprite) -> Set<BasicSprite> {
         var seto: Set<BasicSprite> = []
         
-        if !elements.isEmpty {
-            return seto
-        }
+        //if !elements.isEmpty {
+          //  return seto
+        //}
         
         let tX = box.trajectoryX()
         let tY = box.trajectoryY()
@@ -72,21 +72,21 @@ class QuadTree {
         if tX.overlaps(size.minX...size.midX) {
             if tY.overlaps(size.minY...size.midY) {
                 seto = seto.union(qBL?.contains(box) ?? qBL?.elements ?? [])
-                seto = seto.union(qBL?.elements ?? [])
+                seto = seto.union(elements ?? [])
             }
             if tY.overlaps(size.midY...size.maxY) {
                 seto = seto.union(qTL?.contains(box) ?? qTL?.elements ?? [])
-                seto = seto.union(qTL?.elements ?? [])
+                seto = seto.union(elements ?? [])
             }
         }
         if tX.overlaps(size.midX...size.maxX) {
             if tY.overlaps(size.minY...size.midY) {
                 seto = seto.union(qBR?.contains(box) ?? qBR?.elements ?? [])
-                seto = seto.union(qBR?.elements ?? [])
+                seto = seto.union(elements ?? [])
             }
             if tY.overlaps(size.midY...size.maxY) {
                 seto = seto.union(qTR?.contains(box) ?? [])
-                seto = seto.union(qTR?.elements ?? [])
+                seto = seto.union(elements ?? [])
             }
         }
         

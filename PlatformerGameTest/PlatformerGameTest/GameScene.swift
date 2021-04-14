@@ -97,13 +97,13 @@ class Scene: MagicScene {
         g4.skNode.alpha = 0.5
         add(g4)
         
-        for i in (0...1) {
-            let g2 = GROUND(box: (16, 1000))
-            g2.startPosition((200 + (i * 16), -8 + (i * 16)))
-            g2.add(self)
-            g2.skNode.alpha = 0.5
-            add(g2)
-        }
+//        for i in (0...1000) {
+//            let g2 = GROUND(box: (16, 16))
+//            g2.startPosition((-1000 + (i*16),0))
+//            g2.add(self)
+//            g2.skNode.alpha = 0.5
+//            add(g2)
+//        }
         
         let g3 = GROUND(box: (16, 1000))
         g3.startPosition((-200, -8))
@@ -183,12 +183,16 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
-        for i in sprites {
+        for i in movableSprites {
             i.annoyance.run()
         }
         
         print("-")
         print("ok")
+        if players[0].minY < 10 {
+            print("NONONO")
+        }
+        
         for i in movableSprites {//} sprites.shuffled() {
             checkForCollision(i)
         }
@@ -262,7 +266,7 @@ class Scene: MagicScene {
             }
         }
         
-        if players[0].minY < 0 {
+        if players[0].minY < 10 {
             print("NONONO")
         }
         
