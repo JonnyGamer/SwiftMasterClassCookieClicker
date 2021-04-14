@@ -19,7 +19,7 @@ enum When {
     case fallWhen(UserAction)
     case standWhen(UserAction)
     
-    
+    case xSpeed(Int)
 }
 
 enum UserAction {

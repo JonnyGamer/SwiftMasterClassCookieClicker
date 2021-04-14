@@ -98,15 +98,17 @@ class MovableSprite: BasicSprite {
         }
     }
     
+    var xSpeed = 2
     func move(_ direction: Direction) {
         standing = false
         if direction == .left {
-            position.x -= 2
+            position.x -= xSpeed
         }
         if direction == .right {
-            position.x += 2
+            position.x += xSpeed
         }
     }
+    
     var standing = true
     func stand() {
         if !onGround.isEmpty {
@@ -116,9 +118,21 @@ class MovableSprite: BasicSprite {
     }
     
     func pushDirection(_ hit: BasicSprite,_ direction: Direction) {
-        if direction == .right || direction == .left {
+        if direction == .right {
+            hit.position.x = maxX
+            hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
         }
+        
+        if direction == .left {
+            hit.position.x = minX - hit.frame.x
+            hit.position.x -= velocity.dx
+            hit.position.x += velocity.dx
+        }
+        
+//        if direction == .right || direction == .left {
+//            hit.position.x += velocity.dx
+//        }
     }
     
     var leftGround: Set<BasicSprite> = []// = false
@@ -132,6 +146,9 @@ class MovableSprite: BasicSprite {
         
         // Still working on UP??
         if direction == .up {
+            if "\(self)".contains("C") {
+                print("YEH")
+            }
             position.y = hit.minY - frame.y
             fallingVelocity = 0
             stopY()
@@ -161,6 +178,7 @@ class MovableSprite: BasicSprite {
         fallingVelocity = 0
         onGround.insert(this)
         position.y = this.maxY
+        stopY()
     }
     
     var movingUp: Bool { return onGround.isEmpty && fallingVelocity >= 0 }

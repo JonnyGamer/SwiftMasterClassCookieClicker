@@ -27,8 +27,10 @@ class Inky: MovableSprite, Spriteable {
     var specificActions: [When] = [
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        //.stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        //.stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        .allowObjectToPush(.right, when: .thisBumped(.right)),
+        .allowObjectToPush(.left, when: .thisBumped(.left)),
         
         .moveLeftWhen(.pressedButton(.left)),
         .jumpWhen(.pressedButton(.jump)),
@@ -52,7 +54,7 @@ class Chaser: MovableSprite, Spriteable {
     override var bounceHeight: Int { 16 }
     
     var specificActions: [When] = [
-        .jumpWhen(.pressedButton(.jump)),
+        //.jumpWhen(.pressedButton(.jump)),
         .fallWhen(.notOnGround),
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         
@@ -63,8 +65,9 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        //.moveLeftWhen(.playerIsLeftOfSelf),
-        //.moveRightWhen(.playerIsRightOfSelf)
+        .moveLeftWhen(.playerIsLeftOfSelf),
+        .moveRightWhen(.playerIsRightOfSelf),
+        .xSpeed(1)
     ]
 }
 

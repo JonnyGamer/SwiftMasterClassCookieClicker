@@ -30,6 +30,7 @@ extension BasicSprite {
             case .moveRightWhen(let userAction): resolveUserAction(this, userAction, {foo.move(.right)})
             case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
             case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
+            case .xSpeed(let n): foo.xSpeed = n
             default: break
             }
             
@@ -96,23 +97,39 @@ extension BasicSprite {
 //            }])))
             
         case .playerIsLeftOfSelf:
-            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+            this.annoyance.append {
                 if this.players.allSatisfy({ $0.midX < self.midX }) {
                     action()
                 }
-            }])))
+            }
+//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+//                if this.players.allSatisfy({ $0.midX < self.midX }) {
+//                    action()
+//                }
+//            }])))
         case .playerIsRightOfSelf:
-            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+            this.annoyance.append {
                 if this.players.allSatisfy({ self.midX < $0.midX }) {
                     action()
                 }
-            }])))
+            }
+//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+//                if this.players.allSatisfy({ self.midX < $0.midX }) {
+//                    action()
+//                }
+//            }])))
         case .playerHasSameXPositionAsSelf:
-            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+            this.annoyance.append {
                 if this.players.allSatisfy({ self.midX == $0.midX }) {
                     action()
                 }
-            }])))
+            }
+            
+//            run(.repeatForever(.sequence([.wait(forDuration: 1/15.0), .run {
+//                if this.players.allSatisfy({ self.midX == $0.midX }) {
+//                    action()
+//                }
+//            }])))
             
         default: fatalError()
         }
