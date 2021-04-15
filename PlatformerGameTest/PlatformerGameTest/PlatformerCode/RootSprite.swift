@@ -104,20 +104,23 @@ class MovableSprite: BasicSprite {
     var isPlayer: Bool { return false }
     
     
-    
+    var maxJumps = 1
+    var jumps = 0
     var bounceHeight = 8
     
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
         if dead { return }
+        if jumps >= maxJumps { return }
+        jumps += 1
         
         if !onGround.isEmpty {
             onGround = onGround.filter { !($0.velocity.dy < bounceHeight) }
-            if onGround.isEmpty {
-                fallingVelocity = height ?? bounceHeight
-                doThisWhenNotOnGround.run()
-                //fall()
-            }
+        }
+        if onGround.isEmpty {
+            fallingVelocity = height ?? bounceHeight
+            doThisWhenNotOnGround.run()
+            //fall()
         }
     }
     func stopMovingUp() {
@@ -134,6 +137,8 @@ class MovableSprite: BasicSprite {
     var minFallSpeed: Int = -16
     var fallingVelocity = 0
     func fall() {
+        if jumps == 0 { jumps = 1 }
+        
         position.y += min(maxJumpSpeed, max(minFallSpeed, fallingVelocity))
         if yEveryFrameCount % yEveryFrame == 0 {
             fallingVelocity += ySpeed

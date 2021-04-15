@@ -74,6 +74,11 @@ class Inky: MovableSprite, Spriteable {
         .canDieFrom(.all()),
         .fallWhen(.notOnGround),
         
+        
+        //.doThisWhen({ $0.jumps = 0 }, when: .thisBumped(.down)), // alternative
+        .resetJumpsWhen(.thisBumped(.down)),
+        .maxJump(2),
+        
     ]
     override var isPlayer: Bool { return true }
 }

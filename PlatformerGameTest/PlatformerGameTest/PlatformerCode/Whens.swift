@@ -30,6 +30,10 @@ enum When {
     case minFallSpeed(Int)
     case gravity(Int, everyFrame: Int)
     case stopGoingUpWhen(UserAction)
+    case maxJump(Int)
+    
+    case doThisWhen((MovableSprite) -> (), when: UserAction)
+    case resetJumpsWhen(UserAction)
 }
 
 enum UserAction {

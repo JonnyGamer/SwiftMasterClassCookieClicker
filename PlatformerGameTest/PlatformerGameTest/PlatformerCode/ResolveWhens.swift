@@ -36,7 +36,10 @@ extension BasicSprite {
             case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
             case .canDieFrom(let dir): foo.canDieFrom = dir
             case .stopGoingUpWhen(let userAction): resolveUserAction(this, userAction, foo.stopMovingUp)
-                
+            
+            case .doThisWhen(let doThis, when: let userAction):  resolveUserAction(this, userAction, { doThis(foo) })
+            case .resetJumpsWhen(let userAction):  resolveUserAction(this, userAction, { foo.jumps = 0 })
+            case .maxJump(let m): foo.maxJumps = m
             case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
             case .maxJumpSpeed(let m): foo.maxJumpSpeed = m
             case .minFallSpeed(let m): foo.minFallSpeed = m
