@@ -24,6 +24,7 @@ enum When {
     case die(UserAction)
     case killObject(Direction, when: UserAction)
     case canDieFrom([Direction])
+    case runSKAction([(Int, UserAction)])
 }
 
 enum UserAction {

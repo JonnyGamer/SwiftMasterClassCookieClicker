@@ -15,6 +15,10 @@ protocol Spriteable {
     var bumpedFromLeft: [(MovableSprite) -> ()] { get set }
     var bumpedFromRight: [(MovableSprite) -> ()] { get set }
 }
+protocol SKActionable {
+    var myActions: [SKAction] { get set }
+    var actionSprite: SKNode { get set }
+}
 
 class BasicSprite: Hashable {
     static func == (lhs: BasicSprite, rhs: BasicSprite) -> Bool {
@@ -79,6 +83,7 @@ class BasicSprite: Hashable {
     var bumpedFromBottom: [(MovableSprite) -> ()] = []
     var bumpedFromLeft: [(MovableSprite) -> ()] = []
     var bumpedFromRight: [(MovableSprite) -> ()] = []
+    var doThisWhenNotOnGround: [() -> ()] = []
     
 }
 
@@ -98,7 +103,8 @@ class MovableSprite: BasicSprite {
             onGround = onGround.filter { !($0.velocity.dy < bounceHeight) }
             if onGround.isEmpty {
                 fallingVelocity = height ?? bounceHeight
-                fall()
+                doThisWhenNotOnGround.run()
+                //fall()
             }
         }
     }

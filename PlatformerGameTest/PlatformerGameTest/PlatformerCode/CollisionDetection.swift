@@ -11,9 +11,9 @@ import SpriteKit
 extension Scene {
     func checkForCollision(_ j: BasicSprite,_ movableSpritesTree: QuadTree) {
         
-        if j == players[0] {
-            print("testing Ink")
-        }
+        //if j == players[0] {
+            //print("testing Ink")
+        //}
         
 //        let movableSpritesTree = QuadTree.init(quadtree.size)
 //        for i in movableSprites {
@@ -274,7 +274,7 @@ extension Scene {
                 }
             }
         }
-        print("NOSIR")
+        //print("NOSIR")
         return nil
         
     }

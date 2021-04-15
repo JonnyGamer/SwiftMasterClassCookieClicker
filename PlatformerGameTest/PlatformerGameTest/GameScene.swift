@@ -16,9 +16,13 @@ extension Scene {
         //sprites.insert(this)
         if let s = this as? MovableSprite {
             movableSprites.insert(s)
+        } else if let s = this as? BasicSprite & SKActionable {
+            actionableSprites.insert(s)
+            addChild(s.actionSprite)
         } else {
             quadtree.insert(this)
         }
+        
         addChild(this.skNode)
     }
 }
@@ -39,6 +43,7 @@ class Scene: MagicScene {
     var players: [Inky] = []
     var woah: SKNode!
     
+    var actionableSprites: Set<BasicSprite> = []
     var movableSprites: Set<BasicSprite> = []
     var sprites: Set<BasicSprite> = []
     var quadtree: QuadTree = QuadTree.init(.init(x: -512000, y: -512000, width: 1024000, height: 1024000))
@@ -47,7 +52,7 @@ class Scene: MagicScene {
         let player = Inky(box: (4, 4))
         player.add(self)
         players.append(player)
-        player.startPosition((-64,50))
+        player.startPosition((-64-100,300))
         woah = player.skNode
         add(player)
         
@@ -58,12 +63,12 @@ class Scene: MagicScene {
         print(enemy.bumpedFromBottom)
         
         // Around 25 moving things per level is SAFE :)
-        for i in 1...100 {
-            let enemy21 = Chaser(box: (16, 16))
-            enemy21.add(self)
-            enemy21.startPosition((64+16+16,100 + (i*100)))
-            add(enemy21)
-        }
+//        for i in 1...30 {
+//            let enemy21 = Chaser(box: (16, 16))
+//            enemy21.add(self)
+//            enemy21.startPosition((64+16+16,100 + (i*100)))
+//            add(enemy21)
+//        }
         
         let enemy2 = Chaser(box: (16, 16))
         enemy2.add(self)
@@ -75,17 +80,18 @@ class Scene: MagicScene {
         enemy3.startPosition((64+16+16+16+16,100))
         add(enemy3)
         
-        let g = GROUND(box: (1000, 16))
-        g.startPosition((0, -8))
-        g.add(self)
-        g.skNode.alpha = 0.5
-        add(g)
+//        let g = GROUND(box: (1000, 16))
+//        g.startPosition((0, -8))
+//        g.add(self)
+//        g.skNode.alpha = 0.5
+//        add(g)
         
-        let g0 = GROUND(box: (1000, 16))
-        g0.startPosition((-1100, -8))
+        let g0 = Moving_GROUND(box: (1000, 16))
+        g0.startPosition((-1100, 100))
         g0.add(self)
         g0.skNode.alpha = 0.5
         add(g0)
+        //g0.skNode.run(.moveBy(x: 100, y: 0, duration: 10))
         
         let g4 = GROUND(box: (300, 16))
         g4.startPosition((-400, -8+16+16))
@@ -150,6 +156,9 @@ class Scene: MagicScene {
         if event.keyCode == 126, !pressingUp {
             pressingUp = true
         }
+        if event.keyCode == 49, !pressingUp {
+            pressingUp = true
+        }
     }
     override func keyUp(with event: NSEvent) {
         if event.keyCode == 123 {
@@ -164,6 +173,13 @@ class Scene: MagicScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        for i in actionableSprites {
+            if let j = i as? SKActionable {
+                print((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
+                i.position = (Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY))
+            }
+        }
+        
         if pressingUp {
             doThisWhenJumpButtonIsPressed.run()
             pressingUp = false
@@ -185,20 +201,24 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
-        for i in movableSprites {
+        for i in movableSprites.union(actionableSprites) {
             i.annoyance.run()
         }
         
-        print("-")
-        print("ok")
-        if players[0].minY < 10 {
-            print("NONONO")
-        }
+        //print("-")
+        //print("ok")
+//        if players[0].minY < 10 {
+//            print("NONONO")
+//        }
         
         let movableSpritesTree = QuadTree.init(quadtree.size)
         for i in movableSprites {
             movableSpritesTree.insert(i)
         }
+        for i in actionableSprites {
+            movableSpritesTree.insert(i)
+        }
+        
         for i in movableSprites {//} sprites.shuffled() {
             checkForCollision(i, movableSpritesTree)
         }
@@ -215,13 +235,15 @@ class Scene: MagicScene {
                 
                 // If not on groud, fall
                 if i.onGround.isEmpty {
-                    i.fall()
+                    i.doThisWhenNotOnGround.run()
+                    // i.notOnGround.run()
+                    //i.fall()
                 }
                 
                 var groundsRemoved: [BasicSprite] = []
                 let iOnGround = i.onGround
                 
-                print(i, iOnGround.count)
+                //print(i, iOnGround.count)
                 i.onGround = i.onGround.filter { j in
                     
                     // Only stick on the highest ground.

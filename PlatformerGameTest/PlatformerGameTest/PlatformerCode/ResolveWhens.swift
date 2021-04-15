@@ -34,6 +34,7 @@ extension BasicSprite {
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
             case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
             case .canDieFrom(let dir): foo.canDieFrom = dir
+                
             default: break
             }
             
@@ -46,6 +47,16 @@ extension BasicSprite {
             case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
             case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
             case .killObject(let dir, let userAction): resolveUserActionSPRITE(this, userAction, { $0.die(dir) })
+            case .runSKAction(let actions):
+                if let foo = foo as? (BasicSprite & SKActionable) {
+                    for (id, action) in actions {
+                        resolveUserAction(this, action, {
+                            if foo.actionSprite.action(forKey: "\(id)") == nil {
+                                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                            }
+                        })
+                    }
+                }
                 
             default: break
             }
@@ -93,9 +104,11 @@ extension BasicSprite {
             (self as? MovableSprite)?.standingOnLedgeAction.append(action)
 
         case .neitherLeftNorRightButtonsAreBeingClicked:
-            this.doThisWhenStanding.append(action)
+            doThisWhenNotOnGround.append(action)
             
-        case .notOnGround: break
+        case .notOnGround:
+            (self as? MovableSprite)?.doThisWhenNotOnGround.append(action)
+            //break
             
         case .always:
             annoyance.append(action)

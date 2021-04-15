@@ -19,6 +19,27 @@ class GROUND: BasicSprite, Spriteable {
     ]
 }
 
+class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
+    var myActions: [SKAction] = [
+        .sequence([
+            .moveBy(x: -100, y: -10, duration: 1),
+            .wait(forDuration: 1),
+            .moveBy(x: -100, y: 10, duration: 1),
+            .wait(forDuration: 1),
+        ])
+    ]
+    var actionSprite: SKNode = SKNode()
+    
+    var specificActions: [When] = [
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        .runSKAction([(0, .always)]),
+        //.fallWhen(.notOnGround),
+        //.fallWhen(.never)
+    ]
+}
 
 
 
@@ -40,6 +61,7 @@ class Inky: MovableSprite, Spriteable {
         //.die(.pressedButton(.jump)),
         .canDieFrom(.all()),
         .fallWhen(.notOnGround),
+        
     ]
     override var isPlayer: Bool { return true }
 }
@@ -67,9 +89,10 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        .moveLeftWhen(.always), // .playerIsLeftOfSelf
+        // KEEP .moveLeftWhen(.always), // .playerIsLeftOfSelf
         //.moveRightWhen(.playerIsRightOfSelf),
-        .xSpeed(2, everyFrame: 1),
+        
+        // KEEP //.xSpeed(2, everyFrame: 1),
         
         //.jumpWhen(.onLedge),
         .reverseDirection(.onLedge),
