@@ -53,6 +53,7 @@ extension BasicSprite {
                         resolveUserAction(this, action, {
                             if foo.actionSprite.action(forKey: "\(id)") == nil {
                                 foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
                             }
                         })
                     }

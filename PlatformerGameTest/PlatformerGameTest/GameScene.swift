@@ -178,7 +178,7 @@ class Scene: MagicScene {
             if let j = i as? SKActionable {
                 print((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
                 i.position = (Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY))
-                i.skNode.alpha = j.actionSprite.alpha
+                //i.skNode.alpha = j.actionSprite.alpha
             }
         }
         
