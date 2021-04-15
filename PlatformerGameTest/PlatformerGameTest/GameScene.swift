@@ -40,6 +40,7 @@ class Scene: MagicScene {
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
     var doThisWhenStanding: [() -> ()] = []
     var doThisWhenJumpButtonIsReleased: [() -> ()] = []
+    var doThisWhenMovedOffScreen: [() -> ()] = []
     
     var players: [Inky] = []
     var woah: SKNode!
@@ -130,7 +131,7 @@ class Scene: MagicScene {
         
         //addChild(magicCamera)
         print(quadtree)
-        print(quadtree.total)
+        //print(quadtree.total)
         //print(quadtree.allObjects.count, movableSprites.count)
         print("HMM")
         
@@ -176,6 +177,7 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
+        doThisWhenMovedOffScreen.run()
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {

@@ -28,6 +28,11 @@ class BasicSprite: Hashable {
         hasher.combine("\(self)")
     }
     var annoyance: [() -> ()] = []
+    var doThisOnceDead: [() -> ()] = []
+    var doThisWhenKilledObject: [Int:[(BasicSprite) -> ()]] = [:]
+    var killedObjects = 0
+    
+    var creator: BasicSprite?
     
     var frame = (x: 16, y: 16)
     var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
@@ -36,11 +41,12 @@ class BasicSprite: Hashable {
         frame = box
     }
     
-    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int)) {
-        print("AHENEDNEDJKNE#NKJNJK#")
+    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
         let wow = this.init(box: frame)
         wow.startPosition(location)
+        (wow as? MovableSprite)?.reverseMovement = reverseMovement
         wow.add((skNode.scene as? Scene)!)
+        wow.creator = self
         (skNode.scene as? Scene)?.add(wow)
     }
     
@@ -85,14 +91,31 @@ class BasicSprite: Hashable {
     
     var canDieFrom: [Direction] = []
     var dead = false
-    func die(_ direction: Direction?) {
-        // Double check this line of code
-        if direction != nil, !canDieFrom.contains(direction!) { return }
+    var deathID = Int.min
+    func die(_ direction: Direction?,_ id: [Int]) -> Bool {
+        if !id.isEmpty {
+            if !id.contains(deathID) {
+                return false
+            }
+        } else {
+            
+            // Double check this line of code
+            if direction != nil, !canDieFrom.contains(direction!) {
+                print("NOPE")
+                return false
+            }
+            
+        }
         
+        if !dead {
+            doThisOnceDead.run()
+        }
         dead = true
+        
         (skNode.scene as? Scene)?.sprites.remove(self)
         (skNode.scene as? Scene)?.movableSprites.remove(self)
         skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
+        return true
     }
     
     func run(_ this: SKAction) {
@@ -111,7 +134,7 @@ class BasicSprite: Hashable {
 class MovableSprite: BasicSprite {
     var isPlayer: Bool { return false }
     
-    
+    var lastMovedThisDirection: Direction = .right
     var maxJumps = 1
     var jumps = 0
     var totalJumps = 0
@@ -159,17 +182,19 @@ class MovableSprite: BasicSprite {
     var frameCount = 0
     var everyFrame = 1
     var xSpeed = 2
+    var reverseMovement = false
     func move(_ direction: Direction) {
         if dead { return }
         
         standing = false
         if frameCount % everyFrame == 0 {
             if direction == .left {
-                position.x -= xSpeed
+                position.x -= xSpeed * (reverseMovement ? -1 : 1)
             }
             if direction == .right {
-                position.x += xSpeed
+                position.x += xSpeed * (reverseMovement ? -1 : 1)
             }
+            lastMovedThisDirection = direction
         }
         frameCount += 1
     }

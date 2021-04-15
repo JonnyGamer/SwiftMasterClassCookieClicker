@@ -21,8 +21,8 @@ enum When {
     case standWhen(UserAction)
     
     case xSpeed(Int, everyFrame: Int)
-    case die(UserAction)
-    case killObject(Direction, when: UserAction)
+    case die(UserAction), deathId(Int)
+    case killObject(Direction, when: UserAction, id: [Int])
     case canDieFrom([Direction])
     case runSKAction([(Int, UserAction)])
     case jumpHeight(triangleOf: Int)
@@ -45,6 +45,9 @@ enum UserAction {
     case playerHasSameXPositionAsSelf
     case onLedge
     case afterJumpingNTimes(Int)
+    case onceOffScreen
+    case died
+    case afterKilledObjects(Int)
     
     //case touchingNoWall(Direction)
     case notOnGround

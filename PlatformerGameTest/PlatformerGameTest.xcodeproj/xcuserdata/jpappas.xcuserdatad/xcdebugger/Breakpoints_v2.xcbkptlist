@@ -30,8 +30,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
             landmarkName = "recursiveLeftPush(_:velX:sprites:)"
             landmarkType = "7">
             <Locations>
@@ -78,8 +78,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "recursiveLeftPush(_:velX:sprites:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "recursiveMiniGeneralPush(_:_:velX:dir:recur:sprites:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "recursiveMiniGeneralPush(_:_:velX:dir:recur:sprites:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,25 +126,9 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "recursiveMiniGeneralPush(_:_:velX:dir:recur:sprites:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "ABD5DADB-C2D1-4445-98FB-EE1EC93FCB8D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "checkForCollision(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -158,8 +142,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
             landmarkName = "stopMoving(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,8 +190,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "309"
-            endingLineNumber = "309"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
             landmarkName = "recursiveMiniGeneralPush(_:_:velX:dir:recur:sprites:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -622,8 +606,8 @@
             filePath = "PlatformerGameTest/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "didFinishUpdate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -638,8 +622,8 @@
             filePath = "PlatformerGameTest/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
             landmarkName = "didFinishUpdate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -670,8 +654,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/ResolveWhens.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "resolveWhen(_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -686,8 +670,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/ResolveWhens.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "resolveWhen(_:_:_:)"
             landmarkType = "7">
             <Locations>
@@ -722,22 +706,6 @@
                   offsetFromSymbolStart = "180">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F93D76C7-CDD7-45D5-AD5E-E871F954F03F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "pushDirection(_:_:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

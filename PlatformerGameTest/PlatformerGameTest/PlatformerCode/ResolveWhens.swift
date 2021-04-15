@@ -32,8 +32,8 @@ extension BasicSprite {
             case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
             case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
             case .gravity(let n, let fps): foo.ySpeed = n; foo.yEveryFrame = fps
-            case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
-            case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
+            case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.reverseMovement.toggle() })
+            case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil, []) })
             case .canDieFrom(let dir): foo.canDieFrom = dir
             case .stopGoingUpWhen(let userAction): resolveUserAction(this, userAction, foo.stopMovingUp)
             
@@ -43,6 +43,7 @@ extension BasicSprite {
             case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
             case .maxJumpSpeed(let m): foo.maxJumpSpeed = m
             case .minFallSpeed(let m): foo.minFallSpeed = m
+            case .deathId(let n): foo.deathID = n
                 
             default: break
             }
@@ -55,7 +56,13 @@ extension BasicSprite {
             
         case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
         case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
-        case .killObject(let dir, let userAction): resolveUserActionSPRITE(this, userAction, { $0.die(dir) })
+        case .killObject(let dir, let userAction, let id):
+            resolveUserActionSPRITE(this, userAction, {
+                if $0.die(dir, id) {
+                    self.killedObjects += 1
+                    self.doThisWhenKilledObject[self.killedObjects]?.run($0)
+                }
+            })
         case .runSKAction(let actions):
             if let foo = foo as? (BasicSprite & SKActionable) {
                 for (id, action) in actions {
@@ -109,6 +116,37 @@ extension BasicSprite {
             case .jump: this.doThisWhenJumpButtonIsReleased.append(action)
             default: fatalError("Add your own.")
             }
+            
+        case .afterKilledObjects(let n):
+            if self.doThisWhenKilledObject[n] == nil {
+                self.doThisWhenKilledObject[n] = [{
+                    if $0 !== self {
+                        action()
+                    }
+                }]
+            } else {
+                self.doThisWhenKilledObject[n]?.append {
+                    if $0 !== self {
+                        action()
+                    }
+                }
+            }
+        
+        case .onceOffScreen:
+            guard let foo = (self as? MovableSprite) else { return }
+            this.doThisWhenMovedOffScreen.append {
+                let bounds = foo.skNode.frame
+                guard var sceneBounds = foo.skNode.scene?.frame else { return }
+                guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
+                sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
+                
+                if !bounds.intersects(sceneBounds) {
+                    action()
+                }
+            }
+            
+        case .died:
+            (self as? MovableSprite)?.doThisOnceDead.append(action)
             
         case .afterJumpingNTimes(let n):
             guard let foo = (self as? MovableSprite) else { return }
