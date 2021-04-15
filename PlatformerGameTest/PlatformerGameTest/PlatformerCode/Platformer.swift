@@ -22,6 +22,7 @@ class GROUND: BasicSprite, Spriteable {
 class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
     var myActions: [SKAction] = [
         .sequence([
+            .move(to: .init(x: 100, y: 100), duration: 10),
             .moveBy(x: -100, y: -10, duration: 1),
             .wait(forDuration: 1),
             .moveBy(x: -100, y: 10, duration: 1),
@@ -30,7 +31,14 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
             .moveBy(x: 0, y: -1000, duration: 0),
             .fadeAlpha(to: 1, duration: 1),
             .moveBy(x: 0, y: 1000, duration: 0),
+        ]),
+        .sequence([
+            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: 1), to: .init(x: 200, y: 1)),
+            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
+            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: -100), to: .init(x: -100, y: 200)),
+            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: 200), to: .init(x: -100, y: 1)),
         ])
+        
     ]
     var actionSprite: SKNode = SKNode()
     
@@ -39,7 +47,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-        .runSKAction([(0, .always)]),
+        .runSKAction([(1, .always)]),
         //.fallWhen(.notOnGround),
         //.fallWhen(.never)
     ]

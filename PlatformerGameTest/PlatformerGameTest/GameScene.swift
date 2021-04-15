@@ -147,41 +147,16 @@ class Scene: MagicScene {
     var pressingLeft: Bool = false
     var pressingRight: Bool = false
     override func keyDown(with event: NSEvent) {
-        if event.keyCode == 123, !pressingLeft {
-            pressingLeft = true
-        }
-        if event.keyCode == 124, !pressingRight {
-            pressingRight = true
-        }
-//        if event.keyCode == 126, !pressingUp {
-//            pressingUp = true
-//        }
-        if event.keyCode == 49, !pressingUp {
-            pressingUp = true
-        }
+        if event.keyCode == 123, !pressingLeft { pressingLeft = true }
+        if event.keyCode == 124, !pressingRight { pressingRight = true }
+        if event.keyCode == 49, !pressingUp { pressingUp = true }
     }
     override func keyUp(with event: NSEvent) {
-        if event.keyCode == 123 {
-            pressingLeft = false
-        }
-        if event.keyCode == 124 {
-            pressingRight = false
-        }
-//        if event.keyCode == 126 {
-//            pressingUp = false
-//        }
+        if event.keyCode == 123 { pressingLeft = false }
+        if event.keyCode == 124 { pressingRight = false }
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Run SKActions on Actionable Sprites
-        for i in actionableSprites {
-            if let j = i as? SKActionable {
-                print((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
-                i.position = (Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY))
-                //i.skNode.alpha = j.actionSprite.alpha
-            }
-        }
-        
         if pressingUp {
             doThisWhenJumpButtonIsPressed.run()
             pressingUp = false
@@ -198,6 +173,15 @@ class Scene: MagicScene {
     
     override func didFinishUpdate() {
         
+        // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
+        for i in actionableSprites {
+            if let j = i as? SKActionable {
+                i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
+                print(i.velocity)
+            }
+        }
+        
+
         // Run any `.always` actions
         for i in movableSprites.union(actionableSprites) {
             i.annoyance.run()
@@ -212,6 +196,9 @@ class Scene: MagicScene {
                 }
             }
         }
+        
+
+        
         
         // Create a Quadtree for Moving Objects
         let movableSpritesTree = QuadTree.init(quadtree.size)

@@ -53,21 +53,12 @@ extension Scene {
                     
                     if jRange.overlaps(iRange) {
                         if jRange.upperBound == iRange.lowerBound {
-                            if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                //print("AUGH")
-                            }
                             continue
                         }
                         if jRange.lowerBound == iRange.upperBound {
-                            if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                                //print("AUGH")
-                            }
                             continue
                         }
                     } else {
-                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                            //print("AUGH")
-                        }
                         continue
                     }
                 }
@@ -77,10 +68,19 @@ extension Scene {
                 if j.onGround.contains(where: { $0 === i }) { break foo }
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
-                if j.velocity.dy == 0, i.velocity.dy == 0 {
-                    if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
+                if j.velocity.dy == 0, i.velocity.dy >= 0 {
+                    if ((i.previousPosition.y+i.frame.y)...i.maxY).contains(j.minY) { // Fixed (previousMaxY)
                         i.bumpedFromBottom.forEach { $0(j) }
                     }
+                    
+                    //if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
+                      //  i.bumpedFromBottom.forEach { $0(j) }
+                    //}
+//
+//                } else if j.velocity.dy == 0, i.velocity.dy == 0 {
+//                    if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
+//                        i.bumpedFromBottom.forEach { $0(j) }
+//                    }
                     
                     
                 } else if j.velocity.dy < 0, i.velocity.dy >= 0 {

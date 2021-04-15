@@ -40,6 +40,11 @@ class BasicSprite: Hashable {
         position = n
         position = n
     }
+    func setPosition(_ n: (x: Int, y: Int)) {
+        let savePos = position
+        position = n
+        previousPosition = savePos
+    }
     var position: (x: Int, y: Int) = (0,0) {
         willSet {
             if newValue.y != position.y, newValue.x != position.x {
