@@ -33,11 +33,18 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
             .moveBy(x: 0, y: 1000, duration: 0),
         ]),
         .sequence([
-            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: 1), to: .init(x: 200, y: 1)),
-            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
-            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: -100), to: .init(x: -100, y: 200)),
-            SKEase.move(easeFunction: .bounce, easeType: .out, time: 1, from: .init(x: -100, y: 200), to: .init(x: -100, y: 1)),
-        ])
+            .easeType(curve: .bounce, easeType: .out, .moveBy(x: 16, y: 0, duration: 1))
+            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: 1), to: .init(x: 200, y: 1)),
+            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
+            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: -100), to: .init(x: -100, y: 200)),
+            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: 200), to: .init(x: -100, y: 1)),
+        ]),
+//        .sequence([
+//            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 1, y: 1), to: .init(x: <#T##CGFloat#>, y: <#T##CGFloat#>)),
+//            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
+//            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: -100), to: .init(x: -100, y: 200)),
+//            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: 200), to: .init(x: -100, y: 1)),
+//        ])
         
     ]
     var actionSprite: SKNode = SKNode()

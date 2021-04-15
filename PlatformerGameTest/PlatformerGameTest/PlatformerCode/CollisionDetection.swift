@@ -229,6 +229,10 @@ extension Scene {
     
     func recursiveRightPush(_ j: BasicSprite, velX: Int, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
         
+        if j as? MovableSprite == nil {
+            return (j, 0)
+        }
+        
         for i in sprites {
             if i === j { continue }
             
@@ -253,6 +257,10 @@ extension Scene {
     }
     
     func recursiveLeftPush(_ i: BasicSprite, velX: Int, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
+        
+        if i as? MovableSprite == nil {
+            return (i, 0)
+        }
         
         for j in sprites {
             if i === j { continue }
@@ -280,6 +288,13 @@ extension Scene {
     }
     
     func recursiveMiniGeneralPush(_ i: BasicSprite, _ j: BasicSprite, velX: Int, dir: Direction, recur: (BasicSprite,Int,Set<BasicSprite>) -> (BasicSprite, Int)?, sprites: Set<BasicSprite>) -> (BasicSprite, Int)? {
+        if j as? MovableSprite == nil {
+            return (j, 0)
+        }
+        if i as? MovableSprite == nil {
+            return (i, 0)
+        }
+        
         if let j = j as? MovableSprite {
             if dir == .left {
                 i.bumpedFromLeft.forEach { $0(j) }

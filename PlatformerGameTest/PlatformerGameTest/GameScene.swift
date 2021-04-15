@@ -177,7 +177,6 @@ class Scene: MagicScene {
         for i in actionableSprites {
             if let j = i as? SKActionable {
                 i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
-                print(i.velocity)
             }
         }
         
@@ -190,9 +189,28 @@ class Scene: MagicScene {
             // Move with Ground X
             if let j = i as? MovableSprite {
                 for k in j.onGround {
+                    //i.addVelocity(k.velocity)
+                    //i.newPosition(k.position)
+                    //if k as? SKActionable
+                    
+//                    if k as? SKActionable != nil {
+//                        i.addVelocity(k.velocity)
+//                        print("-", i.velocity)
+//                    }
+//                    
+//                    if k as? MovableSprite != nil {
+//                        i.addVelocity(k.velocity)
+//                        print("-", i.velocity)
+//                    }
+                    
                     if k.velocity.dx != 0 {
                         i.position.x += k.velocity.dx
                     }
+                    
+                    //if k.velocity.dy != 0 {
+                      //  i.position.y += k.velocity.dy
+                    //}
+                    
                 }
             }
         }

@@ -45,6 +45,13 @@ class BasicSprite: Hashable {
         position = n
         previousPosition = savePos
     }
+    func addVelocity(_ n: (Int, Int)) {
+        let savePos = previousPosition
+        position = (position.x + n.0, position.y + n.1)
+        //position.x += n.0
+        //position.y += n.1
+        previousPosition = savePos
+    }
     var position: (x: Int, y: Int) = (0,0) {
         willSet {
             if newValue.y != position.y, newValue.x != position.x {
