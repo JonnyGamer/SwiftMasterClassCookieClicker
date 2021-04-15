@@ -164,7 +164,8 @@ extension Scene {
             if i.velocity.dx == 0, j.velocity.dx == 0 {
                 continue
             }
-            newCheckX(j, i, sprites: superSet)
+            newCheckX(i, j, sprites: superSet)
+            newCheckX(j, i, sprites: superSet) // I really don't like this, but it somehow works :(
             
             continue
             if i.velocity.dx == 0, j.velocity.dx == 0 { continue }
