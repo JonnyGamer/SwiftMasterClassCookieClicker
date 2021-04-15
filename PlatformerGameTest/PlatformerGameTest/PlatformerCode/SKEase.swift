@@ -23,6 +23,13 @@ public enum EaseType { case `in`, out, inOut }
 
 extension SKAction {
     
+    static func figureEight(height: CGFloat, time: Double, clockwise: Bool = true) -> SKAction {
+        return .sequence([
+            .circle(height: height/2, time: time/2, clockwise: clockwise),
+            .circle(height: -height/2, time: time/2, clockwise: !clockwise),
+        ])
+    }
+    
     static func circle(height: CGFloat, width: CGFloat? = nil, time: Double, clockwise: Bool = true) -> SKAction {
         let www = width ?? height
         let c: CGFloat = clockwise ? -1 : 1
