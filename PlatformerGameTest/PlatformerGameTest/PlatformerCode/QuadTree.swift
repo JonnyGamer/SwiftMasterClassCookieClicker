@@ -86,10 +86,10 @@ class QuadTree {
             }
         }
         
-        print(seto.count)
-        if seto.count > 0, level == 0 {
-            print("It worked!")
-        }
+        //print(seto.count)
+        //if seto.count > 0, level == 0 {
+            //print("It worked!")
+        //}
         
         // UNNECESARRY
         if seto.isEmpty {
@@ -140,9 +140,12 @@ class QuadTree {
 
         for element in ele {
             
-            if (element.minX.cg...element.maxX.cg).overlaps((size.minX...size.midX)) {
+            let tX = element.trajectoryX()
+            let tY = element.trajectoryY()
+            
+            if tX.overlaps((size.minX...size.midX)) {
                 
-                if (element.minY.cg...element.maxY.cg).overlaps(size.minY...size.midY) {
+                if tY.overlaps(size.minY...size.midY) {
                     if qBL == nil {
                         qBL = QuadTree(size.lowerLeftQuadrant)
                         qBL?.level = level + 1
@@ -150,7 +153,7 @@ class QuadTree {
                     qBL?.insert(element)
                     //continue
                 }
-                if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
+                if tY.overlaps(size.midY...size.maxY) {
                     if qTL == nil {
                         qTL = QuadTree.init(size.upperLeftQuadrant)
                         qTL?.level = level + 1
@@ -162,8 +165,8 @@ class QuadTree {
             }
             
             
-            if (element.minX.cg...element.maxX.cg).overlaps((size.midX...size.maxX)) {
-                if (element.minY.cg...element.maxY.cg).overlaps(size.minY...size.midY) {
+            if tX.overlaps((size.midX...size.maxX)) {
+                if tY.overlaps(size.minY...size.midY) {
                     if qBR == nil {
                         qBR = QuadTree(size.lowerRightQuadrant)
                         qBR?.level = level + 1
@@ -171,7 +174,7 @@ class QuadTree {
                     qBR?.insert(element)
                     //continue
                 }
-                if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
+                if tY.overlaps(size.midY...size.maxY) {
                     if qTR == nil {
                         qTR = QuadTree(size.upperRightQuadrant)
                         qTR?.level = level + 1

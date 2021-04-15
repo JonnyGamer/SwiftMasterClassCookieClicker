@@ -58,22 +58,22 @@ class Scene: MagicScene {
         print(enemy.bumpedFromBottom)
         
         // Around 25 moving things per level is SAFE :)
-//        for i in 1...1 {
-//            let enemy21 = Chaser(box: (16, 16))
-//            enemy21.add(self)
-//            enemy21.startPosition((64+16+16,100 + (i*100)))
-//            add(enemy21)
-//        }
+        for i in 1...100 {
+            let enemy21 = Chaser(box: (16, 16))
+            enemy21.add(self)
+            enemy21.startPosition((64+16+16,100 + (i*100)))
+            add(enemy21)
+        }
         
-//        let enemy2 = Chaser(box: (16, 16))
-//        enemy2.add(self)
-//        enemy2.startPosition((64+16+16,100))
-//        add(enemy2)
-//
-//        let enemy3 = Chaser(box: (16, 16))
-//        enemy3.add(self)
-//        enemy3.startPosition((64+16+16+16+16,100))
-//        add(enemy3)
+        let enemy2 = Chaser(box: (16, 16))
+        enemy2.add(self)
+        enemy2.startPosition((64+16+16,100))
+        add(enemy2)
+
+        let enemy3 = Chaser(box: (16, 16))
+        enemy3.add(self)
+        enemy3.startPosition((64+16+16+16+16,100))
+        add(enemy3)
         
         let g = GROUND(box: (1000, 16))
         g.startPosition((0, -8))
@@ -195,16 +195,20 @@ class Scene: MagicScene {
             print("NONONO")
         }
         
+        let movableSpritesTree = QuadTree.init(quadtree.size)
+        for i in movableSprites {
+            movableSpritesTree.insert(i)
+        }
         for i in movableSprites {//} sprites.shuffled() {
-            checkForCollision(i)
+            checkForCollision(i, movableSpritesTree)
         }
         
         // Stay on Higher Ground
         for i in movableSprites {
-            print(quadtree.contains(i).count)
-            if quadtree.contains(i).count > 0 {
-                print("OOF!")
-            }
+            //print(quadtree.contains(i).count)
+//            if quadtree.contains(i).count > 0 {
+//                print("OOF!")
+//            }
             
             
             if let i = i as? MovableSprite {
@@ -255,12 +259,6 @@ class Scene: MagicScene {
                     
                     let wow1 = iOnGround.sorted(by: { $0.maxX > $1.maxX })
                     let wow2 = iOnGround.sorted(by: { $0.minX < $1.minX })
-                    if wow1.count >= 2{
-                        print("Foo")
-                    }
-                    if wow2.count >= 2{
-                        print("Foo")
-                    }
                     
                     if i.maxX > wow1[0].maxX {
                         i.standingOnLedge(n: wow1[0])
@@ -286,9 +284,9 @@ class Scene: MagicScene {
             }
         }
         
-        if players[0].minY < 10 {
-            print("NONONO")
-        }
+//        if players[0].minY < 10 {
+//            print("NONONO")
+//        }
         
     }
     
