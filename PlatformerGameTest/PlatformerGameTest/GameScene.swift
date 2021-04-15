@@ -153,9 +153,9 @@ class Scene: MagicScene {
         if event.keyCode == 124, !pressingRight {
             pressingRight = true
         }
-        if event.keyCode == 126, !pressingUp {
-            pressingUp = true
-        }
+//        if event.keyCode == 126, !pressingUp {
+//            pressingUp = true
+//        }
         if event.keyCode == 49, !pressingUp {
             pressingUp = true
         }
@@ -173,10 +173,12 @@ class Scene: MagicScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        // Run SKActions on Actionable Sprites
         for i in actionableSprites {
             if let j = i as? SKActionable {
                 print((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
                 i.position = (Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY))
+                i.skNode.alpha = j.actionSprite.alpha
             }
         }
         
@@ -188,73 +190,64 @@ class Scene: MagicScene {
         if pressingLeft { doThisWhenLeftButtonIsPressed.run() }
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
+        // Run Camera
         magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
         magicCamera.run(.moveTo(y: max(50, woah.position.y), duration: 0.1))
     }
     
     
-    
-
-
-    
-
-    
-    
     override func didFinishUpdate() {
+        
+        // Run any `.always` actions
         for i in movableSprites.union(actionableSprites) {
             i.annoyance.run()
+            
+            // Carry things. (Soon: Make this generic enum code as well.)
+            // Move with Ground X
+            if let j = i as? MovableSprite {
+                for k in j.onGround {
+                    if k.velocity.dx != 0 {
+                        i.position.x += k.velocity.dx
+                    }
+                }
+            }
         }
         
-        //print("-")
-        //print("ok")
-//        if players[0].minY < 10 {
-//            print("NONONO")
-//        }
-        
+        // Create a Quadtree for Moving Objects
         let movableSpritesTree = QuadTree.init(quadtree.size)
         for i in movableSprites {
+            // Insert all Moving Sprites
             movableSpritesTree.insert(i)
         }
         for i in actionableSprites {
+            // Insert all Action Sprites
             movableSpritesTree.insert(i)
         }
         
-        for i in movableSprites {//} sprites.shuffled() {
+        // Check all Moving Sprites for collisions.
+        for i in movableSprites {
             checkForCollision(i, movableSpritesTree)
         }
         
         // Stay on Higher Ground
         for i in movableSprites {
-            //print(quadtree.contains(i).count)
-//            if quadtree.contains(i).count > 0 {
-//                print("OOF!")
-//            }
-            
             
             if let i = i as? MovableSprite {
                 
                 // If not on groud, fall
                 if i.onGround.isEmpty {
                     i.doThisWhenNotOnGround.run()
-                    // i.notOnGround.run()
-                    //i.fall()
                 }
                 
                 var groundsRemoved: [BasicSprite] = []
                 let iOnGround = i.onGround
                 
-                //print(i, iOnGround.count)
                 i.onGround = i.onGround.filter { j in
                     
                     // Only stick on the highest ground.
                     if iOnGround.contains(where: { $0.maxY > j.maxY }) {
                         return !true
                     }
-                    
-                    // Move with Ground X
-                    //if j.velocity.dx != 0 {
-                        i.position.x += j.velocity.dx
-                    //}
                     
                     // Stick to the highest ground if not already on it.
                     if i.position.y != j.maxY {
@@ -275,10 +268,7 @@ class Scene: MagicScene {
                 }
                 
                 // Check if standing on Ledge
-                //  !i.onGround.contains(where: { (i.maxX < $0.maxX) && (i.minX > $0.minX) })
                 if !i.onGround.isEmpty {
-                    let filtered = i.onGround.filter { (i.maxX > $0.maxX) || (i.minX < $0.minX) }
-                    
                     let wow1 = iOnGround.sorted(by: { $0.maxX > $1.maxX })
                     let wow2 = iOnGround.sorted(by: { $0.minX < $1.minX })
                     
@@ -289,30 +279,12 @@ class Scene: MagicScene {
                     } else {
                         i.standingOnLedge(n: nil)
                     }
-                        
-//                    } else if filtered.isEmpty {
-//                        i.standingOnLedge(n: nil)
-//                    } else {
-//                        i.standingOnLedge(n: filtered.first)
-//                    }
                 } else {
                     i.standingOnLedge(n: nil)
                 }
-                
-//                // If not on groud, fall
-//                if i.onGround.isEmpty {
-//                    i.fall()
-//                }
             }
         }
-        
-//        if players[0].minY < 10 {
-//            print("NONONO")
-//        }
         
     }
     
 }
-
-//let sceno = Scene()
-//sceno.begin()

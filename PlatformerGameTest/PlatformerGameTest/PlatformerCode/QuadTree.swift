@@ -10,8 +10,13 @@ import SpriteKit
 
 //typealias Ranger = ClosedRange<CGFloat>
 
-class Box {
-
+extension BasicSprite {
+    var minX: Int { return position.x }
+    var minY: Int { return position.y }
+    var maxX: Int { return position.x + frame.x }
+    var maxY: Int { return position.y + frame.y }
+    var midX: Int { return (minX + maxX)/2 }
+    var midY: Int { return (minY + maxY)/2 }
 }
 
 extension BasicSprite {

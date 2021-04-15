@@ -26,6 +26,10 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
             .wait(forDuration: 1),
             .moveBy(x: -100, y: 10, duration: 1),
             .wait(forDuration: 1),
+            .fadeAlpha(to: 0.1, duration: 1),
+            .moveBy(x: 0, y: -1000, duration: 0),
+            .fadeAlpha(to: 1, duration: 1),
+            .moveBy(x: 0, y: 1000, duration: 0),
         ])
     ]
     var actionSprite: SKNode = SKNode()

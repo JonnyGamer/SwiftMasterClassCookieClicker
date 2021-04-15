@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB723226289E81002CE1A6 /* SKEase.swift */; };
 		1BDF24192624B61500446341 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24182624B61500446341 /* AppDelegate.swift */; };
 		1BDF241F2624B61500446341 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF241E2624B61500446341 /* GameScene.swift */; };
 		1BDF24212624B61500446341 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24202624B61500446341 /* ViewController.swift */; };
@@ -17,11 +18,11 @@
 		1BDF24372624B97D00446341 /* ResolveWhens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24362624B97D00446341 /* ResolveWhens.swift */; };
 		1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24392624B98E00446341 /* RootSprite.swift */; };
 		1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF243F2624C3FD00446341 /* QuadTree.swift */; };
-		1BDF24432624C68C00446341 /* SquareCollisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24422624C68C00446341 /* SquareCollisions.swift */; };
 		1BDF24462626430700446341 /* CollisionDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24452626430700446341 /* CollisionDetection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1BBB723226289E81002CE1A6 /* SKEase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKEase.swift; sourceTree = "<group>"; };
 		1BDF24152624B61500446341 /* PlatformerGameTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatformerGameTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BDF24182624B61500446341 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BDF241E2624B61500446341 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		1BDF24362624B97D00446341 /* ResolveWhens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolveWhens.swift; sourceTree = "<group>"; };
 		1BDF24392624B98E00446341 /* RootSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSprite.swift; sourceTree = "<group>"; };
 		1BDF243F2624C3FD00446341 /* QuadTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTree.swift; sourceTree = "<group>"; };
-		1BDF24422624C68C00446341 /* SquareCollisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareCollisions.swift; sourceTree = "<group>"; };
 		1BDF24452626430700446341 /* CollisionDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,8 +89,8 @@
 				1BDF24362624B97D00446341 /* ResolveWhens.swift */,
 				1BDF24332624B86600446341 /* Whens.swift */,
 				1BDF243F2624C3FD00446341 /* QuadTree.swift */,
-				1BDF24422624C68C00446341 /* SquareCollisions.swift */,
 				1BDF24452626430700446341 /* CollisionDetection.swift */,
+				1BBB723226289E81002CE1A6 /* SKEase.swift */,
 			);
 			path = PlatformerCode;
 			sourceTree = "<group>";
@@ -169,7 +169,7 @@
 				1BDF241F2624B61500446341 /* GameScene.swift in Sources */,
 				1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */,
 				1BDF24372624B97D00446341 /* ResolveWhens.swift in Sources */,
-				1BDF24432624C68C00446341 /* SquareCollisions.swift in Sources */,
+				1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */,
 				1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */,
 				1BDF24192624B61500446341 /* AppDelegate.swift in Sources */,
 				1BDF24342624B86600446341 /* Whens.swift in Sources */,
