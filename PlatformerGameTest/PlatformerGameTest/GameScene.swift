@@ -58,22 +58,22 @@ class Scene: MagicScene {
         print(enemy.bumpedFromBottom)
         
         // Around 25 moving things per level is SAFE :)
-        for i in 1...1 {
-            let enemy21 = Chaser(box: (16, 16))
-            enemy21.add(self)
-            enemy21.startPosition((64+16+16,100 + (i*100)))
-            add(enemy21)
-        }
+//        for i in 1...1 {
+//            let enemy21 = Chaser(box: (16, 16))
+//            enemy21.add(self)
+//            enemy21.startPosition((64+16+16,100 + (i*100)))
+//            add(enemy21)
+//        }
         
-        let enemy2 = Chaser(box: (16, 16))
-        enemy2.add(self)
-        enemy2.startPosition((64+16+16,100))
-        add(enemy2)
-
-        let enemy3 = Chaser(box: (16, 16))
-        enemy3.add(self)
-        enemy3.startPosition((64+16+16+16+16,100))
-        add(enemy3)
+//        let enemy2 = Chaser(box: (16, 16))
+//        enemy2.add(self)
+//        enemy2.startPosition((64+16+16,100))
+//        add(enemy2)
+//
+//        let enemy3 = Chaser(box: (16, 16))
+//        enemy3.add(self)
+//        enemy3.startPosition((64+16+16+16+16,100))
+//        add(enemy3)
         
         let g = GROUND(box: (1000, 16))
         g.startPosition((0, -8))
@@ -82,7 +82,7 @@ class Scene: MagicScene {
         add(g)
         
         let g0 = GROUND(box: (1000, 16))
-        g0.startPosition((-1000, -8))
+        g0.startPosition((-1100, -8))
         g0.add(self)
         g0.skNode.alpha = 0.5
         add(g0)
@@ -99,13 +99,13 @@ class Scene: MagicScene {
         g5.skNode.alpha = 0.5
         add(g5)
         
-//        for i in (0...1000) {
-//            let g2 = GROUND(box: (16, 16))
-//            g2.startPosition((-1000 + (i*16),0))
-//            g2.add(self)
-//            g2.skNode.alpha = 0.5
-//            add(g2)
-//        }
+        for i in (0...10000) {
+            let g2 = GROUND(box: (16, 16))
+            g2.startPosition((-1000 + (i*16),-30))
+            g2.add(self)
+            g2.skNode.alpha = 0.5
+            add(g2)
+        }
         
         let g3 = GROUND(box: (16, 1000))
         g3.startPosition((-200, -8))
@@ -124,7 +124,7 @@ class Scene: MagicScene {
         //addChild(magicCamera)
         print(quadtree)
         print(quadtree.total)
-        print(quadtree.allObjects.count, movableSprites.count)
+        //print(quadtree.allObjects.count, movableSprites.count)
         print("HMM")
         
     }
@@ -251,12 +251,30 @@ class Scene: MagicScene {
                 // Check if standing on Ledge
                 //  !i.onGround.contains(where: { (i.maxX < $0.maxX) && (i.minX > $0.minX) })
                 if !i.onGround.isEmpty {
-                    let filtered = i.onGround.filter { !( (i.maxX < $0.maxX) && (i.minX > $0.minX)) }
-                    if i.onGround.count == filtered.count {
-                        i.standingOnLedge(n: nil)
-                    } else {
-                        i.standingOnLedge(n: filtered.first)
+                    let filtered = i.onGround.filter { (i.maxX > $0.maxX) || (i.minX < $0.minX) }
+                    
+                    let wow1 = iOnGround.sorted(by: { $0.maxX > $1.maxX })
+                    let wow2 = iOnGround.sorted(by: { $0.minX < $1.minX })
+                    if wow1.count >= 2{
+                        print("Foo")
                     }
+                    if wow2.count >= 2{
+                        print("Foo")
+                    }
+                    
+                    if i.maxX > wow1[0].maxX {
+                        i.standingOnLedge(n: wow1[0])
+                    } else if i.minX < wow2[0].minX {
+                        i.standingOnLedge(n: wow2[0])
+                    } else {
+                        i.standingOnLedge(n: nil)
+                    }
+                        
+//                    } else if filtered.isEmpty {
+//                        i.standingOnLedge(n: nil)
+//                    } else {
+//                        i.standingOnLedge(n: filtered.first)
+//                    }
                 } else {
                     i.standingOnLedge(n: nil)
                 }

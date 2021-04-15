@@ -69,7 +69,7 @@ class Chaser: MovableSprite, Spriteable {
         
         .moveLeftWhen(.always), // .playerIsLeftOfSelf
         //.moveRightWhen(.playerIsRightOfSelf),
-        .xSpeed(5, everyFrame: 2),
+        .xSpeed(2, everyFrame: 1),
         
         //.jumpWhen(.onLedge),
         .reverseDirection(.onLedge),
