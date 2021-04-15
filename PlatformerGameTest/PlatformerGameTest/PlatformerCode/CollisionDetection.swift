@@ -381,6 +381,7 @@ extension Scene {
                                     
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     j.bumpedFromLeft.forEach { $0(i) }
+                                    i.bumpedFromRight.forEach { $0(j) }
                                     if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
                                     }
@@ -390,6 +391,8 @@ extension Scene {
                                     // <- j <-<- i
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     j.bumpedFromLeft.forEach { $0(i) }
+                                    i.bumpedFromRight.forEach { $0(j) }
+                                    
                                     if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
                                     }
@@ -400,10 +403,14 @@ extension Scene {
                                 if j.velocity.dx == -i.velocity.dx {
                                     // Unfinished
                                     // j -> <- i
+                                    j.bumpedFromLeft.forEach { $0(i) }
+                                    i.bumpedFromRight.forEach { $0(j) }
+                                    
                                     i.position.x = i.previousPosition.x // Do Noy Delete these yet.
                                     j.position.x = j.previousPosition.x
                                     //i.stopMoving(j, .left)
                                     //j.stopMoving(i, .right)
+                                    
                                     i.runWhenBumpRight.run()
                                     j.runWhenBumpLeft.run()
                                     
@@ -415,6 +422,7 @@ extension Scene {
                                         
                                         // j ->-> <- |i|
                                         i.bumpedFromRight.forEach { $0(j) }
+                                        j.bumpedFromLeft.forEach { $0(i) }
                                         if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                             j.stopMoving(i, .right)
                                         }
@@ -422,6 +430,7 @@ extension Scene {
                                     } else {
                                         // j -> <-<- i
                                         j.bumpedFromLeft.forEach { $0(i) }
+                                        i.bumpedFromRight.forEach { $0(j) }
                                         if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                             i.stopMoving(j, .left)
                                         }
@@ -438,6 +447,7 @@ extension Scene {
                             // j ->-> i ->
                             if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
                             i.bumpedFromRight.forEach { $0(j) }
+                            j.bumpedFromLeft.forEach { $0(i) }
                             if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                 j.stopMoving(i, .right)
                             }
