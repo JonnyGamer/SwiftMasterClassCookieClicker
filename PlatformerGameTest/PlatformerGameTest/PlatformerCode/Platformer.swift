@@ -78,7 +78,7 @@ class Inky: MovableSprite, Spriteable {
         //.doThisWhen({ $0.jumps = 0 }, when: .thisBumped(.down)), // alternative
         .resetJumpsWhen(.thisBumped(.down)),
         .maxJump(2),
-        .doThisWhen({ $0.spawnObject(FireBall.self, location: (100, 100)) }, when: .pressedButton(.jump))
+        .doThisWhen({ $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 1 - 2, $0.midY)) }, when: .pressedButton(.jump))
         
     ]
     override var isPlayer: Bool { return true }
@@ -136,7 +136,7 @@ class FireBall: MovableSprite, Spriteable {
         
         .moveLeftWhen(.always),
         .jumpHeight(triangleOf: 5),
-        .xSpeed(4, everyFrame: 1),
+        .xSpeed(4, everyFrame: 2),
         
         .die(.thisBumped(.up)),
         .die(.thisBumped(.left)),

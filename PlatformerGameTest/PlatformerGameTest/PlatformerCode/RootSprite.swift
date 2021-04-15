@@ -36,9 +36,9 @@ class BasicSprite: Hashable {
         frame = box
     }
     
-    func spawnObject(_ this: BasicSprite.Type, location: (Int, Int)) {
+    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int)) {
         print("AHENEDNEDJKNE#NKJNJK#")
-        let wow = this.init(box: (16, 16))
+        let wow = this.init(box: frame)
         wow.startPosition(location)
         wow.add((skNode.scene as? Scene)!)
         (skNode.scene as? Scene)?.add(wow)
