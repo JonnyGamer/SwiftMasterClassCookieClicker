@@ -22,6 +22,23 @@ public enum CurveType {
 public enum EaseType { case `in`, out, inOut }
 
 extension SKAction {
+    
+    static func circle(height: CGFloat, width: CGFloat? = nil, time: Double, clockwise: Bool = true) -> SKAction {
+        let www = width ?? height
+        let c: CGFloat = clockwise ? -1 : 1
+        return SKAction.group([
+            .sequence([
+                .easeType(curve: .sine, easeType: .out, .moveBy(x: c * (www/2), y: 0, duration: (time/4))),
+                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: -c * www, y: 0, duration: (time/2))),
+                .easeType(curve: .sine, easeType: .in, .moveBy(x: c * (www/2), y: 0, duration: (time/4))),
+            ]),
+            .sequence([
+                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: height, duration: (time/2))),
+                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -height, duration: (time/2))),
+            ])
+        ])
+    }
+    
     static func easeType(curve: CurveType, easeType: EaseType,_ n: SKAction) -> SKAction {
         
         if easeType == .in {

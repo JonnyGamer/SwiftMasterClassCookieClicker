@@ -32,13 +32,22 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
             .fadeAlpha(to: 1, duration: 1),
             .moveBy(x: 0, y: 1000, duration: 0),
         ]),
-        .sequence([
-            .easeType(curve: .bounce, easeType: .out, .moveBy(x: 16, y: 0, duration: 1))
-            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: 1), to: .init(x: 200, y: 1)),
-            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
-            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: -100), to: .init(x: -100, y: 200)),
-            //SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: -100, y: 200), to: .init(x: -100, y: 1)),
-        ]),
+//        .group([
+//            .sequence([
+//                .easeType(curve: .sine, easeType: .out, .moveBy(x: 80, y: 0, duration: 0.5)),
+//                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: -160, y: 0, duration: 1)),
+//                .easeType(curve: .sine, easeType: .in, .moveBy(x: 80, y: 0, duration: 0.5)),
+//            ]),
+//            .sequence([
+//                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: 160, duration: 1)),
+//                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -160, duration: 1)),
+//            ])
+//        ]),
+        .circle(height: 160, time: 2),
+        
+//        .sequence([
+//            .easeType(curve: .circular, easeType: .out, .moveBy(x: 16, y: 0, duration: 1))
+//        ]),
 //        .sequence([
 //            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 1, y: 1), to: .init(x: <#T##CGFloat#>, y: <#T##CGFloat#>)),
 //            SKEase.move(easeFunction: .bounce, easeType: .out, time: 2, from: .init(x: 200, y: 1), to: .init(x: -100, y: -100)),
