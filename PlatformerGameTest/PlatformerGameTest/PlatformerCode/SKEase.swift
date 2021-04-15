@@ -46,6 +46,8 @@ extension SKAction {
         ])
     }
     
+    
+    
     static func easeType(curve: CurveType, easeType: EaseType,_ n: SKAction) -> SKAction {
         
         if easeType == .in {

@@ -34,6 +34,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
         ]),
         
         .figureEight(height: 320, time: 4),
+        .moveBy(x: 100, y: 0, duration: 1)
     ]
     var actionSprite: SKNode = SKNode()
     
@@ -42,9 +43,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-        .runSKAction([(1, .always)]),
-        //.fallWhen(.notOnGround),
-        //.fallWhen(.never)
+        .runSKAction([(1, .always), (2, .always)]),
     ]
 }
 
