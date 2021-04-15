@@ -105,7 +105,7 @@ class MovableSprite: BasicSprite {
     
     
     
-    var bounceHeight: Int { 8 }
+    var bounceHeight = 8
     
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
@@ -120,14 +120,25 @@ class MovableSprite: BasicSprite {
             }
         }
     }
+    func stopMovingUp() {
+        if movingUp, fallingVelocity > maxJumpSpeed {
+            fallingVelocity = maxJumpSpeed
+        }
+    }
     
+    var ySpeed = -1
+    var yEveryFrameCount = 0
+    var yEveryFrame = 1
+    
+    var maxJumpSpeed: Int = .max
+    var minFallSpeed: Int = -16
     var fallingVelocity = 0
     func fall() {
-        position.y += fallingVelocity
-        fallingVelocity -= 1
-        if fallingVelocity <= -16 {
-            fallingVelocity = -16
+        position.y += min(maxJumpSpeed, max(minFallSpeed, fallingVelocity))
+        if yEveryFrameCount % yEveryFrame == 0 {
+            fallingVelocity += ySpeed
         }
+        yEveryFrameCount += 1
     }
     
     var frameCount = 0

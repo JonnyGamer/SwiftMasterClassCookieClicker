@@ -25,9 +25,15 @@ enum When {
     case killObject(Direction, when: UserAction)
     case canDieFrom([Direction])
     case runSKAction([(Int, UserAction)])
+    case jumpHeight(triangleOf: Int)
+    case maxJumpSpeed(Int)
+    case minFallSpeed(Int)
+    case gravity(Int, everyFrame: Int)
+    case stopGoingUpWhen(UserAction)
 }
 
 enum UserAction {
+    case releasedButton(Button)
     case pressedButton(Button)
     case thisBumped(Direction)
     case playerIsLeftOfSelf

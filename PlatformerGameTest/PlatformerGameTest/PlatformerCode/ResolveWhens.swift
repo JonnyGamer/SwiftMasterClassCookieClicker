@@ -31,36 +31,41 @@ extension BasicSprite {
             case .fallWhen(let userAction): resolveUserAction(this, userAction, foo.fall)
             case .standWhen(let userAction): resolveUserAction(this, userAction, foo.stand)
             case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
+            case .gravity(let n, let fps): foo.ySpeed = n; foo.yEveryFrame = fps
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.xSpeed *= -1 })
             case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil) })
             case .canDieFrom(let dir): foo.canDieFrom = dir
+            case .stopGoingUpWhen(let userAction): resolveUserAction(this, userAction, foo.stopMovingUp)
+                
+            case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
+            case .maxJumpSpeed(let m): foo.maxJumpSpeed = m
+            case .minFallSpeed(let m): foo.minFallSpeed = m
                 
             default: break
             }
             
         }
             
-            switch when {
-                
-            case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
-                
-            case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
-            case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
-            case .killObject(let dir, let userAction): resolveUserActionSPRITE(this, userAction, { $0.die(dir) })
-            case .runSKAction(let actions):
-                if let foo = foo as? (BasicSprite & SKActionable) {
-                    for (id, action) in actions {
-                        resolveUserAction(this, action, {
-                            if foo.actionSprite.action(forKey: "\(id)") == nil {
-                                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
-                                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
-                            }
-                        })
-                    }
+        switch when {
+            
+        case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
+            
+        case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
+        case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
+        case .killObject(let dir, let userAction): resolveUserActionSPRITE(this, userAction, { $0.die(dir) })
+        case .runSKAction(let actions):
+            if let foo = foo as? (BasicSprite & SKActionable) {
+                for (id, action) in actions {
+                    resolveUserAction(this, action, {
+                        if foo.actionSprite.action(forKey: "\(id)") == nil {
+                            foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                            foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+                        }
+                    })
                 }
-                
-            default: break
             }
+        default: break
+        }
         
         
         
@@ -99,6 +104,11 @@ extension BasicSprite {
             case .jump: this.doThisWhenJumpButtonIsPressed.append(action)
             case .left: this.doThisWhenLeftButtonIsPressed.append(action)
             case .right: this.doThisWhenRightButtonIsPressed.append(action)
+            }
+        case .releasedButton(let button):
+            switch button {
+            case .jump: this.doThisWhenJumpButtonIsReleased.append(action)
+            default: fatalError("Add your own.")
             }
             
         case .onLedge:

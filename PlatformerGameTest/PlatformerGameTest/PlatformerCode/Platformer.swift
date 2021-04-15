@@ -62,6 +62,12 @@ class Inky: MovableSprite, Spriteable {
         .moveLeftWhen(.pressedButton(.left)),
         .jumpWhen(.pressedButton(.jump)),
         .moveRightWhen(.pressedButton(.right)),
+        .jumpHeight(triangleOf: 20),
+        .maxJumpSpeed(5),
+        .minFallSpeed(-5),
+        .gravity(-1, everyFrame: 3),
+        .stopGoingUpWhen(.releasedButton(.jump)),
+        
         //.stopObjectFromMoving(.down, when: .yPositionIsLessThanZeroThenSetPositionToZero),
         
         //.die(.pressedButton(.jump)),
@@ -81,7 +87,6 @@ class Inky: MovableSprite, Spriteable {
 
 // Rule for Specific Enemies
 class Chaser: MovableSprite, Spriteable {
-    override var bounceHeight: Int { 10 }
     
     var specificActions: [When] = [
         //.jumpWhen(.pressedButton(.jump)),

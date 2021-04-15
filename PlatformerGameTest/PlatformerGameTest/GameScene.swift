@@ -39,6 +39,7 @@ class Scene: MagicScene {
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
     var doThisWhenStanding: [() -> ()] = []
+    var doThisWhenJumpButtonIsReleased: [() -> ()] = []
     
     var players: [Inky] = []
     var woah: SKNode!
@@ -154,6 +155,9 @@ class Scene: MagicScene {
     override func keyUp(with event: NSEvent) {
         if event.keyCode == 123 { pressingLeft = false }
         if event.keyCode == 124 { pressingRight = false }
+        if event.keyCode == 49 {
+            doThisWhenJumpButtonIsReleased.run()
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
