@@ -139,7 +139,7 @@ extension BasicSprite {
                 guard var sceneBounds = foo.skNode.scene?.frame else { return }
                 guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
                 sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
-                
+
                 if !bounds.intersects(sceneBounds) {
                     action()
                 }

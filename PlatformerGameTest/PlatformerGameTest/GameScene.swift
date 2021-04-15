@@ -47,7 +47,7 @@ class Scene: MagicScene {
     var actionableSprites: Set<BasicSprite> = []
     var movableSprites: Set<BasicSprite> = []
     var sprites: Set<BasicSprite> = []
-    var quadtree: QuadTree = QuadTree.init(.init(x: -512000, y: -512000, width: 1024000, height: 1024000))
+    var quadtree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     
     override func begin() {
         let player = Inky(box: (16, 16))

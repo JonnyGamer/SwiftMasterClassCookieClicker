@@ -98,23 +98,6 @@ class QuadTree {
             }
         }
         
-        //print(seto.count)
-        //if seto.count > 0, level == 0 {
-            //print("It worked!")
-        //}
-        
-        // UNNECESARRY
-        if seto.isEmpty {
-            seto = seto.union(qBL?.contains(box) ?? qBL?.elements ?? [])
-            seto = seto.union(qTL?.contains(box) ?? qTL?.elements ?? [])
-            seto = seto.union(qBR?.contains(box) ?? qBR?.elements ?? [])
-            seto = seto.union(qTR?.contains(box) ?? qTR?.elements ?? [])
-            //fatalError()
-        }
-        if seto.isEmpty {
-            fatalError()
-        }
-        
         return seto
     }
 
