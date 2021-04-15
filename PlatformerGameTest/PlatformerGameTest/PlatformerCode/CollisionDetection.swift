@@ -335,35 +335,13 @@ extension Scene {
                 
                 if jRange.overlaps(iRange) {
                     if jRange.upperBound == iRange.lowerBound {
-                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                            //print("AUGH")
-                        }
-                        if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                            //print("UHHHH")
-                        }
                         return
-                        //continue
                     }
                     if jRange.lowerBound == iRange.upperBound {
-                        if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                            //print("AUGH")
-                        }
-                        if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                            //print("UHHHH")
-                        }
                         return
-                        //continue
                     }
-                    //print("HMMM")
                 } else {
-                    if ("\(i)".contains("C") || "\(j)".contains("C")) && ("\(i)".contains("y") || "\(j)".contains("y")) {
-                        //print("AUGH")
-                    }
-                    if "\(i)".contains("Chaser"), "\(j)".contains("GROUND") {
-                        //print("UHHHH")
-                    }
                     return
-                    //continue
                 }
             }
             
@@ -471,11 +449,15 @@ extension Scene {
                             //fatalError()
                             
                             // j ->-> i ->
-                            if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
-                            i.bumpedFromRight.forEach { $0(j) }
-                            j.bumpedFromLeft.forEach { $0(i) }
-                            if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
-                                j.stopMoving(i, .right)
+                            if j.velocity.dx > 0 {
+                                if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
+                                i.bumpedFromRight.forEach { $0(j) }
+                                j.bumpedFromLeft.forEach { $0(i) }
+                                if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
+                                    j.stopMoving(i, .right)
+                                }
+                            } else {
+                                // Ignore this <- j i ->
                             }
                             
 //                            if j.velocity.dx == i.velocity.dx {
