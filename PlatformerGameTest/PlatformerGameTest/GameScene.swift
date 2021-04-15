@@ -22,7 +22,6 @@ extension Scene {
         } else {
             quadtree.insert(this)
         }
-        
         addChild(this.skNode)
     }
 }
@@ -51,90 +50,43 @@ class Scene: MagicScene {
     var quadtree: QuadTree = QuadTree.init(.init(x: -512000, y: -512000, width: 1024000, height: 1024000))
     
     override func begin() {
-        let player = Inky(box: (4, 4))
+        let player = Inky(box: (16, 16))
         player.add(self)
         players.append(player)
         player.startPosition((-64-100,300))
         woah = player.skNode
         add(player)
         
-        let enemy = Chaser(box: (16, 16))
-        enemy.add(self)
-        enemy.startPosition((0,200))
-        add(enemy)
-        print(enemy.bumpedFromBottom)
-        
-        // Around 25 moving things per level is SAFE :)
-//        for i in 1...30 {
-//            let enemy21 = Chaser(box: (16, 16))
-//            enemy21.add(self)
-//            enemy21.startPosition((64+16+16,100 + (i*100)))
-//            add(enemy21)
-//        }
-        
-        let enemy2 = Chaser(box: (16, 16))
-        enemy2.add(self)
-        enemy2.startPosition((64+16+16,100))
-        add(enemy2)
-
-        let enemy3 = Chaser(box: (16, 16))
-        enemy3.add(self)
-        enemy3.startPosition((64+16+16+16+16,100))
-        add(enemy3)
-        
-//        let g = GROUND(box: (1000, 16))
-//        g.startPosition((0, -8))
-//        g.add(self)
-//        g.skNode.alpha = 0.5
-//        add(g)
-        
-        let g0 = Moving_GROUND(box: (1000, 16))
-        g0.startPosition((-1100, 100))
+        let g0 = GROUND.init(box: (1000, 1))
         g0.add(self)
-        g0.skNode.alpha = 0.5
+        g0.startPosition((-g0.frame.x/2,10))
         add(g0)
-        //g0.skNode.run(.moveBy(x: 100, y: 0, duration: 10))
         
-        let g4 = GROUND(box: (300, 16))
-        g4.startPosition((-400, -8+16+16))
-        g4.add(self)
-        g4.skNode.alpha = 0.5
-        add(g4)
-        
-        let g5 = GROUND(box: (16, 300))
-        g5.startPosition((400, -8))
-        g5.add(self)
-        g5.skNode.alpha = 0.5
-        add(g5)
-        
-        for i in (0...10000) {
-            let g2 = GROUND(box: (16, 16))
-            g2.startPosition((-1000 + (i*16),-30))
-            g2.add(self)
-            g2.skNode.alpha = 0.5
-            add(g2)
+        for i in 1...100 {
+            let g1 = GROUND.init(box: (10, 10))
+            g1.add(self)
+            g1.startPosition(((-g1.frame.x/2)+(i*32),10))
+            add(g1)
         }
         
-        let g3 = GROUND(box: (16, 1000))
-        g3.startPosition((-200, -8))
-        g3.add(self)
-        g3.skNode.alpha = 0.5
-        add(g3)
-
+        for i in 1...100 {
+            let g1 = GROUND.init(box: (10, 10))
+            g1.add(self)
+            g1.startPosition(((-g1.frame.x/2),10+(i*10)))
+            add(g1)
+        }
         
+        
+        otherThings()
+    }
+    
+    func otherThings() {
         addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
         camera = magicCamera
         magicCamera.position.y += scene!.frame.height/2
         magicCamera.position.x = woah.position.x
         addChild(magicCamera)
-        
-        //addChild(magicCamera)
-        print(quadtree)
-        //print(quadtree.total)
-        //print(quadtree.allObjects.count, movableSprites.count)
-        print("HMM")
-        
     }
     
     func buttonPressed(_ button: Button) {

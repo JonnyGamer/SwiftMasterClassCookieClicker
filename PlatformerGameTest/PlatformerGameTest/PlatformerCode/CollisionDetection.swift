@@ -11,6 +11,10 @@ import SpriteKit
 extension Scene {
     func checkForCollision(_ j: BasicSprite,_ movableSpritesTree: QuadTree) {
         
+        if "\(j)".contains("Fire") {
+            print("AWKWARD")
+        }
+        
         //if j == players[0] {
             //print("testing Ink")
         //}
@@ -70,46 +74,26 @@ extension Scene {
                 
                 if j.velocity.dy == 0, i.velocity.dy >= 0 {
                     if ((i.previousPosition.y+i.frame.y)...i.maxY).contains(j.minY) { // Fixed (previousMaxY)
+                        if j.previousMaxX == i.minX { break foo } //
+                        if j.previousMinX == i.maxX { break foo } //
                         i.bumpedFromBottom.forEach { $0(j) }
                     }
                     
-                    //if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
-                      //  i.bumpedFromBottom.forEach { $0(j) }
-                    //}
-//
-//                } else if j.velocity.dy == 0, i.velocity.dy == 0 {
-//                    if i.maxY == j.minY { // (i.maxY...i.previousPosition.y+i.frame.y).contains(j.minY) {
-//                        i.bumpedFromBottom.forEach { $0(j) }
-//                    }
-                    
                     
                 } else if j.velocity.dy < 0, i.velocity.dy >= 0 {
-                    // This line is needed, Otherwise bad bugs when pushing -> then jumping
-                    //if j.maxX - j.velocity.dx <= i.minX { break foo }
-                    //if j.minX - j.velocity.dx >= i.minX { break foo }
                     
                     if (j.minY...(j.previousPosition.y+j.frame.y)).contains(i.maxY) {
-                    //if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+                        if j.previousMaxX == i.minX { break foo } //
+                        if j.previousMinX == i.maxX { break foo } //
                         i.bumpedFromBottom.forEach { $0(j) }
                     }
                 
                 } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
-                    // This line is needed, Otherwise bad bugs when pushing -> then jumping
-                    //if j.maxX - j.velocity.dx <= i.minX { break foo }
-                    //if j.minX - j.velocity.dx >= i.minX { break foo }
                     if (j.previousPosition.y...j.maxY).contains(i.minY) {
-                    //if ((j.minY-j.velocity.dy-1)...(j.maxY)).contains(i.minY) {
-                        print(i, j)
-                        //if curry.contains(0) { break foo }
+                        if j.previousMaxX == i.minX { break foo } //
+                        if j.previousMinX == i.maxX { break foo } //
                         i.bumpedFromTop.forEach { $0(j) }
-                        //checkForCollision(i, curry + [0])
                     }
-                    //} else if ((j.minY)...(j.maxY+j.velocity.dy+1)).contains(i.minY) {
-                      //  print(i, j)
-                        //if curry.contains(1) { break foo }
-                        //i.bumpedFromTop.forEach { $0(j) }
-                        //checkForCollision(i, curry + [1])
-                    //}
                     
                 // Both are moving downwards
                 } else if j.velocity.dy < 0, i.velocity.dy < 0 {
@@ -234,7 +218,7 @@ extension Scene {
     
     
     func newCheckX(_ i: BasicSprite,_ j: BasicSprite, sprites: Set<BasicSprite>) {
-        foo: if j.midX < i.midX {
+        foo: if j.previousMidX < i.previousMidX {
             
             do {
                 

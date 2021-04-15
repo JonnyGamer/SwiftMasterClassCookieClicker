@@ -17,6 +17,13 @@ extension BasicSprite {
     var maxY: Int { return position.y + frame.y }
     var midX: Int { return (minX + maxX)/2 }
     var midY: Int { return (minY + maxY)/2 }
+    
+    var previousMinX: Int { return previousPosition.x }
+    var previousMidX: Int { return (previousMinX + previousMaxX)/2 }
+    var previousMaxX: Int { return previousPosition.x + frame.x }
+    var previousMinY: Int { return previousPosition.y }
+    var previousMidY: Int { return (previousMinY + previousMaxY)/2 }
+    var previousMaxY: Int { return previousPosition.y + frame.y }
 }
 
 extension BasicSprite {

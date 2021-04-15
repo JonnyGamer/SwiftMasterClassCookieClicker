@@ -67,9 +67,9 @@ class Inky: MovableSprite, Spriteable {
             if let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
                 ($0 as? Inky)?.fireBallsActive += 1
                 if $0.lastMovedThisDirection == .left {
-                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 1 - 2, $0.midY))
+                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
                 } else if $0.lastMovedThisDirection == .right {
-                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX + 1, $0.midY), reverseMovement: true)
+                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
                 }
             }
         }, when: .pressedButton(.jump))
