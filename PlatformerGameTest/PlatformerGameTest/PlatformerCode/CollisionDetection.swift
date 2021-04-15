@@ -11,15 +11,10 @@ import SpriteKit
 extension Scene {
     func checkForCollision(_ j: BasicSprite,_ movableSpritesTree: QuadTree) {
         
-//        let movableSpritesTree = QuadTree.init(quadtree.size)
-//        for i in movableSprites {
-//            movableSpritesTree.insert(i)
-//        }
-//
         let d1 = Date.init().timeIntervalSince1970
         let superSet = movableSpritesTree.contains(j).union(quadtree.contains(j))
         let d2 = Date.init().timeIntervalSince1970
-        print(d2 - d1)
+        //print(d2 - d1)
         if d2 - d1 > 0.01 {
             print("HRMPH", superSet.count)
         }
