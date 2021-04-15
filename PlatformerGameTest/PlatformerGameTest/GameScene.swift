@@ -150,21 +150,21 @@ class Scene: MagicScene {
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 123, !pressingLeft { pressingLeft = true }
         if event.keyCode == 124, !pressingRight { pressingRight = true }
-        if event.keyCode == 49, !pressingUp { pressingUp = true }
+        if event.keyCode == 49, !pressingUp {
+            pressingUp = true
+            doThisWhenJumpButtonIsPressed.run()
+        }
     }
     override func keyUp(with event: NSEvent) {
         if event.keyCode == 123 { pressingLeft = false }
         if event.keyCode == 124 { pressingRight = false }
         if event.keyCode == 49 {
+            pressingUp = false
             doThisWhenJumpButtonIsReleased.run()
         }
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if pressingUp {
-            doThisWhenJumpButtonIsPressed.run()
-            pressingUp = false
-        }
         if pressingRight { doThisWhenRightButtonIsPressed.run() }
         if pressingLeft { doThisWhenLeftButtonIsPressed.run() }
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
