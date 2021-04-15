@@ -78,6 +78,7 @@ class Inky: MovableSprite, Spriteable {
         //.doThisWhen({ $0.jumps = 0 }, when: .thisBumped(.down)), // alternative
         .resetJumpsWhen(.thisBumped(.down)),
         .maxJump(2),
+        .doThisWhen({ $0.spawnObject(FireBall.self, location: (100, 100)) }, when: .pressedButton(.jump))
         
     ]
     override var isPlayer: Bool { return true }
@@ -117,12 +118,32 @@ class Chaser: MovableSprite, Spriteable {
         .reverseDirection(.thisBumped(.left)),
         .reverseDirection(.thisBumped(.right)),
         //.jumpWhen(.thisBumped(.down)),
-        
         //.killObject(.left, when: .thisBumped(.left)),
         //.killObject(.right, when: .thisBumped(.right)),
         //.canDieFrom(.all()),
     ]
 }
+
+// Rule for Specific Enemies
+class FireBall: MovableSprite, Spriteable {
+    
+    var specificActions: [When] = [
+        .fallWhen(.notOnGround),
+        
+        // Order matters here
+        .resetJumpsWhen(.thisBumped(.down)),
+        .jumpWhen(.thisBumped(.down)),
+        
+        .moveLeftWhen(.always),
+        .jumpHeight(triangleOf: 5),
+        .xSpeed(4, everyFrame: 1),
+        
+        .die(.thisBumped(.up)),
+        .die(.thisBumped(.left)),
+        .die(.thisBumped(.right)),
+    ]
+}
+
 
 class Trampoline: BasicSprite, Spriteable {
 

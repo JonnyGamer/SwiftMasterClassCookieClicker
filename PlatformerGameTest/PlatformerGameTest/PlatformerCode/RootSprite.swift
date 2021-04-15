@@ -31,9 +31,17 @@ class BasicSprite: Hashable {
     
     var frame = (x: 16, y: 16)
     var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
-    init(box: (Int, Int)) {
+    required init(box: (Int, Int)) {
         skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
         frame = box
+    }
+    
+    func spawnObject(_ this: BasicSprite.Type, location: (Int, Int)) {
+        print("AHENEDNEDJKNE#NKJNJK#")
+        let wow = this.init(box: (16, 16))
+        wow.startPosition(location)
+        wow.add((skNode.scene as? Scene)!)
+        (skNode.scene as? Scene)?.add(wow)
     }
     
     func startPosition(_ n: (x: Int, y: Int)) {

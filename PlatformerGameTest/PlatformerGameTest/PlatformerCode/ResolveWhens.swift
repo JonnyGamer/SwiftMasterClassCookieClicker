@@ -78,11 +78,7 @@ extension BasicSprite {
         switch userAction {
         case .thisBumped(let dir):
             switch dir {
-            case .up:
-                print("OK")
-                print(bumpedFromTop.count)
-                bumpedFromTop.append(action)
-                print(bumpedFromTop.count)
+            case .up: bumpedFromTop.append(action)
             case .down: bumpedFromBottom.append(action)
             case .left: bumpedFromLeft.append(action)
             case .right: bumpedFromRight.append(action)
