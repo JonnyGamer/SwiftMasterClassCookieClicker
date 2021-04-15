@@ -83,7 +83,8 @@ extension Scene {
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
                     
-                    if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
+                    if (j.minY...(j.previousPosition.y+j.frame.y)).contains(i.maxY) {
+                    //if ((j.minY + (j.velocity.dy-1))...(j.maxY)).contains(i.maxY) {
                         i.bumpedFromBottom.forEach { $0(j) }
                     }
                 
@@ -91,17 +92,19 @@ extension Scene {
                     // This line is needed, Otherwise bad bugs when pushing -> then jumping
                     //if j.maxX - j.velocity.dx <= i.minX { break foo }
                     //if j.minX - j.velocity.dx >= i.minX { break foo }
-                    if ((j.minY-j.velocity.dy-1)...(j.maxY)).contains(i.minY) {
+                    if (j.previousPosition.y...j.maxY).contains(i.minY) {
+                    //if ((j.minY-j.velocity.dy-1)...(j.maxY)).contains(i.minY) {
                         print(i, j)
                         //if curry.contains(0) { break foo }
                         i.bumpedFromTop.forEach { $0(j) }
                         //checkForCollision(i, curry + [0])
-                    } else if ((j.minY)...(j.maxY+j.velocity.dy+1)).contains(i.minY) {
-                        print(i, j)
-                        //if curry.contains(1) { break foo }
-                        i.bumpedFromTop.forEach { $0(j) }
-                        //checkForCollision(i, curry + [1])
                     }
+                    //} else if ((j.minY)...(j.maxY+j.velocity.dy+1)).contains(i.minY) {
+                      //  print(i, j)
+                        //if curry.contains(1) { break foo }
+                        //i.bumpedFromTop.forEach { $0(j) }
+                        //checkForCollision(i, curry + [1])
+                    //}
                     
                 // Both are moving downwards
                 } else if j.velocity.dy < 0, i.velocity.dy < 0 {

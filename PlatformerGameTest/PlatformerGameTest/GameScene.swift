@@ -93,11 +93,11 @@ class Scene: MagicScene {
         g4.skNode.alpha = 0.5
         add(g4)
         
-//        let g5 = GROUND(box: (300, 16))
-//        g5.startPosition((400, -8+16+16))
-//        g5.add(self)
-//        g5.skNode.alpha = 0.5
-//        add(g5)
+        let g5 = GROUND(box: (16, 300))
+        g5.startPosition((400, -8))
+        g5.add(self)
+        g5.skNode.alpha = 0.5
+        add(g5)
         
 //        for i in (0...1000) {
 //            let g2 = GROUND(box: (16, 16))

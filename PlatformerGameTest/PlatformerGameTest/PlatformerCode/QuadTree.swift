@@ -62,35 +62,27 @@ class QuadTree {
     func contains(_ box: BasicSprite) -> Set<BasicSprite> {
         var seto: Set<BasicSprite> = []
         
-        //if !elements.isEmpty {
-          //  return seto
-        //}
+        if !elements.isEmpty {
+            return elements
+        }
         
         let tX = box.trajectoryX()
         let tY = box.trajectoryY()
         
         if tX.overlaps(size.minX...size.midX) {
             if tY.overlaps(size.minY...size.midY) {
-                seto = seto.union(qBL?.contains(box) ?? [])
-                seto = seto.union(qBL?.elements ?? [])
-                seto = seto.union(elements)
+                seto = seto.union(qBL?.contains(box) ?? qBL?.elements ?? [])
             }
             if tY.overlaps(size.midY...size.maxY) {
-                seto = seto.union(qTL?.contains(box) ?? [])
-                seto = seto.union(qTL?.elements ?? [])
-                seto = seto.union(elements)
+                seto = seto.union(qTL?.contains(box) ?? qTL?.elements ?? [])
             }
         }
         if tX.overlaps(size.midX...size.maxX) {
             if tY.overlaps(size.minY...size.midY) {
-                seto = seto.union(qBR?.contains(box) ?? [])
-                seto = seto.union(qBR?.elements ?? [])
-                seto = seto.union(elements)
+                seto = seto.union(qBR?.contains(box) ?? qBR?.elements ?? [])
             }
             if tY.overlaps(size.midY...size.maxY) {
-                seto = seto.union(qTR?.contains(box) ?? [])
-                seto = seto.union(qTR?.elements ?? [])
-                seto = seto.union(elements)
+                seto = seto.union(qTR?.contains(box) ?? qTR?.elements ?? [])
             }
         }
         
@@ -98,6 +90,19 @@ class QuadTree {
         if seto.count > 0, level == 0 {
             print("It worked!")
         }
+        
+        // UNNECESARRY
+        if seto.isEmpty {
+            seto = seto.union(qBL?.contains(box) ?? qBL?.elements ?? [])
+            seto = seto.union(qTL?.contains(box) ?? qTL?.elements ?? [])
+            seto = seto.union(qBR?.contains(box) ?? qBR?.elements ?? [])
+            seto = seto.union(qTR?.contains(box) ?? qTR?.elements ?? [])
+            //fatalError()
+        }
+        if seto.isEmpty {
+            fatalError()
+        }
+        
         return seto
     }
 
@@ -143,7 +148,7 @@ class QuadTree {
                         qBL?.level = level + 1
                     }
                     qBL?.insert(element)
-                    continue
+                    //continue
                 }
                 if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
                     if qTL == nil {
@@ -151,7 +156,7 @@ class QuadTree {
                         qTL?.level = level + 1
                     }
                     qTL?.insert(element)
-                    continue
+                    //continue
                 }
                 
             }
@@ -164,7 +169,7 @@ class QuadTree {
                         qBR?.level = level + 1
                     }
                     qBR?.insert(element)
-                    continue
+                    //continue
                 }
                 if (element.minY.cg...element.maxY.cg).overlaps(size.midY...size.maxY) {
                     if qTR == nil {
@@ -172,7 +177,7 @@ class QuadTree {
                         qTR?.level = level + 1
                     }
                     qTR?.insert(element)
-                    continue
+                    //continue
                 }
             }
         }
