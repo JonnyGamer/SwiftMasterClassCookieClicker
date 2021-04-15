@@ -169,6 +169,7 @@ extension Scene {
             if i.velocity.dx == 0, j.velocity.dx == 0 {
                 continue
             }
+            
             newCheckX(i, j, sprites: superSet)
             newCheckX(j, i, sprites: superSet) // I really don't like this, but it somehow works :(
             
@@ -375,10 +376,12 @@ extension Scene {
                     // j -> |i|
                     if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX { break foo }
                     i.bumpedFromRight.forEach { $0(j) }
-                    if let i = i as? MovableSprite { j.bumpedFromLeft.forEach { $0(i) } }
-                    
-                    if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
-                        j.stopMoving(i, .right)
+                    if let i = i as? MovableSprite {
+                        j.bumpedFromLeft.forEach { $0(i) }
+                        
+                        if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
+                            j.stopMoving(i, .right)
+                        }
                     }
                     
                 } else if let i = i as? MovableSprite {
@@ -386,9 +389,12 @@ extension Scene {
                         // |j| <- i
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
                         j.bumpedFromLeft.forEach { $0(i) }
-                        if let j = j as? MovableSprite { i.bumpedFromRight.forEach { $0(j) } }
-                        if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
-                            i.stopMoving(j, .left)
+                        if let j = j as? MovableSprite {
+                            i.bumpedFromRight.forEach { $0(j) }
+                            if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
+                                i.stopMoving(j, .left)
+                            }
+                            
                         }
                         
                     } else if let j = j as? MovableSprite {

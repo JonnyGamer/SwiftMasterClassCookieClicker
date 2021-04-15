@@ -34,7 +34,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
         ]),
         
         .figureEight(height: 320, time: 4),
-        .moveBy(x: 100, y: 0, duration: 1)
+        //.moveBy(x: 100, y: 0, duration: 1)
     ]
     var actionSprite: SKNode = SKNode()
     
@@ -43,7 +43,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-        .runSKAction([(1, .always), (2, .always)]),
+        .runSKAction([(1, .always)]), // (2, .always)
     ]
 }
 
@@ -95,12 +95,12 @@ class Chaser: MovableSprite, Spriteable {
         
         .allowObjectToPush(.up, when: .thisBumped(.up)),
         
-        // KEEP .moveLeftWhen(.always), // .playerIsLeftOfSelf
+        .moveLeftWhen(.always), // .playerIsLeftOfSelf
         //.moveRightWhen(.playerIsRightOfSelf),
         
-        // KEEP //.xSpeed(2, everyFrame: 1),
+        .xSpeed(2, everyFrame: 1),
         
-        //.jumpWhen(.onLedge),
+        .jumpWhen(.onLedge),
         .reverseDirection(.onLedge),
         //.jumpWhen(.thisBumped(.left)),
         //.jumpWhen(.thisBumped(.right)),
@@ -108,8 +108,8 @@ class Chaser: MovableSprite, Spriteable {
         .reverseDirection(.thisBumped(.right)),
         //.jumpWhen(.thisBumped(.down)),
         
-        .killObject(.left, when: .thisBumped(.left)),
-        .killObject(.right, when: .thisBumped(.right)),
+        //.killObject(.left, when: .thisBumped(.left)),
+        //.killObject(.right, when: .thisBumped(.right)),
         //.canDieFrom(.all()),
     ]
 }

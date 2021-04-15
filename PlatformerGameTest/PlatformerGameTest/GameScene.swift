@@ -204,7 +204,9 @@ class Scene: MagicScene {
 //                    }
                     
                     if k.velocity.dx != 0 {
+                        let wow = i.previousPosition.x
                         i.position.x += k.velocity.dx
+                        i.previousPosition.x = wow
                     }
                     
                     //if k.velocity.dy != 0 {
