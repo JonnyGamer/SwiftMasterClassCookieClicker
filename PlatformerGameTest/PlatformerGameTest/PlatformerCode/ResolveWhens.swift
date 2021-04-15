@@ -110,6 +110,14 @@ extension BasicSprite {
             default: fatalError("Add your own.")
             }
             
+        case .afterJumpingNTimes(let n):
+            guard let foo = (self as? MovableSprite) else { return }
+            if foo.doThisAfterNJumps[n] == nil {
+                foo.doThisAfterNJumps[n] = [action]
+            } else {
+                foo.doThisAfterNJumps[n]?.append(action)
+            }
+            
         case .onLedge:
             (self as? MovableSprite)?.standingOnLedgeAction.append(action)
 

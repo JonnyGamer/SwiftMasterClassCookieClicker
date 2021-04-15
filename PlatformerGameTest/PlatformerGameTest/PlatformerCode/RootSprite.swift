@@ -114,13 +114,15 @@ class MovableSprite: BasicSprite {
     
     var maxJumps = 1
     var jumps = 0
+    var totalJumps = 0
     var bounceHeight = 8
+    var doThisAfterNJumps: [Int:[() -> ()]] = [:]
     
     func jump() { jump(nil) }
     func jump(_ height: Int?) {
         if dead { return }
         if jumps >= maxJumps { return }
-        jumps += 1
+        jumps += 1; totalJumps += 1; doThisAfterNJumps[totalJumps]?.run()
         
         if !onGround.isEmpty {
             onGround = onGround.filter { !($0.velocity.dy < bounceHeight) }

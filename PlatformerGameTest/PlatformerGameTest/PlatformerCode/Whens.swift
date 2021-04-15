@@ -44,6 +44,7 @@ enum UserAction {
     case playerIsRightOfSelf
     case playerHasSameXPositionAsSelf
     case onLedge
+    case afterJumpingNTimes(Int)
     
     //case touchingNoWall(Direction)
     case notOnGround

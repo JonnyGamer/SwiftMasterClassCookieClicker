@@ -141,6 +141,7 @@ class FireBall: MovableSprite, Spriteable {
         .die(.thisBumped(.up)),
         .die(.thisBumped(.left)),
         .die(.thisBumped(.right)),
+        .die(.afterJumpingNTimes(20))
     ]
 }
 
