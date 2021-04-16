@@ -22,16 +22,34 @@ public enum CurveType {
 public enum EaseType { case `in`, out, inOut }
 enum Images: String {
     case deadBlock = "DeadBlock"
+    case q1 = "QuestionBlock"
+    case q2 = "QuestionBlock2"
+    case q3 = "QuestionBlock3"
 }
 
 extension SKAction {
     
+    static func ifTrue(_ me2: () -> Bool,_ runThese: () -> [SKAction], otherwise: () -> [SKAction] = {[SKAction.wait(forDuration: 0)]} ) -> SKAction {
+        if me2() {
+            return .sequence(runThese())
+        } else {
+            return .sequence(otherwise())
+        }
+    }
+    
+    static func killAction(_ me: (ActionSprite & SKActionable),_ to: Int) -> SKAction {
+        return .run {
+            me.skNode.removeAction(forKey: "\(to)")
+            me.actionSprite.removeAction(forKey: "\(to)")
+        }
+    }
+    
     static func setImage(_ to: Images) -> SKAction {
-        return .animate(with: [Cash.getTexture(to.rawValue)], timePerFrame: 0.1)
+        return .animate(with: [Cash.getTexture(to.rawValue)], timePerFrame: 0)
     }
-    static func animate(_ using: [Images]) -> SKAction {
-        return .animate(with: using.map { Cash.getTexture($0.rawValue) }, timePerFrame: 0.1)
-    }
+//    static func animate(_ using: [Images]) -> SKAction {
+//        return .moveBy(x: 0, y: 10, duration: 1)
+//    }
     
     static func figureEight(height: CGFloat, time: Double, clockwise: Bool = true) -> SKAction {
         return .sequence([

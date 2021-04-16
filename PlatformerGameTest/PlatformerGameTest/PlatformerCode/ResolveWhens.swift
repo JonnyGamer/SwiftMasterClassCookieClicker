@@ -40,9 +40,6 @@ extension BasicSprite {
             case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
             case .maxJumpSpeed(let m): foo.maxJumpSpeed = m
             case .minFallSpeed(let m): foo.minFallSpeed = m
-            case .deathId(let n): foo.deathID = n
-            case .canDieFrom(let dir): foo.canDieFrom = dir
-            case .die(let userAction): resolveUserAction(this, userAction, { _ = foo.die(nil, []) })
                 
             default: break
             }
@@ -51,6 +48,9 @@ extension BasicSprite {
             
         switch when {
             
+        case .deathId(let n): foo.deathID = n
+        case .canDieFrom(let dir): foo.canDieFrom = dir
+        case .die(let userAction): resolveUserAction(this, userAction, { _ = foo.die(nil, []) })
         case .doThisWhen(let doThis, when: let userAction):  resolveUserAction(this, userAction, { doThis(foo) })
             
         case .bounceObjectWhen(let userAction):
@@ -61,13 +61,22 @@ extension BasicSprite {
             resolveUserActionSPRITE(this, userAction, { ($0 as? MovableSprite)?.pushDirection(self, dir) })
         case .killObject(let dir, let userAction, let id):
             resolveUserActionSPRITE(this, userAction, {
-                if ($0 as? MovableSprite)?.die(dir, id) == true {
+                if $0.die(dir, id) {
                     self.killedObjects += 1
                     self.doThisWhenKilledObject[self.killedObjects]?.run($0)
                 }
             })
         case .runSKAction(let actions):
             if let foo = foo as? (MovableSprite & SKActionable) {
+                for (id, action) in actions {
+                    resolveUserAction(this, action, {
+                        if foo.actionSprite.action(forKey: "\(id)") == nil {
+                            foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                            foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+                        }
+                    })
+                }
+            } else if let foo = foo as? (ActionSprite & SKActionable) {
                 for (id, action) in actions {
                     resolveUserAction(this, action, {
                         if foo.actionSprite.action(forKey: "\(id)") == nil {
@@ -174,6 +183,12 @@ extension BasicSprite {
             
         case .always:
             annoyance.append(action)
+        case .when(let n):
+            annoyance.append {
+                if n(self) {
+                    action()
+                }
+            }
             
         case .playerIsLeftOfSelf:
             annoyance.append {

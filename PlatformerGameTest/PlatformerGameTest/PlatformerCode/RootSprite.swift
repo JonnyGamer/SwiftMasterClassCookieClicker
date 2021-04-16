@@ -17,7 +17,7 @@ protocol Spriteable {
 }
 protocol SKActionable {
     var skNode: SKNode! { get set }
-    var myActions: [SKAction] { get set }
+    var myActions: [SKAction] { get }
     var actionSprite: SKNode { get set }
 }
 extension SKActionable {
@@ -158,15 +158,6 @@ class BasicSprite: Hashable {
         }
     }
     
-}
-
-class ActionSprite: BasicSprite {
-    var skNode: SKNode!
-}
-
-class MovableSprite: BasicSprite {
-    
-    var skNode: SKNode!
     var canDieFrom: [Direction] = []
     var dead = false
     var deathID = Int.min
@@ -190,17 +181,32 @@ class MovableSprite: BasicSprite {
         }
         dead = true
         
-        if let s = skNode.scene as? Scene {
+        if let a = self as? ActionSprite, let s = a.skNode.scene as? Scene {
             s.sprites.remove(self)
             s.movableSprites.remove(self)
             s.actionableSprites.remove(self)
+            a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
+        } else if let a = self as? MovableSprite, let s = a.skNode.scene as? Scene {
+            s.sprites.remove(self)
+            s.movableSprites.remove(self)
+            s.actionableSprites.remove(self)
+            a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         }
-        
-        skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         
         creator = nil
         return true
     }
+    
+}
+
+class ActionSprite: BasicSprite {
+    var skNode: SKNode!
+}
+
+class MovableSprite: BasicSprite {
+    
+    var skNode: SKNode!
+    
     
     func run(_ this: SKAction) {
         skNode.run(this)

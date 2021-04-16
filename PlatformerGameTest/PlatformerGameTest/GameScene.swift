@@ -21,6 +21,7 @@ extension Scene {
             actionableSprites.insert(s)
             addChild(s.skNode)
             addChild(s.actionSprite)
+            s.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
         } else {
             quadtree.insert(this)
         }
@@ -60,9 +61,9 @@ class Scene: MagicScene {
     @discardableResult
     func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false, image: String? = nil) -> T {
         let box = this.init(box: (size.0*u,size.1*u), image: image)
+        box.startPosition((pos.0*u,pos.1*u))
         box.add(self)
         if player { players.append(box); woah = (box as! MovableSprite).skNode } // add player
-        box.startPosition((pos.0*u,pos.1*u))
         add(box)
         return box
     }
@@ -181,7 +182,7 @@ class Scene: MagicScene {
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
-            if let j = i as? (ActionSprite & SKActionable), j.actionSprite.hasActions(), i.velocity != (0,0) {
+            if let j = i as? (ActionSprite & SKActionable), j.actionSprite.hasActions() {
                 i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
             }
         }

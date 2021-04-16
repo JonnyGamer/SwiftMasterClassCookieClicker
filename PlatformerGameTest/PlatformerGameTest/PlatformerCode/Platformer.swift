@@ -21,9 +21,9 @@ class GROUND: BasicSprite, Spriteable {
 class Moving_GROUND: ActionSprite, Spriteable, SKActionable {
     
     
-    var myActions: [SKAction] = [
-        .figureEight(height: 320, time: 4),
-    ]
+    var myActions: [SKAction] {[
+        .figureEight(height: 320, time: 4)
+    ]}
     var actionSprite: SKNode = SKNode()
     var specificActions: [When] = [
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
@@ -36,14 +36,30 @@ class Moving_GROUND: ActionSprite, Spriteable, SKActionable {
 
 class QuestionBox: ActionSprite, Spriteable, SKActionable {
     var bumped = false
-    var myActions: [SKAction] = [
+    var myActions: [SKAction] {[
+        .ifTrue({ self.bumped == false }) {
+            [
+                .run { self.bumped = true },
+                .killAction(self, 1),
+                .setImage(.q1),
+                .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+                .setImage(.deadBlock),
+            ]
+        },
         .sequence([
-            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
-            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
-        ]),
-        
-    ]
-    var actionSprite: SKNode = SKNode()
+            .setImage(.q2),
+            .wait(forDuration: 0.1),
+            .setImage(.q3),
+            .wait(forDuration: 0.1),
+            .setImage(.q2),
+            .wait(forDuration: 0.1),
+            .setImage(.q1),
+            .wait(forDuration: 0.3),
+        ])
+        //.animate([.q1, .q2, .q3, .q2])
+    ]}
+    var actionSprite: SKNode = SKSpriteNode()
     var specificActions: [When] = [
         .stopObjectFromMoving(.down, when: .thisBumped(.down)),
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
@@ -52,18 +68,9 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         
         // ? Box Action
         .runSKAction([(0, .thisBumped(.down))]),
+        .runSKAction([(1, .when({ ($0 as? QuestionBox)?.bumped == false }))]),
         
-//        .doThisWhen({
-//            guard let q = $0 as? QuestionBox else { return }
-//            if !q.bumped {
-//                q.bumped = true
-//            } else {
-//                return
-//            }
-//
-//            q.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
-//            q.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
-//        }, when: .thisBumped(.down)),
+
         
         // Brick Block Action
         //.die(.thisBumped(.down)),
@@ -71,7 +78,7 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
 }
 
 class BrickBox: ActionSprite, SKActionable, Spriteable {
-    var actionSprite: SKNode = SKNode()
+    var actionSprite: SKNode = SKSpriteNode()
     var myActions: [SKAction] = [
         .sequence([
             .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
@@ -119,16 +126,16 @@ class Inky: MovableSprite, Spriteable {
         .deathId(0),
         
          //Fire Ball Power!
-        .doThisWhen({
-            if let inky = $0 as? Inky, let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
-                inky.fireBallsActive += 1
-                if inky.lastMovedThisDirection == .left {
-                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
-                } else if inky.lastMovedThisDirection == .right {
-                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
-                }
-            }
-        }, when: .pressedButton(.jump))
+//        .doThisWhen({
+//            if let inky = $0 as? Inky, let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
+//                inky.fireBallsActive += 1
+//                if inky.lastMovedThisDirection == .left {
+//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
+//                } else if inky.lastMovedThisDirection == .right {
+//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
+//                }
+//            }
+//        }, when: .pressedButton(.jump))
         
     ]
     override var isPlayer: Bool { return true }

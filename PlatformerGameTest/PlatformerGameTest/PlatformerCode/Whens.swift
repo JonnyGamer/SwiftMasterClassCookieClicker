@@ -54,7 +54,7 @@ enum UserAction {
     //case touchingNoWall(Direction)
     case notOnGround
     case neitherLeftNorRightButtonsAreBeingClicked
-    case always
+    case always, when((BasicSprite) -> Bool)
     //case yPositionIsLessThanZeroThenSetPositionToZero
 }
 
