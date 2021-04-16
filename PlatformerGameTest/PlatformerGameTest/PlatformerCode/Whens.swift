@@ -32,13 +32,15 @@ enum When {
     case stopGoingUpWhen(UserAction)
     case maxJump(Int)
     
-    case doThisWhen((MovableSprite) -> (), when: UserAction)
+    case doThisWhen((BasicSprite) -> (), when: UserAction)
     case resetJumpsWhen(UserAction)
 }
 
 enum UserAction {
     case releasedButton(Button)
     case pressedButton(Button)
+    
+    case wasBumped(Direction)
     case thisBumped(Direction)
     case playerIsLeftOfSelf
     case playerIsRightOfSelf

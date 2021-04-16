@@ -33,11 +33,8 @@ extension BasicSprite {
             case .xSpeed(let n, let fps): foo.xSpeed = n; foo.everyFrame = fps
             case .gravity(let n, let fps): foo.ySpeed = n; foo.yEveryFrame = fps
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.reverseMovement.toggle() })
-            case .die(let userAction): resolveUserAction(this, userAction, { foo.die(nil, []) })
-            case .canDieFrom(let dir): foo.canDieFrom = dir
             case .stopGoingUpWhen(let userAction): resolveUserAction(this, userAction, foo.stopMovingUp)
             
-            case .doThisWhen(let doThis, when: let userAction):  resolveUserAction(this, userAction, { doThis(foo) })
             case .resetJumpsWhen(let userAction):  resolveUserAction(this, userAction, { foo.jumps = 0 })
             case .maxJump(let m): foo.maxJumps = m
             case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
@@ -52,10 +49,16 @@ extension BasicSprite {
             
         switch when {
             
-        case .bounceObjectWhen(let userAction): resolveUserActionSPRITE(this, userAction, { $0.jump((foo as? Trampoline)?.bounciness) })
+        case .canDieFrom(let dir): foo.canDieFrom = dir
+        case .die(let userAction): resolveUserAction(this, userAction, { _ = foo.die(nil, []) })
+        case .doThisWhen(let doThis, when: let userAction):  resolveUserAction(this, userAction, { doThis(foo) })
             
-        case .stopObjectFromMoving(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.stopMoving(self, dir) })
-        case .allowObjectToPush(let dir, when: let userAction): resolveUserActionSPRITE(this, userAction, { $0.pushDirection(self, dir) })
+        case .bounceObjectWhen(let userAction):
+            resolveUserActionSPRITE(this, userAction, {($0 as? MovableSprite)?.jump((foo as? Trampoline)?.bounciness) })
+        case .stopObjectFromMoving(let dir, when: let userAction):
+            resolveUserActionSPRITE(this, userAction, { $0.willStopMoving(self, dir) })
+        case .allowObjectToPush(let dir, when: let userAction):
+            resolveUserActionSPRITE(this, userAction, { ($0 as? MovableSprite)?.pushDirection(self, dir) })
         case .killObject(let dir, let userAction, let id):
             resolveUserActionSPRITE(this, userAction, {
                 if $0.die(dir, id) {
@@ -81,7 +84,7 @@ extension BasicSprite {
         
     }
     
-    func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (MovableSprite) -> ()) {
+    func resolveUserActionSPRITE(_ this: Scene,_ userAction: UserAction,_ action: @escaping (BasicSprite & Spriteable) -> ()) {
         switch userAction {
         case .thisBumped(let dir):
             switch dir {
@@ -132,6 +135,9 @@ extension BasicSprite {
                 }
             }
         
+       // case .somethingBumpedThis(let n):
+            
+            
         case .onceOffScreen:
             guard let foo = (self as? MovableSprite) else { return }
             this.doThisWhenMovedOffScreen.append {
@@ -189,13 +195,13 @@ extension BasicSprite {
             }
         case .thisBumped(let dir):
             if dir == .left {
-                (self as? MovableSprite)?.runWhenBumpLeft.append(action)
+                runWhenBumpLeft.append(action)
             } else if dir == .right {
-                (self as? MovableSprite)?.runWhenBumpRight.append(action)
+                runWhenBumpRight.append(action)
             } else if dir == .down {
-                (self as? MovableSprite)?.runWhenBumpDown.append(action)
+                runWhenBumpDown.append(action)
             } else if dir == .up {
-                (self as? MovableSprite)?.runWhenBumpUp.append(action)
+                runWhenBumpUp.append(action)
             }
         
         default: fatalError()
@@ -213,4 +219,28 @@ extension Array where Element == (BasicSprite) -> () {
         forEach { $0(n) }
     }
 }
-
+extension Array where Element == (BasicSprite) -> () {
+    func run(_ n: MovableSprite) {
+        forEach { $0(n) }
+    }
+}
+extension Array where Element == (MovableSprite) -> () {
+    func run(_ n: MovableSprite) {
+        forEach { $0(n) }
+    }
+}
+extension Array where Element == (BasicSprite & Spriteable) -> () {
+    func run(_ n: BasicSprite & Spriteable) {
+        forEach { $0(n) }
+    }
+    func run(_ n: BasicSprite) {
+        if let n = n as? (BasicSprite & Spriteable) {
+            forEach { $0(n) }
+        }
+    }
+    func run(_ n: MovableSprite) {
+        if let n = n as? (BasicSprite & Spriteable) {
+            forEach { $0(n) }
+        }
+    }
+}

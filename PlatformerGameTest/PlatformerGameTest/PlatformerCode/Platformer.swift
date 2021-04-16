@@ -32,6 +32,37 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
     ]
 }
 
+class QuestionBox: BasicSprite, Spriteable, SKActionable {
+    var bumped = false
+    var myActions: [SKAction] = [
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+        ]),
+    ]
+    var actionSprite: SKNode = SKNode()
+    var specificActions: [When] = [
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        
+        // ? Box Action
+        .runSKAction([(0, .thisBumped(.down))]),
+        .doThisWhen({
+            if let q = ($0 as? QuestionBox), !q.bumped {
+                q.bumped = true
+            } else {
+                return
+            }
+            $0.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.position.x + 32, $0.position.y))
+        }, when: .thisBumped(.down)),
+        
+        // Brick Block Action
+        //.die(.thisBumped(.down)),
+    ]
+}
+
 
 class Inky: MovableSprite, Spriteable {
     var fireBallsActive = 0
@@ -63,16 +94,16 @@ class Inky: MovableSprite, Spriteable {
         .deathId(0),
         
         // Fire Ball Power!
-        .doThisWhen({
-            if let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
-                ($0 as? Inky)?.fireBallsActive += 1
-                if $0.lastMovedThisDirection == .left {
-                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
-                } else if $0.lastMovedThisDirection == .right {
-                    $0.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
-                }
-            }
-        }, when: .pressedButton(.jump))
+//        .doThisWhen({
+//            if let inky = $0 as? Inky, let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
+//                inky.fireBallsActive += 1
+//                if inky.lastMovedThisDirection == .left {
+//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
+//                } else if inky.lastMovedThisDirection == .right {
+//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
+//                }
+//            }
+//        }, when: .pressedButton(.jump))
         
     ]
     override var isPlayer: Bool { return true }

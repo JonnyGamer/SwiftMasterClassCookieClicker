@@ -10,10 +10,10 @@ import SpriteKit
 
 protocol Spriteable {
     var specificActions: [When] { get }
-    var bumpedFromTop: [(MovableSprite) -> ()] { get set }
-    var bumpedFromBottom: [(MovableSprite) -> ()] { get set }
-    var bumpedFromLeft: [(MovableSprite) -> ()] { get set }
-    var bumpedFromRight: [(MovableSprite) -> ()] { get set }
+    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] { get set }
+    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] { get set }
+    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] { get set }
+    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] { get set }
 }
 protocol SKActionable {
     var myActions: [SKAction] { get set }
@@ -112,9 +112,15 @@ class BasicSprite: Hashable {
         }
         dead = true
         
-        (skNode.scene as? Scene)?.sprites.remove(self)
-        (skNode.scene as? Scene)?.movableSprites.remove(self)
+        if let s = skNode.scene as? Scene {
+            s.sprites.remove(self)
+            s.movableSprites.remove(self)
+            s.actionableSprites.remove(self)
+        }
+        
         skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
+        
+        creator = nil
         return true
     }
     
@@ -122,11 +128,30 @@ class BasicSprite: Hashable {
         skNode.run(this)
     }
     
-    var bumpedFromTop: [(MovableSprite) -> ()] = []
-    var bumpedFromBottom: [(MovableSprite) -> ()] = []
-    var bumpedFromLeft: [(MovableSprite) -> ()] = []
-    var bumpedFromRight: [(MovableSprite) -> ()] = []
+    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] = []
     var doThisWhenNotOnGround: [() -> ()] = []
+    
+    var runWhenBumpDown: [()->()] = []
+    var runWhenBumpLeft: [()->()] = []
+    var runWhenBumpRight: [()->()] = []
+    var runWhenBumpUp: [()->()] = []
+    
+    func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
+        (self as? MovableSprite)?.stopMoving(hit, direction)
+        
+        if direction == .up {
+            runWhenBumpUp.run()
+        } else if direction == .down {
+            runWhenBumpDown.run()
+        } else if direction == .right {
+            runWhenBumpRight.run()
+        } else if direction == .left {
+            runWhenBumpLeft.run()
+        }
+    }
     
 }
 
@@ -258,7 +283,7 @@ class MovableSprite: BasicSprite {
     func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
         if direction == .down {
             landedOn(hit)
-            runWhenBumpDown.run()
+            //runWhenBumpDown.run()
         }
         
         // Still working on UP??
@@ -270,26 +295,21 @@ class MovableSprite: BasicSprite {
             fallingVelocity = 0
             stopY()
             print(velocity)
-            runWhenBumpUp.run()
+            //runWhenBumpUp.run()
         }
         
         if direction == .left {
             position.x = hit.maxX
             stopX()
-            runWhenBumpLeft.run()
+            //runWhenBumpLeft.run()
         }
         
         if direction == .right {
             position.x = hit.minX - frame.x
             stopX()
-            runWhenBumpRight.run()
+            //runWhenBumpRight.run()
         }
     }
-    
-    var runWhenBumpDown: [()->()] = []
-    var runWhenBumpLeft: [()->()] = []
-    var runWhenBumpRight: [()->()] = []
-    var runWhenBumpUp: [()->()] = []
     
     func landedOn(_ this: BasicSprite) {
         fallingVelocity = 0

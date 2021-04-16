@@ -57,24 +57,29 @@ class Scene: MagicScene {
         woah = player.skNode
         add(player)
         
-        let g0 = GROUND.init(box: (1000, 1))
+        let g0 = GROUND.init(box: (1000, 10))
         g0.add(self)
-        g0.startPosition((-g0.frame.x/2,10))
+        g0.startPosition((-g0.frame.x/2,100))
         add(g0)
         
-        for i in 1...100 {
-            let g1 = GROUND.init(box: (10, 10))
-            g1.add(self)
-            g1.startPosition(((-g1.frame.x/2)+(i*32),10))
-            add(g1)
-        }
+//        for i in 1...100 {
+//            let g1 = GROUND.init(box: (10, 10))
+//            g1.add(self)
+//            g1.startPosition(((-g1.frame.x/2)+(i*32),10))
+//            add(g1)
+//        }
+//
+//        for i in 1...100 {
+//            let g1 = GROUND.init(box: (10, 10))
+//            g1.add(self)
+//            g1.startPosition(((-g1.frame.x/2),10+(i*10)))
+//            add(g1)
+//        }
         
-        for i in 1...100 {
-            let g1 = GROUND.init(box: (10, 10))
-            g1.add(self)
-            g1.startPosition(((-g1.frame.x/2),10+(i*10)))
-            add(g1)
-        }
+        let q = QuestionBox.init(box: (16, 16))
+        q.add(self)
+        q.startPosition((0, 150))
+        add(q)
         
         
         otherThings()
@@ -133,7 +138,7 @@ class Scene: MagicScene {
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
-            if let j = i as? SKActionable {
+            if let j = i as? SKActionable, j.actionSprite.hasActions(), i.velocity != (0,0) {
                 i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
             }
         }
