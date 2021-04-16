@@ -84,6 +84,7 @@ class Scene: MagicScene {
                 case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
                 case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
                 case "QuestionBlock": tileToUse = QuestionBox.self
+                case "BrickBlock": tileToUse = BrickBox.self
                 default: fatalError()
                 }
                 //tileNode.name
@@ -105,20 +106,19 @@ class Scene: MagicScene {
         }
         
         
-        let player = build(Inky.self, pos: (0,3), player: true)
+        let player = build(Inky.self, pos: (3,2), player: true)
         
         //let g0 = build(GROUND.self, pos: (0,-3), size: (69,2), image: "Ground")
         //let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
         //let g2 = build(GROUND.self, pos: (g1.maxX/u+3,0), size: (43,2))
         //let g3 = build(GROUND.self, pos: (g2.maxX/u+2,0), size: (43,2))
+//        let pipe1 = build(GROUND.self, pos: (28,2), size: (2,2))
+//        let pipe2 = build(GROUND.self, pos: (38,2), size: (2,3))
+//        let pipe3 = build(GROUND.self, pos: (46,2), size: (2,4))
+//        let pipe4 = build(GROUND.self, pos: (57,2), size: (2,4))
         
-        let pipe1 = build(GROUND.self, pos: (28,2), size: (2,2))
-        let pipe2 = build(GROUND.self, pos: (38,2), size: (2,3))
-        let pipe3 = build(GROUND.self, pos: (46,2), size: (2,4))
-        let pipe4 = build(GROUND.self, pos: (57,2), size: (2,4))
         
-        
-        let q = build(QuestionBox.self, pos: (1, 9), image: "QuestionBlock")
+        //let q = build(QuestionBox.self, pos: (1, 9), image: "QuestionBlock")
         
         
         
@@ -168,7 +168,7 @@ class Scene: MagicScene {
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         // Run Camera
-        magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.y), duration: 0.1))
+        magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.x), duration: 0.1))
         magicCamera.run(.moveTo(y: max(frame.height/2, woah.position.y), duration: 0.1))
     }
     

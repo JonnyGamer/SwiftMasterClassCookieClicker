@@ -51,17 +51,17 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         
         // ? Box Action
         .runSKAction([(0, .thisBumped(.down))]),
-        .doThisWhen({
-            guard let q = $0 as? QuestionBox else { return }
-            if !q.bumped {
-                q.bumped = true
-            } else {
-                return
-            }
-            
-            q.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
-            q.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
-        }, when: .thisBumped(.down)),
+//        .doThisWhen({
+//            guard let q = $0 as? QuestionBox else { return }
+//            if !q.bumped {
+//                q.bumped = true
+//            } else {
+//                return
+//            }
+//            
+//            q.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
+//            q.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
+//        }, when: .thisBumped(.down)),
         
         // Brick Block Action
         //.die(.thisBumped(.down)),
