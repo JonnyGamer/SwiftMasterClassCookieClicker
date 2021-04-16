@@ -20,8 +20,18 @@ public enum CurveType {
 
 ///Ease type
 public enum EaseType { case `in`, out, inOut }
+enum Images: String {
+    case deadBlock = "DeadBlock"
+}
 
 extension SKAction {
+    
+    static func setImage(_ to: Images) -> SKAction {
+        return .animate(with: [Cash.getTexture(to.rawValue)], timePerFrame: 0.1)
+    }
+    static func animate(_ using: [Images]) -> SKAction {
+        return .animate(with: using.map { Cash.getTexture($0.rawValue) }, timePerFrame: 0.1)
+    }
     
     static func figureEight(height: CGFloat, time: Double, clockwise: Bool = true) -> SKAction {
         return .sequence([

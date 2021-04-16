@@ -33,6 +33,15 @@ extension SKActionable {
 
 struct Cash {
     static var textures: [String:SKTexture] = [:]
+    static func getTexture(_ i: String) -> SKTexture {
+        if let t = Cash.textures[i] {
+            return t
+        } else {
+            let t = SKTexture.init(imageNamed: i)
+            t.filteringMode = .nearest
+            return t
+        }
+    }
 }
 
 class BasicSprite: Hashable {
@@ -57,28 +66,15 @@ class BasicSprite: Hashable {
         frame = box
         
         if let foo = self as? MovableSprite {
+            
             if let i = image {
-                if let t = Cash.textures[i] {
-                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-                } else {
-                    let t = SKTexture.init(imageNamed: i)
-                    t.filteringMode = .nearest
-                    Cash.textures[i] = t
-                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-                }
+                foo.skNode = SKSpriteNode.init(texture: Cash.getTexture(i), size: CGSize.init(width: box.0, height: box.1))
             } else {
                 foo.skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
             }
         } else if let foo = self as? ActionSprite {
             if let i = image {
-                if let t = Cash.textures[i] {
-                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-                } else {
-                    let t = SKTexture.init(imageNamed: i)
-                    t.filteringMode = .nearest
-                    Cash.textures[i] = t
-                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-                }
+                foo.skNode = SKSpriteNode.init(texture: Cash.getTexture(i), size: CGSize.init(width: box.0, height: box.1))
             } else {
                 foo.skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
             }

@@ -41,6 +41,7 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
             .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
             .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
         ]),
+        
     ]
     var actionSprite: SKNode = SKNode()
     var specificActions: [When] = [
@@ -51,6 +52,7 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         
         // ? Box Action
         .runSKAction([(0, .thisBumped(.down))]),
+        
 //        .doThisWhen({
 //            guard let q = $0 as? QuestionBox else { return }
 //            if !q.bumped {
@@ -58,7 +60,7 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
 //            } else {
 //                return
 //            }
-//            
+//
 //            q.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
 //            q.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
 //        }, when: .thisBumped(.down)),
