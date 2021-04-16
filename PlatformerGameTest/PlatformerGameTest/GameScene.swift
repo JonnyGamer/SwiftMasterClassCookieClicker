@@ -49,10 +49,10 @@ class Scene: MagicScene {
     var sprites: Set<BasicSprite> = []
     var quadtree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     
-    let u = 16 // The unit!
+    var u = 16 // The unit!
     @discardableResult
-    func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false) -> T {
-        let box = this.init(box: (size.0*u,size.1*u))
+    func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false, image: String? = nil) -> T {
+        let box = this.init(box: (size.0*u,size.1*u), image: image)
         box.add(self)
         if player { players.append(box); woah = box.skNode } // add player
         box.startPosition((pos.0*u,pos.1*u))
@@ -62,9 +62,40 @@ class Scene: MagicScene {
     
     override func begin() {
         
+        if let loadScene = SKScene.init(fileNamed: "1-1") {
+            for i in loadScene.children {
+                guard let tileNode = i as? SKTileMapNode else { fatalError() }
+                assert(tileNode.tileSize.width == tileNode.tileSize.height)
+                u = Int(tileNode.tileSize.width)
+                
+                let numberOfColumns = tileNode.numberOfColumns
+                let numberOfRows = tileNode.numberOfRows
+                
+                //tileNode.name
+                
+                for x in 0..<numberOfColumns {
+                    for y in 0..<numberOfRows {
+                        
+                        if let tile = tileNode.tileGroup(atColumn: x, row: y) {
+                            if let tileName = tile.name {
+                                print(tileName)
+                            }
+
+                        }
+                        
+                        print(tileNode.tileGroup(atColumn: x, row: y), (x, y))
+                    }
+                }
+                
+            }
+            
+
+        }
+        
+        
         let player = build(Inky.self, pos: (0,3), player: true)
         
-        let g0 = build(GROUND.self, pos: (0,0), size: (69,2))
+        let g0 = build(GROUND.self, pos: (0,0), size: (69,2), image: "Ground")
         let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
         let g2 = build(GROUND.self, pos: (g1.maxX/u+3,0), size: (43,2))
         let g3 = build(GROUND.self, pos: (g2.maxX/u+2,0), size: (43,2))

@@ -112,17 +112,17 @@ class Inky: MovableSprite, Spriteable {
         .canDieFrom(.all()),
         .deathId(0),
         
-        // Fire Ball Power!
-//        .doThisWhen({
-//            if let inky = $0 as? Inky, let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
-//                inky.fireBallsActive += 1
-//                if inky.lastMovedThisDirection == .left {
-//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
-//                } else if inky.lastMovedThisDirection == .right {
-//                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
-//                }
-//            }
-//        }, when: .pressedButton(.jump))
+         //Fire Ball Power!
+        .doThisWhen({
+            if let inky = $0 as? Inky, let fireBalls = ($0 as? Inky)?.fireBallsActive, fireBalls < 2 {
+                inky.fireBallsActive += 1
+                if inky.lastMovedThisDirection == .left {
+                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.minX - 2, $0.midY))
+                } else if inky.lastMovedThisDirection == .right {
+                    inky.spawnObject(FireBall.self, frame:(4,4), location: ($0.maxX, $0.midY), reverseMovement: true)
+                }
+            }
+        }, when: .pressedButton(.jump))
         
     ]
     override var isPlayer: Bool { return true }

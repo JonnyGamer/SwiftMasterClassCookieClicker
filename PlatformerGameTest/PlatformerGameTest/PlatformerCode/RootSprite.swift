@@ -20,6 +20,10 @@ protocol SKActionable {
     var actionSprite: SKNode { get set }
 }
 
+struct Cash {
+    static var textures: [String:SKTexture] = [:]
+}
+
 class BasicSprite: Hashable {
     static func == (lhs: BasicSprite, rhs: BasicSprite) -> Bool {
         lhs === rhs
@@ -36,8 +40,18 @@ class BasicSprite: Hashable {
     
     var frame = (x: 16, y: 16)
     var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
-    required init(box: (Int, Int)) {
-        skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
+    required init(box: (Int, Int), image: String? = nil) {
+        if let i = image {
+            if let t = Cash.textures[i] {
+                skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+            } else {
+                let t = SKTexture.init(imageNamed: i)
+                Cash.textures[i] = t
+                skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+            }
+        } else {
+            skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
+        }
         frame = box
     }
     
