@@ -41,7 +41,7 @@ class Scene: MagicScene {
     var doThisWhenJumpButtonIsReleased: [() -> ()] = []
     var doThisWhenMovedOffScreen: [() -> ()] = []
     
-    var players: [Inky] = []
+    var players: [BasicSprite] = []
     var woah: SKNode!
     
     var actionableSprites: Set<BasicSprite> = []
@@ -49,18 +49,37 @@ class Scene: MagicScene {
     var sprites: Set<BasicSprite> = []
     var quadtree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     
+    let u = 16 // The unit!
+    @discardableResult
+    func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false) -> T {
+        let box = this.init(box: (size.0*u,size.1*u))
+        box.add(self)
+        if player { players.append(box); woah = box.skNode } // add player
+        box.startPosition((pos.0*u,pos.1*u))
+        add(box)
+        return box
+    }
+    
     override func begin() {
-        let player = Inky(box: (16, 16))
-        player.add(self)
-        players.append(player)
-        player.startPosition((-64-100,300))
-        woah = player.skNode
-        add(player)
         
-        let g0 = GROUND.init(box: (1000, 10))
-        g0.add(self)
-        g0.startPosition((-g0.frame.x/2,100))
-        add(g0)
+        let player = build(Inky.self, pos: (0,3), player: true)
+        //players.append(player);
+        
+        
+//        let player = Inky(box: (16, 16))
+//        player.add(self)
+//        players.append(player)
+//        player.startPosition((0,16*2))
+//        woah = player.skNode
+//        add(player)
+        
+        let g0 = build(GROUND.self, pos: (0,0), size: (28,2))
+        
+//        let g0 = GROUND.init(box: (16*28, 16*2))
+//        g0.add(self)
+//        g0.startPosition((0,0))
+//        add(g0)
+        
         
 //        for i in 1...100 {
 //            let g1 = GROUND.init(box: (10, 10))
