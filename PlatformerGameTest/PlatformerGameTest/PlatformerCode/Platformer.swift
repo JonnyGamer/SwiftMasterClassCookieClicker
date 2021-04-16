@@ -55,7 +55,7 @@ class QuestionBox: BasicSprite, Spriteable, SKActionable {
             } else {
                 return
             }
-            $0.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.position.x + 32, $0.position.y))
+            $0.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
             $0.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
         }, when: .thisBumped(.down)),
         
