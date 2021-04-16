@@ -56,10 +56,29 @@ class QuestionBox: BasicSprite, Spriteable, SKActionable {
                 return
             }
             $0.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.position.x + 32, $0.position.y))
+            $0.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
         }, when: .thisBumped(.down)),
         
         // Brick Block Action
         //.die(.thisBumped(.down)),
+    ]
+}
+
+class BrickBox: BasicSprite, SKActionable, Spriteable {
+    var actionSprite: SKNode = SKNode()
+    var myActions: [SKAction] = [
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+        ]),
+    ]
+    var specificActions: [When] = [
+        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        // Brick Block Action
+        .die(.thisBumped(.down)),
     ]
 }
 
