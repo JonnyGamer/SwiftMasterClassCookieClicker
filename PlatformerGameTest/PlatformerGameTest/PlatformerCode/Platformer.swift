@@ -18,7 +18,9 @@ class GROUND: BasicSprite, Spriteable {
     ]
 }
 
-class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
+class Moving_GROUND: ActionSprite, Spriteable, SKActionable {
+    
+    
     var myActions: [SKAction] = [
         .figureEight(height: 320, time: 4),
     ]
@@ -32,7 +34,7 @@ class Moving_GROUND: BasicSprite, Spriteable, SKActionable {
     ]
 }
 
-class QuestionBox: BasicSprite, Spriteable, SKActionable {
+class QuestionBox: ActionSprite, Spriteable, SKActionable {
     var bumped = false
     var myActions: [SKAction] = [
         .sequence([
@@ -50,13 +52,15 @@ class QuestionBox: BasicSprite, Spriteable, SKActionable {
         // ? Box Action
         .runSKAction([(0, .thisBumped(.down))]),
         .doThisWhen({
-            if let q = ($0 as? QuestionBox), !q.bumped {
+            guard let q = $0 as? QuestionBox else { return }
+            if !q.bumped {
                 q.bumped = true
             } else {
                 return
             }
-            $0.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
-            $0.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
+            
+            q.spawnObject(QuestionBox.self, frame: (16,16), location: ($0.maxX + Int.random(in: 16...32), $0.position.y))
+            q.spawnObject(BrickBox.self, frame: (16,16), location: ($0.position.x, $0.maxY + 32))
         }, when: .thisBumped(.down)),
         
         // Brick Block Action
@@ -64,7 +68,7 @@ class QuestionBox: BasicSprite, Spriteable, SKActionable {
     ]
 }
 
-class BrickBox: BasicSprite, SKActionable, Spriteable {
+class BrickBox: ActionSprite, SKActionable, Spriteable {
     var actionSprite: SKNode = SKNode()
     var myActions: [SKAction] = [
         .sequence([

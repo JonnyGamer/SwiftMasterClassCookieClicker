@@ -16,13 +16,20 @@ extension Scene {
         //sprites.insert(this)
         if let s = this as? MovableSprite {
             movableSprites.insert(s)
+            addChild(s.skNode)
         } else if let s = this as? BasicSprite & SKActionable {
             actionableSprites.insert(s)
+            addChild(s.skNode)
             addChild(s.actionSprite)
         } else {
             quadtree.insert(this)
         }
-        addChild(this.skNode)
+        
+        //addChild(this.helperNode)
+        //(this.helperNode as? SKSpriteNode)?.anchorPoint = .zero
+        //this.helperNode.alpha = 0.5
+        //this.helperNode.position = .init(x: this.position.x, y: this.position.y)
+        //print(this.helperNode.frame.size, this.helperNode.position)
     }
 }
 
@@ -54,7 +61,7 @@ class Scene: MagicScene {
     func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false, image: String? = nil) -> T {
         let box = this.init(box: (size.0*u,size.1*u), image: image)
         box.add(self)
-        if player { players.append(box); woah = box.skNode } // add player
+        if player { players.append(box); woah = (box as! MovableSprite).skNode } // add player
         box.startPosition((pos.0*u,pos.1*u))
         add(box)
         return box
@@ -65,40 +72,44 @@ class Scene: MagicScene {
         if let loadScene = SKScene.init(fileNamed: "1-1") {
             for i in loadScene.children {
                 guard let tileNode = i as? SKTileMapNode else { fatalError() }
+                guard let tileName = i.name else { fatalError() }
                 assert(tileNode.tileSize.width == tileNode.tileSize.height)
                 u = Int(tileNode.tileSize.width)
-                
+
                 let numberOfColumns = tileNode.numberOfColumns
                 let numberOfRows = tileNode.numberOfRows
-                
+
+                var tileToUse: BasicSprite.Type = GROUND.self
+                switch tileName {
+                case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
+                case "QuestionBlock": tileToUse = QuestionBox.self
+                default: fatalError()
+                }
                 //tileNode.name
-                
+
                 for x in 0..<numberOfColumns {
                     for y in 0..<numberOfRows {
-                        
+
                         if let tile = tileNode.tileGroup(atColumn: x, row: y) {
                             if let tileName = tile.name {
-                                print(tileName)
+                                let g0 = build(tileToUse, pos: (x,y), image: tileName)
+                                //print("- Just Added", tileName)
                             }
 
                         }
-                        
-                        print(tileNode.tileGroup(atColumn: x, row: y), (x, y))
                     }
                 }
-                
-            }
-            
 
+            }
         }
         
         
         let player = build(Inky.self, pos: (0,3), player: true)
         
-        let g0 = build(GROUND.self, pos: (0,0), size: (69,2), image: "Ground")
-        let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
-        let g2 = build(GROUND.self, pos: (g1.maxX/u+3,0), size: (43,2))
-        let g3 = build(GROUND.self, pos: (g2.maxX/u+2,0), size: (43,2))
+        //let g0 = build(GROUND.self, pos: (0,-3), size: (69,2), image: "Ground")
+        //let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
+        //let g2 = build(GROUND.self, pos: (g1.maxX/u+3,0), size: (43,2))
+        //let g3 = build(GROUND.self, pos: (g2.maxX/u+2,0), size: (43,2))
         
         let pipe1 = build(GROUND.self, pos: (28,2), size: (2,2))
         let pipe2 = build(GROUND.self, pos: (38,2), size: (2,3))
@@ -106,7 +117,7 @@ class Scene: MagicScene {
         let pipe4 = build(GROUND.self, pos: (57,2), size: (2,4))
         
         
-        let q = build(QuestionBox.self, pos: (1, 9))
+        let q = build(QuestionBox.self, pos: (1, 9), image: "QuestionBlock")
         
         
         
@@ -166,7 +177,7 @@ class Scene: MagicScene {
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
-            if let j = i as? SKActionable, j.actionSprite.hasActions(), i.velocity != (0,0) {
+            if let j = i as? (ActionSprite & SKActionable), j.actionSprite.hasActions(), i.velocity != (0,0) {
                 i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
             }
         }

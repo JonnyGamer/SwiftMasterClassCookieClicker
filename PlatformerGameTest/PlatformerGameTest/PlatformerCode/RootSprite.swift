@@ -16,8 +16,19 @@ protocol Spriteable {
     var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] { get set }
 }
 protocol SKActionable {
+    var skNode: SKNode! { get set }
     var myActions: [SKAction] { get set }
     var actionSprite: SKNode { get set }
+}
+extension SKActionable {
+    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
+        let wow = this.init(box: frame)
+        wow.startPosition(location)
+        (wow as? MovableSprite)?.reverseMovement = reverseMovement
+        wow.add((actionSprite.scene as? Scene)!)
+        (wow as? BasicSprite)?.creator = self as? BasicSprite
+        (actionSprite.scene as? Scene)?.add(wow)
+    }
 }
 
 struct Cash {
@@ -39,30 +50,43 @@ class BasicSprite: Hashable {
     var creator: BasicSprite?
     
     var frame = (x: 16, y: 16)
-    var skNode: SKNode// = SKSpriteNode.init(color: .white, size: CGSize.init(width: 16, height: 16))
+    
+    //var helperNode: SKNode
     required init(box: (Int, Int), image: String? = nil) {
-        if let i = image {
-            if let t = Cash.textures[i] {
-                skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-            } else {
-                let t = SKTexture.init(imageNamed: i)
-                Cash.textures[i] = t
-                skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
-            }
-        } else {
-            skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
-        }
+        //helperNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
         frame = box
+        
+        if let foo = self as? MovableSprite {
+            if let i = image {
+                if let t = Cash.textures[i] {
+                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+                } else {
+                    let t = SKTexture.init(imageNamed: i)
+                    t.filteringMode = .nearest
+                    Cash.textures[i] = t
+                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+                }
+            } else {
+                foo.skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
+            }
+        } else if let foo = self as? ActionSprite {
+            if let i = image {
+                if let t = Cash.textures[i] {
+                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+                } else {
+                    let t = SKTexture.init(imageNamed: i)
+                    t.filteringMode = .nearest
+                    Cash.textures[i] = t
+                    foo.skNode = SKSpriteNode.init(texture: t, size: CGSize.init(width: box.0, height: box.1))
+                }
+            } else {
+                foo.skNode = SKSpriteNode.init(color: .white, size: CGSize.init(width: box.0, height: box.1))
+            }
+        }
+        
     }
     
-    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
-        let wow = this.init(box: frame)
-        wow.startPosition(location)
-        (wow as? MovableSprite)?.reverseMovement = reverseMovement
-        wow.add((skNode.scene as? Scene)!)
-        wow.creator = self
-        (skNode.scene as? Scene)?.add(wow)
-    }
+
     
     func startPosition(_ n: (x: Int, y: Int)) {
         position = n
@@ -92,7 +116,15 @@ class BasicSprite: Hashable {
                 previousPosition = position
             }
         }
-        didSet{ skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2) }
+        didSet{
+            
+            if let skNode = (self as? MovableSprite)?.skNode {
+                skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2)
+            } else if let skNode = (self as? ActionSprite)?.skNode {
+                skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2)
+            }
+            
+        }
     }
     var previousPosition: (x: Int, y: Int) = (0,0)
     var velocity: (dx: Int, dy: Int) { return (dx: position.x - previousPosition.x, dy: position.y - previousPosition.y) }
@@ -103,6 +135,42 @@ class BasicSprite: Hashable {
         previousPosition.y = position.y
     }
     
+    
+    
+    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] = []
+    var doThisWhenNotOnGround: [() -> ()] = []
+    
+    var runWhenBumpDown: [()->()] = []
+    var runWhenBumpLeft: [()->()] = []
+    var runWhenBumpRight: [()->()] = []
+    var runWhenBumpUp: [()->()] = []
+    
+    func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
+        (self as? MovableSprite)?.stopMoving(hit, direction)
+        
+        if direction == .up {
+            runWhenBumpUp.run()
+        } else if direction == .down {
+            runWhenBumpDown.run()
+        } else if direction == .right {
+            runWhenBumpRight.run()
+        } else if direction == .left {
+            runWhenBumpLeft.run()
+        }
+    }
+    
+}
+
+class ActionSprite: BasicSprite {
+    var skNode: SKNode!
+}
+
+class MovableSprite: BasicSprite {
+    
+    var skNode: SKNode!
     var canDieFrom: [Direction] = []
     var dead = false
     var deathID = Int.min
@@ -142,35 +210,15 @@ class BasicSprite: Hashable {
         skNode.run(this)
     }
     
-    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] = []
-    var doThisWhenNotOnGround: [() -> ()] = []
-    
-    var runWhenBumpDown: [()->()] = []
-    var runWhenBumpLeft: [()->()] = []
-    var runWhenBumpRight: [()->()] = []
-    var runWhenBumpUp: [()->()] = []
-    
-    func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
-        (self as? MovableSprite)?.stopMoving(hit, direction)
-        
-        if direction == .up {
-            runWhenBumpUp.run()
-        } else if direction == .down {
-            runWhenBumpDown.run()
-        } else if direction == .right {
-            runWhenBumpRight.run()
-        } else if direction == .left {
-            runWhenBumpLeft.run()
-        }
+    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
+        let wow = this.init(box: frame)
+        wow.startPosition(location)
+        (wow as? MovableSprite)?.reverseMovement = reverseMovement
+        wow.add((skNode.scene as? Scene)!)
+        wow.creator = self
+        (skNode.scene as? Scene)?.add(wow)
     }
     
-}
-
-
-class MovableSprite: BasicSprite {
     var isPlayer: Bool { return false }
     
     var lastMovedThisDirection: Direction = .right
