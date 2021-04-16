@@ -81,6 +81,7 @@ class Scene: MagicScene {
 
                 var tileToUse: BasicSprite.Type = GROUND.self
                 switch tileName {
+                case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
                 case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
                 case "QuestionBlock": tileToUse = QuestionBox.self
                 default: fatalError()
@@ -167,8 +168,8 @@ class Scene: MagicScene {
         if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
         
         // Run Camera
-        magicCamera.run(.moveTo(x: woah.position.x, duration: 0.1))
-        magicCamera.run(.moveTo(y: max(50, woah.position.y), duration: 0.1))
+        magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.y), duration: 0.1))
+        magicCamera.run(.moveTo(y: max(frame.height/2, woah.position.y), duration: 0.1))
     }
     
     

@@ -102,13 +102,13 @@ class Inky: MovableSprite, Spriteable {
         
         // Jumping
         .jumpWhen(.pressedButton(.jump)),
-        .jumpHeight(triangleOf: 20),
-        .maxJumpSpeed(5),
-        .minFallSpeed(-5),
+        .jumpHeight(triangleOf: 12),
+        .maxJumpSpeed(3),
+        .minFallSpeed(-3),
         .gravity(-1, everyFrame: 3),
         .stopGoingUpWhen(.releasedButton(.jump)),
         .resetJumpsWhen(.thisBumped(.down)),
-        .maxJump(2),
+        //.maxJump(2),
         
         .fallWhen(.notOnGround),
         
