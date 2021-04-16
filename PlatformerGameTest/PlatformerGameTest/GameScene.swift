@@ -63,42 +63,20 @@ class Scene: MagicScene {
     override func begin() {
         
         let player = build(Inky.self, pos: (0,3), player: true)
-        //players.append(player);
+        
+        let g0 = build(GROUND.self, pos: (0,0), size: (69,2))
+        let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
+        let g2 = build(GROUND.self, pos: (g1.maxX/u+3,0), size: (43,2))
+        let g3 = build(GROUND.self, pos: (g2.maxX/u+2,0), size: (43,2))
+        
+        let pipe1 = build(GROUND.self, pos: (28,2), size: (2,2))
+        let pipe2 = build(GROUND.self, pos: (38,2), size: (2,3))
+        let pipe3 = build(GROUND.self, pos: (46,2), size: (2,4))
+        let pipe4 = build(GROUND.self, pos: (57,2), size: (2,4))
         
         
-//        let player = Inky(box: (16, 16))
-//        player.add(self)
-//        players.append(player)
-//        player.startPosition((0,16*2))
-//        woah = player.skNode
-//        add(player)
+        let q = build(QuestionBox.self, pos: (1, 9))
         
-        let g0 = build(GROUND.self, pos: (0,0), size: (28,2))
-        
-//        let g0 = GROUND.init(box: (16*28, 16*2))
-//        g0.add(self)
-//        g0.startPosition((0,0))
-//        add(g0)
-        
-        
-//        for i in 1...100 {
-//            let g1 = GROUND.init(box: (10, 10))
-//            g1.add(self)
-//            g1.startPosition(((-g1.frame.x/2)+(i*32),10))
-//            add(g1)
-//        }
-//
-//        for i in 1...100 {
-//            let g1 = GROUND.init(box: (10, 10))
-//            g1.add(self)
-//            g1.startPosition(((-g1.frame.x/2),10+(i*10)))
-//            add(g1)
-//        }
-        
-        let q = QuestionBox.init(box: (16, 16))
-        q.add(self)
-        q.startPosition((0, 150))
-        add(q)
         
         
         otherThings()
