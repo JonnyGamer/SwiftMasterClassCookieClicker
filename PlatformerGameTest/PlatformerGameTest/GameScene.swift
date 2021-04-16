@@ -66,10 +66,12 @@ class Scene: MagicScene {
         add(box)
         return box
     }
+    var massiveHeight = 0
     
     override func begin() {
         
         if let loadScene = SKScene.init(fileNamed: "1-1") {
+            backgroundColor = loadScene.backgroundColor
             for i in loadScene.children {
                 guard let tileNode = i as? SKTileMapNode else { fatalError() }
                 guard let tileName = i.name else { fatalError() }
@@ -78,6 +80,7 @@ class Scene: MagicScene {
 
                 let numberOfColumns = tileNode.numberOfColumns
                 let numberOfRows = tileNode.numberOfRows
+                massiveHeight = numberOfRows
 
                 var tileToUse: BasicSprite.Type = GROUND.self
                 switch tileName {
@@ -169,7 +172,7 @@ class Scene: MagicScene {
         
         // Run Camera
         magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.x), duration: 0.1))
-        magicCamera.run(.moveTo(y: max(frame.height/2, woah.position.y), duration: 0.1))
+        magicCamera.run(.moveTo(y: max(frame.height/2, min(woah.position.y, (massiveHeight.cg*u.cg)-(frame.height/2))), duration: 0.1))
     }
     
     
