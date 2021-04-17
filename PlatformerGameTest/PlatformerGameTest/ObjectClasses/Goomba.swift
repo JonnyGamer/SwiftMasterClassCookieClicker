@@ -15,7 +15,7 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         if !self.squashed {
             self.squashed = true
             self.xSpeed = 0
-            mario.jump()
+            mario.jump(mario.maxJumpSpeed)
             self.runAction(1, append: [
                 .run { _=self.die(nil, [], killedBy: mario) }
             ])
@@ -27,9 +27,11 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         // If Goomba Hits Something, reverse it's movement
         .bumped(.left, doThis: { _ in
             self.reverseMovement.toggle()
+            self.move(.left)
         }),
         .bumped(.right, doThis: { _ in
             self.reverseMovement.toggle()
+            self.move(.left)
         }),
         
         // If Goomba falls on Mario

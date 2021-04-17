@@ -150,7 +150,7 @@ class Scene: MagicScene {
     }
     
     func otherThings() {
-        addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
+        //addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
         camera = magicCamera
         magicCamera.position.y = scene!.frame.height/2

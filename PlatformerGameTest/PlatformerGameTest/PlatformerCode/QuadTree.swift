@@ -27,9 +27,11 @@ extension BasicSprite {
     
     func doubleMyHeight() {
         frame.y *= 2
+        (self as? MovableSprite)?.skNode.yScale *= 2
     }
     func halfMyHeight() {
         frame.y /= 2
+        (self as? MovableSprite)?.skNode.yScale /= 2
     }
 }
 

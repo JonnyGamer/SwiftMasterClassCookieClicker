@@ -37,6 +37,7 @@ enum Setters {
     case minFallSpeed(Int)
     case gravity(Int, everyFrame: Int)
     case maxJump(Int)
+    case invincible
     
     case wallDirections([Direction])
 }

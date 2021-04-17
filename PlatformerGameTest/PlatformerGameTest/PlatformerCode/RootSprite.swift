@@ -89,6 +89,7 @@ class BasicSprite: Hashable {
             bumpedBy.runWhenBumpDown.run(self)
             wasBumpedFromDown.run(bumpedBy)
         } else if dir == .left {
+            print(self, dir, bumpedBy)
             bumpedBy.runWhenBumpLeft.run(self)
             wasBumpedFromLeft.run(bumpedBy)
         } else if dir == .right {
@@ -215,6 +216,7 @@ class BasicSprite: Hashable {
     
     @discardableResult
     func die(_ direction: Direction? = nil,_ id: [Int] = [], killedBy: BasicSprite) -> Bool {
+        if invincible { return false }
         if !id.isEmpty {
             if !id.contains(deathID) {
                 return false
@@ -346,13 +348,14 @@ class MovableSprite: BasicSprite {
         if frameCount % everyFrameR == 0 {
             if direction == .left {
                 position.x -= xSpeed * (reverseMovement ? -1 : 1)
-                skNode.xScale = -1
             }
             if direction == .right {
                 position.x += xSpeed * (reverseMovement ? -1 : 1)
-                skNode.xScale = 1
             }
-            lastMovedThisDirection = direction
+            if lastMovedThisDirection != direction {
+                lastMovedThisDirection = direction
+                skNode.xScale *= -1
+            }
         }
         frameCount += 1
     }

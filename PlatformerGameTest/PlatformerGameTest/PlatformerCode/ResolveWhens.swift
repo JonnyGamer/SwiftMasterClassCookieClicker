@@ -50,6 +50,7 @@ extension BasicSprite {
         switch sett {
         case .contactDirections(let dirs): contactOn = dirs
         case .gravity(let n, let fps): (self as? MovableSprite)?.ySpeed = n; (self as? MovableSprite)?.yEveryFrame = fps
+        case .invincible: self.invincible = true
         case .jumpHeight(triangleOf: let m): (self as? MovableSprite)?.bounceHeight = m
         case .maxJump(let m): (self as? MovableSprite)?.maxJumps = m
         case .maxJumpSpeed(let m): (self as? MovableSprite)?.maxJumpSpeed = m

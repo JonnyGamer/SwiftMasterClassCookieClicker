@@ -314,8 +314,9 @@ extension Scene {
                                 } else {
                                     
                                     // <- j <-<- i
-                                    j.contactTest(.left, bumpedBy: i)
+                                    if j.previousMaxX > i.previousMinX { break foo }
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
+                                    j.contactTest(.left, bumpedBy: i)
                                     //j.bumpedFromLeft.run(i)
                                     //i.bumpedFromRight.run(j)
                                     

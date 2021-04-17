@@ -169,9 +169,14 @@ class DeadMario: MovableSprite, Spriteable, SKActionable {
         .when(.firstTimeOnScreen, doThis: {
             self.skNode.zPosition = .infinity
             self.runAction(0, append: [
-                .run { self.die(killedBy: self) }
+                .run {
+                    self.die(killedBy: self)
+                }
             ])
         }),
+        .setters([
+            .contactDirections([])
+        ])
     ]}
     
     var myActions: [SKAction] = [
