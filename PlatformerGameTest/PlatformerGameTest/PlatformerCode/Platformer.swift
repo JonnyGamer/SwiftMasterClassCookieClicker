@@ -276,8 +276,24 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
 
 }
 
-class DeadMario: ActionSprite, SKActionable {
-    var myActions: [SKAction] = []
+class DeadMario: MovableSprite, Spriteable, SKActionable {
+    func whenActions() -> [Whens] {[
+        // Die when off screen
+        .when(.firstTimeOnScreen, doThis: {
+            self.skNode.zPosition = .infinity
+            self.runAction(0, append: [
+                .run { self.die(killedBy: self) }
+            ])
+        }),
+    ]}
+    
+    var myActions: [SKAction] = [
+        .sequence([
+            .wait(forDuration: 1),
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 16*4, duration: 0.5)),
+            .easeType(curve: .sine, easeType: .in, .moveTo(y: -100, duration: 1)),
+        ])
+    ]
     
     var actionSprite: SKNode = SKSpriteNode()
     
@@ -316,6 +332,11 @@ class Inky: MovableSprite, Spriteable, SKActionable {
             self.runAction(1)
         }),
         
+        // When Killed, run the 'Dead Mario Animation'
+        .killedBy({ _ in
+            self.spawnObject(DeadMario.self, frame: (16,16), location: self.position, image: Images.deadMario.rawValue)
+        }),
+        
         // Die when off screen
         .when(.offScreen, doThis: {
             if self.position.y < 0 {
@@ -331,6 +352,7 @@ class Inky: MovableSprite, Spriteable, SKActionable {
         ]),
         .when(.notPressingLeftOrRight, doThis: {
             if self.onGround.isEmpty { return }
+            self.killAction(1)
             self.runAction(0)
         }),
         .when(.notOnGround, doThis: {

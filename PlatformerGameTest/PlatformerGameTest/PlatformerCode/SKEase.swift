@@ -29,7 +29,7 @@ enum Images: String {
     case goomba2 = "Goomba2"
     case goombaFlat = "GoombaFlat"
     case mario = "MarioStanding"
-    case m1 = "MarioWalking1", m2 = "MarioWalking2", m3 = "MarioWalking3"
+    case m1 = "MarioWalking1", m2 = "MarioWalking2", m3 = "MarioWalking3", deadMario = "MarioDead"
     case marioJump = "MarioJumping"
     case brickCrash1 = "brickCrash1", brickCrash2 = "brickCrash2"
 }

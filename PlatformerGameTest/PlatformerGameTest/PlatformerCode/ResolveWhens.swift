@@ -73,6 +73,7 @@ extension BasicSprite {
             }
             
         case .farOffScreen:do{}
+            
         case .firstTimeOnScreen:
             if let foo = (self as? MovableSprite) {
                 foo.everyFrame.append {
