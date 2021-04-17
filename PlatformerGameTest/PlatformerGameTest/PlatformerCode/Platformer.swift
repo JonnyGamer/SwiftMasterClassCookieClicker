@@ -59,9 +59,6 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
     
     func whenActions() -> [Whens] {[
         .wasBumpedBy(.down, doThis: { $0.willStopMoving(self, .down) }),
-        //.whenIfTrue({ !$0.bumped }, .always, doThis: { print($0.bumped) }),
-        //.runSKAction(when: .ifTrue { !$0.hello }, { $0.myActions[0] }),
-        
         .wasBumpedBy(.left, doThis: { $0.willStopMoving(self, .left) }),
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
         .wasBumpedBy(.up, doThis: {
@@ -85,101 +82,76 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
                 .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
             ]
         },
-        .sequence([
-            .setImage(.q2, 0.1333),
-            .setImage(.q3, 0.1333),
-            .setImage(.q2, 0.1333),
-            .setImage(.q1, 0.4),
+        .animation([
+            (.q2, 0.1333),
+            (.q3, 0.1333),
+            (.q2, 0.1333),
+            (.q1, 0.4),
         ])
-        //.animate([.q1, .q2, .q3, .q2])
     ]}
     var actionSprite: SKNode = SKSpriteNode()
-    var specificActions: [When] = [
-        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
-        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-
-        // ? Box Action
-        .runSKAction([(0, .wasBumped(.down))]),
-        .runSKAction([(1, .when({ ($0 as? QuestionBox)?.bumped == false }))]),
-        .collisionOn(.all()),
-
-
-        // Brick Block Action
-        //.die(.thisBumped(.down)),
-    ]
 }
 
-//class BrickBox: ActionSprite, SKActionable, Spriteable {
-//    var actionSprite: SKNode = SKSpriteNode()
-//    var myActions: [SKAction] = [
-//        .sequence([
-//            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
-//            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
-//        ]),
-//    ]
-//    var specificActions: [When] = [
-//        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-//        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-//        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
-//        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-//        // Brick Block Action
-//        .die(.wasBumped(.down)),
-//        .collisionOn(.all()),
-//
-//        .doThisWhen({
-//            guard let foo = $0 as? BrickBox else { return }
-//            let a = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
-//            a.bounceHeight = 8
-//            a.maxJumpSpeed = 3
-//            let b = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
-//            b.bounceHeight = 8
-//            b.maxJumpSpeed = 5
-//            let c = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
-//            c.reverseMovement = true
-//            c.bounceHeight = 8
-//            c.maxJumpSpeed = 3
-//            let d = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
-//            d.reverseMovement = true
-//            d.bounceHeight = 8
-//            d.maxJumpSpeed = 5
-//
-//
-//        }, when: .died)
-//    ]
-//}
-//class BrickCrash: MovableSprite, SKActionable, Spriteable {
-//    var myActions: [SKAction] = [
-//        .sequence([
-//            .setImage(.brickCrash1, 0.2),
-//            .setImage(.brickCrash2, 0.2),
-//        ])
-//    ]
-//
-//    var actionSprite: SKNode = SKSpriteNode()
-//
-//    var specificActions: [When] = [
-//        .moveLeftWhen(.always),
-//        .fallWhen(.notOnGround),
-//        .die(.onceOffScreen),
-//        .xSpeed(1, everyFrame: 2),
-//
-//        .maxJump(2),
-//        .jumpWhen(.firstTimeOnScreen),
-////        .maxJumpSpeed(3),
-////        .minFallSpeed(-3),
-//        .gravity(-1, everyFrame: 3),
-//
-////        .jumpHeight(triangleOf: 1000),
-////        .maxJumpSpeed(100),
-////        .gravity(-1, everyFrame: 1),
-////        .jumpWhen(.firstTimeOnScreen),
-//
-//    ]
-//}
-//
-//
+class BrickBox: ActionSprite, SKActionable, Spriteable {
+    func whenActions() -> [Whens] {[
+        .wasBumpedBy(.down, doThis: { $0.willStopMoving(self, .down) }),
+        .wasBumpedBy(.left, doThis: { $0.willStopMoving(self, .left) }),
+        .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
+        .wasBumpedBy(.up, doThis: {
+            $0.willStopMoving(self, .up)
+            
+            let a = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            a.bounceHeight = 8
+            a.maxJumpSpeed = 3
+            let b = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            b.bounceHeight = 8
+            b.maxJumpSpeed = 5
+            let c = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            c.reverseMovement = true
+            c.bounceHeight = 8
+            c.maxJumpSpeed = 3
+            let d = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            d.reverseMovement = true
+            d.bounceHeight = 8
+            d.maxJumpSpeed = 5
+            
+            self.die(nil, [], killedBy: $0)
+        }),
+    ]}
+    
+    var actionSprite: SKNode = SKSpriteNode()
+    var myActions: [SKAction] = [
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+        ]),
+    ]
+}
+class BrickCrash: MovableSprite, SKActionable, Spriteable {
+    func whenActions() -> [Whens] {[
+        .when(.always, doThis: { self.move(.left); self.jump() }),
+        .when(.notOnGround, doThis: { self.fall() }),
+        .when(.offScreen, doThis: { self.die(nil, [], killedBy: self) }),
+        .setters([
+            .xSpeed(1, everyFrame: 2),
+            .maxJump(2),
+            .gravity(-1, everyFrame: 3),
+            .contactDirections([])
+        ])
+    ]}
+    
+
+    var myActions: [SKAction] = [
+        .sequence([
+            .setImage(.brickCrash1, 0.2),
+            .setImage(.brickCrash2, 0.2),
+        ])
+    ]
+
+    var actionSprite: SKNode = SKSpriteNode()
+}
+
+
 //class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
 //    var squashed = false
 //    var bounciness: Int = 5
@@ -244,20 +216,19 @@ class Inky: MovableSprite, Spriteable, SKActionable {
     var actionSprite: SKNode = SKSpriteNode()
     
     func whenActions() -> [Whens] {[
-        .bumped(.down, doThis: {
-            _ in self.jumps = 0
-        }),
-        .when(.pressedButton(.jump), doThis: {
-            self.jump()
-        }),
-        .when(.notOnGround, doThis: {
-            self.fall()
-        }),
-        .when(.releasedButton(.jump), doThis: {
-            self.stopMovingUp()
-        }),
+        // Reset Jumps
+        .bumped(.down, doThis: { _ in self.jumps = 0 }),
+        // Jump Button
+        .when(.pressedButton(.jump), doThis: { self.jump() }),
+        // Fall when not on ground
+        .when(.notOnGround, doThis: { self.fall() }),
+        // Jump Heights
+        .when(.releasedButton(.jump), doThis: { self.stopMovingUp() }),
+        // Move Left
         .when(.pressedButton(.left), doThis: { self.move(.left) }),
+        // Move Right
         .when(.pressedButton(.right), doThis: { self.move(.right) }),
+        // Stand
         .when(.pressedButtons([.right, .left]), doThis: {
             if self.onGround.isEmpty { return }
             self.runAction(1)

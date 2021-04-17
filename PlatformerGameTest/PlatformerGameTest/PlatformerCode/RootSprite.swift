@@ -77,6 +77,8 @@ class BasicSprite: Hashable {
     var wasBumpedFromRight: [(MovableSprite) -> ()] = []
     
     func contactTest(_ dir: Direction, bumpedBy: MovableSprite) {
+        if !(contactOn.contains(dir.reversed) && bumpedBy.contactOn.contains(dir)) { return }
+        
         //print(self, dir, bumpedBy)
         if dir == .up {
             bumpedBy.runWhenBumpUp.run(self)

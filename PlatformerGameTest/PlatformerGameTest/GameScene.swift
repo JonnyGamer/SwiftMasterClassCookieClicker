@@ -90,7 +90,7 @@ class Scene: MagicScene {
                 case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
                 case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
                 case "QuestionBlock": tileToUse = QuestionBox.self
-                case "BrickBlock": continue; //tileToUse = BrickBox.self
+                case "BrickBlock": tileToUse = BrickBox.self
                 case "Anim": tileToUse = nil
                     
                 case "None": continue

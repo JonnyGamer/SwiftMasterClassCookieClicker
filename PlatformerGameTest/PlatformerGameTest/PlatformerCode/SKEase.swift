@@ -63,6 +63,10 @@ extension SKAction {
             .wait(forDuration: num),
         ])
     }
+    static func animation(_ to: [(Images, Double)]) -> SKAction {
+        return .sequence(to.map { SKAction.setImage($0.0, $0.1) })
+    }
+    
 //    static func animate(_ using: [Images]) -> SKAction {
 //        return .moveBy(x: 0, y: 10, duration: 1)
 //    }
