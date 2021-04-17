@@ -23,7 +23,7 @@ enum Whens {
 enum NewAction {
     case always, onceEveryNFrames(Int)
     case onScreen, firstTimeOnScreen, offScreen, farOffScreen, somewhatOffScreen
-    case pressedButton(Button), releasedButton(Button)
+    case pressedButton(Button), releasedButton(Button), pressedButtons([Button]), notPressingLeftOrRight
     case falling, jumpingUp, standing, moving(Direction), onLedge, onGround, notOnGround, afterJumpingNTimes(Int)
     case playerIsLeftOfSelf, playerIsRightOfSelf, playerHasSameXPositionAsSelf
 }

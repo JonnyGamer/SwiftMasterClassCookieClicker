@@ -61,6 +61,8 @@ class BasicSprite: Hashable {
     var doThisWhenLeftButtonIsPressed: [() -> ()] = []
     var doThisWhenRightButtonIsPressed: [() -> ()] = []
     var doThisWhenJumpButtonIsReleased: [() -> ()] = []
+    var doThisWhenRightOrLeftIsPressed: [() -> ()] = []
+    var doThisWhenNOTRightOrLeftIsPressed: [() -> ()] = []
     
     // Killing Things
     var doThisWhenKilledObject: [(BasicSprite) -> ()] = []
@@ -270,6 +272,7 @@ class MovableSprite: BasicSprite {
     var runWhenBumpLeft: [(BasicSprite)->()] = []
     var runWhenBumpRight: [(BasicSprite)->()] = []
     var runWhenBumpUp: [(BasicSprite)->()] = []
+    var doThisWhenNotOnGround: [()->()] = []
     
     
     func run(_ this: SKAction) {
@@ -305,7 +308,7 @@ class MovableSprite: BasicSprite {
         }
         if onGround.isEmpty {
             fallingVelocity = height ?? bounceHeight
-            //doThisWhenNotOnGround.run(self)
+            doThisWhenNotOnGround.run()
             //fall()
         }
     }

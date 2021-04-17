@@ -211,14 +211,21 @@ class Scene: MagicScene {
         // Run any `.always` actions
         for i in movableSprites.union(actionableSprites) {
             i.everyFrame.run()
-            if pressedRight { i.doThisWhenRightButtonIsPressed.run() }
-            if pressedLeft { i.doThisWhenLeftButtonIsPressed.run() }
-            if pressedUp {
-                if i is Inky {
-                    i.doThisWhenJumpButtonIsPressed.run()
+            
+            if pressedLeft, pressedRight {
+                // Hahaha. Can't move right and left at the same time ;)
+            } else {
+                if pressedRight { i.doThisWhenRightButtonIsPressed.run() }
+                if pressedLeft { i.doThisWhenLeftButtonIsPressed.run() }
+                if pressedLeft || pressedRight {
+                    i.doThisWhenRightOrLeftIsPressed.run()
                 } else {
-                    i.doThisWhenJumpButtonIsPressed.run()
+                    i.doThisWhenNOTRightOrLeftIsPressed.run()
                 }
+            }
+            
+            if pressedUp {
+                i.doThisWhenJumpButtonIsPressed.run()
             }
             if releasedUp { i.doThisWhenJumpButtonIsReleased.run() }
             
@@ -310,6 +317,10 @@ class Scene: MagicScene {
                     
                     return !false
                 }
+                
+//                if !groundsRemoved.isEmpty {
+//                    print("NOonono")
+//                }
                 
                 // Check if standing on Ledge
                 if !i.onGround.isEmpty {

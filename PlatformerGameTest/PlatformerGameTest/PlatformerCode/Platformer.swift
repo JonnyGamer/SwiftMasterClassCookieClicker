@@ -65,7 +65,7 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         .wasBumpedBy(.left, doThis: { $0.willStopMoving(self, .left) }),
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
         .wasBumpedBy(.up, doThis: {
-                        $0.willStopMoving(self, .up)
+            $0.willStopMoving(self, .up)
         }),
     ]}
     
@@ -224,7 +224,19 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
 //
 //}
 //
-class Inky: MovableSprite, Spriteable {
+class Inky: MovableSprite, Spriteable, SKActionable {
+    var myActions: [SKAction] = [
+        .setImage(.mario),
+        .sequence([
+            .setImage(.m1, 0.1),
+            .setImage(.m2, 0.1),
+            .setImage(.m3, 0.1),
+        ]),
+        .setImage(.marioJump),
+    ]
+    
+    var actionSprite: SKNode = SKSpriteNode()
+    
     func whenActions() -> [Whens] {[
         .bumped(.down, doThis: {
             _ in self.jumps = 0
@@ -240,51 +252,28 @@ class Inky: MovableSprite, Spriteable {
         }),
         .when(.pressedButton(.left), doThis: { self.move(.left) }),
         .when(.pressedButton(.right), doThis: { self.move(.right) }),
+        .when(.pressedButtons([.right, .left]), doThis: {
+            if self.onGround.isEmpty { return }
+            self.runAction(1)
+        }),
         
         .setters([
             .jumpHeight(triangleOf: 12),
             .maxJumpSpeed(3),
             .minFallSpeed(-3),
             .gravity(-1, everyFrame: 3),
-            //.stopGoingUpWhen(.releasedButton(.jump)),
-            //.resetJumpsWhen(.wasBumped(.down)),
-        ])
-    ]}
-    
-    
-    var fireBallsActive = 0
-
-    var specificActions: [When] = [
-
-        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
-        //.allowObjectToPush(.up, when: .thisBumped(.up)),
-        //.allowObjectToPush(.right, when: .thisBumped(.right)),
-        //.allowObjectToPush(.left, when: .thisBumped(.left)),
-
-        .moveLeftWhen(.pressedButton(.left)),
-        .moveRightWhen(.pressedButton(.right)),
-
-        // Jumping
-        .jumpWhen(.pressedButton(.jump)),
-        .jumpHeight(triangleOf: 12),
-        .maxJumpSpeed(3),
-        .minFallSpeed(-3),
-        .gravity(-1, everyFrame: 3),
-        .stopGoingUpWhen(.releasedButton(.jump)),
-        .resetJumpsWhen(.wasBumped(.down)),
-        //.maxJump(2),
-
-        .fallWhen(.notOnGround),
-        .collisionOn(.all()),
-
-        //
-        .canDieFrom(.all()),
-        .deathId(0),
-
-        .doThisWhen({ ($0 as? MovableSprite)?.skNode.run(.animate(with: [Cash.getTexture(Images.mario.rawValue)], timePerFrame: 0)) }, when: .notOnGround)
+        ]),
+        .when(.notPressingLeftOrRight, doThis: {
+            if self.onGround.isEmpty { return }
+            self.runAction(0)
+        }),
+        .when(.notOnGround, doThis: {
+            self.killAction(1)
+            self.runAction(2)
+        }),
+        
+        
+        //.doThisWhen({ ($0 as? MovableSprite)?.skNode.run(.animate(with: [Cash.getTexture(Images.mario.rawValue)], timePerFrame: 0)) }, when: .notOnGround)
 
          //Fire Ball Power!
 //        .doThisWhen({
@@ -297,8 +286,11 @@ class Inky: MovableSprite, Spriteable {
 //                }
 //            }
 //        }, when: .pressedButton(.jump))
+    ]}
+    
+    
+    var fireBallsActive = 0
 
-    ]
     override var isPlayer: Bool { return true }
 }
 

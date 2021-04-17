@@ -69,8 +69,10 @@ extension Scene {
                 if j.velocity.dy == 0, i.velocity.dy == 0 {
                     if j.maxY == i.minY {
                         i.contactTest(.up, bumpedBy: j) // Hit two ? Blocks at once
-                        break
+                    } else if j.minY == i.maxY {
+                        i.contactTest(.down, bumpedBy: j) // Walk onto another ground of the same Y position
                     }
+                    
                 } else if j.velocity.dy == 0, i.velocity.dy >= 0 {
                     if ((i.previousPosition.y+i.frame.y)...i.maxY).contains(j.minY) { // Fixed (previousMaxY)
                         if j.previousMaxX == i.minX { break foo } //

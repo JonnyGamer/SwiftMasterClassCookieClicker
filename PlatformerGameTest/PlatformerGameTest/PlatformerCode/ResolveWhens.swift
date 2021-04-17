@@ -20,6 +20,29 @@ extension BasicSprite {
 
 extension BasicSprite {
     
+    func killAction(_ id: Int) {
+        if let foo = self as? (MovableSprite & SKActionable) {
+            foo.actionSprite.removeAction(forKey: "\(id)")
+            foo.skNode.removeAction(forKey: "\(id)")
+        } else if let foo = self as? (ActionSprite & SKActionable) {
+            foo.actionSprite.removeAction(forKey: "\(id)")
+            foo.skNode.removeAction(forKey: "\(id)")
+        }
+    }
+    func runAction(_ id: Int) {
+        if let foo = self as? (MovableSprite & SKActionable) {
+            if foo.actionSprite.action(forKey: "\(id)") == nil {
+                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+            }
+        } else if let foo = self as? (ActionSprite & SKActionable) {
+            if foo.actionSprite.action(forKey: "\(id)") == nil {
+                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+            }
+        }
+    }
+    
     func resolveSetter(_ this: Scene,_ sett: Setters) {
         switch sett {
         case .contactDirections(let dirs): contactOn = dirs
@@ -92,6 +115,7 @@ extension BasicSprite {
             
         case .notOnGround:
             guard let foo = (self as? MovableSprite) else { fatalError() }
+            foo.doThisWhenNotOnGround.append(doThis)
             everyFrame.append { if foo.onGround.isEmpty { doThis() } }
             
         case .offScreen:
@@ -139,6 +163,20 @@ extension BasicSprite {
                     doThis()
                 }
             }
+            
+            
+        case .notPressingLeftOrRight:
+            doThisWhenNOTRightOrLeftIsPressed.append(doThis)
+            
+        // Edit this one
+        case .pressedButtons(let buttons):
+            if buttons == [.right, .left] || buttons == [.left, .right] {
+                doThisWhenRightOrLeftIsPressed.append(doThis)
+            } else {
+                fatalError()
+            }
+            
+        //case .jump: doThisWhenJumpButtonIsPressed.append(doThis)
             
         case .pressedButton(let button):
             switch button {
