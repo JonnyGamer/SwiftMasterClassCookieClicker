@@ -203,10 +203,12 @@ class Scene: MagicScene {
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
-            if let j = i as? (ActionSprite & SKActionable), j.actionSprite.hasActions() {
-                i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
-            } else {
-                i.setPosition(i.position)
+            if let j = i as? (ActionSprite & SKActionable) {
+                if j.actionSprite.hasActions() {
+                    i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
+                } else if j.actionSprite.position != .zero {
+                    i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
+                }
             }
         }
         

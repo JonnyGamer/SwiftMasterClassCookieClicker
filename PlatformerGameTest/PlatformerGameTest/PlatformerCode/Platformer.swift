@@ -65,11 +65,12 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
         .wasBumpedBy(.up, doThis: {
             $0.willStopMoving(self, .up)
+            if self.bumped { return }
+            self.bumped = true
             self.runAction(0)
         }),
         .when(.always, doThis: {
             if self.bumped { return }
-            self.bumped = true
             self.runAction(1)
         })
         
@@ -77,10 +78,10 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
     
     var myActions: [SKAction] {[
         .sequence([
-            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 8, duration: 0.1)),
             .killAction(self, 1),
             .setImage(.deadBlock),
-            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -8, duration: 0.1)),
         ]),
         .animation([
             (.q2, 0.1333),

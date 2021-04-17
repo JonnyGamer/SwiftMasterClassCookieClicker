@@ -12,6 +12,7 @@ extension Scene {
     func checkForCollision(_ j: BasicSprite,_ movableSpritesTree: QuadTree) {
         
         if j.contactOn.isEmpty { return }
+        if j.dead { return }
         
         let d1 = Date.init().timeIntervalSince1970
         let superSet = movableSpritesTree.contains(j).union(quadtree.contains(j))
@@ -24,6 +25,7 @@ extension Scene {
         for i in superSet {//} sprites.shuffled() {
             if i === j { continue }
             if i.contactOn.isEmpty { continue }
+            if i.dead { continue }
 
             
             // Falling Down
