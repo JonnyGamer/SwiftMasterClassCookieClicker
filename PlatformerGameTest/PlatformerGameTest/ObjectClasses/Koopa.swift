@@ -12,6 +12,7 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
     
     // Squash the Koopa?
     func squash(_ mario: Inky) {
+        self.stomped = true
         mario.jump(mario.maxJumpSpeed)
         self.spawnObject(KoopaShell.self, frame: (16,16), location: self.position, image: Images.shell.rawValue)
         _=self.die(nil, [], killedBy: mario)
@@ -75,6 +76,11 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
             self.xSpeed = 1
         }),
         
+        .killedBy({ _ in
+            if self.stomped { return }
+            self.spawnObject(DeadKoopa.self, frame: (16,32), location: self.position, image: Images.koopa1.rawValue)
+        }),
+        
         .setters([
             .xSpeed(0, everyFrame: 2),
             .gravity(-1, everyFrame: 2),
@@ -82,6 +88,7 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
         ])
     ]}
     
+    var stomped = false
     var movementDirection: Direction = .left
     var bounciness: Int = 5
     var myActions: [SKAction] {[
@@ -98,6 +105,35 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
     var actionSprite: SKNode = SKSpriteNode()
 }
 
+class DeadKoopa: MovableSprite, Spriteable, SKActionable {
+    func whenActions() -> [Whens] {[
+        // Die when off screen
+        .when(.always, doThis: {
+            if self.started { return }; self.started = true 
+            self.skNode.zPosition = .infinity
+            self.skNode.yScale = -1
+            self.runAction(0, append: [
+                .run {
+                    self.die(killedBy: self)
+                }
+            ])
+        }),
+        .setters([
+            .contactDirections([])
+        ])
+    ]}
+    var started = false
+    var myActions: [SKAction] = [
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 16*1, duration: 0.2)),
+            .easeType(curve: .sine, easeType: .in, .moveTo(y: -100, duration: 1)),
+        ])
+    ]
+    
+    var actionSprite: SKNode = SKSpriteNode()
+}
+
+
 
 class KoopaShell: MovableSprite, SKActionable, Spriteable {
     
@@ -110,26 +146,18 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
         }
     }
     
-    // Squash the Goomba!
+    // Stomp on the Koopa shell
     func squash(_ mario: Inky) {
         self.moving.toggle()
-        if self.moving == true {
+        if self.moving {
             if mario.midX < self.midX {
-                self.movementDirection = .left
+                self.movementDirection = .right
             } else {
-                self.xSpeed = 10
+                self.movementDirection = .left
             }
         }
         
         mario.jump(mario.maxJumpSpeed)
-//        if !self.squashed {
-//            self.squashed = true
-//            self.xSpeed = 0
-//            mario.jump(mario.maxJumpSpeed)
-//            self.runAction(1, append: [
-//                .run { _=self.die(nil, [], killedBy: mario) }
-//            ])
-//        }
     }
     
     func whenActions() -> [Whens] {[

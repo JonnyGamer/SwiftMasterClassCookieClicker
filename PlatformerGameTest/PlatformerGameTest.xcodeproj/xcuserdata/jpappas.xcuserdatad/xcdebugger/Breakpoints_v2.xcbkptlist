@@ -238,8 +238,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
             landmarkName = "stopMoving(_:_:)"
             landmarkType = "7">
          </BreakpointContent>

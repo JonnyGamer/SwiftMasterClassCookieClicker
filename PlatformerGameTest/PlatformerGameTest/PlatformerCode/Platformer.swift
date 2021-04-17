@@ -188,8 +188,6 @@ class DeadMario: MovableSprite, Spriteable, SKActionable {
     ]
     
     var actionSprite: SKNode = SKSpriteNode()
-    
-    
 }
 
 class Inky: MovableSprite, Spriteable, SKActionable {

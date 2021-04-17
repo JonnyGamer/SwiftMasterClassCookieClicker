@@ -82,7 +82,13 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
             .xSpeed(0, everyFrame: 2),
             .gravity(-1, everyFrame: 2),
             .minFallSpeed(-3),
-        ])
+        ]),
+        
+        .killedBy({ _ in
+            if self.squashed { return }
+            self.spawnObject(DeadGoomba.self, frame: (16,16), location: self.position, image: Images.goomba1.rawValue)
+        })
+        
     ]}
     
     var squashed = false
@@ -97,8 +103,37 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         .sequence([
             .killAction(self, 0),
             .setImage(.goombaFlat, 0.3),
-        ])
+        ]),
     ]}
 
+    var actionSprite: SKNode = SKSpriteNode()
+}
+
+
+class DeadGoomba: MovableSprite, Spriteable, SKActionable {
+    func whenActions() -> [Whens] {[
+        // Die when off screen
+        .when(.always, doThis: {
+            if self.started { return }; self.started = true
+            self.skNode.zPosition = .infinity
+            self.skNode.yScale = -1
+            self.runAction(0, append: [
+                .run {
+                    self.die(killedBy: self)
+                }
+            ])
+        }),
+        .setters([
+            .contactDirections([])
+        ])
+    ]}
+    var started = false
+    var myActions: [SKAction] = [
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 16*1, duration: 0.2)),
+            .easeType(curve: .sine, easeType: .in, .moveTo(y: -100, duration: 1)),
+        ])
+    ]
+    
     var actionSprite: SKNode = SKSpriteNode()
 }

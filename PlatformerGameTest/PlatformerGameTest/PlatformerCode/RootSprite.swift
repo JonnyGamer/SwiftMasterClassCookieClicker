@@ -231,9 +231,11 @@ class BasicSprite: Hashable {
             
         }
         
-        if !dead {
+        if !dead, killedBy !== self {
             doThisWhenKilledBy.run(killedBy)
+            if invincible { return false }
             killedBy.doThisWhenKilledObject.run(self)
+            if invincible { return false }
         }
         dead = true
         
