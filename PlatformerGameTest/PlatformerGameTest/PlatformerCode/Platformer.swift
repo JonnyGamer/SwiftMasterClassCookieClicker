@@ -16,7 +16,9 @@ class GROUND: BasicSprite, Spriteable {
         }),
         .wasBumpedBy(.left, doThis: { $0.willStopMoving(self, .left) }),
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
-        .wasBumpedBy(.up, doThis: { $0.willStopMoving(self, .up) }),
+        .wasBumpedBy(.up, doThis: {
+            $0.willStopMoving(self, .up)
+        }),
     ]}
     
     var specificActions: [When] = [
@@ -100,22 +102,24 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
         .wasBumpedBy(.up, doThis: {
             $0.willStopMoving(self, .up)
             
-            let a = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            guard let mario = $0 as? Inky else { return }
+            
+            let a = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
             a.bounceHeight = 8
             a.maxJumpSpeed = 3
-            let b = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            let b = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
             b.bounceHeight = 8
             b.maxJumpSpeed = 5
-            let c = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            let c = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
             c.reverseMovement = true
             c.bounceHeight = 8
             c.maxJumpSpeed = 3
-            let d = self.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.midX-4, $0.midY-4), image: Images.brickCrash1.rawValue)
+            let d = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
             d.reverseMovement = true
             d.bounceHeight = 8
             d.maxJumpSpeed = 5
             
-            self.die(nil, [], killedBy: $0)
+            self.die(nil, [], killedBy: mario)
         }),
     ]}
     

@@ -149,7 +149,13 @@ class BasicSprite: Hashable {
             } else if newValue.x != position.x {
                 previousPosition.x = position.x
             } else {
+                if "\(self)".contains("Inky") {
+                    print(position, newValue, velocity)
+                }
                 previousPosition = position
+            }
+            if "\(self)".contains("Inky") {
+                print(position, newValue, velocity)
             }
         }
         didSet{
@@ -425,9 +431,11 @@ class MovableSprite: BasicSprite {
         
         // Still working on UP??
         if direction == .up {
-            position.y = hit.minY - frame.y
-            fallingVelocity = -1
-            stopY()
+            if position.y > hit.minY - frame.y {
+                position.y = hit.minY - frame.y
+                fallingVelocity = -1
+                stopY()
+            }
             //print(velocity)
             //runWhenBumpUp.run()
         }
@@ -448,7 +456,9 @@ class MovableSprite: BasicSprite {
     func landedOn(_ this: BasicSprite) {
         fallingVelocity = 0
         onGround.insert(this)
-        position.y = this.maxY
+        if position.y != this.maxY {
+            position.y = this.maxY
+        }
         stopY()
     }
     

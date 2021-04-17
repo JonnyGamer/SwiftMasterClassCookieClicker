@@ -11,6 +11,8 @@ import SpriteKit
 extension Scene {
     func checkForCollision(_ j: BasicSprite,_ movableSpritesTree: QuadTree) {
         
+        if j.contactOn.isEmpty { return }
+        
         let d1 = Date.init().timeIntervalSince1970
         let superSet = movableSpritesTree.contains(j).union(quadtree.contains(j))
         let d2 = Date.init().timeIntervalSince1970
@@ -21,6 +23,7 @@ extension Scene {
         
         for i in superSet {//} sprites.shuffled() {
             if i === j { continue }
+            if i.contactOn.isEmpty { continue }
 
             
             // Falling Down
@@ -67,7 +70,7 @@ extension Scene {
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
                 if j.velocity.dy == 0, i.velocity.dy == 0 {
-                    if j.maxY == i.minY {
+                    if j.maxY == i.minY, j.onGround.isEmpty {
                         i.contactTest(.up, bumpedBy: j) // Hit two ? Blocks at once
                     } else if j.minY == i.maxY {
                         i.contactTest(.down, bumpedBy: j) // Walk onto another ground of the same Y position
@@ -121,7 +124,7 @@ extension Scene {
             }
             
             if i.velocity.dx == 0, j.velocity.dx == 0 {
-                continue
+                //continue
             }
             
             newCheckX(i, j, sprites: superSet)
@@ -249,30 +252,44 @@ extension Scene {
                 }
             }
             
-
             
-            if  i.maxX > j.minX, i.minX < j.maxX { // j.previousMaxX <= i.previousMinX, j.maxX >= i.minX {//}
+            if true {// } i.maxX > j.minX, i.minX < j.maxX { // j.previousMaxX <= i.previousMinX, j.maxX >= i.minX {//}
                 print(j, j.velocity)
                 
                 
                 if i.velocity.dx == 0, let j = j as? MovableSprite {
                     // j -> |i|
-                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX {
+                    print("start", j.velocity.dx)
+                    if j.previousMaxX > i.previousMinX {
+                        print(j.previousMaxX, i.previousMinX, i.minX)
+                        print("Ha nope")
                         break foo
                     }
-                    //i.bumpedFromRight.run(j)
-                    if let i = i as? MovableSprite {
-                        //j.bumpedFromLeft.run(i) // Do I need this?
-                        
-                        if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
-                            j.stopMoving(i, .right)
+                    
+                    if j.velocity.dx > 0 {
+                        i.contactTest(.right, bumpedBy: j)
+                        //i.bumpedFromRight.run(j)
+                        if let i = i as? MovableSprite {
+                            //j.bumpedFromLeft.run(i) // Do I need this?
+                            
+                            if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
+                                j.stopMoving(i, .right)
+                            }
                         }
                     }
+                    print("end", j.velocity.dx, j.maxX)
+                    
+//                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX {
+//                        print(j.velocity)
+//                        break foo
+//                    }
+
                     
                 } else if let i = i as? MovableSprite {
                     if j.velocity.dx == 0 {
                         // |j| <- i
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
+                        j.contactTest(.left, bumpedBy: i)
                         //j.bumpedFromLeft.run(i)
                         if let j = j as? MovableSprite {
                             //i.bumpedFromRight.run(j) // Do I need this?
@@ -300,6 +317,7 @@ extension Scene {
                                 } else {
                                     
                                     // <- j <-<- i
+                                    j.contactTest(.left, bumpedBy: i)
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     //j.bumpedFromLeft.run(i)
                                     //i.bumpedFromRight.run(j)
@@ -314,6 +332,8 @@ extension Scene {
                                 if j.velocity.dx == -i.velocity.dx {
                                     // Unfinished
                                     // j -> <- i
+                                    j.contactTest(.left, bumpedBy: i)
+                                    i.contactTest(.right, bumpedBy: j)
                                     //j.bumpedFromLeft.run(i)
                                     //i.bumpedFromRight.run(j)
                                     
@@ -332,6 +352,8 @@ extension Scene {
                                     if j.velocity.dx > -i.velocity.dx {
                                         
                                         // j ->-> <- |i|
+                                        j.contactTest(.left, bumpedBy: i)
+                                        i.contactTest(.right, bumpedBy: j)
                                         //i.bumpedFromRight.run(j)
                                         //j.bumpedFromLeft.run(i)
                                         if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
@@ -340,6 +362,8 @@ extension Scene {
                                         
                                     } else {
                                         // j -> <-<- i
+                                        j.contactTest(.left, bumpedBy: i)
+                                        i.contactTest(.right, bumpedBy: j)
                                         //j.bumpedFromLeft.run(i)
                                         //i.bumpedFromRight.run(j)
                                         if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
@@ -358,6 +382,7 @@ extension Scene {
                             // j ->-> i ->
                             if j.velocity.dx > 0 {
                                 if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
+                                i.contactTest(.right, bumpedBy: j)
                                 //i.bumpedFromRight.run(j)
                                 //j.bumpedFromLeft.run(i)
                                 if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
