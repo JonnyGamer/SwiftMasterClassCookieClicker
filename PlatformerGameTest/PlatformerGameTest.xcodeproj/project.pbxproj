@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B4022F7262A007D002F5CDB /* 1-1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1B4022F6262A007D002F5CDB /* 1-1.sks */; };
+		1B593912262B78E000BF760F /* Goomba.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B593911262B78E000BF760F /* Goomba.swift */; };
+		1B593917262B790200BF760F /* Koopa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B593916262B790200BF760F /* Koopa.swift */; };
 		1BAF6A33262A171D00BF5AED /* MyTileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BAF6A32262A171D00BF5AED /* MyTileSet.sks */; };
 		1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBB723226289E81002CE1A6 /* SKEase.swift */; };
 		1BDF24192624B61500446341 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24182624B61500446341 /* AppDelegate.swift */; };
@@ -25,6 +27,8 @@
 
 /* Begin PBXFileReference section */
 		1B4022F6262A007D002F5CDB /* 1-1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = "1-1.sks"; sourceTree = "<group>"; };
+		1B593911262B78E000BF760F /* Goomba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goomba.swift; sourceTree = "<group>"; };
+		1B593916262B790200BF760F /* Koopa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koopa.swift; sourceTree = "<group>"; };
 		1BAF6A32262A171D00BF5AED /* MyTileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyTileSet.sks; sourceTree = "<group>"; };
 		1BBB723226289E81002CE1A6 /* SKEase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKEase.swift; sourceTree = "<group>"; };
 		1BDF24152624B61500446341 /* PlatformerGameTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlatformerGameTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +58,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B593914262B78E500BF760F /* ObjectClasses */ = {
+			isa = PBXGroup;
+			children = (
+				1B593911262B78E000BF760F /* Goomba.swift */,
+				1B593916262B790200BF760F /* Koopa.swift */,
+			);
+			path = ObjectClasses;
+			sourceTree = "<group>";
+		};
 		1BDF240C2624B61500446341 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +91,7 @@
 				1B4022F6262A007D002F5CDB /* 1-1.sks */,
 				1BAF6A32262A171D00BF5AED /* MyTileSet.sks */,
 				1BDF24202624B61500446341 /* ViewController.swift */,
+				1B593914262B78E500BF760F /* ObjectClasses */,
 				1BDF243C2624B99E00446341 /* PlatformerCode */,
 				1BDF24222624B61700446341 /* Assets.xcassets */,
 				1BDF24242624B61700446341 /* Main.storyboard */,
@@ -180,7 +194,9 @@
 				1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */,
 				1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */,
 				1BDF24192624B61500446341 /* AppDelegate.swift in Sources */,
+				1B593917262B790200BF760F /* Koopa.swift in Sources */,
 				1BDF24342624B86600446341 /* Whens.swift in Sources */,
+				1B593912262B78E000BF760F /* Goomba.swift in Sources */,
 				1BDF24312624B64B00446341 /* Platformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

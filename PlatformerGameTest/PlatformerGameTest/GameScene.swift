@@ -111,6 +111,7 @@ class Scene: MagicScene {
                                     var newTileToUse: BasicSprite.Type!// = Goomba.self
                                     switch tileName {
                                     case "Goomba": newTileToUse = Goomba.self
+                                    case "Koopa": newTileToUse = Koopa.self
                                     default: fatalError()
                                     }
                                     let _ = build(newTileToUse, pos: (x,y), image: tileName)

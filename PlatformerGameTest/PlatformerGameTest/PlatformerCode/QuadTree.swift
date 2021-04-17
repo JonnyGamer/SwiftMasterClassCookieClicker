@@ -24,6 +24,13 @@ extension BasicSprite {
     var previousMinY: Int { return previousPosition.y }
     var previousMidY: Int { return (previousMinY + previousMaxY)/2 }
     var previousMaxY: Int { return previousPosition.y + frame.y }
+    
+    func doubleMyHeight() {
+        frame.y *= 2
+    }
+    func halfMyHeight() {
+        frame.y /= 2
+    }
 }
 
 extension BasicSprite {
