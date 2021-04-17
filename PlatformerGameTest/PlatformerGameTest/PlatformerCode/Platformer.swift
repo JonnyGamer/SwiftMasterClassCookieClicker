@@ -206,14 +206,17 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         
         // If Mario walks into Goomba, he dies
         .wasBumpedBy(.left, doThis: {
-            if let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+            if !self.squashed, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
         }),
         .wasBumpedBy(.right, doThis: {
-            if let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+            if !self.squashed, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
         }),
         
-        // Goomba Falls
-        .when(.notOnGround, doThis: { self.fall() }),
+        // Goomba Falls, Unless squashed
+        .when(.notOnGround, doThis: {
+            if self.squashed { return }
+            self.fall()
+        }),
         
         // Goomba always moves left
         .when(.always, doThis: {
@@ -273,6 +276,13 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
 
 }
 
+class DeadMario: ActionSprite, SKActionable {
+    var myActions: [SKAction] = []
+    
+    var actionSprite: SKNode = SKSpriteNode()
+    
+    
+}
 
 class Inky: MovableSprite, Spriteable, SKActionable {
     var myActions: [SKAction] = [
@@ -304,6 +314,13 @@ class Inky: MovableSprite, Spriteable, SKActionable {
         .when(.pressedButtons([.right, .left]), doThis: {
             if self.onGround.isEmpty { return }
             self.runAction(1)
+        }),
+        
+        // Die when off screen
+        .when(.offScreen, doThis: {
+            if self.position.y < 0 {
+                _ = self.die(killedBy: self)
+            }
         }),
         
         .setters([

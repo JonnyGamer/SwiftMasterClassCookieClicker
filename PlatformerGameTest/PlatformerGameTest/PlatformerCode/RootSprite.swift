@@ -23,9 +23,9 @@ extension SKActionable {
         let wow = this.init(box: frame, image: image)
         wow.startPosition(location)
         (wow as? MovableSprite)?.reverseMovement = reverseMovement
-        wow.add((actionSprite.scene as? Scene)!)
+        wow.add(Cash.scene!)
         (wow as? BasicSprite)?.creator = self as? BasicSprite
-        (actionSprite.scene as? Scene)?.add(wow)
+        Cash.scene.add(wow)
         return wow
     }
 }
@@ -41,6 +41,7 @@ struct Cash {
             return t
         }
     }
+    static var scene: Scene!
 }
 
 
@@ -244,6 +245,7 @@ class BasicSprite: Hashable {
             a.skNode.removeFromParent()
             //a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         }
+        (self as? SKActionable)?.actionSprite.removeFromParent()
         
         creator = nil
         return true

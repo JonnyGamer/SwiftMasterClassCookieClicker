@@ -70,6 +70,7 @@ class Scene: MagicScene {
     var massiveHeight = 0
     
     override func begin() {
+        Cash.scene = self
         quadtree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
         sprites.removeAll(); movableSprites.removeAll(); actionableSprites.removeAll(); players.removeAll()
         
