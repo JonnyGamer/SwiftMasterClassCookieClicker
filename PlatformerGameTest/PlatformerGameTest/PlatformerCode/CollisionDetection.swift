@@ -32,7 +32,7 @@ extension Scene {
                 
                 if i.velocity.dy == 0, j.velocity.dy == 0 {
                     if (i as? MovableSprite)?.onGround.contains(j) == true { break foo }
-                    if (j as? MovableSprite)?.onGround.contains(i) == true { break foo }
+                    if j.onGround.contains(i) == true { break foo }
                     //break foo
                 }
                 

@@ -111,7 +111,7 @@ extension BasicSprite {
                 if foo.movingUp { doThis() }
             }
             
-        case .moving(let dir): fatalError()
+        case .moving(let _): fatalError()
             
             //guard let foo = (self as? MovableSprite) else { return }
             //everyFrame.append { if foo.doThisWhenKilledBy.isEmpty { doThis() } }

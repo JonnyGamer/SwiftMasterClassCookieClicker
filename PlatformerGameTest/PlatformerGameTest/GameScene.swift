@@ -106,14 +106,14 @@ class Scene: MagicScene {
                             if let tileName = tile.name {
                                 
                                 if let tileToUse = tileToUse {
-                                    let g0 = build(tileToUse, pos: (x,y), image: tileName)
+                                    let _ = build(tileToUse, pos: (x,y), image: tileName)
                                 } else {
                                     var newTileToUse: BasicSprite.Type!// = Goomba.self
                                     switch tileName {
                                     case "Goomba": newTileToUse = Goomba.self
                                     default: fatalError()
                                     }
-                                    let g0 = build(newTileToUse, pos: (x,y), image: tileName)
+                                    let _ = build(newTileToUse, pos: (x,y), image: tileName)
                                 }
                                 
                                 //print("- Just Added", tileName)
@@ -129,7 +129,7 @@ class Scene: MagicScene {
         
         let player = build(Inky.self, pos: (3,2), player: true)
         
-        let g0 = build(GROUND.self, pos: (-1,0), size: (1,massiveHeight*2))
+        let _ = build(GROUND.self, pos: (-1,0), size: (1,massiveHeight*2))
         
         //let g0 = build(GROUND.self, pos: (0,-3), size: (69,2), image: "Ground")
         //let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))

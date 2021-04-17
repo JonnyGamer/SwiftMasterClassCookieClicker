@@ -24,7 +24,7 @@ extension SKActionable {
         wow.startPosition(location)
         (wow as? MovableSprite)?.reverseMovement = reverseMovement
         wow.add(Cash.scene!)
-        (wow as? BasicSprite)?.creator = self as? BasicSprite
+        wow.creator = self as? BasicSprite
         Cash.scene.add(wow)
         return wow
     }
@@ -211,6 +211,8 @@ class BasicSprite: Hashable {
     var canDieFrom: [Direction] = []
     var dead = false
     var deathID = Int.min
+    
+    @discardableResult
     func die(_ direction: Direction? = nil,_ id: [Int] = [], killedBy: BasicSprite) -> Bool {
         if !id.isEmpty {
             if !id.contains(deathID) {
