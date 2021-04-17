@@ -48,14 +48,10 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
             ]
         },
         .sequence([
-            .setImage(.q2),
-            .wait(forDuration: 0.1),
-            .setImage(.q3),
-            .wait(forDuration: 0.1),
-            .setImage(.q2),
-            .wait(forDuration: 0.1),
-            .setImage(.q1),
-            .wait(forDuration: 0.3),
+            .setImage(.q2, 0.1),
+            .setImage(.q3, 0.1),
+            .setImage(.q2, 0.1),
+            .setImage(.q1, 0.3),
         ])
         //.animate([.q1, .q2, .q3, .q2])
     ]}
@@ -95,6 +91,33 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
     ]
 }
 
+
+class Goomba: MovableSprite, SKActionable, Spriteable {
+    var squashed = false
+    var myActions: [SKAction] {[
+        .sequence([
+            .ifTrue({ self.squashed == false }, {[
+                .setImage(.goomba1, 0.3),
+                .setImage(.goomba2, 0.3),
+            ]})
+        ]),
+        .sequence([
+            .killAction(self, 0),
+            .setImage(.goombaFlat, 0.3),
+            .run { _=self.die(nil, []) }
+        ])
+    ]}
+    
+    var actionSprite: SKNode = SKSpriteNode()
+    var specificActions: [When] = [
+        .moveLeftWhen(.always),
+        .xSpeed(1, everyFrame: 4),
+        .runSKAction([(0, .always)]),
+        .runSKAction([(1, .thisBumped(.up))]),
+    ]
+    
+    
+}
 
 class Inky: MovableSprite, Spriteable {
     var fireBallsActive = 0

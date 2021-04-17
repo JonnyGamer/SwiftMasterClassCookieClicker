@@ -48,6 +48,7 @@ enum UserAction {
     case onLedge
     case afterJumpingNTimes(Int)
     case onceOffScreen
+    //case whenOnScreen
     case died
     case afterKilledObjects(Int)
     

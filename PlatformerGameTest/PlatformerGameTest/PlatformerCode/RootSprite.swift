@@ -352,13 +352,10 @@ class MovableSprite: BasicSprite {
         
         // Still working on UP??
         if direction == .up {
-            if "\(self)".contains("C") {
-                print("YEH")
-            }
             position.y = hit.minY - frame.y
             fallingVelocity = 0
             stopY()
-            print(velocity)
+            //print(velocity)
             //runWhenBumpUp.run()
         }
         

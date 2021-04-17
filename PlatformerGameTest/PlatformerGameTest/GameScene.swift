@@ -17,6 +17,11 @@ extension Scene {
         if let s = this as? MovableSprite {
             movableSprites.insert(s)
             addChild(s.skNode)
+            if let q = this as? BasicSprite & SKActionable {
+                addChild(q.actionSprite)
+                q.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
+            }
+            
         } else if let s = this as? BasicSprite & SKActionable {
             actionableSprites.insert(s)
             addChild(s.skNode)
@@ -83,12 +88,15 @@ class Scene: MagicScene {
                 let numberOfRows = tileNode.numberOfRows
                 massiveHeight = numberOfRows
 
-                var tileToUse: BasicSprite.Type = GROUND.self
+                var tileToUse: BasicSprite.Type? = nil
                 switch tileName {
                 case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
                 case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
                 case "QuestionBlock": tileToUse = QuestionBox.self
                 case "BrickBlock": tileToUse = BrickBox.self
+                case "Anim": tileToUse = nil
+                    
+                case "None": continue
                 default: fatalError()
                 }
                 //tileNode.name
@@ -98,7 +106,18 @@ class Scene: MagicScene {
 
                         if let tile = tileNode.tileGroup(atColumn: x, row: y) {
                             if let tileName = tile.name {
-                                let g0 = build(tileToUse, pos: (x,y), image: tileName)
+                                
+                                if let tileToUse = tileToUse {
+                                    let g0 = build(tileToUse, pos: (x,y), image: tileName)
+                                } else {
+                                    var newTileToUse: BasicSprite.Type = Goomba.self
+                                    switch tileName {
+                                    case "Goomba": newTileToUse = Goomba.self
+                                    default: fatalError()
+                                    }
+                                    let g0 = build(newTileToUse, pos: (x,y), image: tileName)
+                                }
+                                
                                 //print("- Just Added", tileName)
                             }
 
@@ -111,6 +130,8 @@ class Scene: MagicScene {
         
         
         let player = build(Inky.self, pos: (3,2), player: true)
+        
+        let g0 = build(GROUND.self, pos: (-1,0), size: (1,massiveHeight*2))
         
         //let g0 = build(GROUND.self, pos: (0,-3), size: (69,2), image: "Ground")
         //let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))

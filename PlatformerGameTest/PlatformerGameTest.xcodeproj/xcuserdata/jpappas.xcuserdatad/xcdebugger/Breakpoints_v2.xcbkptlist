@@ -222,8 +222,8 @@
             filePath = "PlatformerGameTest/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "didFinishUpdate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -238,25 +238,9 @@
             filePath = "PlatformerGameTest/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "didFinishUpdate()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DE07AD87-8899-4DF2-BCB0-00F21F7ED7A4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
-            landmarkName = "stopMoving(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

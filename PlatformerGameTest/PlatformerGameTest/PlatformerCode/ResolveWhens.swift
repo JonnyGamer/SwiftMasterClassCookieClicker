@@ -146,7 +146,6 @@ extension BasicSprite {
         
        // case .somethingBumpedThis(let n):
             
-            
         case .onceOffScreen:
             guard let foo = (self as? MovableSprite) else { return }
             this.doThisWhenMovedOffScreen.append {

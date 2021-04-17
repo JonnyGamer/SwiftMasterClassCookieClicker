@@ -25,6 +25,9 @@ enum Images: String {
     case q1 = "QuestionBlock"
     case q2 = "QuestionBlock2"
     case q3 = "QuestionBlock3"
+    case goomba1 = "Goomba1"
+    case goomba2 = "Goomba2"
+    case goombaFlat = "GoombaFlat"
 }
 
 extension SKAction {
@@ -43,9 +46,18 @@ extension SKAction {
             me.actionSprite.removeAction(forKey: "\(to)")
         }
     }
+    static func killAction(_ me: (MovableSprite & SKActionable),_ to: Int) -> SKAction {
+        return .run {
+            me.skNode.removeAction(forKey: "\(to)")
+            me.actionSprite.removeAction(forKey: "\(to)")
+        }
+    }
     
-    static func setImage(_ to: Images) -> SKAction {
-        return .animate(with: [Cash.getTexture(to.rawValue)], timePerFrame: 0)
+    static func setImage(_ to: Images,_ num: Double = 0) -> SKAction {
+        return .sequence([
+            .animate(with: [Cash.getTexture(to.rawValue)], timePerFrame: 0),
+            .wait(forDuration: num),
+        ])
     }
 //    static func animate(_ using: [Images]) -> SKAction {
 //        return .moveBy(x: 0, y: 10, duration: 1)
