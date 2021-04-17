@@ -149,13 +149,7 @@ class BasicSprite: Hashable {
             } else if newValue.x != position.x {
                 previousPosition.x = position.x
             } else {
-                if "\(self)".contains("Inky") {
-                    print(position, newValue, velocity)
-                }
                 previousPosition = position
-            }
-            if "\(self)".contains("Inky") {
-                print(position, newValue, velocity)
             }
         }
         didSet{
@@ -185,17 +179,10 @@ class BasicSprite: Hashable {
     
     
     func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
-        if direction == .left || direction == .right {
-            print("a")
-        }
         
         //if !collisionOn.contains(direction) || !hit.collisionOn.contains(direction.reversed) { return }
         
         (self as? MovableSprite)?.stopMoving(hit, direction)
-        
-        if "\(self)".contains("Crash") {
-            print("nooo...")
-        }
         
 //        if direction == .up, !runWhenBumpUp.isEmpty {
 //            runWhenBumpUp.run(self)
@@ -223,7 +210,7 @@ class BasicSprite: Hashable {
     var canDieFrom: [Direction] = []
     var dead = false
     var deathID = Int.min
-    func die(_ direction: Direction?,_ id: [Int], killedBy: BasicSprite) -> Bool {
+    func die(_ direction: Direction? = nil,_ id: [Int] = [], killedBy: BasicSprite) -> Bool {
         if !id.isEmpty {
             if !id.contains(deathID) {
                 return false
@@ -381,7 +368,6 @@ class MovableSprite: BasicSprite {
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
             runWhenBumpRight.run(hit)
-            print()
         }
         
         if direction == .left {

@@ -69,21 +69,19 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         }),
         .when(.always, doThis: {
             if self.bumped { return }
+            self.bumped = true
             self.runAction(1)
         })
         
     ]}
     
     var myActions: [SKAction] {[
-        .ifTrue({ self.bumped == false }) {
-            [
-                .run { self.bumped = true },
-                .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
-                .killAction(self, 1),
-                .setImage(.deadBlock),
-                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
-            ]
-        },
+        .sequence([
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
+            .killAction(self, 1),
+            .setImage(.deadBlock),
+            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+        ]),
         .animation([
             (.q2, 0.1333),
             (.q3, 0.1333),
@@ -95,6 +93,9 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
 }
 
 class BrickBox: ActionSprite, SKActionable, Spriteable {
+    
+    
+    
     func whenActions() -> [Whens] {[
         .wasBumpedBy(.down, doThis: { $0.willStopMoving(self, .down) }),
         .wasBumpedBy(.left, doThis: { $0.willStopMoving(self, .left) }),
@@ -103,23 +104,29 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
             $0.willStopMoving(self, .up)
             
             guard let mario = $0 as? Inky else { return }
+            self.runAction(0, append: [
+                .run {
+                    
+                    let a = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
+                    a.bounceHeight = 8
+                    a.maxJumpSpeed = 3
+                    let b = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
+                    b.bounceHeight = 8
+                    b.maxJumpSpeed = 5
+                    let c = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
+                    c.reverseMovement = true
+                    c.bounceHeight = 8
+                    c.maxJumpSpeed = 3
+                    let d = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
+                    d.reverseMovement = true
+                    d.bounceHeight = 8
+                    d.maxJumpSpeed = 5
+                    
+                    self.die(nil, [], killedBy: mario)
+                    
+                }
+            ])
             
-            let a = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
-            a.bounceHeight = 8
-            a.maxJumpSpeed = 3
-            let b = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
-            b.bounceHeight = 8
-            b.maxJumpSpeed = 5
-            let c = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
-            c.reverseMovement = true
-            c.bounceHeight = 8
-            c.maxJumpSpeed = 3
-            let d = self.spawnObject(BrickCrash.self, frame: (8,8), location: (self.midX-4, self.midY-4), image: Images.brickCrash1.rawValue)
-            d.reverseMovement = true
-            d.bounceHeight = 8
-            d.maxJumpSpeed = 5
-            
-            self.die(nil, [], killedBy: mario)
         }),
     ]}
     
@@ -127,7 +134,6 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
     var myActions: [SKAction] = [
         .sequence([
             .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
-            .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
         ]),
     ]
 }
@@ -156,34 +162,78 @@ class BrickCrash: MovableSprite, SKActionable, Spriteable {
 }
 
 
-//class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
-//    var squashed = false
-//    var bounciness: Int = 5
-//    var myActions: [SKAction] {[
-//        .sequence([
-//            .ifTrue({ self.squashed == false }, {[
-//                .setImage(.goomba1, 0.15),
-//                .setImage(.goomba2, 0.15),
-//            ]})
-//        ]),
-//        .sequence([
-//            .ifTrue({ self.squashed == false }, {[
-//                .run { self.squashed = true },
-//                .run { self.xSpeed = 0 },
-//                .killAction(self, 0),
-//                .setImage(.goombaFlat, 0.3),
-//                .run { _=self.die(nil, []) }
-//            ]})
-//        ])
-//    ]}
-//
-//    var actionSprite: SKNode = SKSpriteNode()
-//    var specificActions: [When] = [
-//        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-//        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-//        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
-//        .stopObjectFromMoving(.up, when: .thisBumped(.up)),
-//
+class Goomba: MovableSprite, SKActionable, Spriteable {
+    
+    // Squash the Goomba!
+    func squash(_ mario: Inky) {
+        if !self.squashed {
+            self.squashed = true
+            self.xSpeed = 0
+            mario.jump()
+            self.runAction(1, append: [
+                .run { _=self.die(nil, [], killedBy: mario) }
+            ])
+        }
+    }
+    
+    func whenActions() -> [Whens] {[
+
+        // If Goomba Hits Something, reverse it's movement
+        .bumped(.left, doThis: { _ in
+            self.reverseMovement.toggle()
+        }),
+        .bumped(.right, doThis: { _ in
+            self.reverseMovement.toggle()
+        }),
+        
+        // If Goomba falls on Mario
+        .bumped(.down, doThis: {
+            if let mario = $0 as? Inky { _ = mario.die(nil, [], killedBy: self) }
+        }),
+        // If Mario uses Goomba like a ? Box
+        .wasBumpedBy(.up, doThis: {
+            if let mario = $0 as? Inky { _ = mario.die(killedBy: self) } else {
+                print("Pushed up :::)")
+            }
+        }),
+        // If Mario Falls on Goomba
+        .wasBumpedBy(.down, doThis: {
+            if let mario = $0 as? Inky {
+                self.squash(mario)
+            }
+        }),
+        
+        
+        // If Mario walks into Goomba, he dies
+        .wasBumpedBy(.left, doThis: {
+            if let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+        }),
+        .wasBumpedBy(.right, doThis: {
+            if let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+        }),
+        
+        // Goomba Falls
+        .when(.notOnGround, doThis: { self.fall() }),
+        
+        // Goomba always moves left
+        .when(.always, doThis: {
+            if self.squashed { return }
+            self.runAction(0)
+            self.move(.left)
+        }),
+        
+        // Goomba starts walking once on Screen
+        .when(.firstTimeOnScreen, doThis: {
+            self.xSpeed = 1
+        }),
+        
+        .setters([
+            .xSpeed(0, everyFrame: 2),
+            .gravity(-1, everyFrame: 2),
+            .minFallSpeed(-3),
+        ])
+        
+
 //        .moveLeftWhen(.always),
 //        .xSpeed(0, everyFrame: 2),
 //        .runSKAction([(0, .always)]),
@@ -201,11 +251,29 @@ class BrickCrash: MovableSprite, SKActionable, Spriteable {
 //        .gravity(-1, everyFrame: 2),
 //        .minFallSpeed(-3),
 //        .collisionOn(.all()),
-//    ]
-//
-//
-//}
-//
+    ]}
+    
+    var squashed = false
+    var bounciness: Int = 5
+    var myActions: [SKAction] {[
+        .sequence([
+            .ifTrue({ self.squashed == false }, {[
+                .setImage(.goomba1, 0.15),
+                .setImage(.goomba2, 0.15),
+            ]})
+        ]),
+        .sequence([
+            .killAction(self, 0),
+            .setImage(.goombaFlat, 0.3),
+        ])
+    ]}
+
+    var actionSprite: SKNode = SKSpriteNode()
+
+
+}
+
+
 class Inky: MovableSprite, Spriteable, SKActionable {
     var myActions: [SKAction] = [
         .setImage(.mario),

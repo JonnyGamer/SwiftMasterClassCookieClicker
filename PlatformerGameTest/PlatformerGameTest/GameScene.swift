@@ -109,7 +109,7 @@ class Scene: MagicScene {
                                 } else {
                                     var newTileToUse: BasicSprite.Type!// = Goomba.self
                                     switch tileName {
-                                    case "Goomba": continue;// newTileToUse = Goomba.self
+                                    case "Goomba": newTileToUse = Goomba.self
                                     default: fatalError()
                                     }
                                     let g0 = build(newTileToUse, pos: (x,y), image: tileName)
@@ -204,6 +204,8 @@ class Scene: MagicScene {
         for i in actionableSprites {
             if let j = i as? (ActionSprite & SKActionable), j.actionSprite.hasActions() {
                 i.setPosition((Int(j.actionSprite.frame.minX), Int(j.actionSprite.frame.minY)))
+            } else {
+                i.setPosition(i.position)
             }
         }
         
@@ -294,6 +296,12 @@ class Scene: MagicScene {
                 let iOnGround = i.onGround
                 
                 i.onGround = i.onGround.filter { j in
+                    
+                    // If ground is dead
+                    if j.dead {
+                        groundsRemoved.append(j)
+                        return !true
+                    }
                     
                     // Only stick on the highest ground.
                     if iOnGround.contains(where: { $0.maxY > j.maxY }) {

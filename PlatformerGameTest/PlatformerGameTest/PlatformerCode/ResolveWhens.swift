@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SpriteKit.SKAction
 
 extension BasicSprite {
     func add(_ this: Scene) {
@@ -29,16 +30,18 @@ extension BasicSprite {
             foo.skNode.removeAction(forKey: "\(id)")
         }
     }
-    func runAction(_ id: Int) {
+    func runAction(_ id: Int, append: [SKAction] = []) {
         if let foo = self as? (MovableSprite & SKActionable) {
+            let funAction = SKAction.sequence([foo.myActions[id]] + append)
             if foo.actionSprite.action(forKey: "\(id)") == nil {
-                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
-                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+                foo.actionSprite.run(funAction, withKey: "\(id)")
+                foo.skNode.run(funAction, withKey: "\(id)")
             }
         } else if let foo = self as? (ActionSprite & SKActionable) {
+            let funAction = SKAction.sequence([foo.myActions[id]] + append)
             if foo.actionSprite.action(forKey: "\(id)") == nil {
-                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
-                foo.skNode.run(foo.myActions[id], withKey: "\(id)")
+                foo.actionSprite.run(funAction, withKey: "\(id)")
+                foo.skNode.run(funAction, withKey: "\(id)")
             }
         }
     }

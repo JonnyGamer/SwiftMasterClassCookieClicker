@@ -72,7 +72,7 @@ extension Scene {
                 if j.velocity.dy == 0, i.velocity.dy == 0 {
                     if j.maxY == i.minY, j.onGround.isEmpty {
                         i.contactTest(.up, bumpedBy: j) // Hit two ? Blocks at once
-                    } else if j.minY == i.maxY {
+                    } else if j.minY == i.maxY, !j.onGround.isEmpty {
                         i.contactTest(.down, bumpedBy: j) // Walk onto another ground of the same Y position
                     }
                     
@@ -254,15 +254,11 @@ extension Scene {
             
             
             if true {// } i.maxX > j.minX, i.minX < j.maxX { // j.previousMaxX <= i.previousMinX, j.maxX >= i.minX {//}
-                print(j, j.velocity)
                 
                 
                 if i.velocity.dx == 0, let j = j as? MovableSprite {
                     // j -> |i|
-                    print("start", j.velocity.dx)
                     if j.previousMaxX > i.previousMinX {
-                        print(j.previousMaxX, i.previousMinX, i.minX)
-                        print("Ha nope")
                         break foo
                     }
                     
@@ -277,7 +273,6 @@ extension Scene {
                             }
                         }
                     }
-                    print("end", j.velocity.dx, j.maxX)
                     
 //                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX {
 //                        print(j.velocity)
