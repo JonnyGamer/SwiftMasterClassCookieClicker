@@ -146,6 +146,21 @@ extension BasicSprite {
         
        // case .somethingBumpedThis(let n):
             
+        case .firstTimeOnScreen:
+            guard let foo = (self as? MovableSprite) else { return }
+            this.doThisWhenMovedOnScreen.append {
+                if foo.onScreen { return }
+                let bounds = foo.skNode.frame
+                guard var sceneBounds = foo.skNode.scene?.frame else { return }
+                guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
+                sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
+
+                if bounds.intersects(sceneBounds) {
+                    foo.onScreen = true
+                    action()
+                }
+            }
+        
         case .onceOffScreen:
             guard let foo = (self as? MovableSprite) else { return }
             this.doThisWhenMovedOffScreen.append {

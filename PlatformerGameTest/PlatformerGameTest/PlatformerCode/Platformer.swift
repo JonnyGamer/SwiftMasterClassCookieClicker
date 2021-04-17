@@ -40,18 +40,17 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         .ifTrue({ self.bumped == false }) {
             [
                 .run { self.bumped = true },
-                .killAction(self, 1),
-                .setImage(.q1),
                 .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 4, duration: 0.1)),
-                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
+                .killAction(self, 1),
                 .setImage(.deadBlock),
+                .easeType(curve: .sine, easeType: .inOut, .moveBy(x: 0, y: -4, duration: 0.1)),
             ]
         },
         .sequence([
-            .setImage(.q2, 0.1),
-            .setImage(.q3, 0.1),
-            .setImage(.q2, 0.1),
-            .setImage(.q1, 0.3),
+            .setImage(.q2, 0.1333),
+            .setImage(.q3, 0.1333),
+            .setImage(.q2, 0.1333),
+            .setImage(.q1, 0.4),
         ])
         //.animate([.q1, .q2, .q3, .q2])
     ]}
@@ -98,8 +97,8 @@ class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
     var myActions: [SKAction] {[
         .sequence([
             .ifTrue({ self.squashed == false }, {[
-                .setImage(.goomba1, 0.3),
-                .setImage(.goomba2, 0.3),
+                .setImage(.goomba1, 0.15),
+                .setImage(.goomba2, 0.15),
             ]})
         ]),
         .sequence([
@@ -112,7 +111,7 @@ class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
     var actionSprite: SKNode = SKSpriteNode()
     var specificActions: [When] = [
         .moveLeftWhen(.always),
-        .xSpeed(1, everyFrame: 4),
+        .xSpeed(0, everyFrame: 2),
         .runSKAction([(0, .always)]),
         .runSKAction([(1, .thisBumped(.up))]), // Not working
         .bounceObjectWhen(.thisBumped(.up)),// Not working
@@ -121,6 +120,9 @@ class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
         .reverseDirection(.thisBumped(.right)),
         .killObject(.left, when: .thisBumped(.left), id: [0]),
         .killObject(.right, when: .thisBumped(.right), id: [0]),
+        .doThisWhen({ ($0 as? MovableSprite)?.xSpeed = 1 }, when: .firstTimeOnScreen),
+        .gravity(-1, everyFrame: 2),
+        .minFallSpeed(-3)
     ]
     
     

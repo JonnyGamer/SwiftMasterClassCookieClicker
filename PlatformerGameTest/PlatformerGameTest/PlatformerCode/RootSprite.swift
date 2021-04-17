@@ -197,6 +197,8 @@ class BasicSprite: Hashable {
         return true
     }
     
+    var onScreen = false
+    
 }
 
 class ActionSprite: BasicSprite {

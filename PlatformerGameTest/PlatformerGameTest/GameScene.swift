@@ -53,6 +53,7 @@ class Scene: MagicScene {
     var doThisWhenStanding: [() -> ()] = []
     var doThisWhenJumpButtonIsReleased: [() -> ()] = []
     var doThisWhenMovedOffScreen: [() -> ()] = []
+    var doThisWhenMovedOnScreen: [() -> ()] = []
     
     var players: [BasicSprite] = []
     var woah: SKNode!
@@ -216,6 +217,7 @@ class Scene: MagicScene {
     
     override func didFinishUpdate() {
         doThisWhenMovedOffScreen.run()
+        doThisWhenMovedOnScreen.run()
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
