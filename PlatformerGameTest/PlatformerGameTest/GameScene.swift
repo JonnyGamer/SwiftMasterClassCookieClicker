@@ -75,6 +75,14 @@ class Scene: MagicScene {
     var massiveHeight = 0
     
     override func begin() {
+        quadtree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
+        sprites.removeAll(); movableSprites.removeAll(); actionableSprites.removeAll(); players.removeAll()
+        doThisWhenJumpButtonIsPressed.removeAll()
+        doThisWhenLeftButtonIsPressed.removeAll()
+        doThisWhenRightButtonIsPressed.removeAll()
+        doThisWhenStanding.removeAll()
+        doThisWhenJumpButtonIsReleased.removeAll()
+        doThisWhenMovedOffScreen.removeAll()
         
         if let loadScene = SKScene.init(fileNamed: "1-1") {
             backgroundColor = loadScene.backgroundColor
@@ -182,6 +190,14 @@ class Scene: MagicScene {
         if event.keyCode == 123 { pressingLeft = false }
         if event.keyCode == 124 { pressingRight = false }
         if event.keyCode == 49 {
+            if (players[0] as? MovableSprite)?.dead == true {
+                removeAllActions()
+                removeAllChildren()
+                didMove(to: view!)
+                pressingUp = false
+                return
+            }
+            
             pressingUp = false
             doThisWhenJumpButtonIsReleased.run()
         }

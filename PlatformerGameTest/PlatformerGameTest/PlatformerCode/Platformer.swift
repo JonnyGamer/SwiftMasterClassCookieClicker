@@ -92,8 +92,9 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
 }
 
 
-class Goomba: MovableSprite, SKActionable, Spriteable {
+class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
     var squashed = false
+    var bounciness: Int = 5
     var myActions: [SKAction] {[
         .sequence([
             .ifTrue({ self.squashed == false }, {[
@@ -113,7 +114,13 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         .moveLeftWhen(.always),
         .xSpeed(1, everyFrame: 4),
         .runSKAction([(0, .always)]),
-        .runSKAction([(1, .thisBumped(.up))]),
+        .runSKAction([(1, .thisBumped(.up))]), // Not working
+        .bounceObjectWhen(.thisBumped(.up)),// Not working
+        .fallWhen(.notOnGround),
+        .reverseDirection(.thisBumped(.left)),
+        .reverseDirection(.thisBumped(.right)),
+        .killObject(.left, when: .thisBumped(.left), id: [0]),
+        .killObject(.right, when: .thisBumped(.right), id: [0]),
     ]
     
     
@@ -217,20 +224,23 @@ class FireBall: MovableSprite, Spriteable {
     ]
 }
 
-
-class Trampoline: BasicSprite, Spriteable {
-
-    var bounciness: Int = 0
-
-    var specificActions: [When] {[
-        .bounceObjectWhen(.thisBumped(.up)),
-
-        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
-        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
-        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
-    ]}
-
+protocol Trampoline {
+    var bounciness: Int { get set }
 }
+
+//class Trampoline: BasicSprite, Spriteable {
+//
+//    var bounciness: Int = 0
+//
+//    var specificActions: [When] {[
+//        .bounceObjectWhen(.thisBumped(.up)),
+//
+//        .stopObjectFromMoving(.down, when: .thisBumped(.down)),
+//        .stopObjectFromMoving(.left, when: .thisBumped(.left)),
+//        .stopObjectFromMoving(.right, when: .thisBumped(.right)),
+//    ]}
+//
+//}
 
 
 
