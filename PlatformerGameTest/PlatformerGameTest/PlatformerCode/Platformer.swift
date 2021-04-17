@@ -66,7 +66,13 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
         .wasBumpedBy(.up, doThis: {
             $0.willStopMoving(self, .up)
+            self.runAction(0)
         }),
+        .when(.always, doThis: {
+            if self.bumped { return }
+            self.runAction(1)
+        })
+        
     ]}
     
     var myActions: [SKAction] {[
