@@ -224,13 +224,14 @@ class Inky: MovableSprite, Spriteable, SKActionable {
         
         // When Killed, run the 'Dead Mario Animation'
         .killedBy({ _ in
-            self.spawnObject(DeadMario.self, frame: (16,16), location: self.position, image: Images.deadMario.rawValue)
+            self.spawnObject(DeadMario.self, frame: (16,16), location: (self.position.x, max(self.position.y, -16)) , image: Images.deadMario.rawValue)
         }),
         
         // Die when off screen
         .when(.offScreen, doThis: {
             if self.position.y < 0 {
                 _ = self.die(killedBy: self)
+                self.spawnObject(DeadMario.self, frame: (16,16), location: (self.position.x, -16) , image: Images.deadMario.rawValue)
             }
         }),
         

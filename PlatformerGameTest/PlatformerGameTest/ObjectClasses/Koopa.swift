@@ -81,6 +81,14 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
             self.spawnObject(DeadKoopa.self, frame: (16,32), location: self.position, image: Images.koopa1.rawValue)
         }),
         
+        // Goomba falls off the screen
+        .when(.offScreen, doThis: {
+            if self.maxY < 0 {
+                self.stomped = true
+                self.die(killedBy: self)
+            }
+        }),
+        
         .setters([
             .xSpeed(0, everyFrame: 2),
             .gravity(-1, everyFrame: 2),
@@ -190,6 +198,13 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
         .wasBumpedBy(.down, doThis: {
             if let mario = $0 as? Inky {
                 self.squash(mario)
+            }
+        }),
+        
+        // Goomba falls off the screen
+        .when(.offScreen, doThis: {
+            if self.maxY < 0 {
+                self.die(killedBy: self)
             }
         }),
         

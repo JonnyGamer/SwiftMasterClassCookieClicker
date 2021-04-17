@@ -196,6 +196,9 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
+        let d1 = Date.init().timeIntervalSince1970
+        let foo = DispatchQueue.init(label: "")
+        foo.async { [self] in
         
         let pressedRight = pressingRight// if pressingRight { doThisWhenRightButtonIsPressed.run() }
         let pressedLeft = pressingLeft// { doThisWhenLeftButtonIsPressed.run() }
@@ -267,23 +270,21 @@ class Scene: MagicScene {
             }
         }
         
-
         
-        
+        // Check all Moving Sprites for collisions.
         // Create a Quadtree for Moving Objects
-        let movableSpritesTree = QuadTree.init(quadtree.size)
-        for i in movableSprites {
+        let movableSpritesTree = QuadTree.init(self.quadtree.size)
+        for i in self.movableSprites {
             // Insert all Moving Sprites
             movableSpritesTree.insert(i)
         }
-        for i in actionableSprites {
+        for i in self.actionableSprites {
             // Insert all Action Sprites
             movableSpritesTree.insert(i)
         }
         
-        // Check all Moving Sprites for collisions.
-        for i in movableSprites {
-            checkForCollision(i, movableSpritesTree)
+        for i in self.movableSprites {
+            self.checkForCollision(i, movableSpritesTree)
         }
         
         // Stay on Higher Ground
@@ -350,6 +351,14 @@ class Scene: MagicScene {
                     i.standingOnLedge(n: nil)
                 }
             }
+        }
+        
+        
+        let d2 = Date.init().timeIntervalSince1970
+        //print(d2 - d1)
+        //if d2 - d1 > 0.01 {
+          //  print("HRMPH", d2 - d1)
+        //}
         }
         
     }

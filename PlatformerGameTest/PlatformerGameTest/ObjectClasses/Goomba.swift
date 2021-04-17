@@ -77,6 +77,13 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         .when(.firstTimeOnScreen, doThis: {
             self.xSpeed = 1
         }),
+        // Goomba falls off the screen
+        .when(.offScreen, doThis: {
+            if self.maxY < 0 {
+                self.squashed = true
+                self.die(killedBy: self)
+            }
+        }),
         
         .setters([
             .xSpeed(0, everyFrame: 2),
