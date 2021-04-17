@@ -89,7 +89,6 @@ class BasicSprite: Hashable {
             bumpedBy.runWhenBumpDown.run(self)
             wasBumpedFromDown.run(bumpedBy)
         } else if dir == .left {
-            print(self, dir, bumpedBy)
             bumpedBy.runWhenBumpLeft.run(self)
             wasBumpedFromLeft.run(bumpedBy)
         } else if dir == .right {

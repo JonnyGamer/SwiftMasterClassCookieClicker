@@ -24,6 +24,8 @@ class ViewController: NSViewController {
             
             // Present the scene
             view.presentScene(scene)
+            view.isAsynchronous = true
+            
             
             view.ignoresSiblingOrder = true
             view.preferredFramesPerSecond = 60

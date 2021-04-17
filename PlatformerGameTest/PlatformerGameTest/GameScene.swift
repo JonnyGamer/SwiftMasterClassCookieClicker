@@ -68,6 +68,7 @@ class Scene: MagicScene {
         return box
     }
     var massiveHeight = 0
+    var massiveWidth = 0
     
     override func begin() {
         Cash.scene = self
@@ -85,7 +86,8 @@ class Scene: MagicScene {
                 let numberOfColumns = tileNode.numberOfColumns
                 let numberOfRows = tileNode.numberOfRows
                 massiveHeight = numberOfRows
-
+                massiveWidth = numberOfColumns
+                
                 var tileToUse: BasicSprite.Type? = nil
                 switch tileName {
                 case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
@@ -131,6 +133,8 @@ class Scene: MagicScene {
         let player = build(Inky.self, pos: (3,2), player: true)
         
         let _ = build(GROUND.self, pos: (-1,0), size: (1,massiveHeight*2))
+        let _ = build(GROUND.self, pos: (massiveWidth,0), size: (1,massiveHeight*2))
+        
         
         //let g0 = build(GROUND.self, pos: (0,-3), size: (69,2), image: "Ground")
         //let g1 = build(GROUND.self, pos: (g0.maxX/u+2,0), size: (15,2))
@@ -190,7 +194,7 @@ class Scene: MagicScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Run Camera
-        magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.x), duration: 0.1))
+        magicCamera.run(.moveTo(x: max(frame.width/2, min(woah.position.x, (massiveWidth.cg*u.cg)-(frame.width/2))), duration: 0.1))
         magicCamera.run(.moveTo(y: max(frame.height/2, min(woah.position.y, (massiveHeight.cg*u.cg)-(frame.height/2))), duration: 0.1))
     }
     
