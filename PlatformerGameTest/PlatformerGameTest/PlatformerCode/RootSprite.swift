@@ -9,12 +9,10 @@ import Foundation
 import SpriteKit
 
 protocol Spriteable {
-    var specificActions: [When] { get }
-    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] { get set }
-    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] { get set }
-    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] { get set }
-    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] { get set }
+    //var specificActions: [When] { get }
+    func whenActions() -> [Whens]
 }
+
 protocol SKActionable {
     var skNode: SKNode! { get set }
     var myActions: [SKAction] { get }
@@ -45,6 +43,7 @@ struct Cash {
     }
 }
 
+
 class BasicSprite: Hashable {
     static func == (lhs: BasicSprite, rhs: BasicSprite) -> Bool {
         lhs === rhs
@@ -52,10 +51,46 @@ class BasicSprite: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine("\(self)")
     }
-    var annoyance: [() -> ()] = []
-    var doThisOnceDead: [() -> ()] = []
-    var doThisWhenKilledObject: [Int:[(BasicSprite) -> ()]] = [:]
+    
+    
+    // Every Frame do this
+    var everyFrame: [() -> ()] = []
+    
+    // Attached to buttons (Actually, only Non-Static objects can be connected to these)
+    var doThisWhenJumpButtonIsPressed: [() -> ()] = []
+    var doThisWhenLeftButtonIsPressed: [() -> ()] = []
+    var doThisWhenRightButtonIsPressed: [() -> ()] = []
+    var doThisWhenJumpButtonIsReleased: [() -> ()] = []
+    
+    // Killing Things
+    var doThisWhenKilledObject: [(BasicSprite) -> ()] = []
+    var doThisWhenKilledBy: [(BasicSprite) -> ()] = []
     var killedObjects = 0
+    var invincible = false
+    
+    // Was bumped by
+    var wasBumpedFromUp: [(MovableSprite) -> ()] = []
+    var wasBumpedFromDown: [((MovableSprite)) -> ()] = []
+    var wasBumpedFromLeft: [(MovableSprite) -> ()] = []
+    var wasBumpedFromRight: [(MovableSprite) -> ()] = []
+    
+    func contactTest(_ dir: Direction, bumpedBy: MovableSprite) {
+        //print(self, dir, bumpedBy)
+        if dir == .up {
+            bumpedBy.runWhenBumpUp.run(self)
+            wasBumpedFromUp.run(bumpedBy)
+        } else if dir == .down {
+            bumpedBy.runWhenBumpDown.run(self)
+            wasBumpedFromDown.run(bumpedBy)
+        } else if dir == .left {
+            bumpedBy.runWhenBumpLeft.run(self)
+            wasBumpedFromLeft.run(bumpedBy)
+        } else if dir == .right {
+            bumpedBy.runWhenBumpRight.run(self)
+            wasBumpedFromRight.run(bumpedBy)
+        }
+    }
+    
     
     var creator: BasicSprite?
     
@@ -134,38 +169,51 @@ class BasicSprite: Hashable {
     
     
     
-    var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromBottom: [((BasicSprite & Spriteable)) -> ()] = []
-    var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] = []
-    var doThisWhenNotOnGround: [() -> ()] = []
+
+    var contactOn: [Direction] = .all()
+    var wallOn: [Direction] = []
     
-    var runWhenBumpDown: [()->()] = []
-    var runWhenBumpLeft: [()->()] = []
-    var runWhenBumpRight: [()->()] = []
-    var runWhenBumpUp: [()->()] = []
     
-    var collisionOn: [Direction] = []
     func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
-        if !collisionOn.contains(direction) { return }
+        if direction == .left || direction == .right {
+            print("a")
+        }
+        
+        //if !collisionOn.contains(direction) || !hit.collisionOn.contains(direction.reversed) { return }
         
         (self as? MovableSprite)?.stopMoving(hit, direction)
         
-        if direction == .up {
-            runWhenBumpUp.run()
-        } else if direction == .down {
-            runWhenBumpDown.run()
-        } else if direction == .right {
-            runWhenBumpRight.run()
-        } else if direction == .left {
-            runWhenBumpLeft.run()
+        if "\(self)".contains("Crash") {
+            print("nooo...")
         }
+        
+//        if direction == .up, !runWhenBumpUp.isEmpty {
+//            runWhenBumpUp.run(self)
+//            if hit.collisionOn.contains(.down), !hit.runWhenBumpDown.isEmpty {
+//                hit.runWhenBumpDown.run(self) // Hit a ? Block??? (Guess: Double check)
+//            }
+//        } else if direction == .down, !runWhenBumpDown.isEmpty {
+//            runWhenBumpDown.run(self)
+//            if hit.collisionOn.contains(.up), !hit.runWhenBumpUp.isEmpty {
+//                hit.runWhenBumpUp.run(self) // STOMP ON GOOMBA :)
+//            }
+//        } else if direction == .right, !runWhenBumpRight.isEmpty {
+//            runWhenBumpRight.run(self)
+//            if hit.collisionOn.contains(.left), !hit.runWhenBumpLeft.isEmpty {
+//                hit.runWhenBumpLeft.run(self)
+//            }
+//        } else if direction == .left, !runWhenBumpLeft.isEmpty {
+//            runWhenBumpLeft.run(self)
+//            if hit.collisionOn.contains(.right), !hit.runWhenBumpRight.isEmpty {
+//                hit.runWhenBumpRight.run(self)
+//            }
+//        }
     }
     
     var canDieFrom: [Direction] = []
     var dead = false
     var deathID = Int.min
-    func die(_ direction: Direction?,_ id: [Int]) -> Bool {
+    func die(_ direction: Direction?,_ id: [Int], killedBy: BasicSprite) -> Bool {
         if !id.isEmpty {
             if !id.contains(deathID) {
                 return false
@@ -181,7 +229,8 @@ class BasicSprite: Hashable {
         }
         
         if !dead {
-            doThisOnceDead.run()
+            doThisWhenKilledBy.run(killedBy)
+            killedBy.doThisWhenKilledObject.run(self)
         }
         dead = true
         
@@ -189,29 +238,38 @@ class BasicSprite: Hashable {
             s.sprites.remove(self)
             s.movableSprites.remove(self)
             s.actionableSprites.remove(self)
-            a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
+            a.skNode.removeFromParent();
+            //a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         } else if let a = self as? MovableSprite, let s = a.skNode.scene as? Scene {
             s.sprites.remove(self)
             s.movableSprites.remove(self)
             s.actionableSprites.remove(self)
-            a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
+            a.skNode.removeFromParent()
+            //a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         }
         
         creator = nil
         return true
     }
     
-    var onScreen = false
+    
     
 }
 
 class ActionSprite: BasicSprite {
     var skNode: SKNode!
+    var onScreen = false
 }
 
 class MovableSprite: BasicSprite {
     
     var skNode: SKNode!
+
+    var onScreen = false
+    var runWhenBumpDown: [(BasicSprite)->()] = []
+    var runWhenBumpLeft: [(BasicSprite)->()] = []
+    var runWhenBumpRight: [(BasicSprite)->()] = []
+    var runWhenBumpUp: [(BasicSprite)->()] = []
     
     
     func run(_ this: SKAction) {
@@ -247,7 +305,7 @@ class MovableSprite: BasicSprite {
         }
         if onGround.isEmpty {
             fallingVelocity = height ?? bounceHeight
-            doThisWhenNotOnGround.run()
+            //doThisWhenNotOnGround.run(self)
             //fall()
         }
     }
@@ -275,14 +333,14 @@ class MovableSprite: BasicSprite {
     }
     
     var frameCount = 0
-    var everyFrame = 1
+    var everyFrameR = 1
     var xSpeed = 2
     var reverseMovement = false
     func move(_ direction: Direction) {
         if dead { return }
         
         standing = false
-        if frameCount % everyFrame == 0 {
+        if frameCount % everyFrameR == 0 {
             if direction == .left {
                 position.x -= xSpeed * (reverseMovement ? -1 : 1)
                 skNode.xScale = -1
@@ -306,12 +364,12 @@ class MovableSprite: BasicSprite {
         }
     }
     
-    func pushDirection(_ hit: BasicSprite,_ direction: Direction) {
+    func pushDirection(_ hit: MovableSprite,_ direction: Direction) {
         if direction == .right {
             hit.position.x = maxX
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
-            runWhenBumpRight.run()
+            runWhenBumpRight.run(hit)
             print()
         }
         
@@ -319,14 +377,14 @@ class MovableSprite: BasicSprite {
             hit.position.x = minX - hit.frame.x
             hit.position.x -= velocity.dx
             hit.position.x += velocity.dx
-            runWhenBumpLeft.run()
+            runWhenBumpLeft.run(hit)
         }
         
         if direction == .down {
-            runWhenBumpDown.run()
+            runWhenBumpDown.run(hit)
         }
         if direction == .up {
-            runWhenBumpLeft.run()
+            runWhenBumpLeft.run(hit)
         }
         
 //        if direction == .right || direction == .left {
@@ -363,7 +421,7 @@ class MovableSprite: BasicSprite {
         // Still working on UP??
         if direction == .up {
             position.y = hit.minY - frame.y
-            fallingVelocity = 0
+            fallingVelocity = -1
             stopY()
             //print(velocity)
             //runWhenBumpUp.run()

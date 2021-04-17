@@ -47,13 +47,7 @@ class MagicScene: SKScene {
 class Scene: MagicScene {
     var magicCamera: SKCameraNode = .init()
     
-    var doThisWhenJumpButtonIsPressed: [() -> ()] = []
-    var doThisWhenLeftButtonIsPressed: [() -> ()] = []
-    var doThisWhenRightButtonIsPressed: [() -> ()] = []
-    var doThisWhenStanding: [() -> ()] = []
-    var doThisWhenJumpButtonIsReleased: [() -> ()] = []
-    var doThisWhenMovedOffScreen: [() -> ()] = []
-    var doThisWhenMovedOnScreen: [() -> ()] = []
+
     
     var players: [BasicSprite] = []
     var woah: SKNode!
@@ -78,12 +72,6 @@ class Scene: MagicScene {
     override func begin() {
         quadtree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
         sprites.removeAll(); movableSprites.removeAll(); actionableSprites.removeAll(); players.removeAll()
-        doThisWhenJumpButtonIsPressed.removeAll()
-        doThisWhenLeftButtonIsPressed.removeAll()
-        doThisWhenRightButtonIsPressed.removeAll()
-        doThisWhenStanding.removeAll()
-        doThisWhenJumpButtonIsReleased.removeAll()
-        doThisWhenMovedOffScreen.removeAll()
         
         if let loadScene = SKScene.init(fileNamed: "1-1") {
             backgroundColor = loadScene.backgroundColor
@@ -102,7 +90,7 @@ class Scene: MagicScene {
                 case "bg": tileNode.removeFromParent(); addChild(tileNode); continue
                 case "GROUND": tileToUse = GROUND.self; tileNode.removeFromParent(); addChild(tileNode)
                 case "QuestionBlock": tileToUse = QuestionBox.self
-                case "BrickBlock": tileToUse = BrickBox.self
+                case "BrickBlock": continue; //tileToUse = BrickBox.self
                 case "Anim": tileToUse = nil
                     
                 case "None": continue
@@ -119,9 +107,9 @@ class Scene: MagicScene {
                                 if let tileToUse = tileToUse {
                                     let g0 = build(tileToUse, pos: (x,y), image: tileName)
                                 } else {
-                                    var newTileToUse: BasicSprite.Type = Goomba.self
+                                    var newTileToUse: BasicSprite.Type!// = Goomba.self
                                     switch tileName {
-                                    case "Goomba": newTileToUse = Goomba.self
+                                    case "Goomba": continue;// newTileToUse = Goomba.self
                                     default: fatalError()
                                     }
                                     let g0 = build(newTileToUse, pos: (x,y), image: tileName)
@@ -163,18 +151,11 @@ class Scene: MagicScene {
         addChild(SKSpriteNode.init(color: .gray, size: CGSize.init(width: 10, height: 10)))
         
         camera = magicCamera
-        magicCamera.position.y += scene!.frame.height/2
+        magicCamera.position.y = scene!.frame.height/2
         magicCamera.position.x = woah.position.x
         addChild(magicCamera)
     }
     
-    func buttonPressed(_ button: Button) {
-        switch button {
-        case .jump: doThisWhenJumpButtonIsPressed.run()// .forEach { $0() }//  charactersThatJumpWhenJumpButtonIsPressed.forEach { $0.jump() }
-        case .left: doThisWhenLeftButtonIsPressed.run()
-        case .right: doThisWhenRightButtonIsPressed.run()
-        }
-    }
     
     var pressingUp: Bool = false
     var pressingLeft: Bool = false
@@ -182,33 +163,30 @@ class Scene: MagicScene {
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 123, !pressingLeft { pressingLeft = true }
         if event.keyCode == 124, !pressingRight { pressingRight = true }
-        if event.keyCode == 49, !pressingUp {
+        if event.keyCode == 49 {
             pressingUp = true
-            doThisWhenJumpButtonIsPressed.run()
         }
     }
+    var releasingUp: Bool = false
     override func keyUp(with event: NSEvent) {
         if event.keyCode == 123 { pressingLeft = false }
         if event.keyCode == 124 { pressingRight = false }
         if event.keyCode == 49 {
+            releasingUp = true
             if (players[0] as? MovableSprite)?.dead == true {
+                releasingUp = false
                 removeAllActions()
                 removeAllChildren()
                 didMove(to: view!)
-                pressingUp = false
                 return
             }
             
-            pressingUp = false
-            doThisWhenJumpButtonIsReleased.run()
+            //pressingUp = false
+            //doThisWhenJumpButtonIsReleased.run()
         }
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if pressingRight { doThisWhenRightButtonIsPressed.run() }
-        if pressingLeft { doThisWhenLeftButtonIsPressed.run() }
-        if !pressingLeft, !pressingRight { doThisWhenStanding.run() }
-        
         // Run Camera
         magicCamera.run(.moveTo(x: max(frame.width/2, woah.position.x), duration: 0.1))
         magicCamera.run(.moveTo(y: max(frame.height/2, min(woah.position.y, (massiveHeight.cg*u.cg)-(frame.height/2))), duration: 0.1))
@@ -216,8 +194,11 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
-        doThisWhenMovedOffScreen.run()
-        doThisWhenMovedOnScreen.run()
+        
+        let pressedRight = pressingRight// if pressingRight { doThisWhenRightButtonIsPressed.run() }
+        let pressedLeft = pressingLeft// { doThisWhenLeftButtonIsPressed.run() }
+        let pressedUp = pressingUp; pressingUp = false
+        let releasedUp = releasingUp; releasingUp = false
         
         // Run SKActions on Actionable Sprites (Must be inside this didFinishUpdate func)
         for i in actionableSprites {
@@ -229,7 +210,17 @@ class Scene: MagicScene {
 
         // Run any `.always` actions
         for i in movableSprites.union(actionableSprites) {
-            i.annoyance.run()
+            i.everyFrame.run()
+            if pressedRight { i.doThisWhenRightButtonIsPressed.run() }
+            if pressedLeft { i.doThisWhenLeftButtonIsPressed.run() }
+            if pressedUp {
+                if i is Inky {
+                    i.doThisWhenJumpButtonIsPressed.run()
+                } else {
+                    i.doThisWhenJumpButtonIsPressed.run()
+                }
+            }
+            if releasedUp { i.doThisWhenJumpButtonIsReleased.run() }
             
             // Carry things. (Soon: Make this generic enum code as well.)
             // Move with Ground X
@@ -288,9 +279,9 @@ class Scene: MagicScene {
             if let i = i as? MovableSprite {
                 
                 // If not on groud, fall
-                if i.onGround.isEmpty {
-                    i.doThisWhenNotOnGround.run()
-                }
+//                if i.onGround.isEmpty {
+//                    i.doThisWhenNotOnGround.run(i)
+//                }
                 
                 var groundsRemoved: [BasicSprite] = []
                 let iOnGround = i.onGround

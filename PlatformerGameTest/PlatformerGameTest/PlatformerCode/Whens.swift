@@ -6,6 +6,41 @@
 //
 
 import Foundation
+import SpriteKit
+
+enum Whens {
+    case setters([Setters])
+    case whenIfTrue(() -> Bool, NewAction, doThis: () -> ())
+    case when(NewAction, doThis: () -> ())
+    case runSKAction(() -> Bool, when: NewAction, () -> SKAction)
+    
+    case bumped(Direction, doThis: (BasicSprite) -> ())
+    case wasBumpedBy(Direction, doThis: (MovableSprite) -> ())
+    
+    case killed((BasicSprite) -> ())
+    case killedBy((BasicSprite) -> ())
+}
+enum NewAction {
+    case always, onceEveryNFrames(Int)
+    case onScreen, firstTimeOnScreen, offScreen, farOffScreen, somewhatOffScreen
+    case pressedButton(Button), releasedButton(Button)
+    case falling, jumpingUp, standing, moving(Direction), onLedge, onGround, notOnGround, afterJumpingNTimes(Int)
+    case playerIsLeftOfSelf, playerIsRightOfSelf, playerHasSameXPositionAsSelf
+}
+enum Setters {
+    case contactDirections([Direction])
+    case xSpeed(Int, everyFrame: Int)
+    //case killObject(Direction, when: UserAction, id: [Int])
+    //case canDieFrom([Direction])
+    case jumpHeight(triangleOf: Int)
+    case maxJumpSpeed(Int)
+    case minFallSpeed(Int)
+    case gravity(Int, everyFrame: Int)
+    case maxJump(Int)
+    
+    case wallDirections([Direction])
+}
+
 
 enum When {
     case reverseDirection(UserAction)
@@ -70,6 +105,7 @@ enum Button {
 }
 enum Direction {
     case up, down, left, right
+    var reversed: Direction { return [.up:.down,.down:.up,.left:.right,.right:.left][self]! }
 }
 extension Array where Element == Direction { static func all() -> Self { return [.up, .down, .left, .right] } }
 

@@ -68,17 +68,14 @@ extension Scene {
                 
                 if j.velocity.dy == 0, i.velocity.dy == 0 {
                     if j.maxY == i.minY {
-                        print("ok")
-                        j.bumpedFromBottom.run(i)
+                        i.contactTest(.up, bumpedBy: j) // Hit two ? Blocks at once
                         break
                     }
-                }
-                
-                if j.velocity.dy == 0, i.velocity.dy >= 0 {
+                } else if j.velocity.dy == 0, i.velocity.dy >= 0 {
                     if ((i.previousPosition.y+i.frame.y)...i.maxY).contains(j.minY) { // Fixed (previousMaxY)
                         if j.previousMaxX == i.minX { break foo } //
                         if j.previousMinX == i.maxX { break foo } //
-                        i.bumpedFromBottom.run(j)
+                        i.contactTest(.down, bumpedBy: j)
                     }
                     
                     
@@ -87,19 +84,14 @@ extension Scene {
                     if (j.minY...(j.previousPosition.y+j.frame.y)).contains(i.maxY) {
                         if j.previousMaxX == i.minX { break foo } //
                         if j.previousMinX == i.maxX { break foo } //
-                        
-                        i.bumpedFromBottom.run(j)
+                        i.contactTest(.down, bumpedBy: j)
                     }
                 
                 } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
                     if (j.previousPosition.y...j.maxY).contains(i.minY) {
                         if j.previousMaxX == i.minX { break foo } //
                         if j.previousMinX == i.maxX { break foo } //
-                        
-                        if j.collisionOn.contains(.up), i.collisionOn.contains(.down) {
-                            i.bumpedFromTop.run(j)
-                            //j.bumpedFromBottom.run(i) // The ? Box getting bumped
-                        }
+                        i.contactTest(.up, bumpedBy: j)
                     }
                     
                 // Both are moving downwards
@@ -107,7 +99,7 @@ extension Scene {
                     if i.previousPosition.y < j.previousPosition.y {
                         if (i.position.y...i.previousPosition.y+i.frame.y).overlaps(j.position.y...j.previousPosition.y+i.frame.y) {
                             if j.velocity.dy < i.velocity.dy {
-                                i.bumpedFromBottom.run(j)
+                                i.contactTest(.down, bumpedBy: j)
                             }
                         }
                     } else if i.previousPosition.y > j.previousPosition.y {
@@ -119,7 +111,7 @@ extension Scene {
                     // If i was lower than j.
                     if i.previousPosition.y < j.previousPosition.y {
                         if i.maxY > j.minY {
-                            i.bumpedFromBottom.run(j)
+                            i.contactTest(.down, bumpedBy: j)
                         }
                     }
                 }
@@ -208,9 +200,9 @@ extension Scene {
         
         if let j = j as? MovableSprite {
             if dir == .left {
-                i.bumpedFromLeft.run(j)
+                //i.bumpedFromLeft.run(j)
             } else if dir == .right {
-                i.bumpedFromRight.run(j)
+                //i.bumpedFromRight.run(j)
             }
             if i.velocity.dx == 0 {
                 return (j, 0)
@@ -257,15 +249,18 @@ extension Scene {
             
 
             
-            if i.maxX > j.minX, i.minX < j.maxX {
+            if  i.maxX > j.minX, i.minX < j.maxX { // j.previousMaxX <= i.previousMinX, j.maxX >= i.minX {//}
+                print(j, j.velocity)
                 
                 
                 if i.velocity.dx == 0, let j = j as? MovableSprite {
                     // j -> |i|
-                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX { break foo }
-                    i.bumpedFromRight.run(j)
+                    if j.previousPosition.x - j.velocity.dx + j.frame.x > i.minX {
+                        break foo
+                    }
+                    //i.bumpedFromRight.run(j)
                     if let i = i as? MovableSprite {
-                        j.bumpedFromLeft.run(i) // Do I need this?
+                        //j.bumpedFromLeft.run(i) // Do I need this?
                         
                         if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                             j.stopMoving(i, .right)
@@ -276,9 +271,9 @@ extension Scene {
                     if j.velocity.dx == 0 {
                         // |j| <- i
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
-                        j.bumpedFromLeft.run(i)
+                        //j.bumpedFromLeft.run(i)
                         if let j = j as? MovableSprite {
-                            i.bumpedFromRight.run(j) // Do I need this?
+                            //i.bumpedFromRight.run(j) // Do I need this?
                             if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                 i.stopMoving(j, .left)
                             }
@@ -294,8 +289,8 @@ extension Scene {
                                     // do nothing SAME OLD thing as the one below
                                     
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
-                                    j.bumpedFromLeft.run(i)
-                                    i.bumpedFromRight.run(j)
+                                    //j.bumpedFromLeft.run(i)
+                                    //i.bumpedFromRight.run(j)
                                     if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
                                     }
@@ -304,8 +299,8 @@ extension Scene {
                                     
                                     // <- j <-<- i
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
-                                    j.bumpedFromLeft.run(i)
-                                    i.bumpedFromRight.run(j)
+                                    //j.bumpedFromLeft.run(i)
+                                    //i.bumpedFromRight.run(j)
                                     
                                     if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                         i.stopMoving(j, .left)
@@ -317,16 +312,16 @@ extension Scene {
                                 if j.velocity.dx == -i.velocity.dx {
                                     // Unfinished
                                     // j -> <- i
-                                    j.bumpedFromLeft.run(i)
-                                    i.bumpedFromRight.run(j)
+                                    //j.bumpedFromLeft.run(i)
+                                    //i.bumpedFromRight.run(j)
                                     
                                     i.position.x = i.previousPosition.x // Do Noy Delete these yet.
                                     j.position.x = j.previousPosition.x
                                     //i.stopMoving(j, .left)
                                     //j.stopMoving(i, .right)
                                     
-                                    i.runWhenBumpRight.run()
-                                    j.runWhenBumpLeft.run()
+                                    //i.runWhenBumpRight.run()
+                                    //j.runWhenBumpLeft.run()
                                     
                                 } else {
                                     
@@ -335,16 +330,16 @@ extension Scene {
                                     if j.velocity.dx > -i.velocity.dx {
                                         
                                         // j ->-> <- |i|
-                                        i.bumpedFromRight.run(j)
-                                        j.bumpedFromLeft.run(i)
+                                        //i.bumpedFromRight.run(j)
+                                        //j.bumpedFromLeft.run(i)
                                         if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                             j.stopMoving(i, .right)
                                         }
                                         
                                     } else {
                                         // j -> <-<- i
-                                        j.bumpedFromLeft.run(i)
-                                        i.bumpedFromRight.run(j)
+                                        //j.bumpedFromLeft.run(i)
+                                        //i.bumpedFromRight.run(j)
                                         if let _ = recursiveLeftPush(j, velX: j.velocity.dx, sprites: sprites) {
                                             i.stopMoving(j, .left)
                                         }
@@ -361,8 +356,8 @@ extension Scene {
                             // j ->-> i ->
                             if j.velocity.dx > 0 {
                                 if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
-                                i.bumpedFromRight.run(j)
-                                j.bumpedFromLeft.run(i)
+                                //i.bumpedFromRight.run(j)
+                                //j.bumpedFromLeft.run(i)
                                 if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {
                                     j.stopMoving(i, .right)
                                 }
