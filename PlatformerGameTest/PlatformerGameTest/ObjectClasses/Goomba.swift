@@ -13,6 +13,7 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
     // Squash the Goomba!
     func squash(_ mario: Inky) {
         if !self.squashed {
+            self.run(.playSoundFileNamed("smb_stomp", waitForCompletion: false))
             self.squashed = true
             self.xSpeed = 0
             mario.jump(mario.maxJumpSpeed)

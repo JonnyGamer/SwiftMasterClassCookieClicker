@@ -282,14 +282,14 @@ class MovableSprite: BasicSprite {
         skNode.run(this)
     }
     
-    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
-        let wow = this.init(box: frame)
-        wow.startPosition(location)
-        (wow as? MovableSprite)?.reverseMovement = reverseMovement
-        wow.add((skNode.scene as? Scene)!)
-        wow.creator = self
-        (skNode.scene as? Scene)?.add(wow)
-    }
+//    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
+//        let wow = this.init(box: frame)
+//        wow.startPosition(location)
+//        (wow as? MovableSprite)?.reverseMovement = reverseMovement
+//        wow.add((skNode.scene as? Scene)!)
+//        wow.creator = self
+//        (skNode.scene as? Scene)?.add(wow)
+//    }
     
     var isPlayer: Bool { return false }
     
@@ -300,10 +300,12 @@ class MovableSprite: BasicSprite {
     var bounceHeight = 8
     var doThisAfterNJumps: [Int:[() -> ()]] = [:]
     
-    func jump() { jump(nil) }
-    func jump(_ height: Int?) {
-        if dead { return }
-        if jumps >= maxJumps { return }
+    @discardableResult
+    func jump() -> Bool { jump(nil) }
+    @discardableResult
+    func jump(_ height: Int?) -> Bool {
+        if dead { return false }
+        if jumps >= maxJumps { return false }
         jumps += 1; totalJumps += 1; doThisAfterNJumps[totalJumps]?.run()
         
         if !onGround.isEmpty {
@@ -313,7 +315,9 @@ class MovableSprite: BasicSprite {
             fallingVelocity = height ?? bounceHeight
             doThisWhenNotOnGround.run()
             //fall()
+            return true
         }
+        return false
     }
     func stopMovingUp() {
         if movingUp, fallingVelocity > maxJumpSpeed {

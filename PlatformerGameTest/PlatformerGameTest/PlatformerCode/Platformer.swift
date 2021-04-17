@@ -101,6 +101,7 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
         .wasBumpedBy(.right, doThis: { $0.willStopMoving(self, .right) }),
         .wasBumpedBy(.up, doThis: {
             $0.willStopMoving(self, .up)
+            self.skNode.run(.playSoundFileNamed("break", waitForCompletion: false))
             
             guard let mario = $0 as? Inky else { return }
             self.runAction(0, append: [
@@ -173,6 +174,8 @@ class DeadMario: MovableSprite, Spriteable, SKActionable {
                     self.die(killedBy: self)
                 }
             ])
+            self.run(.playSoundFileNamed("death.wav", waitForCompletion: false))
+            
         }),
         .setters([
             .contactDirections([])
@@ -207,7 +210,11 @@ class Inky: MovableSprite, Spriteable, SKActionable {
         // Reset Jumps
         .bumped(.down, doThis: { _ in self.jumps = 0 }),
         // Jump Button
-        .when(.pressedButton(.jump), doThis: { self.jump() }),
+        .when(.pressedButton(.jump), doThis: {
+            if self.jump() {
+                self.run(.playSoundFileNamed("smb_jump", waitForCompletion: false))
+            }
+        }),
         // Fall when not on ground
         .when(.notOnGround, doThis: { self.fall() }),
         // Jump Heights

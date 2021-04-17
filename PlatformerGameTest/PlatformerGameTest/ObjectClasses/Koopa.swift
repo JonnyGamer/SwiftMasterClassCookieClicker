@@ -46,6 +46,7 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
         // If Mario Falls on Koopa
         .wasBumpedBy(.down, doThis: {
             if let mario = $0 as? Inky {
+                self.run(.playSoundFileNamed("smb_stomp", waitForCompletion: false))
                 self.squash(mario)
             }
         }),
@@ -71,13 +72,16 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
         
         // Koopa starts walking once on Screen
         .when(.firstTimeOnScreen, doThis: {
-            self.doubleMyHeight()
+            if self.frame.y == 16 { self.doubleMyHeight() }
+            //self.doubleMyHeight()
             self.skNode.xScale *= -1
             self.xSpeed = 1
         }),
         
         .killedBy({ _ in
-            if self.stomped { return }
+            if self.stomped {
+                return
+            }
             self.spawnObject(DeadKoopa.self, frame: (16,32), location: self.position, image: Images.koopa1.rawValue)
         }),
         
@@ -148,8 +152,10 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
     // Koopa Smashes into something
     func smash(_ this: BasicSprite) {
         if self.moving, let mario = this as? Inky {
+            self.run(.playSoundFileNamed("smb_kick", waitForCompletion: false))
             _ = mario.die(killedBy: self)
         } else if let foo = this as? MovableSprite {
+            self.run(.playSoundFileNamed("smb_kick", waitForCompletion: false))
             _ = foo.die(killedBy: self)
         }
     }
@@ -158,6 +164,7 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
     func squash(_ mario: Inky) {
         self.moving.toggle()
         if self.moving {
+            self.run(.playSoundFileNamed("smb_kick", waitForCompletion: false))
             if mario.midX < self.midX {
                 self.movementDirection = .right
             } else {
@@ -201,17 +208,16 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
             }
         }),
         
-        // Goomba falls off the screen
+        // When Koopa Shell moves off screen, get rid of it
         .when(.offScreen, doThis: {
-            if self.maxY < 0 {
-                self.die(killedBy: self)
-            }
+            self.die(killedBy: self)
         }),
         
         
         // If Mario walks into Koopa Shell, he kicks it.
         .wasBumpedBy(.left, doThis: {
             if !self.moving, let mario = $0 as? Inky {
+                self.run(.playSoundFileNamed("smb_kick", waitForCompletion: false))
                 self.moving = true
                 mario.willStopMoving(self, .left)
                 self.movementDirection = .left
@@ -219,6 +225,7 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
         }),
         .wasBumpedBy(.right, doThis: {
             if !self.moving, let mario = $0 as? Inky {
+                self.run(.playSoundFileNamed("smb_kick", waitForCompletion: false))
                 self.moving = true
                 mario.willStopMoving(self, .right)
                 self.movementDirection = .right
@@ -232,18 +239,31 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
         
         // Goomba always moves left
         .when(.always, doThis: {
-            if !self.moving { return }
+            if !self.moving {
+                self.runAction(0, append: [
+                    .run {
+                        print("OK")
+                        self.spawnObject(Koopa.self, frame: (16,32), location: self.position, image: Images.koopa1.rawValue)
+                        self.die(killedBy: self)
+                    }
+                ])
+                return
+            } else {
+                self.killAction(0)
+                self.run(.setImage(.shell))
+            }
             //self.runAction(0)
+            self.xSpeed = 10
             self.move(self.movementDirection)
         }),
         
         // Goomba starts walking once on Screen
         .when(.firstTimeOnScreen, doThis: {
-            
+            //
         }),
         
         .setters([
-            .xSpeed(10, everyFrame: 2),
+            .xSpeed(0, everyFrame: 2),
             .gravity(-1, everyFrame: 2),
             .minFallSpeed(-3),
         ])
@@ -253,6 +273,18 @@ class KoopaShell: MovableSprite, SKActionable, Spriteable {
     var movementDirection: Direction = .left
     var bounciness: Int = 5
     var myActions: [SKAction] {[
+        .sequence([
+            .wait(forDuration: 5),
+            .setImage(.climbingOutOfShell, 0.5),
+            .setImage(.shell, 0.5),
+            .setImage(.climbingOutOfShell, 0.5),
+            .setImage(.shell, 0.5),
+            .setImage(.climbingOutOfShell, 0.25),
+            .setImage(.shell, 0.25),
+            .setImage(.climbingOutOfShell, 0.25),
+            .setImage(.shell, 0.25),
+            .setImage(.climbingOutOfShell, 0.25),
+        ])
 //        .sequence([
 //            .ifTrue({ self.squashed == false }, {[
 //                .setImage(.goomba1, 0.15),

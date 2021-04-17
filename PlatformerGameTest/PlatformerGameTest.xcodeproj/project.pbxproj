@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B349DE4262B9C8D00B655EF /* flagpole.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DE1262B9C8D00B655EF /* flagpole.wav */; };
+		1B349DE5262B9C8D00B655EF /* stage_clear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DE2262B9C8D00B655EF /* stage_clear.wav */; };
+		1B349DE6262B9C8D00B655EF /* death.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DE3262B9C8D00B655EF /* death.wav */; };
+		1B349DF4262B9D8000B655EF /* smb_jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DE8262B9D8000B655EF /* smb_jump.wav */; };
+		1B349DF5262B9D8000B655EF /* smb_kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DE9262B9D8000B655EF /* smb_kick.wav */; };
+		1B349DF6262B9D8000B655EF /* smb_1up.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DEA262B9D8000B655EF /* smb_1up.wav */; };
+		1B349DF7262B9D8000B655EF /* smb_pause.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DEB262B9D8000B655EF /* smb_pause.wav */; };
+		1B349DF8262B9D8000B655EF /* smb_die.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DEC262B9D8000B655EF /* smb_die.wav */; };
+		1B349DF9262B9D8000B655EF /* smb_pipe.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DED262B9D8000B655EF /* smb_pipe.wav */; };
+		1B349DFA262B9D8000B655EF /* smb_stomp.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DEE262B9D8000B655EF /* smb_stomp.wav */; };
+		1B349DFB262B9D8000B655EF /* smb_gameover.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DEF262B9D8000B655EF /* smb_gameover.wav */; };
+		1B349DFC262B9D8000B655EF /* smb_fireball.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DF0262B9D8000B655EF /* smb_fireball.wav */; };
+		1B349DFD262B9D8000B655EF /* smb_vine.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DF1262B9D8000B655EF /* smb_vine.wav */; };
+		1B349DFE262B9D8000B655EF /* smb_bowserfire.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DF2262B9D8000B655EF /* smb_bowserfire.wav */; };
+		1B349DFF262B9D8000B655EF /* smb_flagpole.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349DF3262B9D8000B655EF /* smb_flagpole.wav */; };
+		1B349E02262BA33E00B655EF /* break.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B349E01262BA33E00B655EF /* break.wav */; };
 		1B4022F7262A007D002F5CDB /* 1-1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1B4022F6262A007D002F5CDB /* 1-1.sks */; };
 		1B593912262B78E000BF760F /* Goomba.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B593911262B78E000BF760F /* Goomba.swift */; };
 		1B593917262B790200BF760F /* Koopa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B593916262B790200BF760F /* Koopa.swift */; };
@@ -26,6 +42,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B349DE1262B9C8D00B655EF /* flagpole.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = flagpole.wav; sourceTree = "<group>"; };
+		1B349DE2262B9C8D00B655EF /* stage_clear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = stage_clear.wav; sourceTree = "<group>"; };
+		1B349DE3262B9C8D00B655EF /* death.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = death.wav; sourceTree = "<group>"; };
+		1B349DE8262B9D8000B655EF /* smb_jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_jump.wav; sourceTree = "<group>"; };
+		1B349DE9262B9D8000B655EF /* smb_kick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_kick.wav; sourceTree = "<group>"; };
+		1B349DEA262B9D8000B655EF /* smb_1up.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_1up.wav; sourceTree = "<group>"; };
+		1B349DEB262B9D8000B655EF /* smb_pause.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_pause.wav; sourceTree = "<group>"; };
+		1B349DEC262B9D8000B655EF /* smb_die.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_die.wav; sourceTree = "<group>"; };
+		1B349DED262B9D8000B655EF /* smb_pipe.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_pipe.wav; sourceTree = "<group>"; };
+		1B349DEE262B9D8000B655EF /* smb_stomp.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_stomp.wav; sourceTree = "<group>"; };
+		1B349DEF262B9D8000B655EF /* smb_gameover.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_gameover.wav; sourceTree = "<group>"; };
+		1B349DF0262B9D8000B655EF /* smb_fireball.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_fireball.wav; sourceTree = "<group>"; };
+		1B349DF1262B9D8000B655EF /* smb_vine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_vine.wav; sourceTree = "<group>"; };
+		1B349DF2262B9D8000B655EF /* smb_bowserfire.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_bowserfire.wav; sourceTree = "<group>"; };
+		1B349DF3262B9D8000B655EF /* smb_flagpole.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smb_flagpole.wav; sourceTree = "<group>"; };
+		1B349E01262BA33E00B655EF /* break.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = break.wav; sourceTree = "<group>"; };
 		1B4022F6262A007D002F5CDB /* 1-1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = "1-1.sks"; sourceTree = "<group>"; };
 		1B593911262B78E000BF760F /* Goomba.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goomba.swift; sourceTree = "<group>"; };
 		1B593916262B790200BF760F /* Koopa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koopa.swift; sourceTree = "<group>"; };
@@ -58,6 +90,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B349DE0262B9C8D00B655EF /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				1B349DEA262B9D8000B655EF /* smb_1up.wav */,
+				1B349DF2262B9D8000B655EF /* smb_bowserfire.wav */,
+				1B349DEC262B9D8000B655EF /* smb_die.wav */,
+				1B349E01262BA33E00B655EF /* break.wav */,
+				1B349DF0262B9D8000B655EF /* smb_fireball.wav */,
+				1B349DF3262B9D8000B655EF /* smb_flagpole.wav */,
+				1B349DEF262B9D8000B655EF /* smb_gameover.wav */,
+				1B349DE8262B9D8000B655EF /* smb_jump.wav */,
+				1B349DE9262B9D8000B655EF /* smb_kick.wav */,
+				1B349DEB262B9D8000B655EF /* smb_pause.wav */,
+				1B349DED262B9D8000B655EF /* smb_pipe.wav */,
+				1B349DEE262B9D8000B655EF /* smb_stomp.wav */,
+				1B349DF1262B9D8000B655EF /* smb_vine.wav */,
+				1B349DE1262B9C8D00B655EF /* flagpole.wav */,
+				1B349DE2262B9C8D00B655EF /* stage_clear.wav */,
+				1B349DE3262B9C8D00B655EF /* death.wav */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
 		1B593914262B78E500BF760F /* ObjectClasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +141,7 @@
 		1BDF24172624B61500446341 /* PlatformerGameTest */ = {
 			isa = PBXGroup;
 			children = (
+				1B349DE0262B9C8D00B655EF /* Music */,
 				1BDF24182624B61500446341 /* AppDelegate.swift */,
 				1BDF241E2624B61500446341 /* GameScene.swift */,
 				1B4022F6262A007D002F5CDB /* 1-1.sks */,
@@ -173,8 +229,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BAF6A33262A171D00BF5AED /* MyTileSet.sks in Resources */,
+				1B349DE4262B9C8D00B655EF /* flagpole.wav in Resources */,
+				1B349DF8262B9D8000B655EF /* smb_die.wav in Resources */,
+				1B349DFA262B9D8000B655EF /* smb_stomp.wav in Resources */,
 				1B4022F7262A007D002F5CDB /* 1-1.sks in Resources */,
+				1B349DFB262B9D8000B655EF /* smb_gameover.wav in Resources */,
+				1B349DE5262B9C8D00B655EF /* stage_clear.wav in Resources */,
+				1B349DFE262B9D8000B655EF /* smb_bowserfire.wav in Resources */,
+				1B349DF9262B9D8000B655EF /* smb_pipe.wav in Resources */,
+				1B349DF7262B9D8000B655EF /* smb_pause.wav in Resources */,
+				1B349E02262BA33E00B655EF /* break.wav in Resources */,
+				1B349DF6262B9D8000B655EF /* smb_1up.wav in Resources */,
 				1BDF24232624B61700446341 /* Assets.xcassets in Resources */,
+				1B349DFF262B9D8000B655EF /* smb_flagpole.wav in Resources */,
+				1B349DF4262B9D8000B655EF /* smb_jump.wav in Resources */,
+				1B349DF5262B9D8000B655EF /* smb_kick.wav in Resources */,
+				1B349DE6262B9C8D00B655EF /* death.wav in Resources */,
+				1B349DFD262B9D8000B655EF /* smb_vine.wav in Resources */,
+				1B349DFC262B9D8000B655EF /* smb_fireball.wav in Resources */,
 				1BDF24262624B61700446341 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
