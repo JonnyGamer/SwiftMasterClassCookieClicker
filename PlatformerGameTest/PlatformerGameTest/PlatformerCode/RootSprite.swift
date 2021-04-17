@@ -21,13 +21,14 @@ protocol SKActionable {
     var actionSprite: SKNode { get set }
 }
 extension SKActionable {
-    func spawnObject(_ this: BasicSprite.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false) {
-        let wow = this.init(box: frame)
+    func spawnObject<T: BasicSprite>(_ this: T.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false, image: String? = nil) -> T {
+        let wow = this.init(box: frame, image: image)
         wow.startPosition(location)
         (wow as? MovableSprite)?.reverseMovement = reverseMovement
         wow.add((actionSprite.scene as? Scene)!)
         (wow as? BasicSprite)?.creator = self as? BasicSprite
         (actionSprite.scene as? Scene)?.add(wow)
+        return wow
     }
 }
 
@@ -134,7 +135,7 @@ class BasicSprite: Hashable {
     
     
     var bumpedFromTop: [(BasicSprite & Spriteable) -> ()] = []
-    var bumpedFromBottom: [(BasicSprite & Spriteable) -> ()] = []
+    var bumpedFromBottom: [((BasicSprite & Spriteable)) -> ()] = []
     var bumpedFromLeft: [(BasicSprite & Spriteable) -> ()] = []
     var bumpedFromRight: [(BasicSprite & Spriteable) -> ()] = []
     var doThisWhenNotOnGround: [() -> ()] = []
@@ -144,7 +145,10 @@ class BasicSprite: Hashable {
     var runWhenBumpRight: [()->()] = []
     var runWhenBumpUp: [()->()] = []
     
+    var collisionOn: [Direction] = []
     func willStopMoving(_ hit: BasicSprite, _ direction: Direction) {
+        if !collisionOn.contains(direction) { return }
+        
         (self as? MovableSprite)?.stopMoving(hit, direction)
         
         if direction == .up {
@@ -281,9 +285,11 @@ class MovableSprite: BasicSprite {
         if frameCount % everyFrame == 0 {
             if direction == .left {
                 position.x -= xSpeed * (reverseMovement ? -1 : 1)
+                skNode.xScale = -1
             }
             if direction == .right {
                 position.x += xSpeed * (reverseMovement ? -1 : 1)
+                skNode.xScale = 1
             }
             lastMovedThisDirection = direction
         }
@@ -346,7 +352,9 @@ class MovableSprite: BasicSprite {
     var rightGround: Set<BasicSprite> = []// = false
     
     var onGround: Set<BasicSprite> = []// = false
+    
     func stopMoving(_ hit: BasicSprite, _ direction: Direction) {
+        
         if direction == .down {
             landedOn(hit)
             //runWhenBumpDown.run()

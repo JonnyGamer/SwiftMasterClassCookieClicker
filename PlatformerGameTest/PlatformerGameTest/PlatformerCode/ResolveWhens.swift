@@ -34,7 +34,7 @@ extension BasicSprite {
             case .gravity(let n, let fps): foo.ySpeed = n; foo.yEveryFrame = fps
             case .reverseDirection(let userAction): resolveUserAction(this, userAction, { foo.reverseMovement.toggle() })
             case .stopGoingUpWhen(let userAction): resolveUserAction(this, userAction, foo.stopMovingUp)
-            
+                
             case .resetJumpsWhen(let userAction):  resolveUserAction(this, userAction, { foo.jumps = 0 })
             case .maxJump(let m): foo.maxJumps = m
             case .jumpHeight(triangleOf: let m): foo.bounceHeight = m
@@ -48,13 +48,17 @@ extension BasicSprite {
             
         switch when {
             
+        case .collisionOn(let n): foo.collisionOn = n
         case .deathId(let n): foo.deathID = n
         case .canDieFrom(let dir): foo.canDieFrom = dir
         case .die(let userAction): resolveUserAction(this, userAction, { _ = foo.die(nil, []) })
         case .doThisWhen(let doThis, when: let userAction):  resolveUserAction(this, userAction, { doThis(foo) })
             
         case .bounceObjectWhen(let userAction):
-            resolveUserActionSPRITE(this, userAction, {($0 as? MovableSprite)?.jump((foo as? Trampoline)?.bounciness) })
+            resolveUserActionSPRITE(this, userAction, {
+                ($0 as? MovableSprite)?.jumps = 0
+                ($0 as? MovableSprite)?.jump((foo as? Trampoline)?.bounciness)
+            })
         case .stopObjectFromMoving(let dir, when: let userAction):
             resolveUserActionSPRITE(this, userAction, { $0.willStopMoving(self, dir) })
         case .allowObjectToPush(let dir, when: let userAction):
@@ -175,7 +179,7 @@ extension BasicSprite {
             }
             
         case .died:
-            (self as? MovableSprite)?.doThisOnceDead.append(action)
+            self.doThisOnceDead.append(action)
             
         case .afterJumpingNTimes(let n):
             guard let foo = (self as? MovableSprite) else { return }
@@ -222,7 +226,7 @@ extension BasicSprite {
                     action()
                 }
             }
-        case .thisBumped(let dir):
+        case .wasBumped(let dir):
             if dir == .left {
                 runWhenBumpLeft.append(action)
             } else if dir == .right {

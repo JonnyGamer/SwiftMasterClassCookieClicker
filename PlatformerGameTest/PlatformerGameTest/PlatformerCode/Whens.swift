@@ -13,15 +13,19 @@ enum When {
     case moveLeftWhen(UserAction)
     case moveRightWhen(UserAction)
     
+    /// SPRITE
     case stopObjectFromMoving(Direction, when: UserAction)
+    /// SPRITE
     case allowObjectToPush(Direction, when: UserAction)
-    
+    /// SPRITE
     case bounceObjectWhen(UserAction)
     case fallWhen(UserAction)
     case standWhen(UserAction)
     
     case xSpeed(Int, everyFrame: Int)
     case die(UserAction), deathId(Int)
+    
+    /// SPRITE
     case killObject(Direction, when: UserAction, id: [Int])
     case canDieFrom([Direction])
     case runSKAction([(Int, UserAction)])
@@ -31,6 +35,8 @@ enum When {
     case gravity(Int, everyFrame: Int)
     case stopGoingUpWhen(UserAction)
     case maxJump(Int)
+    
+    case collisionOn([Direction])
     
     case doThisWhen((BasicSprite) -> (), when: UserAction)
     case resetJumpsWhen(UserAction)

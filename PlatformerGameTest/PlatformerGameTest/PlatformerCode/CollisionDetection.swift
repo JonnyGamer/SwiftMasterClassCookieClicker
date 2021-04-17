@@ -66,6 +66,14 @@ extension Scene {
                 if j.onGround.contains(where: { $0 === i }) { break foo }
                 if (i as? MovableSprite)?.onGround.contains(where: { $0 === j }) == true { break foo }
                 
+                if j.velocity.dy == 0, i.velocity.dy == 0 {
+                    if j.maxY == i.minY {
+                        print("ok")
+                        j.bumpedFromBottom.run(i)
+                        break
+                    }
+                }
+                
                 if j.velocity.dy == 0, i.velocity.dy >= 0 {
                     if ((i.previousPosition.y+i.frame.y)...i.maxY).contains(j.minY) { // Fixed (previousMaxY)
                         if j.previousMaxX == i.minX { break foo } //
@@ -79,6 +87,7 @@ extension Scene {
                     if (j.minY...(j.previousPosition.y+j.frame.y)).contains(i.maxY) {
                         if j.previousMaxX == i.minX { break foo } //
                         if j.previousMinX == i.maxX { break foo } //
+                        
                         i.bumpedFromBottom.run(j)
                     }
                 
@@ -86,8 +95,11 @@ extension Scene {
                     if (j.previousPosition.y...j.maxY).contains(i.minY) {
                         if j.previousMaxX == i.minX { break foo } //
                         if j.previousMinX == i.maxX { break foo } //
-                        i.bumpedFromTop.run(j)
-                        j.bumpedFromBottom.run(i) // The ? Box getting bumped
+                        
+                        if j.collisionOn.contains(.up), i.collisionOn.contains(.down) {
+                            i.bumpedFromTop.run(j)
+                            //j.bumpedFromBottom.run(i) // The ? Box getting bumped
+                        }
                     }
                     
                 // Both are moving downwards

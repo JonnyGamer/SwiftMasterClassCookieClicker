@@ -15,6 +15,7 @@ class GROUND: BasicSprite, Spriteable {
         .stopObjectFromMoving(.left, when: .thisBumped(.left)),
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
+        .collisionOn(.all()),
     ]
 }
 
@@ -31,6 +32,7 @@ class Moving_GROUND: ActionSprite, Spriteable, SKActionable {
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
         .runSKAction([(0, .always)]),
+        .collisionOn(.all()),
     ]
 }
 
@@ -62,9 +64,9 @@ class QuestionBox: ActionSprite, Spriteable, SKActionable {
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
         
         // ? Box Action
-        .runSKAction([(0, .thisBumped(.down))]),
+        .runSKAction([(0, .wasBumped(.down))]),
         .runSKAction([(1, .when({ ($0 as? QuestionBox)?.bumped == false }))]),
-        
+        .collisionOn(.all()),
 
         
         // Brick Block Action
@@ -86,7 +88,57 @@ class BrickBox: ActionSprite, SKActionable, Spriteable {
         .stopObjectFromMoving(.right, when: .thisBumped(.right)),
         .stopObjectFromMoving(.up, when: .thisBumped(.up)),
         // Brick Block Action
-        .die(.thisBumped(.down)),
+        .die(.wasBumped(.down)),
+        .collisionOn(.all()),
+        
+        .doThisWhen({
+            guard let foo = $0 as? BrickBox else { return }
+            let a = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.position), image: Images.brickCrash1.rawValue)
+            a.bounceHeight = 8
+            a.maxJumpSpeed = 3
+            let b = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.position), image: Images.brickCrash1.rawValue)
+            b.bounceHeight = 8
+            b.maxJumpSpeed = 5
+            let c = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.position), image: Images.brickCrash1.rawValue)
+            c.reverseMovement = true
+            c.bounceHeight = 8
+            c.maxJumpSpeed = 3
+            let d = foo.spawnObject(BrickCrash.self, frame: (8,8), location: ($0.position), image: Images.brickCrash1.rawValue)
+            d.reverseMovement = true
+            d.bounceHeight = 8
+            d.maxJumpSpeed = 5
+            
+            
+        }, when: .died)
+    ]
+}
+class BrickCrash: MovableSprite, SKActionable, Spriteable {
+    var myActions: [SKAction] = [
+        .sequence([
+            .setImage(.brickCrash1, 0.2),
+            .setImage(.brickCrash2, 0.2),
+        ])
+    ]
+    
+    var actionSprite: SKNode = SKSpriteNode()
+    
+    var specificActions: [When] = [
+        .moveLeftWhen(.always),
+        .fallWhen(.notOnGround),
+        .die(.onceOffScreen),
+        .xSpeed(1, everyFrame: 2),
+        
+        .maxJump(2),
+        .jumpWhen(.firstTimeOnScreen),
+//        .maxJumpSpeed(3),
+//        .minFallSpeed(-3),
+        .gravity(-1, everyFrame: 3),
+        
+//        .jumpHeight(triangleOf: 1000),
+//        .maxJumpSpeed(100),
+//        .gravity(-1, everyFrame: 1),
+//        .jumpWhen(.firstTimeOnScreen),
+        
     ]
 }
 
@@ -113,16 +165,19 @@ class Goomba: MovableSprite, SKActionable, Spriteable, Trampoline {
         .moveLeftWhen(.always),
         .xSpeed(0, everyFrame: 2),
         .runSKAction([(0, .always)]),
-        .runSKAction([(1, .thisBumped(.up))]), // Not working
-        .bounceObjectWhen(.thisBumped(.up)),// Not working
+        //.runSKAction([(100, .wasBumped(.up))]), // Not working
+        
+        .bounceObjectWhen(.thisBumped(.down)),// Bounces mario when he hopes on it ;)
+        
         .fallWhen(.notOnGround),
-        .reverseDirection(.thisBumped(.left)),
-        .reverseDirection(.thisBumped(.right)),
+        .reverseDirection(.wasBumped(.left)),
+        .reverseDirection(.wasBumped(.right)),
         .killObject(.left, when: .thisBumped(.left), id: [0]),
         .killObject(.right, when: .thisBumped(.right), id: [0]),
         .doThisWhen({ ($0 as? MovableSprite)?.xSpeed = 1 }, when: .firstTimeOnScreen),
         .gravity(-1, everyFrame: 2),
-        .minFallSpeed(-3)
+        .minFallSpeed(-3),
+        .collisionOn(.all()),
     ]
     
     
@@ -148,14 +203,17 @@ class Inky: MovableSprite, Spriteable {
         .minFallSpeed(-3),
         .gravity(-1, everyFrame: 3),
         .stopGoingUpWhen(.releasedButton(.jump)),
-        .resetJumpsWhen(.thisBumped(.down)),
+        .resetJumpsWhen(.wasBumped(.down)),
         //.maxJump(2),
         
         .fallWhen(.notOnGround),
+        .collisionOn(.all()),
         
         //
         .canDieFrom(.all()),
         .deathId(0),
+        
+        .doThisWhen({ ($0 as? MovableSprite)?.skNode.run(.animate(with: [Cash.getTexture(Images.mario.rawValue)], timePerFrame: 0)) }, when: .notOnGround)
         
          //Fire Ball Power!
 //        .doThisWhen({
@@ -189,8 +247,8 @@ class Chaser: MovableSprite, Spriteable {
         
         // 
         .reverseDirection(.onLedge),
-        .reverseDirection(.thisBumped(.left)),
-        .reverseDirection(.thisBumped(.right)),
+        .reverseDirection(.wasBumped(.left)),
+        .reverseDirection(.wasBumped(.right)),
         
         .deathId(1),
         .killObject(.left, when: .thisBumped(.left), id: [0]),
@@ -205,16 +263,16 @@ class FireBall: MovableSprite, Spriteable {
         .fallWhen(.notOnGround),
         
         // Order matters here
-        .resetJumpsWhen(.thisBumped(.down)),
-        .jumpWhen(.thisBumped(.down)),
+        .resetJumpsWhen(.wasBumped(.down)),
+        .jumpWhen(.wasBumped(.down)),
         
         .moveLeftWhen(.always),
         .jumpHeight(triangleOf: 5),
         .xSpeed(8, everyFrame: 1),
         
-        .die(.thisBumped(.up)),
-        .die(.thisBumped(.left)),
-        .die(.thisBumped(.right)),
+        .die(.wasBumped(.up)),
+        .die(.wasBumped(.left)),
+        .die(.wasBumped(.right)),
         .die(.afterJumpingNTimes(20)),
         .die(.onceOffScreen),
         .doThisWhen({ ($0.creator as? Inky)?.fireBallsActive -= 1 }, when: .died),

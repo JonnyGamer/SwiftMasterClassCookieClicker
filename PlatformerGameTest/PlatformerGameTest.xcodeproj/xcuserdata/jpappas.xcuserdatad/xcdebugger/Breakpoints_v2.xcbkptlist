@@ -254,8 +254,8 @@
             filePath = "PlatformerGameTest/PlatformerCode/RootSprite.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
             landmarkName = "stopMoving(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -263,16 +263,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F8B721C2-8E94-4959-8770-1751F8C1097D"
+            uuid = "0B7EBA97-592F-487D-BAAE-640262E43947"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PlatformerGameTest/PlatformerCode/CollisionDetection.swift"
+            filePath = "PlatformerGameTest/PlatformerCode/ResolveWhens.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "checkForCollision(_:_:)"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "resolveWhen(_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
