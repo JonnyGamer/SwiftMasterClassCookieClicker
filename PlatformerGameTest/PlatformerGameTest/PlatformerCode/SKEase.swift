@@ -26,7 +26,7 @@ enum Images: String {
     case q2 = "QuestionBlock2"
     case q3 = "QuestionBlock3"
     case goomba1 = "Goomba1", goomba2 = "Goomba2"
-    case koopa1 = "Koopa1", koopa2 = "Koopa2", shell = "Shell1", climbingOutOfShell, "Shell2"
+    case koopa1 = "Koopa1", koopa2 = "Koopa2", shell = "Shell1", climbingOutOfShell = "Shell2"
     
     case goombaFlat = "GoombaFlat"
     case mario = "MarioStanding"

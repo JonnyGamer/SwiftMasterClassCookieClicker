@@ -12,7 +12,15 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
     
     // Squash the Koopa?
     func squash(_ mario: Inky) {
-        
+        _=self.die(nil, [], killedBy: mario)
+//        if !self.squashed {
+//            self.squashed = true
+//            self.xSpeed = 0
+//            mario.jump()
+//            self.runAction(1, append: [
+//                .run {  }
+//            ])
+//        }
     }
     
     func whenActions() -> [Whens] {[
@@ -35,21 +43,21 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
         
         // If Mario walks into Koopa, he dies
         .wasBumpedBy(.left, doThis: {
-            if !self.squashed, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+            if !self.stomped, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
         }),
         .wasBumpedBy(.right, doThis: {
-            if !self.squashed, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
+            if !self.stomped, let mario = $0 as? Inky { _ = mario.die(killedBy: self) }
         }),
         
         // Koopa Falls, Unless stomped
         .when(.notOnGround, doThis: {
-            if self.squashed { return }
+            if self.stomped { return }
             self.fall()
         }),
         
         // Koopa always moves left
         .when(.always, doThis: {
-            if self.squashed { return }
+            if self.stomped { return }
             self.runAction(0)
             self.move(.left)
         }),
@@ -66,11 +74,11 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
         ])
     ]}
     
-    var squashed = false
+    var stomped = false
     var bounciness: Int = 5
     var myActions: [SKAction] {[
         .sequence([
-            .ifTrue({ self.squashed == false }, {[
+            .ifTrue({ self.stomped == false }, {[
                 .setImage(.koopa1, 0.15),
                 .setImage(.koopa2, 0.15),
             ]})

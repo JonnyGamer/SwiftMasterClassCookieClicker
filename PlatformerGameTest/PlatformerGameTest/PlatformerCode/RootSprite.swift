@@ -19,6 +19,7 @@ protocol SKActionable {
     var actionSprite: SKNode { get set }
 }
 extension SKActionable {
+    @discardableResult
     func spawnObject<T: BasicSprite>(_ this: T.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false, image: String? = nil) -> T {
         let wow = this.init(box: frame, image: image)
         wow.startPosition(location)
