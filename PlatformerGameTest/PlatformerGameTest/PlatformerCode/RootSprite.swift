@@ -44,7 +44,40 @@ struct Cash {
     }
     static var scene: Scene!
 }
-
+//
+//class Box: Hashable {
+//    var frame = (x: 16, y: 16)
+//
+//    static func == (lhs: Box, rhs: Box) -> Bool { lhs === rhs }
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine("\(self)")
+//    }
+//
+//    var position: (x: Int, y: Int) = (0,0) {
+//        willSet {
+//            if newValue.y != position.y, newValue.x != position.x {
+//                previousPosition = position
+//            } else if newValue.y != position.y {
+//                previousPosition.y = position.y
+//            } else if newValue.x != position.x {
+//                previousPosition.x = position.x
+//            } else {
+//                previousPosition = position
+//            }
+//        }
+//        didSet{
+//
+//            if let skNode = (self as? MovableSprite)?.skNode {
+//                skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2)
+//            } else if let skNode = (self as? ActionSprite)?.skNode {
+//                skNode.position = CGPoint(x: CGFloat(position.x) + skNode.frame.width/2, y: CGFloat(position.y) + skNode.frame.height/2)
+//            }
+//
+//        }
+//    }
+//    var previousPosition: (x: Int, y: Int) = (0,0)
+//    var velocity: (dx: Int, dy: Int) { return (dx: position.x - previousPosition.x, dy: position.y - previousPosition.y) }
+//}
 
 class BasicSprite: Hashable {
     static func == (lhs: BasicSprite, rhs: BasicSprite) -> Bool {

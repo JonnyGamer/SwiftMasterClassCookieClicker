@@ -78,6 +78,10 @@ class QuadTree {
     var level = 0
 
     init(_ this: CGRect) { size = this }
+    
+    func deleteAndReinsert(_ box: BasicSprite) {
+        
+    }
 
     // Find all Quadtrees containing box and it's velocity...
     func contains(_ box: BasicSprite) -> Set<BasicSprite> {
