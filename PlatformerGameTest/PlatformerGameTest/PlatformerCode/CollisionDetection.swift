@@ -34,8 +34,8 @@ extension Scene {
             if i === j { continue }
             if i.contactOn.isEmpty { continue }
             if i.dead { continue }
-            if !i.trajectoryX().overlaps(j.trajectoryX()) { print("SKIP"); continue }
-            if !i.trajectoryY().overlaps(j.trajectoryY()) { print("SKIP"); continue }
+            if !i.trajectoryX().overlaps(j.trajectoryX()) { continue }
+            if !i.trajectoryY().overlaps(j.trajectoryY()) { continue }
 
             
             // Falling Down
