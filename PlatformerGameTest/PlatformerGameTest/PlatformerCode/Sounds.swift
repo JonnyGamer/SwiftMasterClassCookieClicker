@@ -14,9 +14,12 @@ enum Sounds: String {
     case bowserFire = "smb_bowserfire"
     case die = "smb_die"
     case breakBrickBlock = "break"
-    case overworldTheme = "overworld-theme"
     case fireball = "smb_fireball"
     case flagpole = "smb_flagpole"
+}
+
+enum MusicTracks: String {
+    case overworldTheme = "overworld-theme"
 }
 
 extension SKAction {
@@ -32,7 +35,8 @@ struct BackgroundMusic {
     
     private static var backgroundMusicPlayer: AVAudioPlayer!
 
-    static func play(_ filename: Sounds) {
+    static func play(_ filename: MusicTracks) {
+        backgroundMusicPlayer?.stop()
 
         let url = Bundle.main.url(forResource: filename.rawValue, withExtension: "mp3")
 

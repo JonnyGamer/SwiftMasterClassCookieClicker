@@ -27,14 +27,22 @@ class Koopa: MovableSprite, SKActionable, Spriteable {
 //        }
     }
     
+    func checkIfWalkIntoMario(_ this: BasicSprite) {
+        if let mario = this as? Inky {
+            mario.die(killedBy: self)
+        }
+    }
+    
     func whenActions() -> [Whens] {[
 
         // If Koopa Hits Something, reverse it's movement
-        .bumped(.left, doThis: { _ in
+        .bumped(.left, doThis: {
+            self.checkIfWalkIntoMario($0)
             self.movementDirection = .right
             
         }),
-        .bumped(.right, doThis: { _ in
+        .bumped(.right, doThis: {
+            self.checkIfWalkIntoMario($0)
             self.movementDirection = .left
         }),
         
