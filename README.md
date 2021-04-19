@@ -17,7 +17,9 @@ Project 7 - [Dungeon Crawler](/DungeonCrawler)
 
 Project n - [Another Platformer]  
 
+**Some Other Ideas:**  
 Advanced Top Down RPG
+Maze Generator    
+A Chess Bot  
+Custom Physics Engine  
 
-some other ideas:  
-chess
