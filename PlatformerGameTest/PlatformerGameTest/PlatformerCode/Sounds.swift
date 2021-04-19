@@ -16,6 +16,9 @@ enum Sounds: String {
     case breakBrickBlock = "break"
     case fireball = "smb_fireball"
     case flagpole = "smb_flagpole"
+    case stomp = "smb_stomp"
+    case jump = "smb_jump"
+    case kick = "smb_kick"
 }
 
 enum MusicTracks: String {
@@ -23,10 +26,10 @@ enum MusicTracks: String {
 }
 
 extension SKAction {
-    func playSound(_ this: Sounds) -> SKAction {
+    static func sound(_ this: Sounds) -> SKAction {
         return .playSoundFileNamed(this.rawValue, waitForCompletion: true)
     }
-    func playSoundAsync(_ this: Sounds) -> SKAction {
+    static func soundAsync(_ this: Sounds) -> SKAction {
         return .playSoundFileNamed(this.rawValue, waitForCompletion: false)
     }
 }

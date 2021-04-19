@@ -41,6 +41,9 @@
 		1BDF24462626430700446341 /* CollisionDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24452626430700446341 /* CollisionDetection.swift */; };
 		1BF11C6D262E0DD900E9765D /* overworld-theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1BF11C6C262E0DD900E9765D /* overworld-theme.mp3 */; };
 		1BF11C70262E0FBA00E9765D /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF11C6F262E0FBA00E9765D /* Sounds.swift */; };
+		1BF11C73262E246700E9765D /* KoopaShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF11C72262E246700E9765D /* KoopaShell.swift */; };
+		1BF11C76262E347C00E9765D /* QuestionBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF11C75262E347C00E9765D /* QuestionBlock.swift */; };
+		1BF11C79262E348F00E9765D /* BrickBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF11C78262E348F00E9765D /* BrickBlock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +84,9 @@
 		1BDF24452626430700446341 /* CollisionDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetection.swift; sourceTree = "<group>"; };
 		1BF11C6C262E0DD900E9765D /* overworld-theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "overworld-theme.mp3"; sourceTree = "<group>"; };
 		1BF11C6F262E0FBA00E9765D /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
+		1BF11C72262E246700E9765D /* KoopaShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoopaShell.swift; sourceTree = "<group>"; };
+		1BF11C75262E347C00E9765D /* QuestionBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionBlock.swift; sourceTree = "<group>"; };
+		1BF11C78262E348F00E9765D /* BrickBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBlock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +129,9 @@
 			children = (
 				1B593911262B78E000BF760F /* Goomba.swift */,
 				1B593916262B790200BF760F /* Koopa.swift */,
+				1BF11C72262E246700E9765D /* KoopaShell.swift */,
+				1BF11C75262E347C00E9765D /* QuestionBlock.swift */,
+				1BF11C78262E348F00E9765D /* BrickBlock.swift */,
 			);
 			path = ObjectClasses;
 			sourceTree = "<group>";
@@ -266,14 +275,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BDF24462626430700446341 /* CollisionDetection.swift in Sources */,
+				1BF11C79262E348F00E9765D /* BrickBlock.swift in Sources */,
 				1BDF24212624B61500446341 /* ViewController.swift in Sources */,
 				1BDF241F2624B61500446341 /* GameScene.swift in Sources */,
 				1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */,
 				1BF11C70262E0FBA00E9765D /* Sounds.swift in Sources */,
+				1BF11C76262E347C00E9765D /* QuestionBlock.swift in Sources */,
 				1BDF24372624B97D00446341 /* ResolveWhens.swift in Sources */,
 				1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */,
 				1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */,
 				1BDF24192624B61500446341 /* AppDelegate.swift in Sources */,
+				1BF11C73262E246700E9765D /* KoopaShell.swift in Sources */,
 				1B593917262B790200BF760F /* Koopa.swift in Sources */,
 				1BDF24342624B86600446341 /* Whens.swift in Sources */,
 				1B593912262B78E000BF760F /* Goomba.swift in Sources */,

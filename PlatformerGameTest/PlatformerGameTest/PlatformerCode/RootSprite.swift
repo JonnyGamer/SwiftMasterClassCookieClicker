@@ -8,24 +8,29 @@
 import Foundation
 import SpriteKit
 
-protocol Spriteable {
-    //var specificActions: [When] { get }
+protocol WhenActions {
     func whenActions() -> [Whens]
+}
+protocol WhenActions2: WhenActions {
+    static var starterImage: Images { get set }
+    static var starterSize: (Int, Int) { get set }
+    var myActions: [SKAction] { get }
 }
 
 protocol SKActionable {
     var skNode: SKNode! { get set }
-    var myActions: [SKAction] { get }
     var actionSprite: SKNode { get set }
 }
-extension SKActionable {
+extension BasicSprite {
     @discardableResult
-    func spawnObject<T: BasicSprite>(_ this: T.Type, frame: (Int, Int), location: (Int, Int), reverseMovement: Bool = false, image: String? = nil) -> T {
-        let wow = this.init(box: frame, image: image)
+    func spawnObject<T: BasicSprite>(_ this: T.Type, location: (Int, Int), reverseMovement: Bool = false) -> T {
+        let wowo = (this as? WhenActions2.Type)?.starterSize
+        let wowo2 = (this as? WhenActions2.Type)?.starterImage.rawValue
+        let wow = this.init(box: wowo ?? (16,16), image: wowo2)
         wow.startPosition(location)
         (wow as? MovableSprite)?.reverseMovement = reverseMovement
         wow.add(Cash.scene!)
-        wow.creator = self as? BasicSprite
+        wow.creator = self// as? BasicSprite
         Cash.scene.add(wow)
         return wow
     }
@@ -134,7 +139,27 @@ class BasicSprite: Hashable {
     
     var creator: BasicSprite?
     
-    var frame = (x: 16, y: 16)
+    var frame = (x: 16, y: 16) {
+        willSet {
+            if frame == newValue { return }
+            if let foo = self as? MovableSprite {
+                if frame.x != newValue.x {
+                    if foo.skNode.xScale < 0 {
+                        foo.skNode.xScale = -(newValue.x.cg) / (frame.x.cg)
+                    } else {
+                        foo.skNode.xScale = (newValue.x.cg) / (frame.x.cg)
+                    }
+                }
+                if frame.y != newValue.y {
+                    if foo.skNode.yScale < 0 {
+                        foo.skNode.yScale = -(newValue.y.cg) / (frame.y.cg)
+                    } else {
+                        foo.skNode.yScale = (newValue.y.cg) / (frame.y.cg)
+                    }
+                }
+            }
+        }
+    }
     
     //var helperNode: SKNode
     required init(box: (Int, Int), image: String? = nil) {
@@ -300,6 +325,9 @@ class BasicSprite: Hashable {
 class ActionSprite: BasicSprite {
     var skNode: SKNode!
     var onScreen = false
+    func run(_ this: SKAction) {
+        skNode.run(this)
+    }
 }
 
 class MovableSprite: BasicSprite {
@@ -338,6 +366,10 @@ class MovableSprite: BasicSprite {
     
     @discardableResult
     func jump() -> Bool { jump(nil) }
+    @discardableResult
+    func smallJump() -> Bool {
+        return jump(maxJumpSpeed)
+    }
     @discardableResult
     func jump(_ height: Int?) -> Bool {
         if dead { return false }

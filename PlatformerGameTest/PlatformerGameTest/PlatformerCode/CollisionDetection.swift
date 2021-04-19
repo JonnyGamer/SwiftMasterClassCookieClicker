@@ -99,8 +99,8 @@ extension Scene {
                 
                 } else if j.velocity.dy > 0, i.velocity.dy <= 0 {
                     if (j.previousPosition.y...j.maxY).contains(i.minY) {
-                        if j.previousMaxX == i.minX { break foo } //
-                        if j.previousMinX == i.maxX { break foo } //
+                        if j.previousMaxX <= i.minX { break foo } //
+                        if j.previousMinX >= i.maxX { break foo } //
                         i.contactTest(.up, bumpedBy: j)
                     }
                     
@@ -268,6 +268,9 @@ extension Scene {
                     }
                     
                     if j.velocity.dx > 0 {
+                        if i.minY > j.maxY { break foo }
+                        if i.minY + i.velocity.dy >= j.maxY { break foo }
+                        
                         i.contactTest(.right, bumpedBy: j)
                         //i.bumpedFromRight.run(j)
                         if let i = i as? MovableSprite {
@@ -289,6 +292,10 @@ extension Scene {
                     if j.velocity.dx == 0 {
                         // |j| <- i
                         if i.previousPosition.x - i.velocity.dx < j.maxX { break foo }
+                        if i.minY > j.maxY { break foo }
+                        if i.maxY < j.minY { break foo }
+                        if j.minY + j.velocity.dy >= i.maxY { break foo }
+                        
                         j.contactTest(.left, bumpedBy: i)
                         //j.bumpedFromLeft.run(i)
                         if let j = j as? MovableSprite {
@@ -318,6 +325,7 @@ extension Scene {
                                     
                                     // <- j <-<- i
                                     if j.previousMaxX > i.previousMinX { break foo }
+                                    if j.maxX < i.minX { break foo }
                                     if !(j.minX...(j.previousPosition.x + j.frame.x)).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     j.contactTest(.left, bumpedBy: i)
                                     //j.bumpedFromLeft.run(i)
@@ -351,6 +359,8 @@ extension Scene {
                                     if !((j.previousPosition.x + j.frame.x)...j.maxX).overlaps((i.minX...i.previousPosition.x)) { break foo }
                                     
                                     if j.velocity.dx > -i.velocity.dx {
+                                        if i.minY > j.maxY { break foo }
+                                        if i.minY + i.velocity.dy >= j.maxY { break foo }
                                         
                                         // j ->-> <- |i|
                                         j.contactTest(.left, bumpedBy: i)
@@ -362,6 +372,9 @@ extension Scene {
                                         }
                                         
                                     } else {
+                                        if i.maxX < j.minY { break foo }
+                                        if j.minY + j.velocity.dy >= i.maxY { break foo }
+                                        
                                         // j -> <-<- i
                                         j.contactTest(.left, bumpedBy: i)
                                         i.contactTest(.right, bumpedBy: j)
@@ -383,7 +396,17 @@ extension Scene {
                             // j ->-> i ->
                             if j.velocity.dx > 0 {
                                 if !(j.previousPosition.x...j.maxX).overlaps(i.previousPosition.x...i.maxX) { break foo }
-                                i.contactTest(.right, bumpedBy: j)
+                                if i.velocity > j.velocity { break foo }
+                                
+                                if i.minY + i.velocity.dy >= j.maxY { break foo }
+                                
+                                if j.previousMinY >= (i.previousMaxY-1) {
+                                    i.contactTest(.down, bumpedBy: j)
+                                } else if i.previousMinY >= (j.previousMaxY-1) {
+                                    j.contactTest(.down, bumpedBy: i)
+                                } else {
+                                    i.contactTest(.right, bumpedBy: j)
+                                }
                                 //i.bumpedFromRight.run(j)
                                 //j.bumpedFromLeft.run(i)
                                 if let _ = recursiveRightPush(i, velX: i.velocity.dx, sprites: sprites) {

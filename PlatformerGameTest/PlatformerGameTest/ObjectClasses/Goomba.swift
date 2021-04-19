@@ -8,12 +8,15 @@
 import Foundation
 import SpriteKit
 
-class Goomba: MovableSprite, SKActionable, Spriteable {
+class Goomba: MovableSprite, SKActionable, WhenActions2 {
+    static var starterImage: Images = .goomba1
+    static var starterSize: (Int, Int) = (16,16)
+    
     
     // Squash the Goomba!
     func squash(_ mario: Inky) {
         if !self.squashed {
-            self.run(.playSoundFileNamed("smb_stomp", waitForCompletion: false))
+            self.run(.sound(.stomp))
             self.squashed = true
             self.xSpeed = 0
             mario.jump(mario.maxJumpSpeed)
@@ -94,7 +97,7 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
         
         .killedBy({ _ in
             if self.squashed { return }
-            self.spawnObject(DeadGoomba.self, frame: (16,16), location: self.position, image: Images.goomba1.rawValue)
+            self.spawnObject(DeadGoomba.self, location: self.position)
         })
         
     ]}
@@ -118,7 +121,10 @@ class Goomba: MovableSprite, SKActionable, Spriteable {
 }
 
 
-class DeadGoomba: MovableSprite, Spriteable, SKActionable {
+class DeadGoomba: MovableSprite, WhenActions2, SKActionable {
+    static var starterImage: Images = .goomba1
+    static var starterSize: (Int, Int) = (16,16)
+    
     func whenActions() -> [Whens] {[
         // Die when off screen
         .when(.always, doThis: {

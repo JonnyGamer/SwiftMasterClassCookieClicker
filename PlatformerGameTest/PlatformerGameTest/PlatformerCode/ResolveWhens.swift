@@ -10,7 +10,7 @@ import SpriteKit.SKAction
 
 extension BasicSprite {
     func add(_ this: Scene) {
-        guard let foo = self as? (BasicSprite & Spriteable) else { return }
+        guard let foo = self as? (BasicSprite & WhenActions) else { return }
         
         for i in foo.whenActions() {
             foo.resolveWhen(this, i)
@@ -32,13 +32,13 @@ extension BasicSprite {
     }
     
     func runAction(_ id: Int, append: [SKAction] = []) {
-        if let foo = self as? (MovableSprite & SKActionable) {
+        if let foo = self as? (MovableSprite & WhenActions2) {
             let funAction = SKAction.sequence([foo.myActions[id]] + append)
             if foo.skNode.action(forKey: "\(id)") == nil {
-                foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
+                //foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
                 foo.skNode.run(funAction, withKey: "\(id)")
             }
-        } else if let foo = self as? (ActionSprite & SKActionable) {
+        } else if let foo = self as? (ActionSprite & WhenActions2 & SKActionable) {
             let funAction = SKAction.sequence([foo.myActions[id]] + append)
             if foo.skNode.action(forKey: "\(id)") == nil {
                 foo.actionSprite.run(foo.myActions[id], withKey: "\(id)")
@@ -79,10 +79,17 @@ extension BasicSprite {
         case .offScreen:
             guard let foo = (self as? MovableSprite) else { fatalError() }
             foo.everyFrame.append {
-                if !currentView.intersects(foo.skNode.frame) {
+                if !paddedView.intersects(foo.skNode.frame) {
                     doThis()
                 }
             }
+        case .somewhatOffScreen: fatalError()
+//            guard let foo = (self as? MovableSprite) else { fatalError() }
+//            foo.everyFrame.append {
+//                if !paddedView.intersects(foo.skNode.frame) {
+//                    doThis()
+//                }
+//            }
             
         // This is what is causing so much lag.
         case .firstTimeOnScreen:
@@ -194,7 +201,7 @@ extension BasicSprite {
             default: fatalError("Add your own.")
             }
             
-        case .somewhatOffScreen: fatalError()
+            
         case .standing: fatalError()
         }
     }

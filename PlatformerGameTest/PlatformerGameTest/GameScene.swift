@@ -12,6 +12,16 @@ import GameplayKit
 //
 //}
 var currentView: CGRect = .zero
+var paddedView: CGRect = .zero
+
+extension CGRect {
+    func padding(_ n: Int) -> CGRect {
+        return CGRect.init(x: self.minX - (n.cg * u.cg), y: self.minY - (n.cg * u.cg), width: self.width + (n.cg * 2 * u.cg), height: self.height + (n.cg * 2 * u.cg))
+    }
+    func someWhatOffScreen() -> CGRect {
+        return padding(4)
+    }
+}
 
 extension Scene {
     func add(_ this: BasicSprite) {
@@ -49,6 +59,7 @@ class MagicScene: SKScene {
     func begin() {}
 }
 
+var u = 16 // The unit!
 class Scene: MagicScene {
     var magicCamera: SKCameraNode = .init()
     
@@ -61,10 +72,9 @@ class Scene: MagicScene {
     var quadtree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     var movableSpritesTree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     
-    var u = 16 // The unit!
     @discardableResult
     func build<T: BasicSprite>(_ this: T.Type, pos: (Int, Int), size: (Int, Int) = (1,1), player: Bool = false, image: String? = nil) -> T {
-        let box = this.init(box: (size.0*u,size.1*u), image: image)
+        let box = this.init(box: (this as? WhenActions2.Type)?.starterSize ?? (size.0*u,size.1*u), image: (this as? WhenActions2.Type)?.starterImage.rawValue ?? image)
         box.startPosition((pos.0*u,pos.1*u))
         box.add(self)
         if player { players.append(box); woah = (box as! MovableSprite).skNode } // add player
@@ -80,7 +90,6 @@ class Scene: MagicScene {
         
         BackgroundMusic.stop()
         BackgroundMusic.play(.overworldTheme)
-        //run( .sequence([.wait(forDuration: 1), .repeatForever(.playSoundFileNamed("overworld-theme", waitForCompletion: true))]), withKey: "song")
         
         
         Cash.scene = self
@@ -127,6 +136,8 @@ class Scene: MagicScene {
                                     switch tileName {
                                     case "Goomba": newTileToUse = Goomba.self
                                     case "Koopa": newTileToUse = Koopa.self
+                                    case "BrickBlock": newTileToUse = BrickBox.self
+                                    case "QuestionBlock": newTileToUse = QuestionBox.self
                                     default: fatalError()
                                     }
                                     let _ = build(newTileToUse, pos: (x,y), image: tileName)
@@ -212,6 +223,7 @@ class Scene: MagicScene {
         
         currentView = frame
         currentView = currentView.offsetBy(dx: magicCamera.position.x - (frame.width/2), dy: magicCamera.position.y - (frame.height/2))
+        paddedView = currentView.someWhatOffScreen()
         //let bounds = foo.skNode.frame
         //guard var sceneBounds = foo.skNode.scene?.frame else { return }
         //guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
