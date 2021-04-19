@@ -33,15 +33,18 @@ extension Scene {
                 addChild(q.actionSprite)
                 q.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
             }
-            
-            movableSpritesTree.insert(s)
+            if !s.contactOn.isEmpty {
+                movableSpritesTree.insert(s)
+            }
         } else if let s = this as? BasicSprite & SKActionable {
             actionableSprites.insert(s)
             addChild(s.skNode)
             addChild(s.actionSprite)
             s.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
             
-            movableSpritesTree.insert(s)
+            if !s.contactOn.isEmpty {
+                movableSpritesTree.insert(s)
+            }
         } else {
             quadtree.insert(this)
         }

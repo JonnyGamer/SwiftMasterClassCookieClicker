@@ -13,23 +13,20 @@ class BrickBox: ActionSprite, SKActionable, WhenActions2 {
     static var starterSize: (Int, Int) = (16, 16)
     
     func makeBrickCrash() {
-        let foo = DispatchQueue.init(label: "")
-        foo.async {
-            let a = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
-            a.bounceHeight = 8
-            a.maxJumpSpeed = 3
-            let b = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
-            b.bounceHeight = 8
-            b.maxJumpSpeed = 5
-            let c = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
-            c.reverseMovement = true
-            c.bounceHeight = 8
-            c.maxJumpSpeed = 3
-            let d = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
-            d.reverseMovement = true
-            d.bounceHeight = 8
-            d.maxJumpSpeed = 5
-        }
+        let a = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
+        a.bounceHeight = 8
+        a.maxJumpSpeed = 3
+        let b = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
+        b.bounceHeight = 8
+        b.maxJumpSpeed = 5
+        let c = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
+        c.reverseMovement = true
+        c.bounceHeight = 8
+        c.maxJumpSpeed = 3
+        let d = self.spawnObject(BrickCrash.self, location: (self.midX-4, self.midY-4))
+        d.reverseMovement = true
+        d.bounceHeight = 8
+        d.maxJumpSpeed = 5
     }
     
     func whenActions() -> [Whens] {[
@@ -42,8 +39,11 @@ class BrickBox: ActionSprite, SKActionable, WhenActions2 {
             guard let mario = $0 as? Inky else { return }
             self.runAction(0, append: [
                 .run {
+                    //let foo = DispatchQueue.init(label: "")
+                    //foo.async {
                     self.makeBrickCrash()
                     self.die(nil, [], killedBy: mario)
+                    //}
                 }
             ])
             
