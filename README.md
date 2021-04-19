@@ -6,6 +6,7 @@
 
 Here is a list of projects we will be doing!
 
+Project 0 - [Card Game of War](/Benjamin)  
 Project 1 - [Coockie Clicker](/CookieClicker.md)  
 Project 2 - [Memory Matching Game](/BirthdayGame.md)  
 Project 3 - [Flappy Bird](/FlappyBirdMacOS)  
