@@ -1,4 +1,4 @@
-# Template Proeject
+# Template Project
 
 [Click here](https://github.com/JonnyGamer/SpriteKitTemplate) to download the project template.
 
