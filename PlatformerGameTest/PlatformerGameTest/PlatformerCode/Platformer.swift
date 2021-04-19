@@ -206,3 +206,37 @@ class Inky: MovableSprite, WhenActions2, SKActionable {
 //
 //
 //
+
+class DeadMario: MovableSprite, WhenActions2, SKActionable {
+    static var starterImage: Images = .deadMario
+    static var starterSize: (Int, Int) = (16,16)
+    
+    func whenActions() -> [Whens] {[
+        // Die when off screen
+        .when(.firstTimeOnScreen, doThis: {
+            self.skNode.zPosition = .infinity
+            self.runAction(0, append: [
+                .run {
+                    self.die(killedBy: self)
+                }
+            ])
+            BackgroundMusic.stop()
+            self.run(.sound(.die))
+        }),
+        .setters([
+            .contactDirections([])
+        ])
+    ]}
+    
+    var myActions: [SKAction] = [
+        .sequence([
+            .wait(forDuration: 1),
+            .easeType(curve: .sine, easeType: .out, .moveBy(x: 0, y: 16*4, duration: 0.5)),
+            .easeType(curve: .sine, easeType: .in, .moveTo(y: -100, duration: 1)),
+        ])
+    ]
+    
+    var actionSprite: SKNode = SKSpriteNode()
+}
+
+

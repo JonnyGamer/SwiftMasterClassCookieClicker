@@ -54,6 +54,16 @@ class KoopaShell: MovableSprite, WhenActions2 {
         } else if let foo = this as? MovableSprite {
             self.run(.sound(.kick))
             _ = foo.die(killedBy: self)
+        } else if let foo = this as? ActionSprite {
+            if foo is BrickBox {
+                self.run(.sound(.kick))
+                _ = foo.die(killedBy: self)
+                self.reverseMovement()
+            } else {
+                self.reverseMovement()
+            }
+        } else {
+            self.reverseMovement()
         }
     }
     
@@ -63,15 +73,9 @@ class KoopaShell: MovableSprite, WhenActions2 {
         // If Shell hits a wall, reverse it's movement
         .bumped(.left, doThis: {
             self.smash($0)
-            if $0 as? MovableSprite == nil {
-                self.reverseMovement()
-            }
         }),
         .bumped(.right, doThis: {
             self.smash($0)
-            if $0 as? MovableSprite == nil {
-                self.reverseMovement()
-            }
         }),
         // If Shell falls on any Movable thing.
         .bumped(.down, doThis: {

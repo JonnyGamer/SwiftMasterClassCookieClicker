@@ -232,6 +232,7 @@ class Scene: MagicScene {
     
     
     override func didFinishUpdate() {
+        let d1 = Date().timeIntervalSince1970
         //let foo = DispatchQueue.init(label: "")
         //foo.async { [self] in
         
@@ -385,10 +386,9 @@ class Scene: MagicScene {
         }
         
         //print(d2 - d1)
-        //if d2 - d1 > 0.01 {
-          //  print("HRMPH", d2 - d1)
-        //}
-        //}
+        if Date().timeIntervalSince1970 - d1 > 0.02 {
+            print("HRMPH", Date().timeIntervalSince1970 - d1)
+        }
         
     }
     

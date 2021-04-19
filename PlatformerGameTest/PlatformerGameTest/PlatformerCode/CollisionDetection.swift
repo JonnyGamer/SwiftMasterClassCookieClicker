@@ -18,9 +18,14 @@ extension Scene {
         let superSet = movableSpritesTree.contains(j).union(quadtree.contains(j))
         let d2 = Date.init().timeIntervalSince1970
         //print(d2 - d1)
-//        if d2 - d1 > 0.005 {
-//            print("HRMPHY", superSet.count)
-//        }
+        if d2 - d1 > 0.01 {
+            print("HRMPHY", superSet.count)
+        }
+        defer {
+            if Date.init().timeIntervalSince1970 - d1 > 0.01 {
+                print("HRMPHY", superSet.count)
+            }
+        }
 //        if superSet.count > 10 {
 //            print("HRMPH", superSet)
 //        }
@@ -29,6 +34,8 @@ extension Scene {
             if i === j { continue }
             if i.contactOn.isEmpty { continue }
             if i.dead { continue }
+            if !i.trajectoryX().overlaps(j.trajectoryX()) { print("SKIP"); continue }
+            if !i.trajectoryY().overlaps(j.trajectoryY()) { print("SKIP"); continue }
 
             
             // Falling Down
