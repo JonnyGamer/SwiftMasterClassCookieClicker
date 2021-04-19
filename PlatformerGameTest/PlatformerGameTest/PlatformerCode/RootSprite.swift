@@ -98,6 +98,7 @@ class BasicSprite: Hashable {
     var doThisWhenJumpButtonIsReleased: [() -> ()] = []
     var doThisWhenRightOrLeftIsPressed: [() -> ()] = []
     var doThisWhenNOTRightOrLeftIsPressed: [() -> ()] = []
+    var attachedToButtons = false
     
     // Killing Things
     var doThisWhenKilledObject: [(BasicSprite) -> ()] = []
@@ -275,12 +276,14 @@ class BasicSprite: Hashable {
             s.sprites.remove(self)
             s.movableSprites.remove(self)
             s.actionableSprites.remove(self)
+            s.movableSpritesTree.delete(self)
             a.skNode.removeFromParent();
             //a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         } else if let a = self as? MovableSprite, let s = a.skNode.scene as? Scene {
             s.sprites.remove(self)
             s.movableSprites.remove(self)
             s.actionableSprites.remove(self)
+            s.movableSpritesTree.delete(self)
             a.skNode.removeFromParent()
             //a.skNode.run(.sequence([.fadeAlpha(to: 0.1, duration: 0.1)]))// .removeFromParent()
         }

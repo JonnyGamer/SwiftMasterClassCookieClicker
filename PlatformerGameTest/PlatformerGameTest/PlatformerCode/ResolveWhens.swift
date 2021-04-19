@@ -76,16 +76,20 @@ extension BasicSprite {
             
         case .farOffScreen:do{}
             
+        case .offScreen:
+            guard let foo = (self as? MovableSprite) else { fatalError() }
+            foo.everyFrame.append {
+                if !currentView.intersects(foo.skNode.frame) {
+                    doThis()
+                }
+            }
+            
+        // This is what is causing so much lag.
         case .firstTimeOnScreen:
             if let foo = (self as? MovableSprite) {
                 foo.everyFrame.append {
                     if foo.onScreen { return }
-                    let bounds = foo.skNode.frame
-                    guard var sceneBounds = foo.skNode.scene?.frame else { return }
-                    guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
-                    sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
-
-                    if bounds.intersects(sceneBounds) {
+                    if currentView.intersects(foo.skNode.frame) {
                         foo.onScreen = true
                         doThis()
                     }
@@ -124,18 +128,7 @@ extension BasicSprite {
             foo.doThisWhenNotOnGround.append(doThis)
             everyFrame.append { if foo.onGround.isEmpty { doThis() } }
             
-        case .offScreen:
-            guard let foo = (self as? MovableSprite) else { fatalError() }
-            foo.everyFrame.append {
-                let bounds = foo.skNode.frame
-                guard var sceneBounds = foo.skNode.scene?.frame else { return }
-                guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
-                sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
 
-                if !bounds.intersects(sceneBounds) {
-                    doThis()
-                }
-            }
             
         case .onceEveryNFrames(let frames):
             var framos = 0
@@ -172,10 +165,12 @@ extension BasicSprite {
             
             
         case .notPressingLeftOrRight:
+            attachedToButtons = true
             doThisWhenNOTRightOrLeftIsPressed.append(doThis)
             
         // Edit this one
         case .pressedButtons(let buttons):
+            attachedToButtons = true
             if buttons == [.right, .left] || buttons == [.left, .right] {
                 doThisWhenRightOrLeftIsPressed.append(doThis)
             } else {
@@ -185,6 +180,7 @@ extension BasicSprite {
         //case .jump: doThisWhenJumpButtonIsPressed.append(doThis)
             
         case .pressedButton(let button):
+            attachedToButtons = true
             switch button {
             case .jump: doThisWhenJumpButtonIsPressed.append(doThis)
             case .left: doThisWhenLeftButtonIsPressed.append(doThis)
@@ -192,6 +188,7 @@ extension BasicSprite {
             }
             
         case .releasedButton(let button):
+            attachedToButtons = true
             switch button {
             case .jump: doThisWhenJumpButtonIsReleased.append(doThis)
             default: fatalError("Add your own.")

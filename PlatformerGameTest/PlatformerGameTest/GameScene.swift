@@ -11,6 +11,8 @@ import GameplayKit
 //class GameScene: SKScene {
 //
 //}
+var currentView: CGRect = .zero
+
 extension Scene {
     func add(_ this: BasicSprite) {
         //sprites.insert(this)
@@ -22,11 +24,14 @@ extension Scene {
                 q.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
             }
             
+            movableSpritesTree.insert(s)
         } else if let s = this as? BasicSprite & SKActionable {
             actionableSprites.insert(s)
             addChild(s.skNode)
             addChild(s.actionSprite)
             s.actionSprite.position = CGPoint(x: s.position.x, y: s.position.y)
+            
+            movableSpritesTree.insert(s)
         } else {
             quadtree.insert(this)
         }
@@ -56,6 +61,7 @@ class Scene: MagicScene {
     var movableSprites: Set<BasicSprite> = []
     var sprites: Set<BasicSprite> = []
     var quadtree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
+    var movableSpritesTree: QuadTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
     
     var u = 16 // The unit!
     @discardableResult
@@ -73,6 +79,7 @@ class Scene: MagicScene {
     override func begin() {
         Cash.scene = self
         quadtree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
+        movableSpritesTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
         sprites.removeAll(); movableSprites.removeAll(); actionableSprites.removeAll(); players.removeAll()
         
         if let loadScene = SKScene.init(fileNamed: "1-1") {
@@ -196,13 +203,19 @@ class Scene: MagicScene {
         // Run Camera
         magicCamera.run(.moveTo(x: max(frame.width/2, min(woah.position.x, (massiveWidth.cg*u.cg)-(frame.width/2))), duration: 0.1))
         magicCamera.run(.moveTo(y: max(frame.height/2, min(woah.position.y, (massiveHeight.cg*u.cg)-(frame.height/2))), duration: 0.1))
+        
+        currentView = frame
+        currentView = currentView.offsetBy(dx: magicCamera.position.x - (frame.width/2), dy: magicCamera.position.y - (frame.height/2))
+        //let bounds = foo.skNode.frame
+        //guard var sceneBounds = foo.skNode.scene?.frame else { return }
+        //guard let cameraPos = foo.skNode.scene?.camera?.position else { return }
+        //sceneBounds = sceneBounds.offsetBy(dx: cameraPos.x - (sceneBounds.width/2), dy: cameraPos.y - (sceneBounds.height/2))
     }
     
     
     override func didFinishUpdate() {
-        let d1 = Date.init().timeIntervalSince1970
-        let foo = DispatchQueue.init(label: "")
-        foo.async { [self] in
+        //let foo = DispatchQueue.init(label: "")
+        //foo.async { [self] in
         
         let pressedRight = pressingRight// if pressingRight { doThisWhenRightButtonIsPressed.run() }
         let pressedLeft = pressingLeft// { doThisWhenLeftButtonIsPressed.run() }
@@ -219,75 +232,71 @@ class Scene: MagicScene {
                 }
             }
         }
-        
 
+        var massive = 0
         // Run any `.always` actions
-        for i in movableSprites.union(actionableSprites) {
+        for i in Array(movableSprites) + Array(actionableSprites) {
+            // Maybe try to optimize this line.
             i.everyFrame.run()
+            massive += i.everyFrame.count
             
-            if pressedLeft, pressedRight {
-                // Hahaha. Can't move right and left at the same time ;)
-            } else {
-                if pressedRight { i.doThisWhenRightButtonIsPressed.run() }
-                if pressedLeft { i.doThisWhenLeftButtonIsPressed.run() }
-                if pressedLeft || pressedRight {
-                    i.doThisWhenRightOrLeftIsPressed.run()
+            if i.attachedToButtons {
+                
+                if pressedLeft, pressedRight {
+                    // Hahaha. Can't move right and left at the same time ;)
                 } else {
-                    i.doThisWhenNOTRightOrLeftIsPressed.run()
+                    if pressedRight { i.doThisWhenRightButtonIsPressed.run() }
+                    if pressedLeft { i.doThisWhenLeftButtonIsPressed.run() }
+                    if pressedLeft || pressedRight {
+                        i.doThisWhenRightOrLeftIsPressed.run()
+                    } else {
+                        i.doThisWhenNOTRightOrLeftIsPressed.run()
+                    }
                 }
+                
+                if pressedUp {
+                    i.doThisWhenJumpButtonIsPressed.run()
+                }
+                if releasedUp { i.doThisWhenJumpButtonIsReleased.run() }
+                
             }
             
-            if pressedUp {
-                i.doThisWhenJumpButtonIsPressed.run()
-            }
-            if releasedUp { i.doThisWhenJumpButtonIsReleased.run() }
             
             // Carry things. (Soon: Make this generic enum code as well.)
             // Move with Ground X
             if let j = i as? MovableSprite {
                 for k in j.onGround {
-                    //i.addVelocity(k.velocity)
-                    //i.newPosition(k.position)
-                    //if k as? SKActionable
-                    
-//                    if k as? SKActionable != nil {
-//                        i.addVelocity(k.velocity)
-//                        print("-", i.velocity)
-//                    }
-//                    
-//                    if k as? MovableSprite != nil {
-//                        i.addVelocity(k.velocity)
-//                        print("-", i.velocity)
-//                    }
                     
                     if k.velocity.dx != 0 {
                         let wow = i.previousPosition.x
                         i.position.x += k.velocity.dx
                         i.previousPosition.x = wow
                     }
-                    
-                    //if k.velocity.dy != 0 {
-                      //  i.position.y += k.velocity.dy
-                    //}
-                    
                 }
             }
         }
         
-        
         // Check all Moving Sprites for collisions.
         // Create a Quadtree for Moving Objects
-        let movableSpritesTree = QuadTree.init(self.quadtree.size)
+        //let movableSpritesTree = QuadTree.init(self.quadtree.size)
+        
         for i in self.movableSprites {
             // Insert all Moving Sprites
-            movableSpritesTree.insert(i)
+            if i.velocity != (0,0) {
+                movableSpritesTree.move(i)
+            }
         }
+        
         for i in self.actionableSprites {
-            // Insert all Action Sprites
-            movableSpritesTree.insert(i)
+            // Insert all Moving Action Sprites
+            if i.velocity != (0,0) {
+                movableSpritesTree.move(i)
+            }
         }
         
         for i in self.movableSprites {
+            if i.velocity == (0,0) { continue }
+            if i.contactOn == [] { continue }
             self.checkForCollision(i, movableSpritesTree)
         }
         
@@ -357,13 +366,11 @@ class Scene: MagicScene {
             }
         }
         
-        
-        let d2 = Date.init().timeIntervalSince1970
         //print(d2 - d1)
         //if d2 - d1 > 0.01 {
           //  print("HRMPH", d2 - d1)
         //}
-        }
+        //}
         
     }
     

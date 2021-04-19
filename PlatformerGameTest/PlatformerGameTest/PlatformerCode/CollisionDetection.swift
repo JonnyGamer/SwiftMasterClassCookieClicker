@@ -18,9 +18,12 @@ extension Scene {
         let superSet = movableSpritesTree.contains(j).union(quadtree.contains(j))
         let d2 = Date.init().timeIntervalSince1970
         //print(d2 - d1)
-        if d2 - d1 > 0.01 {
-            print("HRMPH", superSet.count)
-        }
+//        if d2 - d1 > 0.005 {
+//            print("HRMPHY", superSet.count)
+//        }
+//        if superSet.count > 10 {
+//            print("HRMPH", superSet)
+//        }
         
         for i in superSet {//} sprites.shuffled() {
             if i === j { continue }

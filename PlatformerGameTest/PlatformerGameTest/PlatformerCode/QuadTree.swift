@@ -79,7 +79,38 @@ class QuadTree {
 
     init(_ this: CGRect) { size = this }
     
-    func deleteAndReinsert(_ box: BasicSprite) {
+    // NEEDS TESTING
+    func move(_ box: BasicSprite) {
+        delete(box)
+        insert(box)
+    }
+    
+    // NEEDS TESTING
+    func delete(_ box: BasicSprite) {
+        
+        let tX = box.trajectoryX()
+        let tY = box.trajectoryY()
+        
+        if tX.overlaps(size.minX...size.midX) {
+            if tY.overlaps(size.minY...size.midY) {
+                elements.remove(box)
+                qBL?.delete(box)
+            }
+            if tY.overlaps(size.midY...size.maxY) {
+                elements.remove(box)
+                qTL?.delete(box)
+            }
+        }
+        if tX.overlaps(size.midX...size.maxX) {
+            if tY.overlaps(size.minY...size.midY) {
+                elements.remove(box)
+                qBR?.delete(box)
+            }
+            if tY.overlaps(size.midY...size.maxY) {
+                elements.remove(box)
+                qTR?.delete(box)
+            }
+        }
         
     }
 
