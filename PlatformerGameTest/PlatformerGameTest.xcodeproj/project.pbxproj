@@ -39,6 +39,8 @@
 		1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24392624B98E00446341 /* RootSprite.swift */; };
 		1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF243F2624C3FD00446341 /* QuadTree.swift */; };
 		1BDF24462626430700446341 /* CollisionDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDF24452626430700446341 /* CollisionDetection.swift */; };
+		1BF11C6D262E0DD900E9765D /* overworld-theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1BF11C6C262E0DD900E9765D /* overworld-theme.mp3 */; };
+		1BF11C70262E0FBA00E9765D /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF11C6F262E0FBA00E9765D /* Sounds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		1BDF24392624B98E00446341 /* RootSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSprite.swift; sourceTree = "<group>"; };
 		1BDF243F2624C3FD00446341 /* QuadTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTree.swift; sourceTree = "<group>"; };
 		1BDF24452626430700446341 /* CollisionDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetection.swift; sourceTree = "<group>"; };
+		1BF11C6C262E0DD900E9765D /* overworld-theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "overworld-theme.mp3"; sourceTree = "<group>"; };
+		1BF11C6F262E0FBA00E9765D /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,7 @@
 				1B349DF2262B9D8000B655EF /* smb_bowserfire.wav */,
 				1B349DEC262B9D8000B655EF /* smb_die.wav */,
 				1B349E01262BA33E00B655EF /* break.wav */,
+				1BF11C6C262E0DD900E9765D /* overworld-theme.mp3 */,
 				1B349DF0262B9D8000B655EF /* smb_fireball.wav */,
 				1B349DF3262B9D8000B655EF /* smb_flagpole.wav */,
 				1B349DEF262B9D8000B655EF /* smb_gameover.wav */,
@@ -167,6 +172,7 @@
 				1BDF243F2624C3FD00446341 /* QuadTree.swift */,
 				1BDF24452626430700446341 /* CollisionDetection.swift */,
 				1BBB723226289E81002CE1A6 /* SKEase.swift */,
+				1BF11C6F262E0FBA00E9765D /* Sounds.swift */,
 			);
 			path = PlatformerCode;
 			sourceTree = "<group>";
@@ -228,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BF11C6D262E0DD900E9765D /* overworld-theme.mp3 in Resources */,
 				1BAF6A33262A171D00BF5AED /* MyTileSet.sks in Resources */,
 				1B349DE4262B9C8D00B655EF /* flagpole.wav in Resources */,
 				1B349DF8262B9D8000B655EF /* smb_die.wav in Resources */,
@@ -262,6 +269,7 @@
 				1BDF24212624B61500446341 /* ViewController.swift in Sources */,
 				1BDF241F2624B61500446341 /* GameScene.swift in Sources */,
 				1BDF243A2624B98E00446341 /* RootSprite.swift in Sources */,
+				1BF11C70262E0FBA00E9765D /* Sounds.swift in Sources */,
 				1BDF24372624B97D00446341 /* ResolveWhens.swift in Sources */,
 				1BBB723326289E81002CE1A6 /* SKEase.swift in Sources */,
 				1BDF24402624C3FD00446341 /* QuadTree.swift in Sources */,

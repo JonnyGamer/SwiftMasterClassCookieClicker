@@ -52,8 +52,6 @@ class MagicScene: SKScene {
 class Scene: MagicScene {
     var magicCamera: SKCameraNode = .init()
     
-
-    
     var players: [BasicSprite] = []
     var woah: SKNode!
     
@@ -77,6 +75,14 @@ class Scene: MagicScene {
     var massiveWidth = 0
     
     override func begin() {
+        print("REBEGIN?")
+        removeAction(forKey: "song")
+        
+        BackgroundMusic.stop()
+        BackgroundMusic.play(.overworldTheme)
+        //run( .sequence([.wait(forDuration: 1), .repeatForever(.playSoundFileNamed("overworld-theme", waitForCompletion: true))]), withKey: "song")
+        
+        
         Cash.scene = self
         quadtree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
         movableSpritesTree = QuadTree.init(.init(x: -5120, y: -5120, width: 10240, height: 10240))
@@ -190,7 +196,7 @@ class Scene: MagicScene {
                 releasingUp = false
                 removeAllActions()
                 removeAllChildren()
-                didMove(to: view!)
+                begin()
                 return
             }
             

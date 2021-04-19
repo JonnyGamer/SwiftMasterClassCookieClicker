@@ -174,6 +174,7 @@ class DeadMario: MovableSprite, Spriteable, SKActionable {
                     self.die(killedBy: self)
                 }
             ])
+            BackgroundMusic.stop()
             self.run(.playSoundFileNamed("death.wav", waitForCompletion: false))
             
         }),
