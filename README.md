@@ -1,6 +1,6 @@
 # Template Proeject
 
-[Visit here](https://github.com/JonnyGamer/SpriteKitTemplate) to download the project template.
+[Click here](https://github.com/JonnyGamer/SpriteKitTemplate) to download the project template.
 
 # Swift Master Class Projects
 
