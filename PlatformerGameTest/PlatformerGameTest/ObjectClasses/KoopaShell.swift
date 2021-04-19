@@ -84,6 +84,10 @@ class KoopaShell: MovableSprite, WhenActions2 {
             }
         }),
         
+        .killedBy({_ in 
+            self.spawnObject(DeadKoopa.self, location: self.position)
+        }),
+        
         
         // If Mario uses Goomba like a ? Box
         .wasBumpedBy(.up, doThis: {
@@ -104,17 +108,21 @@ class KoopaShell: MovableSprite, WhenActions2 {
         
         // If Mario walks into Koopa Shell, he kicks it.
         .wasBumpedBy(.left, doThis: {
-            if !self.moving, let mario = $0 as? Inky {
-                self.startMoving(.left)
-                mario.willStopMoving(self, .left)
+            if !self.moving {
+                if let mario = $0 as? Inky {
+                    self.startMoving(.left)
+                    mario.willStopMoving(self, .left)
+                }
             } else {
                 $0.die(killedBy: self)
             }
         }),
         .wasBumpedBy(.right, doThis: {
-            if !self.moving, let mario = $0 as? Inky {
-                self.startMoving(.right)
-                mario.willStopMoving(self, .right)
+            if !self.moving {
+                if let mario = $0 as? Inky {
+                    self.startMoving(.right)
+                    mario.willStopMoving(self, .right)
+                }
             } else {
                 $0.die(killedBy: self)
             }
