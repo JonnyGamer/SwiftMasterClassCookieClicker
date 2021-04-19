@@ -10,7 +10,7 @@ Project 1 - [Coockie Clicker](/CookieClicker.md)
 Project 2 - [Memory Matching Game](/BirthdayGame.md)  
 Project 3 - [Flappy Bird](/FlappyBirdMacOS)  
 Project 4 - [Pong](/Pong)  
-Project 5 - [Your First Platformer](/PlatformerWithAlek)
+Project 5 - [Your First Platformer](/PlatformerWithAlek)  
 Project 6 - [Baba is You](/BabaIsYou)  
 Project 7 - [Dungeon Crawler](/DungeonCrawler)  
 
