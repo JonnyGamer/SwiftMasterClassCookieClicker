@@ -106,7 +106,8 @@ class Scene: MagicScene {
                 guard let tileNode = i as? SKTileMapNode else { fatalError() }
                 guard let tileName = i.name else { fatalError() }
                 assert(tileNode.tileSize.width == tileNode.tileSize.height)
-                u = Int(tileNode.tileSize.width)
+                tileNode.setScale(u.cg / tileNode.tileSize.width)
+                //u = Int(tileNode.tileSize.width)
 
                 let numberOfColumns = tileNode.numberOfColumns
                 let numberOfRows = tileNode.numberOfRows
