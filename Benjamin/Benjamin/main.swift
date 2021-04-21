@@ -59,7 +59,7 @@ struct War {
     
     var players: [Int:[Card]] = [:]
     
-    init() {
+    init(_ playersIn: Int) {
         print("Let's begin!")
         
         // Build the deck of 52 Cards
@@ -74,26 +74,49 @@ struct War {
         deck.shuffle()
         
         // How many players are playing?
-        let numberOfPlayers = 2
-        for i in 0..<numberOfPlayers {
+        let numberOfPlayers = playersIn
+        for i in 1...numberOfPlayers {
             players[i] = []
         }
         
         // Deal the cards!
         deal: while true {
-            for i in 0..<numberOfPlayers {
+            for i in 1...numberOfPlayers {
                 if deck.isEmpty { break deal }
                 players[i]!.append(deck.removeFirst())
             }
         }
     }
     
+    var numberOfRounds = 0
     mutating func round() {
-        
+        //print(players.reduce(into: 0) { $0 += $1.value.count })
+        numberOfRounds += 1
+        reveal(players.map { $0.key }, [])
+        gameOver()
+        if players.count == 1 {
+            print("Player", players.first!.key, "won the game!")
+            print("The game lasted", numberOfRounds, "rounds.")
+            print("There were", amountOfTies, "ties.")
+            print(players.first!.value.count)
+        }
     }
     
+    mutating func play() {
+        while players.count > 1 {
+            round()
+        }
+    }
     
-    mutating func reveal() {
+    mutating func gameOver() {
+        for player in players {
+            if player.value.isEmpty {
+                players[player.key] = nil
+            }
+        }
+    }
+    
+    mutating func reveal(_ playerToReveal: [Int],_ oldPot: [Card]) {
         
         // Everyone reveals a card
         var revealedCards : [Int:Card] = [:]
@@ -120,40 +143,88 @@ struct War {
             for (_, card) in revealedCards {
                 players[playerThatWon]!.append(card)
             }
+            players[playerThatWon]! += oldPot
             
         } else {
             // More than 1
+            tie(highestCards, oldPot)
         }
     }
     
-    
-    mutating func tie(_ tiedPlayers: [(Int, Card)]) {
+    var amountOfTies = 0
+    mutating func tie(_ tiedPlayers: [(Int, Card)],_ oldPot: [Card]) {
+        amountOfTies += 1
         
-        var playersStillIn: [(Int, Card)] = []
-        var pot: [Card] = []
+        var playersStillIn: [Int] = []
+        var pot: [Card] = oldPot
         
         for (player, _) in tiedPlayers {
             if players[player]!.count >= 4 {
-                
                 // Recursion Time
+                pot.append(players[player]!.removeFirst())
+                pot.append(players[player]!.removeFirst())
+                pot.append(players[player]!.removeFirst())
+                playersStillIn.append(player)
                 
             } else {
                 // Game Over
                 pot += players[player]!
                 players[player] = nil
+                print("Forgetting", players[player], "cards")
             }
-            
         }
         
+        if !playersStillIn.isEmpty {
+            reveal(playersStillIn, pot + tiedPlayers.map { $0.1 })
+        }
         
+    }
+    
+    
+    
+    
+}
+
+
+var averageRounds = 0
+var averageTies = 0
+var mostRounds = 0
+var mostTies = 0
+let games = 1_000_000
+
+for i in 1...games {
+    print(i)
+    
+    var war = War(2)
+    war.play()
+    
+    averageRounds += war.numberOfRounds
+    averageTies += war.amountOfTies
+    
+    if mostRounds < war.numberOfRounds {
+        mostRounds = war.numberOfRounds
+    }
+    
+    if mostTies < war.amountOfTies {
+        mostTies = war.amountOfTies
     }
     
 }
 
-let war = War()
-
+print("Average Round Length", Double(averageRounds) / Double(games))
+print("Average Number of Ties", Double(averageTies) / Double(games))
+print("Record Game Length:", mostRounds)
+print("Record Number of Ties:", mostTies)
 
 
 
 
 // Arena 10 has my finished project
+
+// RECORD: 7799
+// 16_232
+
+// Round: 17718
+// Ties: 165
+
+// Record: 90,006
