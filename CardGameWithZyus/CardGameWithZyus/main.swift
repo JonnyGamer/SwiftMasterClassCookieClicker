@@ -164,5 +164,17 @@ struct War {
     
 }
 
-var game = War()
-game.play()
+//var game = War()
+//game.play()
+
+var averageRounds = 0
+
+for i in 1...1000 {
+    print(i)
+    
+    var war = War()
+    war.play()
+    
+    averageRounds += war.numberOfRounds
+}
+print("Average Number of Rounds:", Double(averageRounds) / 100)

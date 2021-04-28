@@ -121,7 +121,10 @@ struct War {
         // Everyone reveals a card
         var revealedCards : [Int:Card] = [:]
         for i in players {
-            revealedCards[i.key] = players[i.key]!.removeFirst()
+            // BUGFIX
+            if players[i.key]?.isEmpty == false {
+                revealedCards[i.key] = players[i.key]!.removeFirst()
+            }
         }
         
         // Find out who has the highest card
@@ -190,12 +193,12 @@ var averageRounds = 0
 var averageTies = 0
 var mostRounds = 0
 var mostTies = 0
-let games = 1_000_000
+let games = 1_000
 
 for i in 1...games {
     print(i)
     
-    var war = War(2)
+    var war = War(7)
     war.play()
     
     averageRounds += war.numberOfRounds
