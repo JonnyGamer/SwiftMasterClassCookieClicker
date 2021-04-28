@@ -1,11 +1,14 @@
-//
-//  main.swift
-//  ClassWithJared
-//
-//  Created by Jonathan Pappas on 4/28/21.
-//
 
-import Foundation
+let password = "1234"
 
-print("Hello, World!")
+if password == "1234" {
+    print("Unlock the computer")
+} else {
+    print("You typed the wrong password")
+}
+
+
+
+
+
 
