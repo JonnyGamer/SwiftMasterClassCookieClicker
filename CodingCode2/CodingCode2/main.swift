@@ -17,6 +17,15 @@ let masterStack = SuperStack()
 
 let preProgram: [StackCode] = [
     
+    // Int Function
+    .functionWithParams(name: "int", parameters: .any, returnType: .int, code: { param in [
+        .literal(.int, Int("\(param[0])") ?? 0),
+    ]}),
+    // Str Function
+    .functionWithParams(name: "str", parameters: .any, returnType: .str, code: { param in [
+        .literal(.str, "\(param[0])"),
+    ]}),
+    
     // Add Function
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
         .literal(.int, (int(param[0]) + int(param[1]))),
