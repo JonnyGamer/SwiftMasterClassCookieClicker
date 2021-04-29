@@ -13,7 +13,7 @@ indirect enum StackCode {
     case returnValue([(MagicTypes, Any)])
     
     case goToVoidFunction(name: String)
-    case goToFunction(name: String, parameters: [(MagicTypes, StackCode)])
+    case goToFunction(name: String, parameters: [StackCode]) // case goToFunction(name: String, parameters: [(MagicTypes, StackCode)])
     case function(name: String, code: [StackCode])
     
     case literal(MagicTypes, Any)
@@ -42,11 +42,15 @@ extension Array where Element == StackCode {
             case let .goToFunction(name: nam, parameters: param):
                 if let found = stack.findFunction(name: nam) {
                     
-                    let givenParamType = MagicTypes.tuple(param.map { $0.0 })
+                    let realStuff = param.map { [$0].run(stack.subStack())[0] }
+                    let givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                    
                     if found.parameters != givenParamType {
                         print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
                     } else {
-                        let params = param.map { i in [i.1].run(stack.subStack())[0].1 }
+                        //let params = param.map { i in [i.1].run(stack.subStack())[0].1 }
+                        let params = realStuff.map { $0.1 }
+                        
                         let result = found.code(params).run(stack.subStack())
                         //print("---,", result)
                         if !result.isEmpty {

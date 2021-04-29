@@ -55,14 +55,14 @@ let shortProgram: [StackCode] = [
     ]),
     
     .goToVoidFunction(name: "bar"),
-    .program({ print("End of Program...") }),
+    .goToFunction(name: "print", parameters: [.literal(.str, "End of Program...")]),
     
-    .goToFunction(name: "print", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]),
+    .goToFunction(name: "print", parameters: [.literal(.int, 5), .literal(.int, 6)]),
     
     // print(add(5, 6))
-    .goToFunction(name: "print", parameters: [(.int, .goToFunction(name: "add", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]))]),
+    .goToFunction(name: "print", parameters: [.goToFunction(name: "add", parameters: [.literal(.int, 5), .literal(.int, 6)])]),
     
-    .goToFunction(name: "print", parameters: [(.int, .literal(.int, 5))])
+    .goToFunction(name: "print", parameters: [.literal(.int, 5)])
     
 ]
 
