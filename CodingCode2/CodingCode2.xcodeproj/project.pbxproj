@@ -17,6 +17,7 @@
 		1BCEF67F263B39B300DB603B /* StackCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF66B263B38D900DB603B /* StackCode.swift */; };
 		1BCEF681263B39B300DB603B /* MagicTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF669263B38C900DB603B /* MagicTypes.swift */; };
 		1BCEF682263B39B800DB603B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF662263B1EDE00DB603B /* main.swift */; };
+		1BCEF685263B651300DB603B /* StringParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF684263B651300DB603B /* StringParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		1BCEF675263B395700DB603B /* CodingCode2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodingCode2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BCEF677263B395700DB603B /* CodingCode2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingCode2Tests.swift; sourceTree = "<group>"; };
 		1BCEF679263B395700DB603B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BCEF684263B651300DB603B /* StringParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				1BCEF66B263B38D900DB603B /* StackCode.swift */,
 				1BCEF66D263B38E800DB603B /* TheStack.swift */,
 				1BCEF66F263B38FC00DB603B /* Extensions.swift */,
+				1BCEF684263B651300DB603B /* StringParser.swift */,
 			);
 			path = CodingCode2;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				1BCEF670263B38FC00DB603B /* Extensions.swift in Sources */,
 				1BCEF682263B39B800DB603B /* main.swift in Sources */,
 				1BCEF66E263B38E800DB603B /* TheStack.swift in Sources */,
+				1BCEF685263B651300DB603B /* StringParser.swift in Sources */,
 				1BCEF66C263B38D900DB603B /* StackCode.swift in Sources */,
 				1BCEF66A263B38C900DB603B /* MagicTypes.swift in Sources */,
 			);

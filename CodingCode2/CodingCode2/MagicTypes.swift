@@ -24,6 +24,7 @@ enum MagicTypes: Hashable, Equatable {
         // Check indices of tuples to check for `any` downcasts. Because it is indirect.
         case let (.tuple(t1), .tuple(t2)): return t1 == t2
         case let (.array(t1), .array(t2)): return t1 == t2
+        case (.void, .tuple([])), (.tuple([]), .void): return true
             
         default: break
         }

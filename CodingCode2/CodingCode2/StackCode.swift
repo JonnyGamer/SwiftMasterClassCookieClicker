@@ -23,15 +23,41 @@ indirect enum StackCode {
     
     case literal(MagicTypes, Any)
     case functionWithParams(name: String, parameters: MagicTypes, returnType: MagicTypes, code: ([Any]) -> [StackCode])
+    
+    case createValue(name: String, constant: Bool, setTo: [StackCode])
+    case mutateValue(name: String, setTo: [StackCode])
+    case getValue(name: String)
 }
 
 extension Array where Element == StackCode {
     
     @discardableResult
-    func run(_ stack: SuperStack = SuperStack()) -> (MagicTypes, [Any])? {
+    func run(_ stack: SuperStack = SuperStack()) -> (MagicTypes, [Any]) {
         for line in self {
             
             switch line {
+            
+            case let .createValue(name: nam, constant: con, setTo: set):
+                if stack.values[nam] == nil {
+                    let res = set.run(stack.subStack())
+                    stack.values[nam] = (res.0, con, res.1[0])
+                } else {
+                    fatalError("Could not create value.")
+                }
+            
+            case let .mutateValue(name: nam, setTo: set):
+                if stack.getValue(name: nam)?.constant == true {
+                    fatalError("lets are immutable")
+                } else {
+                    stack.editValue(name: nam, setTo: set.run(stack.subStack()).1[0])
+                }
+                
+            case let .getValue(name: nam):
+                if let foo = stack.getValue(name: nam) {
+                    return (foo.typeOf, [foo.value])
+                }
+                fatalError("Could not find value: \(nam)")
+            
             case let .run(code):
                 code.run(stack.subStack())
                 
@@ -44,10 +70,11 @@ extension Array where Element == StackCode {
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
+                //return (.void, [()])
             
             case let .goToFunction(name: nam, parameters: param):
                 
-                let realStuff = param.map { [$0].run(stack.subStack())! } // param.run(stack.subStack())!
+                let realStuff = param.map { [$0].run(stack.subStack()) } // param.run(stack.subStack())!
                 
                 let willItBeTuple = realStuff.map { $0.0 }
                 var givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
@@ -68,16 +95,21 @@ extension Array where Element == StackCode {
                         
                         let result = found.code(params).run(stack.subStack())
                         //print("---,", result)
-                        if let r = result {
+                        if result.0 != .void {
                             if stack.aboveStack == nil { continue } // Can't return a result at the top stack. Just ignore
-                            return r
+                            return result
                         }
                     }
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
+                
+                //return (.void, [()])
+                //print("Finished running some function")
+                
             case let ._run(b, c):
-                if let easy = [StackCode.goToFunction(name: b.rawValue, parameters: c)].run(stack) {
+                let easy = [StackCode.goToFunction(name: b.rawValue, parameters: c)].run(stack)
+                if easy.0 != .void {
                     return easy
                 }
                 
@@ -106,10 +138,11 @@ extension Array where Element == StackCode {
                 
             case let .returnValue(ret):
                 return [ret].run(stack)
-            case let .literal(typ, lit): return (typ, [lit])
+            case let .literal(typ, lit):
+                return (typ, [lit])
                 
             }
         }
-        return nil
+        return (.void, [()])
     }
 }

@@ -13,7 +13,7 @@ func int(_ n: Any) -> Int {
 }
 
 // Extremely Magical Printing
-func magicPrint(_ this: [Any], testing: Bool = true) {
+func magicPrint(_ this: [Any], testing: Bool = false) {
     if testing { print(" - TEST PRINT -", terminator: " ") }
     this.forEach { print($0, separator: "", terminator: " ") }
     print("\n", terminator: "")

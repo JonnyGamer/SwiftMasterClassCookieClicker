@@ -7,15 +7,6 @@
 
 import Foundation
 
-let mindShield = """
-var foo: int = 1
-foo = add(foo, 1)
-
-func sub (int, int) -> int:
-    negative(add($0, $1))
-
-"""
-
 let masterStack = SuperStack()
 
 let preProgram: [StackCode] = [
@@ -61,8 +52,8 @@ let preProgram: [StackCode] = [
     ]}),
     
     // Len Function
-    .functionWithParams(name: "len", parameters: .array(.int), returnType: .int, code: { param in [
-        .literal(.int, (param[0] as! [Int]).count ),
+    .functionWithParams(name: "len", parameters: .array(.any), returnType: .int, code: { param in [
+        .literal(.int, (param[0] as! [Any]).count ),
     ]}),
     // Len Function
     .functionWithParams(name: "len", parameters: .str, returnType: .int, code: { param in [
@@ -83,17 +74,18 @@ let preProgram: [StackCode] = [
 ]
 preProgram.run(masterStack)
 
+mindShield.runProgram(masterStack)
 
 
 
 let shortProgram: [StackCode] = [
 
+    .program({ print("\n\n\nStarting NEW Program...") }),
     
     .function(name: "foo", code: [
         .program({ print("Foo was ran! Start") }),
     ]),
     
-    .program({ print("Starting Program...") }),
     .goToVoidFunction(name: "foo"),
     
     .run([
@@ -107,8 +99,8 @@ let shortProgram: [StackCode] = [
     ]),
     
     .goToVoidFunction(name: "bar"),
-    .goToFunction(name: "print", parameters: [.literal(.str, "End of Program...")]),
     
+    .goToFunction(name: "print", parameters: [.literal(.int, 5), .literal(.int, 6)]),
     .goToFunction(name: "print", parameters: [.literal(.int, 5), .literal(.int, 6)]),
     
     // print(add(5, 6))
@@ -128,7 +120,9 @@ let shortProgram: [StackCode] = [
     ._run(.print, [._run(.len, [.literal(.str, "12345")])]),
     
     ._run(.print, [._run(.sub, [.literal(.int, 5), .literal(.int, 5)])]),
-    ._run(.print, [._run(.add, [.literal(.array(.int), [1, 2, 3]), .literal(.array(.int), ["hello"])]),])
+    ._run(.print, [._run(.add, [.literal(.array(.int), [1, 2, 3]), .literal(.array(.int), ["hello"])]),]),
+    
+    .goToFunction(name: "print", parameters: [.literal(.str, "End of amazing Program...")]),
     
 ]
 

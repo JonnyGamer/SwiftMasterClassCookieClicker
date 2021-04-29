@@ -41,17 +41,38 @@ class CodingCode2Tests: XCTestCase {
             ]}),
             
             .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
-                .program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
-                .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
+                .literal(.int, (int(param[0]) + int(param[1])))
             ]}),
             
-            .goToFunction(name: "print", parameters: [(.int, .goToFunction(name: "add", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]))]),   
+            ._run(.print, [._run(.add, [.literal(.int, 5), .literal(.int, 6)])])
         ]
 
         shortProgram.run()
         XCTAssert(saved == 5 + 6)
-
-        
     }
 
+    
+    func test2() {
+        
+        var saved = 0
+        let shortProgram: [StackCode] = [
+            
+            .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
+                .literal(.int, (int(param[0]) + int(param[1])))
+            ]}),
+            .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in [
+                .program({ magicPrint(param) }),
+                .program({ saved = int(param[0]) }),
+            ]}),
+            
+            .createValue(name: "foo", constant: false, setTo: [.literal(.int, 1)]),
+            ._run(.print, [.getValue(name: "foo")]),
+            .mutateValue(name: "foo", setTo: [._run(.add, [.getValue(name: "foo"), .literal(.int, 1)])]),
+            ._run(.print, [.getValue(name: "foo")]),
+        ]
+
+        shortProgram.run()
+        XCTAssert(saved == 2)
+    }
+    
 }
