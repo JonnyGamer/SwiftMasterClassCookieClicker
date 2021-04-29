@@ -33,6 +33,12 @@ let preProgram: [StackCode] = [
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
         .literal(.int, (int(param[0]) + int(param[1]))),
     ]}),
+    // Add Function
+    .functionWithParams(name: "add", parameters: .tuple([.array(.any), .array(.any)]), returnType: .array(.any), code: { param in [
+        .literal(.array(.any), (param[0] as! Array<Any>) + (param[1] as! Array<Any>) ),
+    ]}),
+    
+    
     // Neg Function
     .functionWithParams(name: "neg", parameters: .int, returnType: .int, code: { param in [
         .literal(.int, -int(param[0])),
@@ -40,6 +46,12 @@ let preProgram: [StackCode] = [
     // Sub Function
     .functionWithParams(name: "sub", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
         ._run(.add, [.literal(.int, param[0]), ._run(.neg, [.literal(.int, param[1])])])
+    ]}),
+    .functionWithParams(name: "times", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
+        .literal(.int, (int(param[0]) * int(param[1]))),
+    ]}),
+    .functionWithParams(name: "div", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
+        .literal(.int, (int(param[0]) / int(param[1]))),
     ]}),
     
     
@@ -116,6 +128,7 @@ let shortProgram: [StackCode] = [
     ._run(.print, [._run(.len, [.literal(.str, "12345")])]),
     
     ._run(.print, [._run(.sub, [.literal(.int, 5), .literal(.int, 5)])]),
+    ._run(.print, [._run(.add, [.literal(.array(.int), [1, 2, 3]), .literal(.array(.int), ["hello"])]),])
     
 ]
 
