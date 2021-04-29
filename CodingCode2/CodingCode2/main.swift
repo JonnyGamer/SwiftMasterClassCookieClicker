@@ -7,23 +7,35 @@
 
 import Foundation
 
+let mindShield = """
+var foo: int = 1
+foo = add(foo, 1)
 
-let shortProgram: [StackCode] = [
+"""
+
+let masterStack = SuperStack()
+
+let preProgram: [StackCode] = [
     
+    // Add Function
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
-        .program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
+        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
         .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
     ]}),
     
-    .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in
-        [
-            .program({ magicPrint(param) }),
-            .returnValue([(.void, ())]),
-            .program({ magicPrint(param) }),
-            .program({ magicPrint(param) }),
-        ]
-    }),
+    // Print Function
+    .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in [
+        .program({ magicPrint(param) }),
+    ]}),
     
+]
+preProgram.run(masterStack)
+
+
+
+
+let shortProgram: [StackCode] = [
+
     
     .function(name: "foo", code: [
         .program({ print("Foo was ran! Start") }),
@@ -50,7 +62,8 @@ let shortProgram: [StackCode] = [
     // print(add(5, 6))
     .goToFunction(name: "print", parameters: [(.int, .goToFunction(name: "add", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]))]),
     
+    .goToFunction(name: "print", parameters: [(.int, .literal(.int, 5))])
     
 ]
 
-shortProgram.run()
+shortProgram.run(masterStack)
