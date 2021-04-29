@@ -8,7 +8,7 @@
 import Foundation
 
 enum BuiltInFunctions: String {
-    case print, add, sum
+    case print, add, sum, triangle, len
 }
 
 indirect enum StackCode {
@@ -39,29 +39,24 @@ extension Array where Element == StackCode {
                 code()
                 
             case let .goToVoidFunction(name: nam):
-                if let found = stack.findFunction(name: nam) {
+                if let found = stack.findFunction(name: nam, paramType: .void) {
                     found.code([]).run(stack.subStack())
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
             
             case let .goToFunction(name: nam, parameters: param):
-                if let found = stack.findFunction(name: nam) {
-                    
-                    let realStuff = param.map { [$0].run(stack.subStack())! } // param.run(stack.subStack())!
-                    
-                    let willItBeTuple = realStuff.map { $0.0 }
-                    var givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
-                    if willItBeTuple.count == 1 {
-                        givenParamType = willItBeTuple[0]
-                    }
-                    
-                    let results = realStuff.map { $0.1[0] }
-                    
-                    //let realStuff = param.map { [$0].run(stack.subStack())! }
-                    
-                    //let realStuff = param.map { [$0].run(stack.subStack())[0] }
-                    //let givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                
+                let realStuff = param.map { [$0].run(stack.subStack())! } // param.run(stack.subStack())!
+                
+                let willItBeTuple = realStuff.map { $0.0 }
+                var givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                if willItBeTuple.count == 1 {
+                    givenParamType = willItBeTuple[0]
+                }
+                let results = realStuff.map { $0.1[0] }
+                
+                if let found = stack.findFunction(name: nam, paramType: givenParamType) {
                     
                     if found.parameters != givenParamType {
                         print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
@@ -87,10 +82,27 @@ extension Array where Element == StackCode {
                 }
                 
             case let .function(name: nam, code: code):
-                stack.functions[nam] = (.tuple([]), .void, {_ in code})
+                if stack.functions[nam] == nil {
+                    stack.functions[nam] = []
+                }
+                
+                if stack.functions[nam]?.contains(where: { $0.parameters == .void }) == true {
+                    fatalError("Oops, There is already a function with that name with matching parameters!")
+                }
+                
+                stack.functions[nam]?.append((.tuple([]), .void, {_ in code}))
                 
             case let .functionWithParams(name: nam, parameters: param, returnType: ret, code: code):
-                stack.functions[nam] = (param, ret, code)
+                
+                if stack.functions[nam] == nil {
+                    stack.functions[nam] = []
+                }
+                
+                if stack.functions[nam]?.contains(where: { $0.parameters == param }) == true {
+                    fatalError("Oops, There is already a function with that name with matching parameters!")
+                }
+                
+                stack.functions[nam]?.append((param, ret, code))
                 
             case let .returnValue(ret):
                 return [ret].run(stack)

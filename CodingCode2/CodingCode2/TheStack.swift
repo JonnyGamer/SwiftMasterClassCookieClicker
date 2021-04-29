@@ -10,13 +10,13 @@ import Foundation
 typealias FunctionType = (parameters: MagicTypes, returnType: MagicTypes, code: ([Any]) -> [StackCode] )
 
 class SuperStack {
-    var functions: [String:FunctionType] = [:]
+    var functions: [String:[FunctionType]] = [:]
     
     var aboveStack: SuperStack?
     init(higherStack: SuperStack? = nil) { aboveStack = higherStack }
     
-    func findFunction(name: String) -> FunctionType? {
-        return functions[name] ?? aboveStack?.findFunction(name: name)
+    func findFunction(name: String, paramType: MagicTypes) -> FunctionType? {
+        return functions[name]?.first(where: { $0.parameters == paramType }) ?? aboveStack?.findFunction(name: name, paramType: paramType)
     }
     func subStack() -> SuperStack {
         return SuperStack(higherStack: self)

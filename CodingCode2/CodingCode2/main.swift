@@ -24,8 +24,22 @@ let preProgram: [StackCode] = [
     
     // Sum Function
     .functionWithParams(name: "sum", parameters: .array(.int), returnType: .int, code: { param in [
-        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
         .literal(.int, (param[0] as! [Int]).reduce(0, { $0 + int($1) }) ),
+    ]}),
+    
+    // Len Function
+    .functionWithParams(name: "len", parameters: .array(.int), returnType: .int, code: { param in [
+        .literal(.int, (param[0] as! [Int]).count ),
+    ]}),
+    // Len Function
+    .functionWithParams(name: "len", parameters: .str, returnType: .int, code: { param in [
+        .literal(.int, (param[0] as! String).count ),
+    ]}),
+    
+    
+    // Triangle Number Function
+    .functionWithParams(name: "triangle", parameters: .int, returnType: .array(.int), code: { param in [
+        .literal(.array(.int), Array(1...int(param[0])))
     ]}),
     
     // Print Function
@@ -74,6 +88,11 @@ let shortProgram: [StackCode] = [
     ._run(.print, [._run(.add, [._run(.add, [.literal(.int, 5), .literal(.int, 5)]), ._run(.add, [.literal(.int, 5), .literal(.int, 5)])])]),
     
     ._run(.print, [._run(.sum, [.literal(.array(.int), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])])]),
+    ._run(.print, [._run(.triangle, [.literal(.int, 100)])]),
+    
+    // print(len(triangle(100)))
+    ._run(.print, [._run(.len, [._run(.triangle, [.literal(.int, 100)])])]),
+    ._run(.print, [._run(.len, [.literal(.str, "12345")])]),
     
 ]
 
