@@ -8,7 +8,7 @@
 import Foundation
 
 enum BuiltInFunctions: String {
-    case print, add, sum, triangle, len, int, str
+    case print, add, sum, triangle, len, int, str, neg, sub
 }
 
 indirect enum StackCode {

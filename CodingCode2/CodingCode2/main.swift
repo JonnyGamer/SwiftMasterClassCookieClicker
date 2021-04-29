@@ -11,6 +11,9 @@ let mindShield = """
 var foo: int = 1
 foo = add(foo, 1)
 
+func sub (int, int) -> int:
+    negative(add($0, $1))
+
 """
 
 let masterStack = SuperStack()
@@ -30,6 +33,15 @@ let preProgram: [StackCode] = [
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
         .literal(.int, (int(param[0]) + int(param[1]))),
     ]}),
+    // Neg Function
+    .functionWithParams(name: "neg", parameters: .int, returnType: .int, code: { param in [
+        .literal(.int, -int(param[0])),
+    ]}),
+    // Sub Function
+    .functionWithParams(name: "sub", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
+        ._run(.add, [.literal(.int, param[0]), ._run(.neg, [.literal(.int, param[1])])])
+    ]}),
+    
     
     // Sum Function
     .functionWithParams(name: "sum", parameters: .array(.int), returnType: .int, code: { param in [
@@ -102,6 +114,8 @@ let shortProgram: [StackCode] = [
     // print(len(triangle(100)))
     ._run(.print, [._run(.len, [._run(.triangle, [.literal(.int, 100)])])]),
     ._run(.print, [._run(.len, [.literal(.str, "12345")])]),
+    
+    ._run(.print, [._run(.sub, [.literal(.int, 5), .literal(.int, 5)])]),
     
 ]
 
