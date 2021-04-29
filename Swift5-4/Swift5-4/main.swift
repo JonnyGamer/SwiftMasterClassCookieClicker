@@ -53,22 +53,22 @@ extension Reference where T: Numeric {
 
 
 @propertyWrapper
-struct WOWOW<T> {
-    var value: Reference<T>
-    var wrappedValue: Reference<T> {
-        get { value }
-        set { value = newValue }
+class WOWOW<T> {
+    var value: UnsafeMutablePointer<T>
+    var wrappedValue: T {
+        get { value.pointee }
+        set { value.pointee = newValue }
     }
-    init(wrappedValue: Reference<T>) {
-        self.value = wrappedValue
+    init(wrappedValue: T, this: UnsafeMutablePointer<T>) {
+        self.value = this
     }
 }
 
-extension WOWOW {
-    static func YES(_ this: inout T) -> Self {
-        return self.init(wrappedValue: Reference(&this))
-    }
-}
+//extension WOWOW {
+//    static func YES(_ this: inout T) -> Self {
+//        return self.init(wrappedValue: Reference(&this))
+//    }
+// }
 
 
 
@@ -76,15 +76,17 @@ extension WOWOW {
 
 do {
     var foo = 0
-    @WOWOW var bar = .init(&foo)
-    bar += 1
-    print(foo)
+    @WOWOW(wrappedValue: foo, this: &foo) var bar
+    //bar += 1
+    //print(foo)
+    
     
     let baro = Reference(&foo)
     baro += 111
     print(foo)
     
-    @WOWOW.Type.YES(&foo) var bart
+    //_bar.foo(this: &foo)
+    //@WOWOW.Type.YES(&foo) var bart
     
     //@WOWOW(yes: &foo) var bas
 }

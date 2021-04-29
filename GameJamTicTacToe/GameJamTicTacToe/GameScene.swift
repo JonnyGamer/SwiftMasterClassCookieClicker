@@ -15,15 +15,21 @@ class GameScene: SKScene {
         for _ in 1...50 {
             superSquareMe()
         }
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        // djdwkjdqw
-    }
-    
-    override func didFinishUpdate() {
         
+        line(10, 900, posx: 333, posy: 500)
+        line(10, 900, posx: 667, posy: 500)
+        line(900, 10, posx: 500, posy: 333)
+        line(900, 10, posx: 500, posy: 667)
     }
+    
+    
+    func line(_ width: Int,_ height: Int, posx: CGFloat, posy: CGFloat) {
+        let rectangle = SKSpriteNode.init(color: .black, size: CGSize(width: width, height: height))
+        rectangle.position.x = posx
+        rectangle.position.y = posy
+        addChild(rectangle)
+    }
+    
     
     func superSquareMe() {
         let randomNumber = Int.random(in: 1...5)
@@ -42,9 +48,63 @@ class GameScene: SKScene {
         addChild(square)
     }
     
-    override func mouseDragged(with event: NSEvent) {
+    override func mouseDown(with event: NSEvent) {
         let loc = event.location(in: self)
         print(loc.x, loc.y)
+        
+        var xSide = 0
+        if loc.x < 333 {
+            xSide = 0
+        } else if loc.x < 667 {
+            xSide = 1
+        } else {
+            xSide = 2
+        }
+
+        var ySide = 0
+        if loc.y < 333 {
+            ySide = 0
+        } else if loc.y < 667 {
+            ySide = 1
+        } else {
+            ySide = 2
+        }
+        
+        if game[ySide][xSide] == 0 {
+            
+            let circle = SKSpriteNode.init(color: .black, size: CGSize(width: 50, height: 50))
+            circle.position.x = CGFloat([333/2, 500, 500 + (333)][xSide])
+            circle.position.y = CGFloat([333/2, 500, 500 + (333)][ySide])
+            addChild(circle)
+            game[ySide][xSide] = 1
+            
+            var availableSpaces: [(Int, Int)] = []
+            for y in 0...2 {
+                for x in 0...2 {
+                    if game[y][x] == 0 {
+                        availableSpaces.append((x, y))
+                    }
+                }
+            }
+            
+            if !availableSpaces.isEmpty {
+                let chosen = availableSpaces.randomElement()!
+                
+                let circle = SKSpriteNode.init(color: .gray, size: CGSize(width: 50, height: 50))
+                circle.position.x = CGFloat([333/2, 500, 500 + (333)][chosen.0])
+                circle.position.y = CGFloat([333/2, 500, 500 + (333)][chosen.1])
+                addChild(circle)
+                game[chosen.1][chosen.0] = 1
+            }
+            
+        }
+        
     }
+    
+    var game: [[Int]] = [
+        [0,0,0],
+        [0,0,0],
+        [0,0,0],
+    ]
     
 }
