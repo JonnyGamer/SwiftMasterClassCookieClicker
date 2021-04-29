@@ -7,14 +7,25 @@
 
 import Foundation
 
+enum MagicTypes: Hashable, Equatable {
+    
+    //indirect case array(MagicTypes), dict(MagicTypes:MagicTypes)
+    case int, float, str, bool, any, void
+    
+    indirect case tuple([MagicTypes])
+    // indirect case function([MagicTypes], MagicTypes)
+}
 
 
 indirect enum StackCode {
     case run([StackCode])
     case program(() -> ())
     
-    case goToFunction(name: String)
+    case goToVoidFunction(name: String)
+    case goToFunction(name: String, parameters: [(MagicTypes, Any)])
     case function(name: String, code: [StackCode])
+    
+    case functionWithParams(name: String, parameters: MagicTypes, code: ([Any]) -> [StackCode])
 }
 
 extension Array where Element == StackCode {
@@ -27,15 +38,33 @@ extension Array where Element == StackCode {
             case let .program(code):
                 code()
                 
-            case let .goToFunction(name: nam):
+            case let .goToVoidFunction(name: nam):
                 if let found = stack.findFunction(name: nam) {
-                    found.run(stack.subStack())
+                    found.code([]).run(stack.subStack())
+                } else {
+                    print("Couldn't find function: \(nam)")
+                }
+            
+            case let .goToFunction(name: nam, parameters: param):
+                if let found = stack.findFunction(name: nam) {
+                    
+                    let givenParamType = MagicTypes.tuple(param.map { $0.0 })
+                    if givenParamType != found.parameters {
+                        print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
+                    } else {
+                        let params = param.map { $0.1 }
+                        found.code(params).run(stack.subStack())
+                    }
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
                 
+                
             case let .function(name: nam, code: code):
-                stack.functions[nam] = code
+                stack.functions[nam] = (.tuple([]), {_ in code})
+                
+            case let .functionWithParams(name: nam, parameters: param, code: code):
+                stack.functions[nam] = (param, code)
                 
             }
         }
@@ -43,12 +72,12 @@ extension Array where Element == StackCode {
 }
 
 class SuperStack {
-    var functions: [String:[StackCode]] = [:]
+    var functions: [String:(parameters: MagicTypes, code: ([Any]) -> [StackCode])] = [:]
     
     var aboveStack: SuperStack?
     init(higherStack: SuperStack? = nil) { aboveStack = higherStack }
     
-    func findFunction(name: String) -> [StackCode]? {
+    func findFunction(name: String) -> (parameters: MagicTypes, code: ([Any]) -> [StackCode])? {
         return functions[name] ?? aboveStack?.findFunction(name: name)
     }
     func subStack() -> SuperStack {
@@ -56,27 +85,39 @@ class SuperStack {
     }
 }
 
+//extension String { var int: Int { return Int(self)! } }
+func int(_ n: Any) -> Int {
+    return Int("\(n)")!
+}
+
 
 let shortProgram: [StackCode] = [
+    .functionWithParams(name: "magicPrint", parameters: .tuple([.int, .int]), code: { param in
+        [.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") })]
+    }),
+    
+    
     .function(name: "foo", code: [
         .program({ print("Foo was ran! Start") }),
     ]),
     
     .program({ print("Starting Program...") }),
-    .goToFunction(name: "foo"),
+    .goToVoidFunction(name: "foo"),
     
     .run([
         
         .function(name: "bar", code: [
             .program({ print("BAR was ran!") }),
-            .goToFunction(name: "foo"),
+            .goToVoidFunction(name: "foo"),
         ]),
-        .goToFunction(name: "bar"),
+        .goToVoidFunction(name: "bar"),
     
     ]),
     
-    .goToFunction(name: "bar"),
+    .goToVoidFunction(name: "bar"),
     .program({ print("End of Program...") }),
+    
+    .goToFunction(name: "magicPrint", parameters: [(.int, 5), (.int, 6)])
     
 ]
 
