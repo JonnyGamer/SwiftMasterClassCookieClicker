@@ -19,15 +19,14 @@ let preProgram: [StackCode] = [
     
     // Add Function
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
-        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
         .literal(.int, (int(param[0]) + int(param[1]))),
     ]}),
     
-//    // Add Function
-//    .functionWithParams(name: "sum", parameters: .tuple([.array(.int)]), returnType: .int, code: { param in [
-//        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
-//        .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
-//    ]}),
+    // Sum Function
+    .functionWithParams(name: "sum", parameters: .array(.int), returnType: .int, code: { param in [
+        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
+        .literal(.int, (param[0] as! [Int]).reduce(0, { $0 + int($1) }) ),
+    ]}),
     
     // Print Function
     .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in [
@@ -70,8 +69,11 @@ let shortProgram: [StackCode] = [
     
     .goToFunction(name: "print", parameters: [.literal(.int, 5)]),
     
+    ._run(.print, [._run(.add, [.literal(.int, 5), .literal(.int, 5)])]),
     // print((5 + 5) + (5 + 5))
-    ._run(.print, [._run(.add, [._run(.add, [.literal(.int, 5), .literal(.int, 5)]), ._run(.add, [.literal(.int, 5), .literal(.int, 5)])])])
+    ._run(.print, [._run(.add, [._run(.add, [.literal(.int, 5), .literal(.int, 5)]), ._run(.add, [.literal(.int, 5), .literal(.int, 5)])])]),
+    
+    ._run(.print, [._run(.sum, [.literal(.array(.int), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])])]),
     
 ]
 

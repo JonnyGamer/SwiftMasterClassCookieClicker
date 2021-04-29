@@ -8,7 +8,7 @@
 import Foundation
 
 enum BuiltInFunctions: String {
-    case print, add
+    case print, add, sum
 }
 
 indirect enum StackCode {
@@ -49,7 +49,13 @@ extension Array where Element == StackCode {
                 if let found = stack.findFunction(name: nam) {
                     
                     let realStuff = param.map { [$0].run(stack.subStack())! } // param.run(stack.subStack())!
-                    let givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                    
+                    let willItBeTuple = realStuff.map { $0.0 }
+                    var givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                    if willItBeTuple.count == 1 {
+                        givenParamType = willItBeTuple[0]
+                    }
+                    
                     let results = realStuff.map { $0.1[0] }
                     
                     //let realStuff = param.map { [$0].run(stack.subStack())! }
