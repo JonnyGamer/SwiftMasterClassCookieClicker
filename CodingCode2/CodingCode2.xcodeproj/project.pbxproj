@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1BCEF663263B1EDE00DB603B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF662263B1EDE00DB603B /* main.swift */; };
+		1BCEF66A263B38C900DB603B /* MagicTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF669263B38C900DB603B /* MagicTypes.swift */; };
+		1BCEF66C263B38D900DB603B /* StackCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF66B263B38D900DB603B /* StackCode.swift */; };
+		1BCEF66E263B38E800DB603B /* TheStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF66D263B38E800DB603B /* TheStack.swift */; };
+		1BCEF670263B38FC00DB603B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCEF66F263B38FC00DB603B /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		1BCEF65F263B1EDE00DB603B /* CodingCode2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CodingCode2; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BCEF662263B1EDE00DB603B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		1BCEF669263B38C900DB603B /* MagicTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicTypes.swift; sourceTree = "<group>"; };
+		1BCEF66B263B38D900DB603B /* StackCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackCode.swift; sourceTree = "<group>"; };
+		1BCEF66D263B38E800DB603B /* TheStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheStack.swift; sourceTree = "<group>"; };
+		1BCEF66F263B38FC00DB603B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				1BCEF662263B1EDE00DB603B /* main.swift */,
+				1BCEF669263B38C900DB603B /* MagicTypes.swift */,
+				1BCEF66B263B38D900DB603B /* StackCode.swift */,
+				1BCEF66D263B38E800DB603B /* TheStack.swift */,
+				1BCEF66F263B38FC00DB603B /* Extensions.swift */,
 			);
 			path = CodingCode2;
 			sourceTree = "<group>";
@@ -119,7 +131,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BCEF670263B38FC00DB603B /* Extensions.swift in Sources */,
+				1BCEF66E263B38E800DB603B /* TheStack.swift in Sources */,
+				1BCEF66C263B38D900DB603B /* StackCode.swift in Sources */,
 				1BCEF663263B1EDE00DB603B /* main.swift in Sources */,
+				1BCEF66A263B38C900DB603B /* MagicTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
