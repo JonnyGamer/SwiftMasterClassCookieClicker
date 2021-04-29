@@ -62,7 +62,10 @@ let shortProgram: [StackCode] = [
     // print(add(5, 6))
     .goToFunction(name: "print", parameters: [.goToFunction(name: "add", parameters: [.literal(.int, 5), .literal(.int, 6)])]),
     
-    .goToFunction(name: "print", parameters: [.literal(.int, 5)])
+    .goToFunction(name: "print", parameters: [.literal(.int, 5)]),
+    
+    // print((5 + 5) + (5 + 5))
+    ._run(.print, [._run(.add, [._run(.add, [.literal(.int, 5), .literal(.int, 5)]), ._run(.add, [.literal(.int, 5), .literal(.int, 5)])])])
     
 ]
 

@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum BuiltInFunctions: String {
+    case print, add
+}
+
 indirect enum StackCode {
     case run([StackCode])
     case program(() -> ())
@@ -15,6 +19,7 @@ indirect enum StackCode {
     case goToVoidFunction(name: String)
     case goToFunction(name: String, parameters: [StackCode]) // case goToFunction(name: String, parameters: [(MagicTypes, StackCode)])
     case function(name: String, code: [StackCode])
+    case _run(BuiltInFunctions, [StackCode])
     
     case literal(MagicTypes, Any)
     case functionWithParams(name: String, parameters: MagicTypes, returnType: MagicTypes, code: ([Any]) -> [StackCode])
@@ -25,6 +30,7 @@ extension Array where Element == StackCode {
     @discardableResult
     func run(_ stack: SuperStack = SuperStack()) -> [(MagicTypes, Any)] {
         for line in self {
+            
             switch line {
             case let .run(code):
                 code.run(stack.subStack())
@@ -47,6 +53,8 @@ extension Array where Element == StackCode {
                     
                     if found.parameters != givenParamType {
                         print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
+                        fatalError()
+                        
                     } else {
                         //let params = param.map { i in [i.1].run(stack.subStack())[0].1 }
                         let params = realStuff.map { $0.1 }
@@ -61,7 +69,11 @@ extension Array where Element == StackCode {
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
-                
+            case let ._run(b, c):
+                let easy = [StackCode.goToFunction(name: b.rawValue, parameters: c)].run(stack)
+                if !easy.isEmpty {
+                    return easy
+                }
                 
             case let .function(name: nam, code: code):
                 stack.functions[nam] = (.tuple([]), .void, {_ in code})
