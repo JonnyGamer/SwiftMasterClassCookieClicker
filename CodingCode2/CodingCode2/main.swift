@@ -14,22 +14,44 @@ enum MagicTypes: Hashable, Equatable {
     
     indirect case tuple([MagicTypes])
     // indirect case function([MagicTypes], MagicTypes)
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        // When the type is any, auto downcast
+        case (.any, _):
+            return true
+        // Check indices of tuples to check for `any` downcasts. Because it is indirect.
+        case let (.tuple(t1), .tuple(t2)):
+            return t1 == t2
+        default: break
+        }
+        return "\(lhs)" == "\(rhs)"
+    }
 }
-
+// Tests should all print true
+//print("Start Tests")
+//print(MagicTypes.any == .int)
+//print(MagicTypes.tuple([.any, .int]) == .tuple([.int, .int]))
+//print(MagicTypes.tuple([.int, .int]) != .tuple([.any, .int]))
+//print("End Tests")
 
 indirect enum StackCode {
     case run([StackCode])
     case program(() -> ())
+    case returnValue([(MagicTypes, Any)])
     
     case goToVoidFunction(name: String)
-    case goToFunction(name: String, parameters: [(MagicTypes, Any)])
+    case goToFunction(name: String, parameters: [(MagicTypes, StackCode)])
     case function(name: String, code: [StackCode])
     
-    case functionWithParams(name: String, parameters: MagicTypes, code: ([Any]) -> [StackCode])
+    case literal(MagicTypes, Any)
+    case functionWithParams(name: String, parameters: MagicTypes, returnType: MagicTypes, code: ([Any]) -> [StackCode])
 }
 
 extension Array where Element == StackCode {
-    func run(_ stack: SuperStack = SuperStack()) {
+    
+    @discardableResult
+    func run(_ stack: SuperStack = SuperStack()) -> [(MagicTypes, Any)] {
         for line in self {
             switch line {
             case let .run(code):
@@ -49,11 +71,16 @@ extension Array where Element == StackCode {
                 if let found = stack.findFunction(name: nam) {
                     
                     let givenParamType = MagicTypes.tuple(param.map { $0.0 })
-                    if givenParamType != found.parameters {
+                    if found.parameters != givenParamType {
                         print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
                     } else {
-                        let params = param.map { $0.1 }
-                        found.code(params).run(stack.subStack())
+                        let params = param.map { i in [i.1].run(stack.subStack())[0].1 }
+                        let result = found.code(params).run(stack.subStack())
+                        //print("---,", result)
+                        if !result.isEmpty {
+                            if stack.aboveStack == nil { continue } // Can't return a result at the top stack. Just ignore
+                            return result
+                        }
                     }
                 } else {
                     print("Couldn't find function: \(nam)")
@@ -61,23 +88,30 @@ extension Array where Element == StackCode {
                 
                 
             case let .function(name: nam, code: code):
-                stack.functions[nam] = (.tuple([]), {_ in code})
+                stack.functions[nam] = (.tuple([]), .void, {_ in code})
                 
-            case let .functionWithParams(name: nam, parameters: param, code: code):
-                stack.functions[nam] = (param, code)
+            case let .functionWithParams(name: nam, parameters: param, returnType: ret, code: code):
+                stack.functions[nam] = (param, ret, code)
+                
+            case let .returnValue(ret):
+                return ret
+            case let .literal(typ, lit): return [(typ, lit)]
                 
             }
         }
+        return []
     }
 }
 
+typealias FunctionType = (parameters: MagicTypes, returnType: MagicTypes, code: ([Any]) -> [StackCode] )
+
 class SuperStack {
-    var functions: [String:(parameters: MagicTypes, code: ([Any]) -> [StackCode])] = [:]
+    var functions: [String:FunctionType] = [:]
     
     var aboveStack: SuperStack?
     init(higherStack: SuperStack? = nil) { aboveStack = higherStack }
     
-    func findFunction(name: String) -> (parameters: MagicTypes, code: ([Any]) -> [StackCode])? {
+    func findFunction(name: String) -> FunctionType? {
         return functions[name] ?? aboveStack?.findFunction(name: name)
     }
     func subStack() -> SuperStack {
@@ -90,10 +124,31 @@ func int(_ n: Any) -> Int {
     return Int("\(n)")!
 }
 
+// Extremely Magical Printing
+func magicPrint(_ this: [Any], testing: Bool = true) {
+    if testing { print(" - TEST PRINT -", terminator: " ") }
+    this.forEach { print($0, separator: "", terminator: " ") }
+    print("\n", terminator: "")
+}
+magicPrint([1, 2, 3])
+magicPrint([1, 2, 3, 4])
+magicPrint([1, 2, 3, 4, 5])
+
 
 let shortProgram: [StackCode] = [
-    .functionWithParams(name: "magicPrint", parameters: .tuple([.int, .int]), code: { param in
-        [.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") })]
+    
+    .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
+        .program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
+        .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
+    ]}),
+    
+    .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in
+        [
+            .program({ magicPrint(param) }),
+            .returnValue([(.void, ())]),
+            .program({ magicPrint(param) }),
+            .program({ magicPrint(param) }),
+        ]
     }),
     
     
@@ -117,7 +172,11 @@ let shortProgram: [StackCode] = [
     .goToVoidFunction(name: "bar"),
     .program({ print("End of Program...") }),
     
-    .goToFunction(name: "magicPrint", parameters: [(.int, 5), (.int, 6)])
+    .goToFunction(name: "print", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]),
+    
+    // print(add(5, 6))
+    .goToFunction(name: "print", parameters: [(.int, .goToFunction(name: "add", parameters: [(.int, .literal(.int, 5)), (.int, .literal(.int, 6))]))]),
+    
     
 ]
 
