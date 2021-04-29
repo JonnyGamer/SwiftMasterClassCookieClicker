@@ -20,8 +20,14 @@ let preProgram: [StackCode] = [
     // Add Function
     .functionWithParams(name: "add", parameters: .tuple([.int, .int]), returnType: .int, code: { param in [
         //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
-        .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
+        .literal(.int, (int(param[0]) + int(param[1]))),
     ]}),
+    
+//    // Add Function
+//    .functionWithParams(name: "sum", parameters: .tuple([.array(.int)]), returnType: .int, code: { param in [
+//        //.program({ print("It was too harsh \(int(param[0]) + int(param[1]))") }),
+//        .returnValue([ (.int, (int(param[0]) + int(param[1]))) ])
+//    ]}),
     
     // Print Function
     .functionWithParams(name: "print", parameters: .any, returnType: .void, code: { param in [

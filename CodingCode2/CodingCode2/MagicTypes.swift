@@ -9,7 +9,7 @@ import Foundation
 
 enum MagicTypes: Hashable, Equatable {
     
-    //indirect case array(MagicTypes), dict(MagicTypes:MagicTypes)
+    indirect case array(MagicTypes)//, dict(MagicTypes:MagicTypes)
     case int, float, str, bool, any, void
     
     indirect case tuple([MagicTypes])
@@ -17,12 +17,14 @@ enum MagicTypes: Hashable, Equatable {
     
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
+        
         // When the type is any, auto downcast
-        case (.any, _):
-            return true
+        case (.any, _): return true
+        
         // Check indices of tuples to check for `any` downcasts. Because it is indirect.
-        case let (.tuple(t1), .tuple(t2)):
-            return t1 == t2
+        case let (.tuple(t1), .tuple(t2)): return t1 == t2
+        case let (.array(t1), .array(t2)): return t1 == t2
+            
         default: break
         }
         return "\(lhs)" == "\(rhs)"

@@ -14,7 +14,7 @@ enum BuiltInFunctions: String {
 indirect enum StackCode {
     case run([StackCode])
     case program(() -> ())
-    case returnValue([(MagicTypes, Any)])
+    case returnValue(StackCode)
     
     case goToVoidFunction(name: String)
     case goToFunction(name: String, parameters: [StackCode]) // case goToFunction(name: String, parameters: [(MagicTypes, StackCode)])
@@ -28,7 +28,7 @@ indirect enum StackCode {
 extension Array where Element == StackCode {
     
     @discardableResult
-    func run(_ stack: SuperStack = SuperStack()) -> [(MagicTypes, Any)] {
+    func run(_ stack: SuperStack = SuperStack()) -> (MagicTypes, [Any])? {
         for line in self {
             
             switch line {
@@ -48,8 +48,14 @@ extension Array where Element == StackCode {
             case let .goToFunction(name: nam, parameters: param):
                 if let found = stack.findFunction(name: nam) {
                     
-                    let realStuff = param.map { [$0].run(stack.subStack())[0] }
+                    let realStuff = param.map { [$0].run(stack.subStack())! } // param.run(stack.subStack())!
                     let givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
+                    let results = realStuff.map { $0.1[0] }
+                    
+                    //let realStuff = param.map { [$0].run(stack.subStack())! }
+                    
+                    //let realStuff = param.map { [$0].run(stack.subStack())[0] }
+                    //let givenParamType = MagicTypes.tuple(realStuff.map { $0.0 })
                     
                     if found.parameters != givenParamType {
                         print("Expected Parameters \(found.parameters). Instead, recieved: \(givenParamType)")
@@ -57,21 +63,20 @@ extension Array where Element == StackCode {
                         
                     } else {
                         //let params = param.map { i in [i.1].run(stack.subStack())[0].1 }
-                        let params = realStuff.map { $0.1 }
+                        let params = results
                         
                         let result = found.code(params).run(stack.subStack())
                         //print("---,", result)
-                        if !result.isEmpty {
+                        if let r = result {
                             if stack.aboveStack == nil { continue } // Can't return a result at the top stack. Just ignore
-                            return result
+                            return r
                         }
                     }
                 } else {
                     print("Couldn't find function: \(nam)")
                 }
             case let ._run(b, c):
-                let easy = [StackCode.goToFunction(name: b.rawValue, parameters: c)].run(stack)
-                if !easy.isEmpty {
+                if let easy = [StackCode.goToFunction(name: b.rawValue, parameters: c)].run(stack) {
                     return easy
                 }
                 
@@ -82,11 +87,11 @@ extension Array where Element == StackCode {
                 stack.functions[nam] = (param, ret, code)
                 
             case let .returnValue(ret):
-                return ret
-            case let .literal(typ, lit): return [(typ, lit)]
+                return [ret].run(stack)
+            case let .literal(typ, lit): return (typ, [lit])
                 
             }
         }
-        return []
+        return nil
     }
 }
