@@ -7,6 +7,7 @@
 
 import Foundation
 
+tests()
 let masterStack = SuperStack()
 
 let preProgram: [StackCode] = [

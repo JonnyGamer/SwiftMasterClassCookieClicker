@@ -7,28 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B0515F32639CB4B00E83B05 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0515F22639CB4B00E83B05 /* main.swift */; };
+		1B4F60652643333900C8FF22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4F60642643333900C8FF22 /* AppDelegate.swift */; };
+		1B4F606B2643333900C8FF22 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4F606A2643333900C8FF22 /* GameScene.swift */; };
+		1B4F606D2643333900C8FF22 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4F606C2643333900C8FF22 /* ViewController.swift */; };
+		1B4F606F2643333A00C8FF22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F606E2643333A00C8FF22 /* Assets.xcassets */; };
+		1B4F60722643333A00C8FF22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B4F60702643333A00C8FF22 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		1B0515ED2639CB4B00E83B05 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		1B0515EF2639CB4B00E83B05 /* ClassWithJared */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ClassWithJared; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B0515F22639CB4B00E83B05 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		1B4F60612643333900C8FF22 /* CookieClickerWithBen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookieClickerWithBen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B4F60642643333900C8FF22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1B4F606A2643333900C8FF22 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		1B4F606C2643333900C8FF22 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1B4F606E2643333A00C8FF22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B4F60712643333A00C8FF22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1B4F60732643333A00C8FF22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B4F60742643333A00C8FF22 /* CookieClickerWithBen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CookieClickerWithBen.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1B0515EC2639CB4B00E83B05 /* Frameworks */ = {
+		1B4F605E2643333900C8FF22 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -38,65 +36,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1B0515E62639CB4B00E83B05 = {
+		1B4F60582643333900C8FF22 = {
 			isa = PBXGroup;
 			children = (
-				1B0515F12639CB4B00E83B05 /* ClassWithJared */,
-				1B0515F02639CB4B00E83B05 /* Products */,
+				1B4F60632643333900C8FF22 /* CookieClickerWithBen */,
+				1B4F60622643333900C8FF22 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		1B0515F02639CB4B00E83B05 /* Products */ = {
+		1B4F60622643333900C8FF22 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1B0515EF2639CB4B00E83B05 /* ClassWithJared */,
+				1B4F60612643333900C8FF22 /* CookieClickerWithBen.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1B0515F12639CB4B00E83B05 /* ClassWithJared */ = {
+		1B4F60632643333900C8FF22 /* CookieClickerWithBen */ = {
 			isa = PBXGroup;
 			children = (
-				1B0515F22639CB4B00E83B05 /* main.swift */,
+				1B4F60642643333900C8FF22 /* AppDelegate.swift */,
+				1B4F606A2643333900C8FF22 /* GameScene.swift */,
+				1B4F606C2643333900C8FF22 /* ViewController.swift */,
+				1B4F606E2643333A00C8FF22 /* Assets.xcassets */,
+				1B4F60702643333A00C8FF22 /* Main.storyboard */,
+				1B4F60732643333A00C8FF22 /* Info.plist */,
+				1B4F60742643333A00C8FF22 /* CookieClickerWithBen.entitlements */,
 			);
-			path = ClassWithJared;
+			path = CookieClickerWithBen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1B0515EE2639CB4B00E83B05 /* ClassWithJared */ = {
+		1B4F60602643333900C8FF22 /* CookieClickerWithBen */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1B0515F62639CB4B00E83B05 /* Build configuration list for PBXNativeTarget "ClassWithJared" */;
+			buildConfigurationList = 1B4F60772643333A00C8FF22 /* Build configuration list for PBXNativeTarget "CookieClickerWithBen" */;
 			buildPhases = (
-				1B0515EB2639CB4B00E83B05 /* Sources */,
-				1B0515EC2639CB4B00E83B05 /* Frameworks */,
-				1B0515ED2639CB4B00E83B05 /* CopyFiles */,
+				1B4F605D2643333900C8FF22 /* Sources */,
+				1B4F605E2643333900C8FF22 /* Frameworks */,
+				1B4F605F2643333900C8FF22 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ClassWithJared;
-			productName = ClassWithJared;
-			productReference = 1B0515EF2639CB4B00E83B05 /* ClassWithJared */;
-			productType = "com.apple.product-type.tool";
+			name = CookieClickerWithBen;
+			productName = CookieClickerWithBen;
+			productReference = 1B4F60612643333900C8FF22 /* CookieClickerWithBen.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1B0515E72639CB4B00E83B05 /* Project object */ = {
+		1B4F60592643333900C8FF22 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					1B0515EE2639CB4B00E83B05 = {
+					1B4F60602643333900C8FF22 = {
 						CreatedOnToolsVersion = 12.5;
 					};
 				};
 			};
-			buildConfigurationList = 1B0515EA2639CB4B00E83B05 /* Build configuration list for PBXProject "ClassWithJared" */;
+			buildConfigurationList = 1B4F605C2643333900C8FF22 /* Build configuration list for PBXProject "CookieClickerWithBen" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -104,29 +108,54 @@
 				en,
 				Base,
 			);
-			mainGroup = 1B0515E62639CB4B00E83B05;
-			productRefGroup = 1B0515F02639CB4B00E83B05 /* Products */;
+			mainGroup = 1B4F60582643333900C8FF22;
+			productRefGroup = 1B4F60622643333900C8FF22 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1B0515EE2639CB4B00E83B05 /* ClassWithJared */,
+				1B4F60602643333900C8FF22 /* CookieClickerWithBen */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1B4F605F2643333900C8FF22 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B4F606F2643333A00C8FF22 /* Assets.xcassets in Resources */,
+				1B4F60722643333A00C8FF22 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		1B0515EB2639CB4B00E83B05 /* Sources */ = {
+		1B4F605D2643333900C8FF22 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B0515F32639CB4B00E83B05 /* main.swift in Sources */,
+				1B4F606D2643333900C8FF22 /* ViewController.swift in Sources */,
+				1B4F606B2643333900C8FF22 /* GameScene.swift in Sources */,
+				1B4F60652643333900C8FF22 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		1B4F60702643333A00C8FF22 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B4F60712643333A00C8FF22 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
-		1B0515F42639CB4B00E83B05 /* Debug */ = {
+		1B4F60752643333A00C8FF22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -166,7 +195,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -183,11 +212,11 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		1B0515F52639CB4B00E83B05 /* Release */ = {
+		1B4F60762643333A00C8FF22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -241,23 +270,43 @@
 			};
 			name = Release;
 		};
-		1B0515F72639CB4B00E83B05 /* Debug */ = {
+		1B4F60782643333A00C8FF22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CookieClickerWithBen/CookieClickerWithBen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = R3PU6JKY2A;
 				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CookieClickerWithBen/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.CookieClickerWithBen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		1B0515F82639CB4B00E83B05 /* Release */ = {
+		1B4F60792643333A00C8FF22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CookieClickerWithBen/CookieClickerWithBen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = R3PU6JKY2A;
 				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CookieClickerWithBen/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.CookieClickerWithBen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -266,25 +315,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B0515EA2639CB4B00E83B05 /* Build configuration list for PBXProject "ClassWithJared" */ = {
+		1B4F605C2643333900C8FF22 /* Build configuration list for PBXProject "CookieClickerWithBen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1B0515F42639CB4B00E83B05 /* Debug */,
-				1B0515F52639CB4B00E83B05 /* Release */,
+				1B4F60752643333A00C8FF22 /* Debug */,
+				1B4F60762643333A00C8FF22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1B0515F62639CB4B00E83B05 /* Build configuration list for PBXNativeTarget "ClassWithJared" */ = {
+		1B4F60772643333A00C8FF22 /* Build configuration list for PBXNativeTarget "CookieClickerWithBen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1B0515F72639CB4B00E83B05 /* Debug */,
-				1B0515F82639CB4B00E83B05 /* Release */,
+				1B4F60782643333A00C8FF22 /* Debug */,
+				1B4F60792643333A00C8FF22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 1B0515E72639CB4B00E83B05 /* Project object */;
+	rootObject = 1B4F60592643333900C8FF22 /* Project object */;
 }
