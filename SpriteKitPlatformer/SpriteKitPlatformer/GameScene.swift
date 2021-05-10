@@ -12,7 +12,7 @@ class Player {
     static var jumps: Int = 0
     static var maxJumps: Int = 1
     static func canJump() -> Bool {
-        if jumps == 0, contacts == 0 { jumps += 1 }
+        if jumps == 0, contacts == 0, Date().timeIntervalSince1970 - lastContactEnd > 0.2 { jumps += 1 }
         return jumps < maxJumps
     }
     static func jump() {
@@ -27,7 +27,8 @@ class Player {
             jumps = 0
         }
     }
-    static func contactEnded() { contacts -= 1 }
+    static func contactEnded() { contacts -= 1; lastContactEnd = Date().timeIntervalSince1970 }
+    static var lastContactEnd = Date().timeIntervalSince1970
     
     static var previousVelocity: CGVector = .zero
     static var velocity: CGVector = .zero {
@@ -98,7 +99,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             print("Increasing?")
         }
             
-        magicCamera.run(.move(to: .init(x: player.position.x + (Player.velocity.dx*1.5), y: player.position.y + (Player.velocity.dy*1.5)), duration: 1))
+        magicCamera.run(.moveTo(x: player.position.x + (Player.velocity.dx*1.5), duration: 1))
+        magicCamera.position.y = player.position.y
+        
+        //magicCamera.run(.move(to: .init(x: player.position.x + (Player.velocity.dx*1.5), y: player.position.y), duration: 1)) //  + (Player.velocity.dy*1.5)
         
     }
     
