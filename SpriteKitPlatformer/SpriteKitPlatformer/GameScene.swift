@@ -30,7 +30,7 @@ class Player {
             previousVelocity = velocity
         }
     }
-    static var increasingXVelocity: Bool { return previousVelocity.dx > velocity.dx }
+    static var increasingXVelocity: Bool { return previousVelocity.dx < velocity.dx }
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -84,9 +84,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if moving.left {
             player.physicsBody?.velocity.dx = -600
             //player.position.x -= 10
+        } else if Player.contacts == 0 {
+            player.physicsBody?.velocity.dx = 0
         } else if !Player.increasingXVelocity { // Player.contacts == 0
             player.physicsBody?.velocity.dx = 0
+            //player.physicsBody?.velocity.dx = 0
             //player.physicsBody?.velocity.dx /= 5
+        } else {
+            print("Increasing?")
         }
         
         magicCamera.run(.move(to: player.position, duration: 0.2))
@@ -137,6 +142,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if contact.bodyB.node === player { Player.contactBegan(resetJumps: false) }
         }
     }
+    
+    
+    
     func didEnd(_ contact: SKPhysicsContact) {
         print("End")
         if contact.bodyA.node === player { Player.contactEnded() }
