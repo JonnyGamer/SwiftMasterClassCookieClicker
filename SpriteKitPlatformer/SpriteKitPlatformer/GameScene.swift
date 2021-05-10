@@ -72,7 +72,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         magicCamera.run(.move(to: player.position, duration: 0.2))
-        
+        //print(player.frame.midY)
     }
     
     var moving: (up: Bool, down: Bool, left: Bool, right: Bool) = (false, false, false, false)
@@ -99,11 +99,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             moving.right = false
         }
     }
+    //-60.103454775
     
+    override func didFinishUpdate() {
+        //print(player.frame.midY)
+    }
+    
+    // -1037.6514892578125/17.264423370361328
     func didBegin(_ contact: SKPhysicsContact) {
         print("Begin")
         
-        if contact.contactPoint.y < player.frame.midY {
+        // Hit somthing with less steep slope than a wall |
+        if contact.contactNormal.dy > 0.001 {
             if contact.bodyA.node === player { Player.contactBegan() }
             if contact.bodyB.node === player { Player.contactBegan() }
         } else {
@@ -111,7 +118,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if contact.bodyA.node === player { Player.contactBegan(resetJumps: false) }
             if contact.bodyB.node === player { Player.contactBegan(resetJumps: false) }
         }
-        
     }
     func didEnd(_ contact: SKPhysicsContact) {
         print("End")
