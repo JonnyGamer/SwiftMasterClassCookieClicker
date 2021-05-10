@@ -23,6 +23,14 @@ class Player {
         if resetJumps { jumps = 0 }
     }
     static func contactEnded() { contacts -= 1 }
+    
+    static var previousVelocity: CGVector = .zero
+    static var velocity: CGVector = .zero {
+        willSet(to) {
+            previousVelocity = velocity
+        }
+    }
+    static var increasingXVelocity: Bool { return previousVelocity.dx > velocity.dx }
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -48,7 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.restitution = 0
         player.physicsBody?.contactTestBitMask = .max
         player.physicsBody?.linearDamping = 1
-        player.physicsBody?.friction = 0.5
+        player.physicsBody?.friction = 0//0.5
         player.physicsBody?.allowsRotation = false
         
         magicCamera = SKCameraNode()
@@ -60,18 +68,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         
+        Player.velocity = player.physicsBody!.velocity
+        
         if moving.up, Player.canJump() {
             player.physicsBody?.velocity.dy = 1000
             Player.jump()
             moving.up = false
         }
         
-        if moving.right {
-            player.position.x += 10
-        }
-        
-        if moving.left {
-            player.position.x -= 10
+        if moving.right, moving.left {
+            player.physicsBody?.velocity.dx = 0
+        } else if moving.right {
+            player.physicsBody?.velocity.dx = 600
+            //player.position.x += 10
+        } else if moving.left {
+            player.physicsBody?.velocity.dx = -600
+            //player.position.x -= 10
+        } else if !Player.increasingXVelocity { // Player.contacts == 0
+            player.physicsBody?.velocity.dx = 0
+            //player.physicsBody?.velocity.dx /= 5
         }
         
         magicCamera.run(.move(to: player.position, duration: 0.2))
