@@ -27,10 +27,12 @@ class Player {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let player = SKShapeNode.init(circleOfRadius: 50)
+    let player = SKSpriteNode.init(imageNamed: "Inky")
     var magicCamera: SKCameraNode!
     
     override func didMove(to view: SKView) {
+        
+        backgroundColor = .white
         
         if let foo = SKScene.init(fileNamed: "GameScene") {
             for i in foo.children {
@@ -40,8 +42,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         addChild(player)
-        player.fillColor = .white
-        player.physicsBody = .init(circleOfRadius: 50)
+        player.physicsBody = .init(texture: player.texture!, size: player.size)
+        player.setScale(0.5)
+        player.physicsBody = .init(circleOfRadius: player.size.width/2)
         player.physicsBody?.restitution = 0
         player.physicsBody?.contactTestBitMask = .max
         player.physicsBody?.linearDamping = 1

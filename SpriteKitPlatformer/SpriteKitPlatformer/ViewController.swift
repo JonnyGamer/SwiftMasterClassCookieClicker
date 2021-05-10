@@ -23,7 +23,7 @@ class ViewController: NSViewController {
             scene.anchorPoint = .init(x: 0.5, y: 0.5)
             view.presentScene(scene)
             
-            view.showsPhysics = true
+            view.showsPhysics = false
             view.showsFPS = true
             view.showsNodeCount = true
         }
