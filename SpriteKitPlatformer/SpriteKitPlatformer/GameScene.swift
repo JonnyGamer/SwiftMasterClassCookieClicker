@@ -10,17 +10,22 @@ import GameplayKit
 
 class Player {
     static var jumps: Int = 0
-    static var maxJumps: Int = 2
+    static var maxJumps: Int = 1
     static func canJump() -> Bool {
         if jumps == 0, contacts == 0 { jumps += 1 }
         return jumps < maxJumps
     }
-    static func jump() { jumps += 1; print(jumps) }
+    static func jump() {
+        jumps += 1
+        print(jumps)
+    }
     
     static var contacts: Int = 0
     static func contactBegan(resetJumps: Bool = true) {
         contacts += 1
-        if resetJumps { jumps = 0 }
+        if resetJumps {
+            jumps = 0
+        }
     }
     static func contactEnded() { contacts -= 1 }
     
@@ -69,9 +74,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         
         Player.velocity = player.physicsBody!.velocity
+        if Player.velocity.dy < -600 { player.physicsBody?.velocity.dy = -600 }
         
         if moving.up, Player.canJump() {
-            player.physicsBody?.velocity.dy = 1000
+            player.physicsBody?.velocity.dy = 1500//1000
             Player.jump()
             moving.up = false
         }
@@ -86,16 +92,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //player.position.x -= 10
         } else if Player.contacts == 0 {
             player.physicsBody?.velocity.dx = 0
-        } else if !Player.increasingXVelocity { // Player.contacts == 0
+        } else if !Player.increasingXVelocity {
             player.physicsBody?.velocity.dx = 0
-            //player.physicsBody?.velocity.dx = 0
-            //player.physicsBody?.velocity.dx /= 5
         } else {
             print("Increasing?")
         }
+            
+        magicCamera.run(.move(to: .init(x: player.position.x + (Player.velocity.dx*1.5), y: player.position.y + (Player.velocity.dy*1.5)), duration: 1))
         
-        magicCamera.run(.move(to: player.position, duration: 0.2))
-        //print(player.frame.midY)
     }
     
     var moving: (up: Bool, down: Bool, left: Bool, right: Bool) = (false, false, false, false)

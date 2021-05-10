@@ -7,32 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DB5CB648-5C72-452B-B0E8-F6E24AD29310"
-            shouldBeEnabled = "Yes"
+            uuid = "DD7D1108-9CBD-4E9F-916B-26B5BEF30164"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpriteKitPlatformer/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "didBegin(_:)"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "contactBegan(resetJumps:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6FD8482A-CD29-41B5-B67D-8556C1AAAC25"
-            shouldBeEnabled = "Yes"
+            uuid = "FB50995D-90D8-480F-AE92-44A5D3CB9B10"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpriteKitPlatformer/GameScene.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "didBegin(_:)"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "jump()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
