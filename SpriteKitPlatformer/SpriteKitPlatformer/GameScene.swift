@@ -10,7 +10,7 @@ import GameplayKit
 
 class Player {
     static var jumps: Int = 0
-    static var maxJumps: Int = 1
+    static var maxJumps: Int = 2
     static func canJump() -> Bool {
         if jumps == 0, contacts == 0, Date().timeIntervalSince1970 - lastContactEnd > 0.2 { jumps += 1 }
         return jumps < maxJumps
@@ -75,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         
         Player.velocity = player.physicsBody!.velocity
-        if Player.velocity.dy < -600 { player.physicsBody?.velocity.dy = -600 }
+        //if Player.velocity.dy < -600 { player.physicsBody?.velocity.dy = -600 }
         
         if moving.up, Player.canJump() {
             player.physicsBody?.velocity.dy = 1500//1000
