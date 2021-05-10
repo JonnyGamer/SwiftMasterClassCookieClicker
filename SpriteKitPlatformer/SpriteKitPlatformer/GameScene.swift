@@ -8,44 +8,53 @@
 import SpriteKit
 import GameplayKit
 
-class Player {
-    static var jumps: Int = 0
-    static var maxJumps: Int = 2
-    static func canJump() -> Bool {
+class PlayerConstruct {
+    var jumps: Int = 0
+    var maxJumps: Int = 2
+    func canJump() -> Bool {
         if jumps == 0, contacts == 0, Date().timeIntervalSince1970 - lastContactEnd > 0.2 { jumps += 1 }
         return jumps < maxJumps
     }
-    static func jump() {
+    func jump() {
         jumps += 1
         print(jumps)
     }
     
-    static var contacts: Int = 0
-    static func contactBegan(resetJumps: Bool = true) {
+    var contacts: Int = 0
+    func contactBegan(resetJumps: Bool = true) {
         contacts += 1
         if resetJumps {
             jumps = 0
         }
     }
-    static func contactEnded() { contacts -= 1; lastContactEnd = Date().timeIntervalSince1970 }
-    static var lastContactEnd = Date().timeIntervalSince1970
+    func contactEnded() { contacts -= 1; lastContactEnd = Date().timeIntervalSince1970 }
+    var lastContactEnd = Date().timeIntervalSince1970
     
-    static var previousVelocity: CGVector = .zero
-    static var velocity: CGVector = .zero {
+    var previousVelocity: CGVector = .zero
+    var velocity: CGVector = .zero {
         willSet(to) {
             previousVelocity = velocity
         }
     }
-    static var increasingXVelocity: Bool { return previousVelocity.dx < velocity.dx }
+    var increasingXVelocity: Bool { return previousVelocity.dx < velocity.dx }
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let player = SKSpriteNode.init(imageNamed: "Inky")
+    var player = SKSpriteNode.init(imageNamed: "Inky")
+    var Player = PlayerConstruct()
     var magicCamera: SKCameraNode!
     
     override func didMove(to view: SKView) {
-        
+        begin()
+    }
+    func reset() {
+        removeAllChildren()
+        player = SKSpriteNode.init(imageNamed: "Inky")
+        Player = PlayerConstruct()
+        begin()
+    }
+    func begin() {
         backgroundColor = .white
         
         if let foo = SKScene.init(fileNamed: "GameScene") {
@@ -100,7 +109,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
             
         magicCamera.run(.moveTo(x: player.position.x + (Player.velocity.dx*1.5), duration: 1))
-        magicCamera.position.y = player.position.y
+        
+        if player.position.y < 0 {
+            magicCamera.position.y = 0
+        } else {
+            magicCamera.position.y = player.position.y
+        }
+        
+        if player.frame.maxY < -500 {
+            reset()
+        }
         
         //magicCamera.run(.move(to: .init(x: player.position.x + (Player.velocity.dx*1.5), y: player.position.y), duration: 1)) //  + (Player.velocity.dy*1.5)
         
