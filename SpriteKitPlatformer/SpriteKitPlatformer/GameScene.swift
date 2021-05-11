@@ -53,6 +53,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player = SKSpriteNode.init(imageNamed: "Inky")
         Player = PlayerConstruct()
         begin()
+        
+        
+        
+        
     }
     func begin() {
         backgroundColor = .white
