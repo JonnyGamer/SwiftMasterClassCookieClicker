@@ -6,17 +6,12 @@
 //
 
 
-var (f1,f2) = (0,1)
-for _ in 1...10 {
-    (f1,f2) = (f2,f1+f2)
-    print(f1)
-}
-
-
-
-
-
-fatalError()
+//var (f1,f2) = (0,1)
+//for _ in 1...10 {
+//    (f1,f2) = (f2,f1+f2)
+//    print(f1)
+//}
+//fatalError()
 
 import Foundation
 

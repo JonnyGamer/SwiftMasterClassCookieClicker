@@ -15,12 +15,9 @@ class MainMenu: SKScene {
     }
     
     func decorate() {
-        
         createBG()
         createBird()
-        
     }
-    
     
     
     let bg = SKSpriteNode(imageNamed: "BG Day")
@@ -37,18 +34,13 @@ class MainMenu: SKScene {
         
         flappyBirdLogo.position.y = -400
         addChild(flappyBirdLogo)
-        
     }
-    
-    
     
     let bird = Bird.Make()
     func createBird() {
         bird.position.y = 200
         addChild(bird)
     }
-    
-    
     
     override func mouseDown(with event: NSEvent) {
         let location = event.location(in: self)
@@ -60,9 +52,10 @@ class MainMenu: SKScene {
             newScene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             view?.presentScene(newScene, transition: .fade(withDuration: 0.5))
         }
-        
-        
     }
+    
+    
+    
     
     // Present new Scenes
     // Animations!

@@ -36,6 +36,7 @@ class GameScene: SKScene {
         numberOfCookies.position.y = (screenHeight/2) - 100
         numberOfCookies.fontColor = .black
         numberOfCookies.fontName = ""
+        self.physicsWorld.gravity.dy = -2
         
         // Cookies Rain!
         for _ in 1...250 {
@@ -46,15 +47,20 @@ class GameScene: SKScene {
             smallerCookie.setScale(0.05)
             smallerCookie.alpha = 0.5
             smallerCookie.position.x = CGFloat.random(in: -500...500)
-            smallerCookie.position.y = 600
+            smallerCookie.position.y = CGFloat.random(in: 600...800)
             
-            let moveDown = SKAction.moveBy(x: 0, y: -1200, duration: 5.0)
-            let moveBackUp = SKAction.moveBy(x: 0, y: 1200, duration: 0.0)
-            let waitCookie = SKAction.wait(forDuration: Double.random(in: 0...500) / 100)
+            smallerCookie.physicsBody = SKPhysicsBody.init(circleOfRadius: smallerCookie.size.width/2)
             
-            let superSequence = SKAction.sequence([waitCookie, moveDown, moveBackUp])
-            let superRepeat = SKAction.repeatForever(superSequence)
-            smallerCookie.run(superRepeat)
+//            // let moveDown = SKAction.moveBy(x: 0, y: -1200, duration: 5.0)
+//            let moveBackUp = SKAction.moveTo(y: 1200, duration: 0.0)
+//            let waitCookie = SKAction.wait(forDuration: Double.random(in: 0...500) / 100)
+//            let resetCookie = SKAction.run {
+//                smallerCookie.physicsBody?.velocity = .zero
+//            }
+//
+//            let superSequence = SKAction.sequence([waitCookie, moveBackUp, resetCookie])
+//            let superRepeat = SKAction.repeatForever(superSequence)
+//            smallerCookie.run(superRepeat)
         }
         
         
@@ -110,6 +116,16 @@ class GameScene: SKScene {
             // Update Text Here //
             savedCookies = 0
         }
+        
+        for i in children {
+            if i.position.y < -600 {
+                i.position.y = 600
+                i.physicsBody?.velocity = .zero
+            }
+        }
+        
+        
+        
     }
     
     
