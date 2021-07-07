@@ -32,6 +32,8 @@
 		1BE078DD25EDA52C002A3AC9 /* HP.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HP.txt; sourceTree = "<group>"; };
 		1BE0792325F172F0002A3AC9 /* 996 WORKING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "996 WORKING.txt"; sourceTree = "<group>"; };
 		1BE0792425F2A746002A3AC9 /* 996Sally1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996Sally1.txt; sourceTree = "<group>"; };
+		1BF2513F266994E000E48C9A /* queued_posts.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = queued_posts.csv; sourceTree = "<group>"; };
+		1BF25140266994E000E48C9A /* user_archive.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = user_archive.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,8 @@
 		1BE078CB25ED921E002A3AC9 /* DonQuixote */ = {
 			isa = PBXGroup;
 			children = (
+				1BF2513F266994E000E48C9A /* queued_posts.csv */,
+				1BF25140266994E000E48C9A /* user_archive.csv */,
 				1BE078DD25EDA52C002A3AC9 /* HP.txt */,
 				1BE078DB25ED9E06002A3AC9 /* 996es.txt */,
 				1BE078D425ED9232002A3AC9 /* 996.txt */,
@@ -180,7 +184,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",

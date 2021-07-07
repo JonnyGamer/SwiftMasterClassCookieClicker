@@ -23,6 +23,8 @@ class ViewController: NSViewController {
             scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             view.presentScene(scene)
             
+            view.showsPhysics = true
+            
         }
     }
 }

@@ -9,10 +9,58 @@ import Foundation
 
 
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/HP.txt"
-let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/996es.txt"
+// let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/996es.txt"
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/996es.txt"
-let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
 
+let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/user_archive.csv"
+
+//let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
+//var seto: Set<String> = []
+//for i in paragraph.split(separator: "\n") {
+//    for j in i.split(separator: ",") {
+//        let o = String(j)
+//        if o.contains("https") { continue }
+//        if o.contains("2015-") { continue }
+//        if o.contains("2016-") { continue }
+//        if o.contains("2017-") { continue }
+//        if o.contains("2018-") { continue }
+//        if o.contains("2019-") { continue }
+//        if o.contains("2020-") { continue }
+//        if o.contains("2021-") { continue }
+//        if o.contains("-1"), !seto.contains(o) {
+//            seto.insert(o)
+//            print(o)
+//        }
+//    }
+//}
+//print(seto.count)
+//fatalError()
+
+let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
+var seto: Set<String> = []
+for i in paragraph.split(separator: "\n") {
+    for j in i.split(separator: ",") {
+        let o = String(j)
+        if o.contains("https") { continue }
+        if o.contains("2015-") { continue }
+        if o.contains("2016-") { continue }
+        if o.contains("2017-") { continue }
+        if o.contains("2018-") { continue }
+        if o.contains("2019-") { continue }
+        if o.contains("2020-") { continue }
+        if o.contains("2021-") { continue }
+        //if o.contains("-1"), !seto.contains(o) {
+        if o.count <= 1 { continue }
+        if !seto.contains(o), o.contains("magic") {
+            seto.insert(o)
+            print(o)
+            print()
+        }
+        //}
+    }
+}
+print(seto.count)
+fatalError()
 
 
 
