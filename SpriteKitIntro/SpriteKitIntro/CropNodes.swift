@@ -8,6 +8,20 @@
 import Foundation
 import SpriteKit
 
+class SKSceneNode: SKCropNode {
+    var size: CGSize { .init(width: width, height: height) }
+    var minPoint: CGPoint { .init(x: parent!.position.x - size.halved.width, y: parent!.position.y - size.halved.height) }
+    var width: CGFloat = 0
+    var height: CGFloat = 0
+    func touchedInside(_ point: CGPoint) -> Bool {
+        return CGRect(origin: minPoint, size: size).contains(point)
+    }
+    
+    func begin() {}
+    func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {}
+    func touchesMoved(_ at: CGVector) {}
+    func touchesEnded(_ at: CGPoint, release: CGVector) {}
+}
 
 extension SKCropNode {
     func backgroundColor(_ acolor: NSColor) {

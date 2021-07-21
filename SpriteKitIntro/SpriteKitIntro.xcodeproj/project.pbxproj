@@ -20,6 +20,7 @@
 		1BB43A9626A8ABFD00B8AF4E /* ExtensionsCG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */; };
 		1BB43A9826A8AC1A00B8AF4E /* SKNodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */; };
 		1BB43A9B26A8B13E00B8AF4E /* SKActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */; };
+		1BB43A9D26A8BFCC00B8AF4E /* Scene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsCG.swift; sourceTree = "<group>"; };
 		1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNodeExtensions.swift; sourceTree = "<group>"; };
 		1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKActions.swift; sourceTree = "<group>"; };
+		1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */,
 				1BB43A6326A88B4400B8AF4E /* Actions.sks */,
 				1BB43A6526A88B4400B8AF4E /* GameScene.swift */,
+				1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */,
 				1BB43A9926A8AC2400B8AF4E /* Extensions */,
 				1BB43A9126A8935000B8AF4E /* Stacks.swift */,
 				1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */,
@@ -285,6 +288,7 @@
 			files = (
 				1BB43A9426A8A4AD00B8AF4E /* CropNodes.swift in Sources */,
 				1BB43A9B26A8B13E00B8AF4E /* SKActions.swift in Sources */,
+				1BB43A9D26A8BFCC00B8AF4E /* Scene1.swift in Sources */,
 				1BB43A9626A8ABFD00B8AF4E /* ExtensionsCG.swift in Sources */,
 				1BB43A6826A88B4400B8AF4E /* ViewController.swift in Sources */,
 				1BB43A9226A8935000B8AF4E /* Stacks.swift in Sources */,
