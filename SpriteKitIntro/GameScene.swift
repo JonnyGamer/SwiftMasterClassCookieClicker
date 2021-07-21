@@ -12,6 +12,9 @@ class GameScene: SKScene {
     var magicCamera: SKCameraNode!
     var c: [SKNode] = []
     
+    var width: CGFloat { frame.size.width }
+    var height: CGFloat { frame.size.height }
+    
     override func didMove(to view: SKView) {
         magicCamera = SKCameraNode()
         camera = magicCamera
@@ -35,7 +38,7 @@ class GameScene: SKScene {
 //            cropper.begin()
 //        }
         
-        for i in [(500, 1000, -250, 0), (500, 1000, 250, 0)] {
+        for i in [(width/2, 1000, -width/4, 0), (width/2, 1000, width/4, 0)] {
             let cropper = Scene1.Rect(width: CGFloat(i.0)-20, height: CGFloat(i.1)-20) {
                 $0.position = .zero
             }
