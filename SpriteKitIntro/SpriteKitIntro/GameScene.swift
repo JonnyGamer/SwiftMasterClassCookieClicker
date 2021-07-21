@@ -45,9 +45,9 @@ class GameScene: SKScene {
     var velocity: CGVector = .zero
     var previous: CGPoint = .zero
     var dragged = false
-    
-    
     var touching: [SKNode] = []
+    
+    // Touch Down
     override func mouseDown(with event: NSEvent) {
         touching = []
         
@@ -62,24 +62,30 @@ class GameScene: SKScene {
             }
         }
         if touching.isEmpty {
-            touching = c
+            //touching = c
             magicCamera.setScale(event.locationInWindow.x / 200)
         }
     }
     
+    // Dragging
     override func mouseDragged(with event: NSEvent) {
         dragged = true
         let loc = event.location(in: self)
         velocity = .init(dx: loc.x - previous.x, dy: loc.y - previous.y)
         
         for i in touching {
-            (i.children[0] as! SKSceneNode).touchesMoved(CGVector.init(dx: velocity.dx, dy: velocity.dy))
-            i.run(.moveBy(x: velocity.dx, y: velocity.dy, duration: 0.1))
+            guard let io = (i.children[0] as? SKSceneNode) else { continue }
+            io.touchesMoved(CGVector.init(dx: velocity.dx, dy: velocity.dy))
+            
+            if io.draggable {
+                i.run(.moveBy(x: velocity.dx, y: velocity.dy, duration: 0.1))
+            }
         }
         
         previous = loc
     }
     
+    // Release
     override func mouseUp(with event: NSEvent) {
         let loc = event.location(in: self)
         
@@ -88,8 +94,12 @@ class GameScene: SKScene {
             uwu.timingFunction = SineEaseOut(_:)
             
             for i in touching {
-                i.run(uwu)
-                (i.children[0] as! SKSceneNode).touchesEnded(loc, release: CGVector.init(dx: velocity.dx*10, dy: velocity.dy*10))
+                guard let io = (i.children[0] as? SKSceneNode) else { continue }
+                io.touchesEnded(loc, release: CGVector.init(dx: velocity.dx*10, dy: velocity.dy*10))
+                
+                if io.draggable {
+                    i.run(uwu)
+                }
             }
             
         }

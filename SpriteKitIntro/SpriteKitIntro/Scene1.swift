@@ -14,6 +14,8 @@ class Scene1: SKSceneNode {
     var inversion: Bool = true
     
     override func begin() {
+        //draggable = false
+        
         inversion = Self.inverse
         Self.inverse.toggle()
         

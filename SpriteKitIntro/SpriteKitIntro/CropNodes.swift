@@ -21,6 +21,7 @@ class SKSceneNode: SKCropNode {
     func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {}
     func touchesMoved(_ at: CGVector) {}
     func touchesEnded(_ at: CGPoint, release: CGVector) {}
+    var draggable = true
 }
 
 extension SKCropNode {
