@@ -18,17 +18,17 @@ extension SKCropNode {
         bg.zPosition = -.infinity
         addChild(bg)
     }
-    static func Circle(radius: CGFloat, add: SKNode, doThis: (SKShapeNode) -> ()) -> SKCropNode {
+    static func Circle(radius: CGFloat, add: SKNode, doThis: ((SKShapeNode) -> ())? = nil) -> SKCropNode {
         let cropper = SKCropNode.init()
         cropper.addChild(add)
         
         let uwu = SKShapeNode.init(circleOfRadius: radius/2)
         uwu.lineWidth = radius
-        doThis(uwu)
+        doThis?(uwu)
         cropper.maskNode = uwu
         return cropper
     }
-    static func RoundRect(width: CGFloat, height: CGFloat, corner: CGFloat, add: SKNode, doThis: (SKShapeNode) -> ()) -> SKCropNode {
+    static func RoundRect(width: CGFloat, height: CGFloat, corner: CGFloat, add: SKNode, doThis: ((SKShapeNode) -> ())? = nil) -> SKCropNode {
         let cropper = SKCropNode.init()
         cropper.addChild(add)
         
@@ -39,7 +39,7 @@ extension SKCropNode {
         
         uwu.lineWidth = takeaway + 1
         
-        doThis(uwu)
+        doThis?(uwu)
         cropper.maskNode = uwu
         
         // additional crop nodage ;)
@@ -49,12 +49,12 @@ extension SKCropNode {
         
         return cropper
     }
-    static func Rect(width: CGFloat, height: CGFloat, add: SKNode, doThis: (SKSpriteNode) -> ()) -> SKCropNode {
+    static func Rect(width: CGFloat, height: CGFloat, add: SKNode, doThis: ((SKSpriteNode) -> ())? = nil) -> SKCropNode {
         let cropper = SKCropNode.init()
         cropper.addChild(add)
         
         let uwu = SKSpriteNode.init(color: .gray, size: .init(width: width, height: height))
-        doThis(uwu)
+        doThis?(uwu)
         cropper.maskNode = uwu
         return cropper
     }
