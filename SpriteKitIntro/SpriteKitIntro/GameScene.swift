@@ -20,20 +20,20 @@ public func SineEaseOut(_ p:Float)->Float {
 
 
 
-extension CGPoint {
-    static var midScreen: Self { .init(x: 500, y: 500) }
-}
-extension CGSize {
-    static var hundred: Self { .init(width: 100, height: 100) }
-}
+
+
+
 
 class GameScene: SKScene {
         
     var h: HStack!
+    var i: HStack!
     
     override func didMove(to view: SKView) {
         
-        backgroundColor = .white
+        
+        
+        backgroundColor = .black
         
         let node1 = SKSpriteNode(color: .gray, size: .hundred)
         let node2 = SKSpriteNode(color: .gray, size: .hundred)
@@ -43,10 +43,33 @@ class GameScene: SKScene {
         let node4 = SKSpriteNode(color: .gray, size: .hundred)
         
         h = HStack(nodes: [node1.padding, node2.padding, node3.padding, node4.padding])
-        addChild(h)
         keepInsideScene(h)
         h.centerOn(self)
-        //h.centerAt(point: .midScreen)
+        i = HStack(nodes: [node1.copied.padding, node2.copied.padding, node3.copied.padding, node4.copied.padding])
+        keepInsideScene(i)
+        i.centerOn(self)
+        
+        // FRAME 1
+        let cropper = SKCropNode.Rect(width: 500-20, height: 1000-20, add: h) {
+            $0.position = .zero
+        }
+        cropper.position.x = 250
+        cropper.position.y = 500
+        addChild(cropper)
+        cropper.maskNode?.alpha = 0.5
+        cropper.framed(.darkGray)
+        cropper.backgroundColor(.lightGray)
+        
+        // FRAME 1
+        let cropper2 = SKCropNode.Rect(width: 500-20, height: 1000-20, add: i) {
+            $0.position = .zero
+        }
+        cropper2.position.x = 750
+        cropper2.position.y = 500
+        addChild(cropper2)
+        cropper2.maskNode?.alpha = 0.5
+        cropper2.framed(.darkGray)
+        cropper2.backgroundColor(.lightGray)
     }
     
 
@@ -58,6 +81,7 @@ class GameScene: SKScene {
     var (previousX, previousY): (CGFloat, CGFloat) = (0, 0)
     override func mouseDragged(with event: NSEvent) {
         h.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
+        i.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
         (previousX, previousY) = (event.deltaX, event.deltaY)
         //print(event.deltaX)
     }
@@ -65,17 +89,26 @@ class GameScene: SKScene {
         let uwu = SKAction.moveBy(x: previousX*20, y: -previousY*20, duration: 0.5)
         uwu.timingFunction = SineEaseOut(_:)
         h.run(uwu)
+        i.run(uwu)
     }
     
     override func mouseDown(with event: NSEvent) {
         (previousX, previousY) = (0,0)
         let foo: [SKNode] = (1...h.children.count).map { _ in SKSpriteNode(color: .gray, size: .hundred).padding }
         h.append(node: VStack.init(nodes: foo))
+        
+        let bar: [SKNode] = (1...h.children.count).map { _ in SKSpriteNode(color: .gray, size: .hundred).padding }
+        i.prepend(node: VStack.init(nodes: bar))
+        
         //h.append(node: h.copied)
         //h.append(nodes: h.copiedChildren)
         
         keepInsideScene(h)
-        h.centerOn(self)
+        h.centerAt(point: .zero)
+        
+        keepInsideScene(i)
+        i.centerAt(point: .zero)
+        
         //h.centerAt(point: .midScreen)
         //center(h)
     }
@@ -84,51 +117,6 @@ class GameScene: SKScene {
 
 
 
-extension CGSize {
-    func padding(_ with: CGFloat) -> Self {
-        return .init(width: self.width + with, height: self.height + with)
-    }
-}
-
-extension SKNode {
-    var padding: SKNode {
-        let oldScale = (self.xScale, self.yScale)
-        setScale(1)
-        let newNode = SKSpriteNode.init(color: .white, size: self.calculateAccumulatedFrame().size.padding(20))
-        addChild(newNode)
-        (xScale, yScale) = oldScale
-        newNode.alpha = 0
-        return self
-    }
-    
-    var copied: SKNode {
-        return self.copy() as! SKNode
-    }
-    var copiedChildren: [SKNode] {
-        return self.children.map { $0.copied }
-    }
-    
-    func centerOn(_ node: SKScene) {
-        let whereThis: CGPoint = .init(x: node.size.width/2, y: node.size.height/2)
-        position = whereThis
-        let newWhereThis = calculateAccumulatedFrame()
-        position.x += whereThis.x - newWhereThis.midX
-        position.y += whereThis.y - newWhereThis.midY
-    }
-    func centerOn(_ node: SKNode) {
-        let whereThis = node.calculateAccumulatedFrame()
-        position = .init(x: whereThis.midX, y: whereThis.midY)
-        let newWhereThis = calculateAccumulatedFrame()
-        position.x += whereThis.midX - newWhereThis.midX
-        position.y += whereThis.midY - newWhereThis.midY
-    }
-    func centerAt(point: CGPoint) {
-        position = point
-        let whereThis = calculateAccumulatedFrame()
-        position.x += point.x - whereThis.midX
-        position.y += point.y - whereThis.midY
-    }
-}
 
 
 

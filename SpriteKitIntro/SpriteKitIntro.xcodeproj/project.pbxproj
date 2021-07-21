@@ -15,7 +15,10 @@
 		1BB43A6D26A88B4500B8AF4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43A6B26A88B4500B8AF4E /* Main.storyboard */; };
 		1BB43A7926A88B4600B8AF4E /* SpriteKitIntroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A7826A88B4600B8AF4E /* SpriteKitIntroTests.swift */; };
 		1BB43A8426A88B4600B8AF4E /* SpriteKitIntroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A8326A88B4600B8AF4E /* SpriteKitIntroUITests.swift */; };
-		1BB43A9226A8935000B8AF4E /* HStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9126A8935000B8AF4E /* HStack.swift */; };
+		1BB43A9226A8935000B8AF4E /* Stacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9126A8935000B8AF4E /* Stacks.swift */; };
+		1BB43A9426A8A4AD00B8AF4E /* CropNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */; };
+		1BB43A9626A8ABFD00B8AF4E /* ExtensionsCG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */; };
+		1BB43A9826A8AC1A00B8AF4E /* SKNodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +54,10 @@
 		1BB43A7F26A88B4600B8AF4E /* SpriteKitIntroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpriteKitIntroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB43A8326A88B4600B8AF4E /* SpriteKitIntroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitIntroUITests.swift; sourceTree = "<group>"; };
 		1BB43A8526A88B4600B8AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1BB43A9126A8935000B8AF4E /* HStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStack.swift; sourceTree = "<group>"; };
+		1BB43A9126A8935000B8AF4E /* Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stacks.swift; sourceTree = "<group>"; };
+		1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropNodes.swift; sourceTree = "<group>"; };
+		1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsCG.swift; sourceTree = "<group>"; };
+		1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNodeExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +111,9 @@
 				1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */,
 				1BB43A6326A88B4400B8AF4E /* Actions.sks */,
 				1BB43A6526A88B4400B8AF4E /* GameScene.swift */,
-				1BB43A9126A8935000B8AF4E /* HStack.swift */,
+				1BB43A9926A8AC2400B8AF4E /* Extensions */,
+				1BB43A9126A8935000B8AF4E /* Stacks.swift */,
+				1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */,
 				1BB43A6726A88B4400B8AF4E /* ViewController.swift */,
 				1BB43A6926A88B4500B8AF4E /* Assets.xcassets */,
 				1BB43A6B26A88B4500B8AF4E /* Main.storyboard */,
@@ -131,6 +139,15 @@
 				1BB43A8526A88B4600B8AF4E /* Info.plist */,
 			);
 			path = SpriteKitIntroUITests;
+			sourceTree = "<group>";
+		};
+		1BB43A9926A8AC2400B8AF4E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */,
+				1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,10 +280,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BB43A9426A8A4AD00B8AF4E /* CropNodes.swift in Sources */,
+				1BB43A9626A8ABFD00B8AF4E /* ExtensionsCG.swift in Sources */,
 				1BB43A6826A88B4400B8AF4E /* ViewController.swift in Sources */,
-				1BB43A9226A8935000B8AF4E /* HStack.swift in Sources */,
+				1BB43A9226A8935000B8AF4E /* Stacks.swift in Sources */,
 				1BB43A6626A88B4400B8AF4E /* GameScene.swift in Sources */,
 				1BB43A6026A88B4400B8AF4E /* AppDelegate.swift in Sources */,
+				1BB43A9826A8AC1A00B8AF4E /* SKNodeExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
