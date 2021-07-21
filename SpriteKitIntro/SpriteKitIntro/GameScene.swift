@@ -21,14 +21,14 @@ class GameScene: SKScene {
         
         backgroundColor = .black
         
-        for i in [(500, 500, 250, 500), (500, 1000, 900, 750), (400, 200, 0, 0)] {
-            let cropper = Scene1.Rect(width: CGFloat(i.0)-20, height: CGFloat(i.1)-20) {
+        for i in 1...10 { // [(500, 500, 250, 500), (500, 1000, 900, 750), (400, 200, 0, 0)]
+            let cropper = Scene1.Rect(width: CGFloat.random(in: 100...1000), height: CGFloat.random(in: 100...1000)) {
                 $0.position = .zero
             }
-            cropper.position.x = CGFloat.random(in: 0...1000)
-            cropper.position.y = CGFloat.random(in: 0...1000)
+            cropper.position.x = CGFloat.random(in: -1000...1000)
+            cropper.position.y = CGFloat.random(in: -1000...1000)
             addChild(cropper)
-            cropper.maskNode?.alpha = 0.5
+            //cropper.maskNode?.alpha = 0.5
             cropper.framed(.darkGray)
             c.append(cropper.parent!)
             cropper.begin()

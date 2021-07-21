@@ -32,9 +32,12 @@ extension SKCropNode {
         bg.zPosition = -.infinity
         addChild(bg)
     }
-    static func Circle(radius: CGFloat, add: SKNode, doThis: ((SKShapeNode) -> ())? = nil) -> SKCropNode {
-        let cropper = SKCropNode.init()
-        cropper.addChild(add)
+    static func Circle(radius: CGFloat, doThis: ((SKShapeNode) -> ())? = nil) -> Self {
+        let cropper = Self.init()
+        if let c = cropper as? SKSceneNode {
+            c.width = radius*2
+            c.height = radius*2
+        }
         
         let uwu = SKShapeNode.init(circleOfRadius: radius/2)
         uwu.lineWidth = radius
@@ -42,9 +45,12 @@ extension SKCropNode {
         cropper.maskNode = uwu
         return cropper
     }
-    static func RoundRect(width: CGFloat, height: CGFloat, corner: CGFloat, add: SKNode, doThis: ((SKShapeNode) -> ())? = nil) -> SKCropNode {
-        let cropper = SKCropNode.init()
-        cropper.addChild(add)
+    static func RoundRect(width: CGFloat, height: CGFloat, corner: CGFloat, doThis: ((SKShapeNode) -> ())? = nil) -> Self {
+        let cropper = Self.init()
+        if let c = cropper as? SKSceneNode {
+            c.width = width
+            c.height = height
+        }
         
         let smallSide = min(width, height)
         let takeaway = smallSide/2
@@ -65,21 +71,6 @@ extension SKCropNode {
     }
     static func Rect(width: CGFloat, height: CGFloat, doThis: ((SKSpriteNode) -> ())? = nil) -> Self {
         let cropper = Self.init()
-        
-        if let c = cropper as? SKSceneNode {
-            c.width = width
-            c.height = height
-        }
-        
-        let uwu = SKSpriteNode.init(color: .gray, size: .init(width: width, height: height))
-        doThis?(uwu)
-        cropper.maskNode = uwu
-        return cropper
-    }
-    
-    static func Rect(width: CGFloat, height: CGFloat, add: SKNode, doThis: ((SKSpriteNode) -> ())? = nil) -> Self {
-        let cropper = Self.init()
-        cropper.addChild(add)
         
         if let c = cropper as? SKSceneNode {
             c.width = width
