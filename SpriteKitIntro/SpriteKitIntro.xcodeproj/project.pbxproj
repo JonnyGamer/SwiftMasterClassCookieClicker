@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1BB43A6026A88B4400B8AF4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */; };
-		1BB43A6426A88B4400B8AF4E /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43A6326A88B4400B8AF4E /* Actions.sks */; };
 		1BB43A6626A88B4400B8AF4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScene.swift */; };
 		1BB43A6826A88B4400B8AF4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6726A88B4400B8AF4E /* ViewController.swift */; };
 		1BB43A6A26A88B4500B8AF4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43A6926A88B4500B8AF4E /* Assets.xcassets */; };
@@ -21,6 +20,19 @@
 		1BB43A9826A8AC1A00B8AF4E /* SKNodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */; };
 		1BB43A9B26A8B13E00B8AF4E /* SKActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */; };
 		1BB43A9D26A8BFCC00B8AF4E /* Scene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */; };
+		1BB43AA526A8D98D00B8AF4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43AA426A8D98D00B8AF4E /* AppDelegate.swift */; };
+		1BB43AAD26A8D98D00B8AF4E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43AAC26A8D98D00B8AF4E /* GameViewController.swift */; };
+		1BB43AB026A8D98D00B8AF4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43AAE26A8D98D00B8AF4E /* Main.storyboard */; };
+		1BB43AB226A8D99000B8AF4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43AB126A8D99000B8AF4E /* Assets.xcassets */; };
+		1BB43ABD26A8D99000B8AF4E /* MultiSceneiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43ABC26A8D99000B8AF4E /* MultiSceneiOSTests.swift */; };
+		1BB43AC826A8D99000B8AF4E /* MultiSceneiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43AC726A8D99000B8AF4E /* MultiSceneiOSUITests.swift */; };
+		1BB43AD326A8D9B200B8AF4E /* Scene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */; };
+		1BB43AD426A8D9B400B8AF4E /* Stacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9126A8935000B8AF4E /* Stacks.swift */; };
+		1BB43AD526A8D9B600B8AF4E /* CropNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */; };
+		1BB43AD726A8D9BC00B8AF4E /* SKNodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */; };
+		1BB43AD826A8D9BC00B8AF4E /* SKActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */; };
+		1BB43AD926A8D9BC00B8AF4E /* ExtensionsCG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */; };
+		1BB43ADA26A8D9C400B8AF4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,12 +50,25 @@
 			remoteGlobalIDString = 1BB43A5B26A88B4400B8AF4E;
 			remoteInfo = SpriteKitIntro;
 		};
+		1BB43AB926A8D99000B8AF4E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BB43A5426A88B4400B8AF4E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BB43AA126A8D98D00B8AF4E;
+			remoteInfo = MultiSceneiOS;
+		};
+		1BB43AC426A8D99000B8AF4E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BB43A5426A88B4400B8AF4E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BB43AA126A8D98D00B8AF4E;
+			remoteInfo = MultiSceneiOS;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1BB43A5C26A88B4400B8AF4E /* SpriteKitIntro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitIntro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1BB43A6326A88B4400B8AF4E /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		1BB43A6526A88B4400B8AF4E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		1BB43A6726A88B4400B8AF4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1BB43A6926A88B4500B8AF4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -62,6 +87,18 @@
 		1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNodeExtensions.swift; sourceTree = "<group>"; };
 		1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKActions.swift; sourceTree = "<group>"; };
 		1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene1.swift; sourceTree = "<group>"; };
+		1BB43AA226A8D98D00B8AF4E /* MultiSceneiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiSceneiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BB43AA426A8D98D00B8AF4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1BB43AAC26A8D98D00B8AF4E /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		1BB43AAF26A8D98D00B8AF4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1BB43AB126A8D99000B8AF4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1BB43AB326A8D99000B8AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BB43AB826A8D99000B8AF4E /* MultiSceneiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiSceneiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BB43ABC26A8D99000B8AF4E /* MultiSceneiOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSceneiOSTests.swift; sourceTree = "<group>"; };
+		1BB43ABE26A8D99000B8AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BB43AC326A8D99000B8AF4E /* MultiSceneiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiSceneiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BB43AC726A8D99000B8AF4E /* MultiSceneiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSceneiOSUITests.swift; sourceTree = "<group>"; };
+		1BB43AC926A8D99000B8AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,15 +123,44 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1BB43A9F26A8D98D00B8AF4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AB526A8D99000B8AF4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AC026A8D99000B8AF4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1BB43A5326A88B4400B8AF4E = {
 			isa = PBXGroup;
 			children = (
+				1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */,
+				1BB43A9926A8AC2400B8AF4E /* Extensions */,
+				1BB43A9126A8935000B8AF4E /* Stacks.swift */,
+				1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */,
+				1BB43A6526A88B4400B8AF4E /* GameScene.swift */,
 				1BB43A5E26A88B4400B8AF4E /* SpriteKitIntro */,
 				1BB43A7726A88B4600B8AF4E /* SpriteKitIntroTests */,
 				1BB43A8226A88B4600B8AF4E /* SpriteKitIntroUITests */,
+				1BB43AA326A8D98D00B8AF4E /* MultiSceneiOS */,
+				1BB43ABB26A8D99000B8AF4E /* MultiSceneiOSTests */,
+				1BB43AC626A8D99000B8AF4E /* MultiSceneiOSUITests */,
 				1BB43A5D26A88B4400B8AF4E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,6 +171,9 @@
 				1BB43A5C26A88B4400B8AF4E /* SpriteKitIntro.app */,
 				1BB43A7426A88B4600B8AF4E /* SpriteKitIntroTests.xctest */,
 				1BB43A7F26A88B4600B8AF4E /* SpriteKitIntroUITests.xctest */,
+				1BB43AA226A8D98D00B8AF4E /* MultiSceneiOS.app */,
+				1BB43AB826A8D99000B8AF4E /* MultiSceneiOSTests.xctest */,
+				1BB43AC326A8D99000B8AF4E /* MultiSceneiOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,14 +181,8 @@
 		1BB43A5E26A88B4400B8AF4E /* SpriteKitIntro */ = {
 			isa = PBXGroup;
 			children = (
-				1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */,
-				1BB43A6326A88B4400B8AF4E /* Actions.sks */,
-				1BB43A6526A88B4400B8AF4E /* GameScene.swift */,
-				1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */,
-				1BB43A9926A8AC2400B8AF4E /* Extensions */,
-				1BB43A9126A8935000B8AF4E /* Stacks.swift */,
-				1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */,
 				1BB43A6726A88B4400B8AF4E /* ViewController.swift */,
+				1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */,
 				1BB43A6926A88B4500B8AF4E /* Assets.xcassets */,
 				1BB43A6B26A88B4500B8AF4E /* Main.storyboard */,
 				1BB43A6E26A88B4500B8AF4E /* Info.plist */,
@@ -154,6 +217,36 @@
 				1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1BB43AA326A8D98D00B8AF4E /* MultiSceneiOS */ = {
+			isa = PBXGroup;
+			children = (
+				1BB43AA426A8D98D00B8AF4E /* AppDelegate.swift */,
+				1BB43AAC26A8D98D00B8AF4E /* GameViewController.swift */,
+				1BB43AAE26A8D98D00B8AF4E /* Main.storyboard */,
+				1BB43AB126A8D99000B8AF4E /* Assets.xcassets */,
+				1BB43AB326A8D99000B8AF4E /* Info.plist */,
+			);
+			path = MultiSceneiOS;
+			sourceTree = "<group>";
+		};
+		1BB43ABB26A8D99000B8AF4E /* MultiSceneiOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				1BB43ABC26A8D99000B8AF4E /* MultiSceneiOSTests.swift */,
+				1BB43ABE26A8D99000B8AF4E /* Info.plist */,
+			);
+			path = MultiSceneiOSTests;
+			sourceTree = "<group>";
+		};
+		1BB43AC626A8D99000B8AF4E /* MultiSceneiOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				1BB43AC726A8D99000B8AF4E /* MultiSceneiOSUITests.swift */,
+				1BB43AC926A8D99000B8AF4E /* Info.plist */,
+			);
+			path = MultiSceneiOSUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +305,59 @@
 			productReference = 1BB43A7F26A88B4600B8AF4E /* SpriteKitIntroUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		1BB43AA126A8D98D00B8AF4E /* MultiSceneiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BB43ACA26A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOS" */;
+			buildPhases = (
+				1BB43A9E26A8D98D00B8AF4E /* Sources */,
+				1BB43A9F26A8D98D00B8AF4E /* Frameworks */,
+				1BB43AA026A8D98D00B8AF4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MultiSceneiOS;
+			productName = MultiSceneiOS;
+			productReference = 1BB43AA226A8D98D00B8AF4E /* MultiSceneiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1BB43AB726A8D99000B8AF4E /* MultiSceneiOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BB43ACD26A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOSTests" */;
+			buildPhases = (
+				1BB43AB426A8D99000B8AF4E /* Sources */,
+				1BB43AB526A8D99000B8AF4E /* Frameworks */,
+				1BB43AB626A8D99000B8AF4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BB43ABA26A8D99000B8AF4E /* PBXTargetDependency */,
+			);
+			name = MultiSceneiOSTests;
+			productName = MultiSceneiOSTests;
+			productReference = 1BB43AB826A8D99000B8AF4E /* MultiSceneiOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1BB43AC226A8D99000B8AF4E /* MultiSceneiOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1BB43AD026A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOSUITests" */;
+			buildPhases = (
+				1BB43ABF26A8D99000B8AF4E /* Sources */,
+				1BB43AC026A8D99000B8AF4E /* Frameworks */,
+				1BB43AC126A8D99000B8AF4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1BB43AC526A8D99000B8AF4E /* PBXTargetDependency */,
+			);
+			name = MultiSceneiOSUITests;
+			productName = MultiSceneiOSUITests;
+			productReference = 1BB43AC326A8D99000B8AF4E /* MultiSceneiOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -232,6 +378,17 @@
 						CreatedOnToolsVersion = 12.5;
 						TestTargetID = 1BB43A5B26A88B4400B8AF4E;
 					};
+					1BB43AA126A8D98D00B8AF4E = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					1BB43AB726A8D99000B8AF4E = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = 1BB43AA126A8D98D00B8AF4E;
+					};
+					1BB43AC226A8D99000B8AF4E = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = 1BB43AA126A8D98D00B8AF4E;
+					};
 				};
 			};
 			buildConfigurationList = 1BB43A5726A88B4400B8AF4E /* Build configuration list for PBXProject "SpriteKitIntro" */;
@@ -250,6 +407,9 @@
 				1BB43A5B26A88B4400B8AF4E /* SpriteKitIntro */,
 				1BB43A7326A88B4600B8AF4E /* SpriteKitIntroTests */,
 				1BB43A7E26A88B4600B8AF4E /* SpriteKitIntroUITests */,
+				1BB43AA126A8D98D00B8AF4E /* MultiSceneiOS */,
+				1BB43AB726A8D99000B8AF4E /* MultiSceneiOSTests */,
+				1BB43AC226A8D99000B8AF4E /* MultiSceneiOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,7 +420,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BB43A6A26A88B4500B8AF4E /* Assets.xcassets in Resources */,
-				1BB43A6426A88B4400B8AF4E /* Actions.sks in Resources */,
 				1BB43A6D26A88B4500B8AF4E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,6 +432,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1BB43A7D26A88B4600B8AF4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AA026A8D98D00B8AF4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BB43AB026A8D98D00B8AF4E /* Main.storyboard in Resources */,
+				1BB43AB226A8D99000B8AF4E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AB626A8D99000B8AF4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AC126A8D99000B8AF4E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -314,6 +496,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1BB43A9E26A8D98D00B8AF4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BB43AD426A8D9B400B8AF4E /* Stacks.swift in Sources */,
+				1BB43AD826A8D9BC00B8AF4E /* SKActions.swift in Sources */,
+				1BB43AD926A8D9BC00B8AF4E /* ExtensionsCG.swift in Sources */,
+				1BB43AAD26A8D98D00B8AF4E /* GameViewController.swift in Sources */,
+				1BB43ADA26A8D9C400B8AF4E /* GameScene.swift in Sources */,
+				1BB43AD526A8D9B600B8AF4E /* CropNodes.swift in Sources */,
+				1BB43AD726A8D9BC00B8AF4E /* SKNodeExtensions.swift in Sources */,
+				1BB43AD326A8D9B200B8AF4E /* Scene1.swift in Sources */,
+				1BB43AA526A8D98D00B8AF4E /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43AB426A8D99000B8AF4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BB43ABD26A8D99000B8AF4E /* MultiSceneiOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1BB43ABF26A8D99000B8AF4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1BB43AC826A8D99000B8AF4E /* MultiSceneiOSUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -327,6 +541,16 @@
 			target = 1BB43A5B26A88B4400B8AF4E /* SpriteKitIntro */;
 			targetProxy = 1BB43A8026A88B4600B8AF4E /* PBXContainerItemProxy */;
 		};
+		1BB43ABA26A8D99000B8AF4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BB43AA126A8D98D00B8AF4E /* MultiSceneiOS */;
+			targetProxy = 1BB43AB926A8D99000B8AF4E /* PBXContainerItemProxy */;
+		};
+		1BB43AC526A8D99000B8AF4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1BB43AA126A8D98D00B8AF4E /* MultiSceneiOS */;
+			targetProxy = 1BB43AC426A8D99000B8AF4E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -334,6 +558,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				1BB43A6C26A88B4500B8AF4E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1BB43AAE26A8D98D00B8AF4E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1BB43AAF26A8D98D00B8AF4E /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -582,6 +814,141 @@
 			};
 			name = Release;
 		};
+		1BB43ACB26A8D99000B8AF4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1BB43ACC26A8D99000B8AF4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1BB43ACE26A8D99000B8AF4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiSceneiOS.app/MultiSceneiOS";
+			};
+			name = Debug;
+		};
+		1BB43ACF26A8D99000B8AF4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiSceneiOS.app/MultiSceneiOS";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1BB43AD126A8D99000B8AF4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOSUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MultiSceneiOS;
+			};
+			name = Debug;
+		};
+		1BB43AD226A8D99000B8AF4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = MultiSceneiOSUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.MultiSceneiOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MultiSceneiOS;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -617,6 +984,33 @@
 			buildConfigurations = (
 				1BB43A8F26A88B4600B8AF4E /* Debug */,
 				1BB43A9026A88B4600B8AF4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BB43ACA26A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BB43ACB26A8D99000B8AF4E /* Debug */,
+				1BB43ACC26A8D99000B8AF4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BB43ACD26A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BB43ACE26A8D99000B8AF4E /* Debug */,
+				1BB43ACF26A8D99000B8AF4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1BB43AD026A8D99000B8AF4E /* Build configuration list for PBXNativeTarget "MultiSceneiOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1BB43AD126A8D99000B8AF4E /* Debug */,
+				1BB43AD226A8D99000B8AF4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

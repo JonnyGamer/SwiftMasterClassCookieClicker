@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+#if os(iOS)
+typealias NSColor = UIColor
+#endif
+
 extension SKNode {
     func framed(_ acolor: NSColor = .black) {
         
