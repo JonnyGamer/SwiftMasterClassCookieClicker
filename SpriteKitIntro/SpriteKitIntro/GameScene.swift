@@ -22,7 +22,7 @@ class SKSceneNode: SKCropNode {
     func begin() {}
     func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {}
     func touchesMoved(_ at: CGVector) {}
-    func touchesEnded(_ at: CGPoint) {}
+    func touchesEnded(_ at: CGPoint, release: CGVector) {}
 }
 
 
@@ -69,6 +69,12 @@ class Scene1: SKSceneNode {
     override func touchesMoved(_ at: CGVector) {
         h.run(.moveBy(x: at.dx, y: at.dy, duration: 0.1))
     }
+    
+    override func touchesEnded(_ at: CGPoint, release: CGVector) {
+        let uwu = SKAction.moveBy(x: release.dx, y: release.dy, duration: 0.5)
+        uwu.timingFunction = SineEaseOut(_:)
+        h.run(uwu)
+    }
 }
 
 
@@ -76,50 +82,26 @@ class Scene1: SKSceneNode {
 
 
 class GameScene: SKScene {
-        
-    var i: HStack!
-    var c1: SKNode!
-    var c2: SKNode!
+    
+    var c: [SKNode] = []
+    //var c2: SKNode!
     
     override func didMove(to view: SKView) {
         
         backgroundColor = .black
         
-        let node1 = SKSpriteNode(color: .gray, size: .hundred)
-        let node2 = SKSpriteNode(color: .gray, size: .hundred)
-        node2.setScale(0.5)
-        let node3 = SKSpriteNode(color: .gray, size: .hundred)
-        node3.setScale(0.5)
-        let node4 = SKSpriteNode(color: .gray, size: .hundred)
-        
-        i = HStack(nodes: [node1.copied.padding, node2.copied.padding, node3.copied.padding, node4.copied.padding])
-        i.keepInside(size)
-        //keepInsideScene(i)
-        i.centerOn(self)
-        
-        // FRAME 1
-        let cropper = Scene1.Rect(width: 500-20, height: 500-20) {
-            $0.position = .zero
+        for i in [(500, 500, 250, 500), (500, 1000, 900, 750), (400, 200, 0, 0)] {
+            let cropper = Scene1.Rect(width: CGFloat(i.0)-20, height: CGFloat(i.1)-20) {
+                $0.position = .zero
+            }
+            cropper.position.x = CGFloat(i.2)
+            cropper.position.y = CGFloat(i.3)
+            addChild(cropper)
+            cropper.maskNode?.alpha = 0.5
+            cropper.framed(.darkGray)
+            c.append(cropper.parent!)
+            cropper.begin()
         }
-        cropper.position.x = 250
-        cropper.position.y = 500
-        addChild(cropper)
-        cropper.maskNode?.alpha = 0.5
-        cropper.framed(.darkGray)
-        c1 = cropper.parent
-        cropper.begin()
-        
-        // FRAME 1
-        let cropper2 = SKCropNode.Rect(width: 500-20, height: 1000-20, add: i) {
-            $0.position = .zero
-        }
-        cropper2.position.x = 900//750
-        cropper2.position.y = 500
-        addChild(cropper2)
-        cropper2.maskNode?.alpha = 0.5
-        cropper2.framed(.darkGray)
-        cropper2.backgroundColor(.lightGray)
-        c2 = cropper2.parent
         
     }
     
@@ -141,17 +123,12 @@ class GameScene: SKScene {
         previous = loc
         dragged = false
         
-        if (c1.children[0] as! Scene1).touchedInside(loc) {
-            touching.append(c1)
-            (c1.children[0] as! Scene1).touchesBegan(.zero, nodes: [])
+        for c1 in c {
+            if (c1.children[0] as! Scene1).touchedInside(loc) {
+                touching.append(c1)
+                (c1.children[0] as! Scene1).touchesBegan(.zero, nodes: [])
+            }
         }
-        
-        
-        let bar: [SKNode] = (1...i.children.count).map { _ in SKSpriteNode(color: .gray, size: .hundred).padding }
-        i.prepend(node: VStack.init(nodes: bar))
-        
-        i.keepInside(size)
-        i.centerAt(point: .zero)
     }
     
     override func mouseDragged(with event: NSEvent) {
@@ -162,23 +139,21 @@ class GameScene: SKScene {
             i.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
         }
         
-        i.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
-        c2.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
-        
         (previous.x, previous.y) = (event.deltaX, event.deltaY)
     }
     
     override func mouseUp(with event: NSEvent) {
+        let loc = event.location(in: self)
+        
         if dragged {
             let uwu = SKAction.moveBy(x: previous.x*20, y: -previous.y*20, duration: 0.5)
             uwu.timingFunction = SineEaseOut(_:)
             
             for i in touching {
                 i.run(uwu)
+                (i.children[0] as! SKSceneNode).touchesEnded(loc, release: CGVector.init(dx: previous.x*20, dy: -previous.y*20))
             }
             
-            i.run(uwu)
-            c2.run(uwu)
         }
     }
     
