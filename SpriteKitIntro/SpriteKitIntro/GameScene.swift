@@ -10,7 +10,6 @@ import SpriteKit
 class GameScene: SKScene {
     
     var c: [SKNode] = []
-    //var c2: SKNode!
     
     override func didMove(to view: SKView) {
         
