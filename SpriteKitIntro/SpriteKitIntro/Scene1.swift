@@ -20,6 +20,13 @@ class Scene1: SKSceneNode {
         backgroundColor(.lightGray)
         print("Let's GOOO!")
         
+        // physics body test
+        let test1 = SKSpriteNode.init(color: .red, size: .hundred)
+        test1.physicsBody = SKPhysicsBody.init(rectangleOf: test1.size)
+        test1.physicsBody?.affectedByGravity = false
+        addChild(test1)
+        
+        // Add the tree nodes
         let node1 = SKSpriteNode(color: .gray, size: .hundred)
         let node2 = SKSpriteNode(color: .gray, size: .hundred)
         node2.setScale(0.5)

@@ -9,9 +9,15 @@ import SpriteKit
 
 class GameScene: SKScene {
     
+    var magicCamera: SKCameraNode!
     var c: [SKNode] = []
     
     override func didMove(to view: SKView) {
+        magicCamera = SKCameraNode()
+        camera = magicCamera
+        addChild(magicCamera)
+        
+        //magicCamera.run(.moveBy(x: 1000, y: 0, duration: 10))
         
         backgroundColor = .black
         
@@ -36,6 +42,7 @@ class GameScene: SKScene {
         node.setScale(min((size.width / nodeSize.width) * node.xScale, (size.height / nodeSize.height) * node.yScale))
     }
 
+    var velocity: CGVector = .zero
     var previous: CGPoint = .zero
     var dragged = false
     
@@ -54,29 +61,35 @@ class GameScene: SKScene {
                 (c1.children[0] as! Scene1).touchesBegan(.zero, nodes: [])
             }
         }
+        if touching.isEmpty {
+            touching = c
+            magicCamera.setScale(event.locationInWindow.x / 200)
+        }
     }
     
     override func mouseDragged(with event: NSEvent) {
         dragged = true
+        let loc = event.location(in: self)
+        velocity = .init(dx: loc.x - previous.x, dy: loc.y - previous.y)
         
         for i in touching {
-            (i.children[0] as! SKSceneNode).touchesMoved(CGVector.init(dx: event.deltaX, dy: -event.deltaY))
-            i.run(.moveBy(x: event.deltaX, y: -event.deltaY, duration: 0.1))
+            (i.children[0] as! SKSceneNode).touchesMoved(CGVector.init(dx: velocity.dx, dy: velocity.dy))
+            i.run(.moveBy(x: velocity.dx, y: velocity.dy, duration: 0.1))
         }
         
-        (previous.x, previous.y) = (event.deltaX, event.deltaY)
+        previous = loc
     }
     
     override func mouseUp(with event: NSEvent) {
         let loc = event.location(in: self)
         
         if dragged {
-            let uwu = SKAction.moveBy(x: previous.x*20, y: -previous.y*20, duration: 0.5)
+            let uwu = SKAction.moveBy(x: velocity.dx*10, y: velocity.dy*10, duration: 0.5)
             uwu.timingFunction = SineEaseOut(_:)
             
             for i in touching {
                 i.run(uwu)
-                (i.children[0] as! SKSceneNode).touchesEnded(loc, release: CGVector.init(dx: previous.x*20, dy: -previous.y*20))
+                (i.children[0] as! SKSceneNode).touchesEnded(loc, release: CGVector.init(dx: velocity.dx*10, dy: velocity.dy*10))
             }
             
         }
