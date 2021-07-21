@@ -49,9 +49,28 @@ extension SKCropNode {
         
         return cropper
     }
-    static func Rect(width: CGFloat, height: CGFloat, add: SKNode, doThis: ((SKSpriteNode) -> ())? = nil) -> SKCropNode {
-        let cropper = SKCropNode.init()
+    static func Rect(width: CGFloat, height: CGFloat, doThis: ((SKSpriteNode) -> ())? = nil) -> Self {
+        let cropper = Self.init()
+        
+        if let c = cropper as? SKSceneNode {
+            c.width = width
+            c.height = height
+        }
+        
+        let uwu = SKSpriteNode.init(color: .gray, size: .init(width: width, height: height))
+        doThis?(uwu)
+        cropper.maskNode = uwu
+        return cropper
+    }
+    
+    static func Rect(width: CGFloat, height: CGFloat, add: SKNode, doThis: ((SKSpriteNode) -> ())? = nil) -> Self {
+        let cropper = Self.init()
         cropper.addChild(add)
+        
+        if let c = cropper as? SKSceneNode {
+            c.width = width
+            c.height = height
+        }
         
         let uwu = SKSpriteNode.init(color: .gray, size: .init(width: width, height: height))
         doThis?(uwu)

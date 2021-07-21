@@ -14,6 +14,7 @@ extension CGPoint {
 extension CGSize {
     static var hundred: Self { .init(width: 100, height: 100) }
     var doubled: Self { .init(width: width*2, height: height*2) }
+    var halved: Self { .init(width: width/2, height: height/2) }
     func padding(_ with: CGFloat) -> Self {
         return .init(width: self.width + with, height: self.height + with)
     }

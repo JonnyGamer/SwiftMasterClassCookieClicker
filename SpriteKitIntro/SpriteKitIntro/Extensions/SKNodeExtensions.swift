@@ -70,5 +70,10 @@ extension SKNode {
         position.x += point.x - whereThis.midX
         position.y += point.y - whereThis.midY
     }
+    
+    func keepInside(_ thhisSize: CGSize) {
+        let nodeSize = calculateAccumulatedFrame()
+        setScale(min((thhisSize.width / nodeSize.width) * xScale, (thhisSize.height / nodeSize.height) * yScale))
+    }
 }
 
