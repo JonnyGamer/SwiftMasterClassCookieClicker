@@ -24,7 +24,7 @@ class ViewController: NSViewController {
             view.presentScene(scene)
             
             view.showsPhysics = true
-            
+            // view.showsNodeCount = true
         }
     }
 }

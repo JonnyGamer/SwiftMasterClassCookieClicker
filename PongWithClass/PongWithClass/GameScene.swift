@@ -17,7 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //var pong: SKNode!
     //var pong2: SKNode!
     var pongs: [SKNode] = []
-    var pongBalls = 4
+    var pongBalls = 1
     
     var gameBegin = false
     
@@ -41,10 +41,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsBody?.contactTestBitMask = 1
         
-        player1 = createPaddle(.wall)
+        player1 = createPaddle(.regular)
         player1.position = .init(x: -450, y: 0)
         
-        player2 = createPaddle(.wall)
+        player2 = createPaddle(.auto)
         player2.position = .init(x: 450, y: 0)
         
         players = [player1, player2]
@@ -64,7 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case regular = 200
         case hard = 100
         case master = 50
-        case auto = 500//199
+        case auto = 99//199
     }
     
     func createPaddle(_ difficulty: PaddleDifficulty) -> SKShapeNode {
