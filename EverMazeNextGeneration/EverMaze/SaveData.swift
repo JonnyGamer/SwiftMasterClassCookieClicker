@@ -26,6 +26,9 @@ struct SaveData {
     static func deleteLevel() { currentLevel = "" }
     
     @MasterData(key: .minimal) static var minimal: Bool = false
+    
+    // @MasterData(key: .trueLevel)
+    static var trueLevel: Int = 5
 }
 
 enum SuperSaveData: String {
@@ -33,4 +36,6 @@ enum SuperSaveData: String {
     case orbs
     case level
     case minimal
+    
+    case trueLevel
 }

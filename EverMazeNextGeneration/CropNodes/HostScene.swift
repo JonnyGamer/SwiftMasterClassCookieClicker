@@ -143,7 +143,7 @@ class HostingScene: SKScene {
         }
         for i in panning {
             guard let io = (i.children.first as? SKSceneNode) else { continue }
-            if !io.draggable {
+            if io.draggable {
                 i.run(.move(by: velocity, duration: 0.1))
             }
         }
@@ -164,7 +164,7 @@ class HostingScene: SKScene {
         }
         for i in panning {
             guard let io = (i.children.first as? SKSceneNode) else { continue }
-            if !io.draggable {
+            if io.draggable {
                 i.run(.smoothMoveBy(velocity, duration: 0.5))
                 //i.run(.move(by: velocity, duration: 0.1))
             }

@@ -8,10 +8,13 @@
 import Foundation
 import SpriteKit
 
-var trueLevel: (Int, Int) = (0,0)
+
 class EverMazeScene: SKSceneNode {
     
     var o: OO = OO()
+    
+    static var winner: Int = -2
+    var realWinner: Bool = false
     
     override func begin() {
         draggable = false
@@ -24,7 +27,7 @@ class EverMazeScene: SKSceneNode {
     
     func addEverMaze(_ maze: NewEverMaze) {
         let newEverMaze = maze
-            .createTileSet(trueLevel)
+            .createTileSet((SaveData.trueLevel, SaveData.trueLevel))
             .addTo(self)
             //.setPosition(.midScreen)
             //.setSize(maxWidth: w * 0.9, maxHeight: w > h ? h - 200 : h - 300)
@@ -69,11 +72,18 @@ class EverMazeScene: SKSceneNode {
     
     override func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {
         if nodes.contains(redo) {
-            o.superYupReset()
+            if realWinner {
+                SaveData.trueLevel += 1
+                scene?.view?.presentScene(EverMazeSceneHost(from: true))
+            } else {
+                o.superYupReset()
+            }
         }
     }
     
     override func touchesMoved(_ at: CGVector) {
+        if Self.winner == 0 { return }
+        
         var swiped: Pos = .init([0,0])
         if abs(at.dx) > abs(at.dy) {
             swiped = .init([at.dx > 0 ? 1 : -1, 0])
@@ -82,6 +92,12 @@ class EverMazeScene: SKSceneNode {
         }
         
         let wow = o.everMaze?.swipe(swiped, everNode: o.everNode!)
+        if wow == true {
+            Self.winner += 1
+            realWinner = true
+            o.everNode?.run(.fadeOut(withDuration: 0.3))
+            //o.everNode?.removeFromParent()
+        }
     }
     
     override func touchesEnded(_ at: CGPoint, release: CGVector) {

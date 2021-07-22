@@ -193,8 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				1BB43AF026A9D2CE00B8AF4E /* GameScene.swift */,
-				1BB43B5226A9D31500B8AF4E /* Scene1.swift */,
 				1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */,
+				1BB43B5226A9D31500B8AF4E /* Scene1.swift */,
 				1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */,
 				1BB43B6C26A9D71700B8AF4E /* EverMaze */,
 				1BB43B6726A9D36E00B8AF4E /* Extensions */,

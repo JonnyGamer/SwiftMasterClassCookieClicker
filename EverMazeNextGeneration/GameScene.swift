@@ -13,11 +13,11 @@ class EverMazeSceneHost: HostingScene {
     override func didMove(to view: SKView) {
         //EverMazeSceneHost.screens = 2//Int.random(in: 1...4)
         launchScene = EverMazeScene.self
+        EverMazeScene.winner = -2
         super.didMove(to: view)
         
-        trueLevel = (10,10)
         let uwu = NewEverMaze.init(
-            [trueLevel.0,trueLevel.1],
+            [SaveData.trueLevel,SaveData.trueLevel],
             [
                 .init(covers: [[0,0]], position: [0,0]),
                 .init(covers: [[0,0]], position: [1,1])
