@@ -27,15 +27,15 @@ class HostingScene: SKScene {
         addChild(magicCamera)
         backgroundColor = .black
         
-        var playerDesign: [(CGFloat,CGFloat,CGFloat,CGFloat)] = []
+        var playerDesign: [(CGFloat,CGFloat,CGFloat,CGFloat,CGFloat)] = []
         
-        if Self.screens == 1 { playerDesign = [(width,height,0,0)] }
-        if Self.screens == 2 { playerDesign = [(width/2, height, -width/4, 0), (width/2, height, width/4, 0)] }
-        if Self.screens == 3 { playerDesign = [(width/3, height, -width/3, 0), (width/3, height, 0, 0), (width/3, height, width/3, 0)] }
+        if Self.screens == 1 { playerDesign = [(width,height,0,0,1)] }
+        if Self.screens == 2 { playerDesign = [(width/2, height, -width/4, 0,1), (width/2, height, width/4, 0,1)] }
+        if Self.screens == 3 { playerDesign = [(width/3, height, -width/3, 0,1), (width/3, height, 0, 0,-1), (width/3, height, width/3, 0,1)] }
         if Self.screens == 4 {
             //playerDesign = [(width/4, 1000, -3*width/8, 0), (width/4, 1000, -width/8, 0), (width/4, 1000, width/8, 0), (width/4, 1000, 3*width/8, 0)]
             
-            playerDesign = [(width/2, height/2, -width/4, -height/4), (width/2, height/2, width/4, -height/4), (width/2, height/2, -width/4, height/4), (width/2, height/2, width/4, height/4)]
+            playerDesign = [(width/2, height/2, -width/4, -height/4,1), (width/2, height/2, width/4, -height/4,1), (width/2, height/2, -width/4, height/4,-1), (width/2, height/2, width/4, height/4,-1)]
             
         }
         
@@ -43,6 +43,7 @@ class HostingScene: SKScene {
             let cropper = launchScene.Rect(width: i.0-20, height: i.1-20) {
                 $0.position = .zero
             }
+            cropper.yScale *= i.4
             cropper.position.x = i.2
             cropper.position.y = i.3
             addChild(cropper)
@@ -101,7 +102,7 @@ class HostingScene: SKScene {
                 touchers[touchBegan]?.append(c1)
                 #endif
                 touching.append(c1)
-                io.touchesBegan(.zero, nodes: [])
+                io.touchesBegan(.zero, nodes: nodes(at: loc))
             }
         }
         // Zoom Out ;)
@@ -138,7 +139,7 @@ class HostingScene: SKScene {
         dragged = true
         for i in touching {
             guard let io = (i.children.first as? SKSceneNode) else { continue }
-            io.touchesMoved(velocity)
+            io.touchesMoved(velocity.chechForYInverse(io.yScale))
         }
         for i in panning {
             guard let io = (i.children.first as? SKSceneNode) else { continue }
@@ -182,7 +183,7 @@ class HostingScene: SKScene {
             
             for i in touching {
                 guard let io = (i.children.first as? SKSceneNode) else { continue }
-                io.touchesEnded(loc, release: velocity.times(10))
+                io.touchesEnded(loc, release: velocity.times(10).chechForYInverse(io.yScale))
                 
                 if io.draggable {
                     i.run(uwu)

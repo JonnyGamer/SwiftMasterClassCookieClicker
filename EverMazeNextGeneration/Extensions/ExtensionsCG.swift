@@ -26,9 +26,13 @@ extension CGVector {
     func times(_ some: CGFloat) -> CGVector {
         return .init(dx: dx * some, dy: dy * some)
     }
+    func chechForYInverse(_ from: CGFloat) -> CGVector {
+        return .init(dx: dx, dy: dy * from.pos)
+    }
 }
 extension CGFloat {
     var half: Self { self / 2 }
+    var pos: CGFloat { return self > 0 ? 1 : -1 }
 }
 
 
