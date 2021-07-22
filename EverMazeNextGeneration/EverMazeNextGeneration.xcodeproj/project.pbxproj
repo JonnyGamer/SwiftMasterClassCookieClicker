@@ -59,6 +59,8 @@
 		1BB43B8A26A9D93800B8AF4E /* EverMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */; };
 		1BB43B8C26A9D9A800B8AF4E /* RandomSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */; };
 		1BB43B8D26A9D9A800B8AF4E /* RandomSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */; };
+		1BB43B8F26A9E6C800B8AF4E /* SceneSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */; };
+		1BB43B9026A9E6C800B8AF4E /* SceneSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +140,7 @@
 		1BB43B8526A9D81A00B8AF4E /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeScene.swift; sourceTree = "<group>"; };
 		1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomSeed.swift; sourceTree = "<group>"; };
+		1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSelect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,7 +195,7 @@
 				1BB43AF026A9D2CE00B8AF4E /* GameScene.swift */,
 				1BB43B5226A9D31500B8AF4E /* Scene1.swift */,
 				1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */,
-				1BB43B8526A9D81A00B8AF4E /* SaveData.swift */,
+				1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */,
 				1BB43B6C26A9D71700B8AF4E /* EverMaze */,
 				1BB43B6726A9D36E00B8AF4E /* Extensions */,
 				1BB43B6826A9D37700B8AF4E /* CropNodes */,
@@ -303,6 +306,7 @@
 		1BB43B6C26A9D71700B8AF4E /* EverMaze */ = {
 			isa = PBXGroup;
 			children = (
+				1BB43B8526A9D81A00B8AF4E /* SaveData.swift */,
 				1BB43B6926A9D71400B8AF4E /* Ever.swift */,
 				1BB43B6D26A9D73500B8AF4E /* EverScene.swift */,
 				1BB43B7026A9D74F00B8AF4E /* EverHost.swift */,
@@ -545,6 +549,7 @@
 				1BB43AF326A9D2CE00B8AF4E /* ViewController.swift in Sources */,
 				1BB43B5926A9D33A00B8AF4E /* SKNodeExtensions.swift in Sources */,
 				1BB43B8026A9D78F00B8AF4E /* DecodeIt.swift in Sources */,
+				1BB43B8F26A9E6C800B8AF4E /* SceneSelect.swift in Sources */,
 				1BB43B7726A9D76400B8AF4E /* EditSKNode.swift in Sources */,
 				1BB43B5C26A9D34500B8AF4E /* SKActions.swift in Sources */,
 				1BB43AF126A9D2CE00B8AF4E /* GameScene.swift in Sources */,
@@ -590,6 +595,7 @@
 				1BB43B5126A9D30200B8AF4E /* GameScene.swift in Sources */,
 				1BB43B5A26A9D33A00B8AF4E /* SKNodeExtensions.swift in Sources */,
 				1BB43B8126A9D78F00B8AF4E /* DecodeIt.swift in Sources */,
+				1BB43B9026A9E6C800B8AF4E /* SceneSelect.swift in Sources */,
 				1BB43B7826A9D76400B8AF4E /* EditSKNode.swift in Sources */,
 				1BB43B5D26A9D34500B8AF4E /* SKActions.swift in Sources */,
 				1BB43B2B26A9D2F400B8AF4E /* GameViewController.swift in Sources */,

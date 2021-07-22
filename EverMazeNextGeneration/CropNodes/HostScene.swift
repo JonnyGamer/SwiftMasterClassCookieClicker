@@ -18,7 +18,7 @@ class HostingScene: SKScene {
     var width: CGFloat { frame.size.width }
     var height: CGFloat { frame.size.height }
     
-    var screens: Int = 4
+    static var screens: Int = 4
     var launchScene: SKSceneNode.Type = Scene1.self
     
     override func didMove(to view: SKView) {
@@ -29,10 +29,10 @@ class HostingScene: SKScene {
         
         var playerDesign: [(CGFloat,CGFloat,CGFloat,CGFloat)] = []
         
-        if screens == 1 { playerDesign = [(width,height,0,0)] }
-        if screens == 2 { playerDesign = [(width/2, height, -width/4, 0), (width/2, height, width/4, 0)] }
-        if screens == 3 { playerDesign = [(width/3, height, -width/3, 0), (width/3, height, 0, 0), (width/3, height, width/3, 0)] }
-        if screens == 4 {
+        if Self.screens == 1 { playerDesign = [(width,height,0,0)] }
+        if Self.screens == 2 { playerDesign = [(width/2, height, -width/4, 0), (width/2, height, width/4, 0)] }
+        if Self.screens == 3 { playerDesign = [(width/3, height, -width/3, 0), (width/3, height, 0, 0), (width/3, height, width/3, 0)] }
+        if Self.screens == 4 {
             //playerDesign = [(width/4, 1000, -3*width/8, 0), (width/4, 1000, -width/8, 0), (width/4, 1000, width/8, 0), (width/4, 1000, 3*width/8, 0)]
             
             playerDesign = [(width/2, height/2, -width/4, -height/4), (width/2, height/2, width/4, -height/4), (width/2, height/2, -width/4, height/4), (width/2, height/2, width/4, height/4)]

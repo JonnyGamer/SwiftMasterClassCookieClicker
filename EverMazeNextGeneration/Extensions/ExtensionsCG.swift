@@ -11,7 +11,7 @@ extension String.SubSequence { var s: String { String(self) } }
 extension Character { var s: String { String(self) } }
 
 extension CGPoint {
-    static var midScreen: Self { .init(x: 500, y: 500) }
+    static var midScreen: Self { .init(x: w/2, y: h/2) }
     static var half: Self { .init(x: 0.5, y: 0.5) }
 }
 extension CGSize {

@@ -9,9 +9,9 @@ import SpriteKit
 
 var (w, h): (CGFloat, CGFloat) = (1000, 1000)
 
-class GameScene: HostingScene {
+class EverMazeSceneHost: HostingScene {
     override func didMove(to view: SKView) {
-        screens = 2//Int.random(in: 1...4)
+        //EverMazeSceneHost.screens = 2//Int.random(in: 1...4)
         launchScene = EverMazeScene.self
         super.didMove(to: view)
         
@@ -34,12 +34,12 @@ class GameScene: HostingScene {
     }
 }
 
-class EverMazeSceneHost: HostingScene {
-    override func didMove(to view: SKView) {
-        screens = 4
-        launchScene = EverMazeScene.self
-    }
-}
+//class EverMazeSceneHost: HostingScene {
+//    override func didMove(to view: SKView) {
+//        screens = 4
+//        launchScene = EverMazeScene.self
+//    }
+//}
 
 //class GameScene2: HostingScene {
 //    override func didMove(to view: SKView) {
