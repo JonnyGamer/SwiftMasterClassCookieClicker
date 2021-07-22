@@ -17,4 +17,9 @@ public func SineEaseOut(_ p:Float)->Float {
     return sinFloat(p * M_PI_2_f)
 }
 
-
+//
+//extension SKAction {
+//    static func moveBy(_ velocty: CGVector, duration: Double) -> SKAction {
+//        return .moveBy(x: velocty.dx, y: velocty.dy, duration: duration)
+//    }
+//}

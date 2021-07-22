@@ -14,6 +14,7 @@ class GameScene: SKScene {
     
     var width: CGFloat { frame.size.width }
     var height: CGFloat { frame.size.height }
+    let screens: Int = 4
     
     override func didMove(to view: SKView) {
         magicCamera = SKCameraNode()
@@ -37,13 +38,24 @@ class GameScene: SKScene {
 //            c.append(cropper.parent!)
 //            cropper.begin()
 //        }
+        var playerDesign: [(CGFloat,CGFloat,CGFloat,CGFloat)] = []
         
-        for i in [(width/2, 1000, -width/4, 0), (width/2, 1000, width/4, 0)] {
-            let cropper = Scene1.Rect(width: CGFloat(i.0)-20, height: CGFloat(i.1)-20) {
+        if screens == 1 { playerDesign = [(width,height,0,0)] }
+        if screens == 2 { playerDesign = [(width/2, height, -width/4, 0), (width/2, height, width/4, 0)] }
+        if screens == 3 { playerDesign = [(width/3, height, -width/3, 0), (width/3, height, 0, 0), (width/3, height, width/3, 0)] }
+        if screens == 4 {
+            //playerDesign = [(width/4, 1000, -3*width/8, 0), (width/4, 1000, -width/8, 0), (width/4, 1000, width/8, 0), (width/4, 1000, 3*width/8, 0)]
+            
+            playerDesign = [(width/2, height/2, -width/4, -height/4), (width/2, height/2, width/4, -height/4), (width/2, height/2, -width/4, height/4), (width/2, height/2, width/4, height/4)]
+            
+        }
+        
+        for i in playerDesign {
+            let cropper = Scene1.Rect(width: i.0-20, height: i.1-20) {
                 $0.position = .zero
             }
-            cropper.position.x = CGFloat(i.2)
-            cropper.position.y = CGFloat(i.3)
+            cropper.position.x = i.2
+            cropper.position.y = i.3
             addChild(cropper)
             //cropper.maskNode?.alpha = 0.5
             cropper.framed(.darkGray)
@@ -64,11 +76,24 @@ class GameScene: SKScene {
     var dragged = false
     var touching: [SKNode] = []
     
+    
+    
+    
     // Touch Down
     #if os(iOS)
+    var touchers: [UITouch:[SKNode]] = [:]
+    var touchBegan: UITouch!
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let loc = touches.first?.location(in: self) else { return }
-        genericTouchesBegan(loc: loc)
+        for i in touches {
+            if i.phase == .began {
+                //UITouch.thirdPrevious[i] = i.previousLocation(in: self) // YES backup
+                // Remember which finger touched what
+                touchBegan = i
+                touchers[i] = []
+                genericTouchesBegan(loc: i.location(in: self))
+            }
+        }
     }
     #elseif os(macOS)
     override func mouseDown(with event: NSEvent) {
@@ -78,11 +103,13 @@ class GameScene: SKScene {
     #endif
     // Generic Touch Down
     func genericTouchesBegan(loc: CGPoint) {
-        touching = []
         previous = loc
         dragged = false
         for c1 in c {
-            if (c1.children[0] as! Scene1).touchedInside(loc) {
+            if (c1.children.first as! Scene1).touchedInside(loc) {
+                #if os(iOS) // Remember which finger touched what
+                touchers[touchBegan]?.append(c1)
+                #endif
                 touching.append(c1)
                 (c1.children[0] as! Scene1).touchesBegan(.zero, nodes: [])
             }
@@ -97,11 +124,13 @@ class GameScene: SKScene {
     // Dragging
     #if os(iOS)
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let loc = touches.first?.location(in: self) else { return }
-        guard let loc2 = touches.first?.previousLocation(in: self) else { return }
-        velocity = .init(dx: loc.x - loc2.x, dy: loc.y - loc2.y)
-        genericTouchesMoved()
-        previous = loc
+        for (i,o) in touchers {
+            if i.phase == .moved || i.phase == .stationary {
+                touching = o
+                velocity = i.velocityIn(self)
+                genericTouchesMoved()
+            }
+        }
     }
     #elseif os(macOS)
     override func mouseDragged(with event: NSEvent) {
@@ -114,11 +143,11 @@ class GameScene: SKScene {
     func genericTouchesMoved() {
         dragged = true
         for i in touching {
-            guard let io = (i.children[0] as? SKSceneNode) else { continue }
-            io.touchesMoved(CGVector.init(dx: velocity.dx, dy: velocity.dy))
+            guard let io = (i.children.first as? SKSceneNode) else { continue }
+            io.touchesMoved(velocity)
             
             if io.draggable {
-                i.run(.moveBy(x: velocity.dx, y: velocity.dy, duration: 0.1))
+                i.run(.move(by: velocity, duration: 0.1))
             }
         }
     }
@@ -126,8 +155,15 @@ class GameScene: SKScene {
     // Touches Ended
     #if os(iOS)
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let loc = touches.first?.location(in: self) else { return }
-        genericTouchEnded(loc: loc)
+        for (i,o) in touchers {
+            if i.phase == .ended || i.phase == .cancelled {
+                touching = o
+                //print(i.velocityIn(self), i.releaseVelocity(self))
+                genericTouchEnded(loc: i.location(in: self), velocity: i.velocityIn(self))
+                touchers[i] = nil
+                //UITouch.thirdPrevious[i] = nil
+            }
+        }
     }
     #elseif os(macOS)
     override func mouseUp(with event: NSEvent) {
@@ -135,21 +171,21 @@ class GameScene: SKScene {
         genericTouchEnded(loc: loc)
     }
     #endif
-    func genericTouchEnded(loc: CGPoint) {
+    func genericTouchEnded(loc: CGPoint, velocity: CGVector) {
         if dragged {
-            let uwu = SKAction.moveBy(x: velocity.dx*10, y: velocity.dy*10, duration: 0.5)
+            let uwu = SKAction.move(by: velocity.times(10), duration: 0.5)
             uwu.timingFunction = SineEaseOut(_:)
             
             for i in touching {
-                guard let io = (i.children[0] as? SKSceneNode) else { continue }
-                io.touchesEnded(loc, release: CGVector.init(dx: velocity.dx*10, dy: velocity.dy*10))
+                guard let io = (i.children.first as? SKSceneNode) else { continue }
+                io.touchesEnded(loc, release: velocity.times(10))
                 
                 if io.draggable {
                     i.run(uwu)
                 }
             }
-            
         }
+        touching = []
     }
     
 }
