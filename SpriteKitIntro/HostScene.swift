@@ -1,20 +1,25 @@
 //
-//  GameScene.swift
+//  HostScene.swift
 //  SpriteKitIntro
 //
-//  Created by Jonathan Pappas on 7/21/21.
+//  Created by Jonathan Pappas on 7/22/21.
 //
 
 import SpriteKit
 
-class GameScene: SKScene {
+class HostingScene: SKScene {
+    convenience init (from: Bool) {
+        self.init(size: .init(width: w, height: h))
+    }
     
     var magicCamera: SKCameraNode!
     var c: [SKNode] = []
     
     var width: CGFloat { frame.size.width }
     var height: CGFloat { frame.size.height }
-    let screens: Int = 4
+    
+    var screens: Int = 4
+    var launchScene: SKSceneNode.Type = Scene1.self
     
     override func didMove(to view: SKView) {
         magicCamera = SKCameraNode()
@@ -51,7 +56,7 @@ class GameScene: SKScene {
         }
         
         for i in playerDesign {
-            let cropper = Scene1.Rect(width: i.0-20, height: i.1-20) {
+            let cropper = launchScene.Rect(width: i.0-20, height: i.1-20) {
                 $0.position = .zero
             }
             cropper.position.x = i.2
@@ -172,7 +177,7 @@ class GameScene: SKScene {
     }
     #endif
     func genericTouchEnded(loc: CGPoint, velocity: CGVector) {
-        if dragged {
+        //if dragged {
             let uwu = SKAction.move(by: velocity.times(10), duration: 0.5)
             uwu.timingFunction = SineEaseOut(_:)
             
@@ -184,7 +189,7 @@ class GameScene: SKScene {
                     i.run(uwu)
                 }
             }
-        }
+        //}
         touching = []
     }
     

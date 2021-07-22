@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1BB43A6026A88B4400B8AF4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */; };
-		1BB43A6626A88B4400B8AF4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScene.swift */; };
+		1BB43A6626A88B4400B8AF4E /* GameScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScenes.swift */; };
 		1BB43A6826A88B4400B8AF4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6726A88B4400B8AF4E /* ViewController.swift */; };
 		1BB43A6A26A88B4500B8AF4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43A6926A88B4500B8AF4E /* Assets.xcassets */; };
 		1BB43A6D26A88B4500B8AF4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BB43A6B26A88B4500B8AF4E /* Main.storyboard */; };
@@ -32,7 +32,9 @@
 		1BB43AD726A8D9BC00B8AF4E /* SKNodeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9726A8AC1A00B8AF4E /* SKNodeExtensions.swift */; };
 		1BB43AD826A8D9BC00B8AF4E /* SKActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9A26A8B13E00B8AF4E /* SKActions.swift */; };
 		1BB43AD926A8D9BC00B8AF4E /* ExtensionsCG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A9526A8ABFD00B8AF4E /* ExtensionsCG.swift */; };
-		1BB43ADA26A8D9C400B8AF4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScene.swift */; };
+		1BB43ADA26A8D9C400B8AF4E /* GameScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43A6526A88B4400B8AF4E /* GameScenes.swift */; };
+		1BB43ADC26A9CF0F00B8AF4E /* HostScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43ADB26A9CF0F00B8AF4E /* HostScene.swift */; };
+		1BB43ADD26A9CF3100B8AF4E /* HostScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43ADB26A9CF0F00B8AF4E /* HostScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +71,7 @@
 /* Begin PBXFileReference section */
 		1BB43A5C26A88B4400B8AF4E /* SpriteKitIntro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitIntro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB43A5F26A88B4400B8AF4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1BB43A6526A88B4400B8AF4E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		1BB43A6526A88B4400B8AF4E /* GameScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScenes.swift; sourceTree = "<group>"; };
 		1BB43A6726A88B4400B8AF4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1BB43A6926A88B4500B8AF4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BB43A6C26A88B4500B8AF4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		1BB43AC326A8D99000B8AF4E /* MultiSceneiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiSceneiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB43AC726A8D99000B8AF4E /* MultiSceneiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSceneiOSUITests.swift; sourceTree = "<group>"; };
 		1BB43AC926A8D99000B8AF4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BB43ADB26A9CF0F00B8AF4E /* HostScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,10 +154,11 @@
 			isa = PBXGroup;
 			children = (
 				1BB43A9C26A8BFCC00B8AF4E /* Scene1.swift */,
+				1BB43A6526A88B4400B8AF4E /* GameScenes.swift */,
 				1BB43A9926A8AC2400B8AF4E /* Extensions */,
 				1BB43A9126A8935000B8AF4E /* Stacks.swift */,
 				1BB43A9326A8A4AD00B8AF4E /* CropNodes.swift */,
-				1BB43A6526A88B4400B8AF4E /* GameScene.swift */,
+				1BB43ADB26A9CF0F00B8AF4E /* HostScene.swift */,
 				1BB43A5E26A88B4400B8AF4E /* SpriteKitIntro */,
 				1BB43A7726A88B4600B8AF4E /* SpriteKitIntroTests */,
 				1BB43A8226A88B4600B8AF4E /* SpriteKitIntroUITests */,
@@ -468,13 +472,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BB43ADC26A9CF0F00B8AF4E /* HostScene.swift in Sources */,
 				1BB43A9426A8A4AD00B8AF4E /* CropNodes.swift in Sources */,
 				1BB43A9B26A8B13E00B8AF4E /* SKActions.swift in Sources */,
 				1BB43A9D26A8BFCC00B8AF4E /* Scene1.swift in Sources */,
 				1BB43A9626A8ABFD00B8AF4E /* ExtensionsCG.swift in Sources */,
 				1BB43A6826A88B4400B8AF4E /* ViewController.swift in Sources */,
 				1BB43A9226A8935000B8AF4E /* Stacks.swift in Sources */,
-				1BB43A6626A88B4400B8AF4E /* GameScene.swift in Sources */,
+				1BB43A6626A88B4400B8AF4E /* GameScenes.swift in Sources */,
 				1BB43A6026A88B4400B8AF4E /* AppDelegate.swift in Sources */,
 				1BB43A9826A8AC1A00B8AF4E /* SKNodeExtensions.swift in Sources */,
 			);
@@ -500,11 +505,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BB43ADD26A9CF3100B8AF4E /* HostScene.swift in Sources */,
 				1BB43AD426A8D9B400B8AF4E /* Stacks.swift in Sources */,
 				1BB43AD826A8D9BC00B8AF4E /* SKActions.swift in Sources */,
 				1BB43AD926A8D9BC00B8AF4E /* ExtensionsCG.swift in Sources */,
 				1BB43AAD26A8D98D00B8AF4E /* GameViewController.swift in Sources */,
-				1BB43ADA26A8D9C400B8AF4E /* GameScene.swift in Sources */,
+				1BB43ADA26A8D9C400B8AF4E /* GameScenes.swift in Sources */,
 				1BB43AD526A8D9B600B8AF4E /* CropNodes.swift in Sources */,
 				1BB43AD726A8D9BC00B8AF4E /* SKNodeExtensions.swift in Sources */,
 				1BB43AD326A8D9B200B8AF4E /* Scene1.swift in Sources */,

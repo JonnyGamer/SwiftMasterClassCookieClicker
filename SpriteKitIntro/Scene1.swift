@@ -61,6 +61,9 @@ class Scene1: SKSceneNode {
     }
     
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
+//        if release == .zero {
+//            scene?.view?.presentScene(GameScene(from: true)) // Scene presentation WORKS!
+//        }
         let uwu = SKAction.moveBy(x: release.dx, y: release.dy, duration: 0.5)
         uwu.timingFunction = SineEaseOut(_:)
         h.run(uwu)
