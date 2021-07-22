@@ -11,23 +11,25 @@ import SpriteKit
 class GameScene: SKScene {
     override func didMove(to view: SKView) {
         
-        var playerNodes: [SKNode] = []
-        
-        for i in 1...4 {
-            let n1 = SKSpriteNode.init(color: .white, size: .hundred)
-            let textBar = SKLabelNode.init(text: "\(i)")
-            textBar.fontColor = .black
-            textBar.fontSize = 70
-            textBar.keepInside(n1.size.halved)
-            textBar.centerOn(n1)
-            n1.addChild(textBar)
-            playerNodes.append(n1.padding)
-            n1.name = "\(i)"
+        do {
+            var playerNodes: [SKNode] = []
+            
+            for i in 1...4 {
+                let n1 = SKSpriteNode.init(color: .white, size: .hundred)
+                let textBar = SKLabelNode.init(text: "\(i)")
+                textBar.fontColor = .black
+                textBar.fontSize = 70
+                textBar.keepInside(n1.size.halved)
+                textBar.centerOn(n1)
+                n1.addChild(textBar)
+                playerNodes.append(n1.padding)
+                n1.name = "\(i)"
+            }
+            
+            let playerSelect = HStack.init(nodes: playerNodes)
+            addChild(playerSelect)
+            playerSelect.centerAt(point: .midScreen)
         }
-        
-        let playerSelect = HStack.init(nodes: playerNodes)
-        addChild(playerSelect)
-        playerSelect.centerAt(point: .midScreen)
         
     }
     
