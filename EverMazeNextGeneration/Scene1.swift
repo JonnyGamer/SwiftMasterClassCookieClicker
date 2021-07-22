@@ -64,8 +64,6 @@ class Scene1: SKSceneNode {
 //        if release == .zero {
 //            scene?.view?.presentScene(GameScene(from: true)) // Scene presentation WORKS!
 //        }
-        let uwu = SKAction.moveBy(x: release.dx, y: release.dy, duration: 0.5)
-        uwu.timingFunction = SineEaseOut(_:)
-        h.run(uwu)
+        h.run(.smoothMoveBy(release, duration: 0.5))
     }
 }

@@ -35,6 +35,30 @@
 		1BB43B6326A9D35700B8AF4E /* CropNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6126A9D35700B8AF4E /* CropNode.swift */; };
 		1BB43B6526A9D36100B8AF4E /* HostScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6426A9D36100B8AF4E /* HostScene.swift */; };
 		1BB43B6626A9D36100B8AF4E /* HostScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6426A9D36100B8AF4E /* HostScene.swift */; };
+		1BB43B6A26A9D71400B8AF4E /* Ever.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6926A9D71400B8AF4E /* Ever.swift */; };
+		1BB43B6B26A9D71400B8AF4E /* Ever.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6926A9D71400B8AF4E /* Ever.swift */; };
+		1BB43B6E26A9D73500B8AF4E /* EverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6D26A9D73500B8AF4E /* EverScene.swift */; };
+		1BB43B6F26A9D73500B8AF4E /* EverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B6D26A9D73500B8AF4E /* EverScene.swift */; };
+		1BB43B7126A9D74F00B8AF4E /* EverHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7026A9D74F00B8AF4E /* EverHost.swift */; };
+		1BB43B7226A9D74F00B8AF4E /* EverHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7026A9D74F00B8AF4E /* EverHost.swift */; };
+		1BB43B7426A9D75900B8AF4E /* Bits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7326A9D75900B8AF4E /* Bits.swift */; };
+		1BB43B7526A9D75900B8AF4E /* Bits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7326A9D75900B8AF4E /* Bits.swift */; };
+		1BB43B7726A9D76400B8AF4E /* EditSKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7626A9D76400B8AF4E /* EditSKNode.swift */; };
+		1BB43B7826A9D76400B8AF4E /* EditSKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7626A9D76400B8AF4E /* EditSKNode.swift */; };
+		1BB43B7A26A9D76E00B8AF4E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7926A9D76E00B8AF4E /* Cell.swift */; };
+		1BB43B7B26A9D76E00B8AF4E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7926A9D76E00B8AF4E /* Cell.swift */; };
+		1BB43B7D26A9D78500B8AF4E /* EverExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7C26A9D78500B8AF4E /* EverExtension.swift */; };
+		1BB43B7E26A9D78500B8AF4E /* EverExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7C26A9D78500B8AF4E /* EverExtension.swift */; };
+		1BB43B8026A9D78F00B8AF4E /* DecodeIt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7F26A9D78F00B8AF4E /* DecodeIt.swift */; };
+		1BB43B8126A9D78F00B8AF4E /* DecodeIt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B7F26A9D78F00B8AF4E /* DecodeIt.swift */; };
+		1BB43B8326A9D79D00B8AF4E /* ArrayRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8226A9D79D00B8AF4E /* ArrayRegex.swift */; };
+		1BB43B8426A9D79D00B8AF4E /* ArrayRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8226A9D79D00B8AF4E /* ArrayRegex.swift */; };
+		1BB43B8626A9D81A00B8AF4E /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8526A9D81A00B8AF4E /* SaveData.swift */; };
+		1BB43B8726A9D81A00B8AF4E /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8526A9D81A00B8AF4E /* SaveData.swift */; };
+		1BB43B8926A9D93800B8AF4E /* EverMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */; };
+		1BB43B8A26A9D93800B8AF4E /* EverMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */; };
+		1BB43B8C26A9D9A800B8AF4E /* RandomSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */; };
+		1BB43B8D26A9D9A800B8AF4E /* RandomSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +126,18 @@
 		1BB43B5E26A9D34D00B8AF4E /* Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stacks.swift; sourceTree = "<group>"; };
 		1BB43B6126A9D35700B8AF4E /* CropNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropNode.swift; sourceTree = "<group>"; };
 		1BB43B6426A9D36100B8AF4E /* HostScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostScene.swift; sourceTree = "<group>"; };
+		1BB43B6926A9D71400B8AF4E /* Ever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ever.swift; sourceTree = "<group>"; };
+		1BB43B6D26A9D73500B8AF4E /* EverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverScene.swift; sourceTree = "<group>"; };
+		1BB43B7026A9D74F00B8AF4E /* EverHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverHost.swift; sourceTree = "<group>"; };
+		1BB43B7326A9D75900B8AF4E /* Bits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bits.swift; sourceTree = "<group>"; };
+		1BB43B7626A9D76400B8AF4E /* EditSKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSKNode.swift; sourceTree = "<group>"; };
+		1BB43B7926A9D76E00B8AF4E /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		1BB43B7C26A9D78500B8AF4E /* EverExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverExtension.swift; sourceTree = "<group>"; };
+		1BB43B7F26A9D78F00B8AF4E /* DecodeIt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeIt.swift; sourceTree = "<group>"; };
+		1BB43B8226A9D79D00B8AF4E /* ArrayRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayRegex.swift; sourceTree = "<group>"; };
+		1BB43B8526A9D81A00B8AF4E /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
+		1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeScene.swift; sourceTree = "<group>"; };
+		1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomSeed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +191,9 @@
 			children = (
 				1BB43AF026A9D2CE00B8AF4E /* GameScene.swift */,
 				1BB43B5226A9D31500B8AF4E /* Scene1.swift */,
+				1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */,
+				1BB43B8526A9D81A00B8AF4E /* SaveData.swift */,
+				1BB43B6C26A9D71700B8AF4E /* EverMaze */,
 				1BB43B6726A9D36E00B8AF4E /* Extensions */,
 				1BB43B6826A9D37700B8AF4E /* CropNodes */,
 				1BB43AE926A9D2CE00B8AF4E /* EverMazeNextGeneration */,
@@ -259,6 +298,23 @@
 				1BB43B6426A9D36100B8AF4E /* HostScene.swift */,
 			);
 			path = CropNodes;
+			sourceTree = "<group>";
+		};
+		1BB43B6C26A9D71700B8AF4E /* EverMaze */ = {
+			isa = PBXGroup;
+			children = (
+				1BB43B6926A9D71400B8AF4E /* Ever.swift */,
+				1BB43B6D26A9D73500B8AF4E /* EverScene.swift */,
+				1BB43B7026A9D74F00B8AF4E /* EverHost.swift */,
+				1BB43B7326A9D75900B8AF4E /* Bits.swift */,
+				1BB43B7626A9D76400B8AF4E /* EditSKNode.swift */,
+				1BB43B7926A9D76E00B8AF4E /* Cell.swift */,
+				1BB43B7C26A9D78500B8AF4E /* EverExtension.swift */,
+				1BB43B7F26A9D78F00B8AF4E /* DecodeIt.swift */,
+				1BB43B8226A9D79D00B8AF4E /* ArrayRegex.swift */,
+				1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */,
+			);
+			path = EverMaze;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -482,14 +538,26 @@
 			files = (
 				1BB43B6526A9D36100B8AF4E /* HostScene.swift in Sources */,
 				1BB43B5F26A9D34D00B8AF4E /* Stacks.swift in Sources */,
+				1BB43B6E26A9D73500B8AF4E /* EverScene.swift in Sources */,
+				1BB43B7426A9D75900B8AF4E /* Bits.swift in Sources */,
+				1BB43B7126A9D74F00B8AF4E /* EverHost.swift in Sources */,
+				1BB43B7A26A9D76E00B8AF4E /* Cell.swift in Sources */,
 				1BB43AF326A9D2CE00B8AF4E /* ViewController.swift in Sources */,
 				1BB43B5926A9D33A00B8AF4E /* SKNodeExtensions.swift in Sources */,
+				1BB43B8026A9D78F00B8AF4E /* DecodeIt.swift in Sources */,
+				1BB43B7726A9D76400B8AF4E /* EditSKNode.swift in Sources */,
 				1BB43B5C26A9D34500B8AF4E /* SKActions.swift in Sources */,
 				1BB43AF126A9D2CE00B8AF4E /* GameScene.swift in Sources */,
+				1BB43B6A26A9D71400B8AF4E /* Ever.swift in Sources */,
+				1BB43B7D26A9D78500B8AF4E /* EverExtension.swift in Sources */,
+				1BB43B8626A9D81A00B8AF4E /* SaveData.swift in Sources */,
 				1BB43B5326A9D31500B8AF4E /* Scene1.swift in Sources */,
 				1BB43B5626A9D32F00B8AF4E /* ExtensionsCG.swift in Sources */,
+				1BB43B8C26A9D9A800B8AF4E /* RandomSeed.swift in Sources */,
 				1BB43AEB26A9D2CE00B8AF4E /* AppDelegate.swift in Sources */,
 				1BB43B6226A9D35700B8AF4E /* CropNode.swift in Sources */,
+				1BB43B8926A9D93800B8AF4E /* EverMazeScene.swift in Sources */,
+				1BB43B8326A9D79D00B8AF4E /* ArrayRegex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,14 +583,26 @@
 			files = (
 				1BB43B6626A9D36100B8AF4E /* HostScene.swift in Sources */,
 				1BB43B6026A9D34D00B8AF4E /* Stacks.swift in Sources */,
+				1BB43B6F26A9D73500B8AF4E /* EverScene.swift in Sources */,
+				1BB43B7526A9D75900B8AF4E /* Bits.swift in Sources */,
+				1BB43B7226A9D74F00B8AF4E /* EverHost.swift in Sources */,
+				1BB43B7B26A9D76E00B8AF4E /* Cell.swift in Sources */,
 				1BB43B5126A9D30200B8AF4E /* GameScene.swift in Sources */,
 				1BB43B5A26A9D33A00B8AF4E /* SKNodeExtensions.swift in Sources */,
+				1BB43B8126A9D78F00B8AF4E /* DecodeIt.swift in Sources */,
+				1BB43B7826A9D76400B8AF4E /* EditSKNode.swift in Sources */,
 				1BB43B5D26A9D34500B8AF4E /* SKActions.swift in Sources */,
 				1BB43B2B26A9D2F400B8AF4E /* GameViewController.swift in Sources */,
+				1BB43B6B26A9D71400B8AF4E /* Ever.swift in Sources */,
+				1BB43B7E26A9D78500B8AF4E /* EverExtension.swift in Sources */,
+				1BB43B8726A9D81A00B8AF4E /* SaveData.swift in Sources */,
 				1BB43B5426A9D31500B8AF4E /* Scene1.swift in Sources */,
 				1BB43B5726A9D32F00B8AF4E /* ExtensionsCG.swift in Sources */,
+				1BB43B8D26A9D9A800B8AF4E /* RandomSeed.swift in Sources */,
 				1BB43B2326A9D2F400B8AF4E /* AppDelegate.swift in Sources */,
 				1BB43B6326A9D35700B8AF4E /* CropNode.swift in Sources */,
+				1BB43B8A26A9D93800B8AF4E /* EverMazeScene.swift in Sources */,
+				1BB43B8426A9D79D00B8AF4E /* ArrayRegex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

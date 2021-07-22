@@ -12,6 +12,12 @@ typealias NSColor = UIColor
 #endif
 
 extension SKNode {
+    //var width: CGFloat { frame.width }
+    //var height: CGFloat { frame.height }
+    var halfWidth: CGFloat { return frame.width.half }
+    var halfHeight: CGFloat { return frame.height.half }
+}
+extension SKNode {
     func framed(_ acolor: NSColor = .black) {
         
         var sizo: CGSize = .zero

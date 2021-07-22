@@ -23,3 +23,10 @@ public func SineEaseOut(_ p:Float)->Float {
 //        return .moveBy(x: velocty.dx, y: velocty.dy, duration: duration)
 //    }
 //}
+extension SKAction {
+    static func smoothMoveBy(_ vel: CGVector, duration: Double) -> SKAction {
+        let action = SKAction.move(by: vel, duration: duration)
+        action.timingFunction = SineEaseOut(_:)
+        return action
+    }
+}

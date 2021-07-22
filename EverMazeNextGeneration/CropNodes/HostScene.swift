@@ -25,24 +25,8 @@ class HostingScene: SKScene {
         magicCamera = SKCameraNode()
         camera = magicCamera
         addChild(magicCamera)
-        
-        //magicCamera.run(.moveBy(x: 1000, y: 0, duration: 10))
-        
         backgroundColor = .black
         
-        // Random 1 to 10 Magicallness
-//        for i in 1...10 { // [(500, 500, 250, 500), (500, 1000, 900, 750), (400, 200, 0, 0)]
-//            let cropper = Scene1.Rect(width: CGFloat.random(in: 100...1000), height: CGFloat.random(in: 100...1000)) {
-//                $0.position = .zero
-//            }
-//            cropper.position.x = CGFloat.random(in: -1000...1000)
-//            cropper.position.y = CGFloat.random(in: -1000...1000)
-//            addChild(cropper)
-//            //cropper.maskNode?.alpha = 0.5
-//            cropper.framed(.darkGray)
-//            c.append(cropper.parent!)
-//            cropper.begin()
-//        }
         var playerDesign: [(CGFloat,CGFloat,CGFloat,CGFloat)] = []
         
         if screens == 1 { playerDesign = [(width,height,0,0)] }
@@ -111,20 +95,25 @@ class HostingScene: SKScene {
         previous = loc
         dragged = false
         for c1 in c {
-            if (c1.children.first as! Scene1).touchedInside(loc) {
+            guard let io = (c1.children.first as? SKSceneNode) else { continue }
+            if io.touchedInside(loc) {
                 #if os(iOS) // Remember which finger touched what
                 touchers[touchBegan]?.append(c1)
                 #endif
                 touching.append(c1)
-                (c1.children[0] as! Scene1).touchesBegan(.zero, nodes: [])
+                io.touchesBegan(.zero, nodes: [])
             }
         }
         // Zoom Out ;)
-        //if touching.isEmpty {
+        if touching.isEmpty {
             //touching = c
+            panning = c
             //magicCamera.setScale(event.locationInWindow.x / 200)
-        //}
+        } else {
+            panning = []
+        }
     }
+    var panning: [SKNode] = []
     
     // Dragging
     #if os(iOS)
@@ -150,8 +139,10 @@ class HostingScene: SKScene {
         for i in touching {
             guard let io = (i.children.first as? SKSceneNode) else { continue }
             io.touchesMoved(velocity)
-            
-            if io.draggable {
+        }
+        for i in panning {
+            guard let io = (i.children.first as? SKSceneNode) else { continue }
+            if !io.draggable {
                 i.run(.move(by: velocity, duration: 0.1))
             }
         }
@@ -164,9 +155,17 @@ class HostingScene: SKScene {
             if i.phase == .ended || i.phase == .cancelled {
                 touching = o
                 //print(i.velocityIn(self), i.releaseVelocity(self))
-                genericTouchEnded(loc: i.location(in: self), velocity: i.velocityIn(self))
+                velocity = i.velocityIn(self)
+                genericTouchEnded(loc: i.location(in: self), velocity: velocity)
                 touchers[i] = nil
                 //UITouch.thirdPrevious[i] = nil
+            }
+        }
+        for i in panning {
+            guard let io = (i.children.first as? SKSceneNode) else { continue }
+            if !io.draggable {
+                i.run(.smoothMoveBy(velocity, duration: 0.5))
+                //i.run(.move(by: velocity, duration: 0.1))
             }
         }
     }
