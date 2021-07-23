@@ -27,7 +27,7 @@ class EverMazeScene: SKSceneNode {
     
     func addEverMaze(_ maze: NewEverMaze) {
         let newEverMaze = maze
-            .createTileSet((SaveData.trueLevel, SaveData.trueLevel))
+            .createTileSet((maze.size[0], maze.size[1]))
             .addTo(self)
             //.setPosition(.midScreen)
             //.setSize(maxWidth: w * 0.9, maxHeight: w > h ? h - 200 : h - 300)
@@ -82,13 +82,18 @@ class EverMazeScene: SKSceneNode {
     }
     
     override func touchesMoved(_ at: CGVector) {
+
+    }
+    
+    override func touchesEnded(_ at: CGPoint, release: CGVector) {
+        if release == .zero { return }
         if Self.winner == 0 { return }
         
         var swiped: Pos = .init([0,0])
-        if abs(at.dx) > abs(at.dy) {
-            swiped = .init([at.dx > 0 ? 1 : -1, 0])
+        if abs(release.dx) > abs(release.dy) {
+            swiped = .init([release.dx > 0 ? 1 : -1, 0])
         } else {
-            swiped = .init([0, at.dy > 0 ? 1 : -1])
+            swiped = .init([0, release.dy > 0 ? 1 : -1])
         }
         
         let wow = o.everMaze?.swipe(swiped, everNode: o.everNode!)
@@ -98,8 +103,5 @@ class EverMazeScene: SKSceneNode {
             o.everNode?.run(.fadeOut(withDuration: 0.3))
             //o.everNode?.removeFromParent()
         }
-    }
-    
-    override func touchesEnded(_ at: CGPoint, release: CGVector) {
     }
 }

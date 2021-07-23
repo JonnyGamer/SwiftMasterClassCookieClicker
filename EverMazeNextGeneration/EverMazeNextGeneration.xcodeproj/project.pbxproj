@@ -61,6 +61,8 @@
 		1BB43B8D26A9D9A800B8AF4E /* RandomSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */; };
 		1BB43B8F26A9E6C800B8AF4E /* SceneSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */; };
 		1BB43B9026A9E6C800B8AF4E /* SceneSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */; };
+		1BB43B9226AA37FC00B8AF4E /* EverMazeLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B9126AA37FC00B8AF4E /* EverMazeLevels.swift */; };
+		1BB43B9326AA37FC00B8AF4E /* EverMazeLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB43B9126AA37FC00B8AF4E /* EverMazeLevels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +143,7 @@
 		1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeScene.swift; sourceTree = "<group>"; };
 		1BB43B8B26A9D9A800B8AF4E /* RandomSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomSeed.swift; sourceTree = "<group>"; };
 		1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSelect.swift; sourceTree = "<group>"; };
+		1BB43B9126AA37FC00B8AF4E /* EverMazeLevels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeLevels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				1BB43AF026A9D2CE00B8AF4E /* GameScene.swift */,
+				1BB43B9126AA37FC00B8AF4E /* EverMazeLevels.swift */,
 				1BB43B8826A9D93800B8AF4E /* EverMazeScene.swift */,
 				1BB43B5226A9D31500B8AF4E /* Scene1.swift */,
 				1BB43B8E26A9E6C800B8AF4E /* SceneSelect.swift */,
@@ -541,6 +545,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BB43B6526A9D36100B8AF4E /* HostScene.swift in Sources */,
+				1BB43B9226AA37FC00B8AF4E /* EverMazeLevels.swift in Sources */,
 				1BB43B5F26A9D34D00B8AF4E /* Stacks.swift in Sources */,
 				1BB43B6E26A9D73500B8AF4E /* EverScene.swift in Sources */,
 				1BB43B7426A9D75900B8AF4E /* Bits.swift in Sources */,
@@ -587,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BB43B6626A9D36100B8AF4E /* HostScene.swift in Sources */,
+				1BB43B9326AA37FC00B8AF4E /* EverMazeLevels.swift in Sources */,
 				1BB43B6026A9D34D00B8AF4E /* Stacks.swift in Sources */,
 				1BB43B6F26A9D73500B8AF4E /* EverScene.swift in Sources */,
 				1BB43B7526A9D75900B8AF4E /* Bits.swift in Sources */,

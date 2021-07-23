@@ -83,6 +83,11 @@ enum ImageNames: String {
     case darkBack = "DarkBack"
     
     case inky = "InkyBoy"
+    case inky_1_2 = "TallInkyBoy"
+    case inky_2_1 = "Tall2InkyBoy"
+    case stretchInkyLong = "StretchInky1"
+    case stretchInkyTall = "StretchInky2"
+    
     case storyButton = "storyButton"
     case xpButton = "xpButton"
     case inkysStaring = "InkysStaring"

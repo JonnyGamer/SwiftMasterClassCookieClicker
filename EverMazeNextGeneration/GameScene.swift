@@ -16,15 +16,30 @@ class EverMazeSceneHost: HostingScene {
         EverMazeScene.winner = -2
         super.didMove(to: view)
         
-        let uwu = NewEverMaze.init(
-            [SaveData.trueLevel,SaveData.trueLevel],
-            [
-                .init(covers: [[0,0]], position: [0,0]),
-                .init(covers: [[0,0]], position: [1,1])
-            ],
-            randomWalls: { oneIn(4) }
-        )
+        let uwu = NewEverMaze.init(BreakOut9x9.level2, printo: true)
         uwu.makeMaze()
+        
+//        var uwu = NewEverMaze.init(
+//            [SaveData.trueLevel,SaveData.trueLevel],
+//            [
+//                .init(covers: [[0,0],[0,2]], position: [0,0]),
+//                .init(covers: [[0,0]], position: [1,1]),
+//                //.init(covers: [[0,0]], position: [2,2])
+//            ],
+//            randomWalls: { oneIn(4) }
+//        )
+//        uwu.makeMaze()
+//        while (uwu.end?.movements.count ?? 0) < SaveData.trueLevel {
+//            uwu = NewEverMaze.init(
+//                [SaveData.trueLevel,SaveData.trueLevel],
+//                [
+//                    .init(covers: [[0,0],[0,2]], position: [0,0]),
+//                    .init(covers: [[0,0]], position: [1,1]),
+//                ],
+//                randomWalls: { oneIn(4) }
+//            )
+//            uwu.makeMaze()
+//        }
         
         super.didMove(to: view)
         

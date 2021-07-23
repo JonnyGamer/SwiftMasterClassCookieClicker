@@ -211,11 +211,11 @@ extension NewEverMaze {
                     if printo { print("Dimension: \(resolved)") }
                     size = resolved
                 }
-            } else if line.hasPrefix("\t- characters: ") {
+            } else if line.hasPrefix("    - characters: ") {
                 end = .init([], [])
                 if onStart {
                     onStart.toggle()
-                    let getDict = line.dropFirst("\t- characters: ".count).s
+                    let getDict = line.dropFirst("    - characters: ".count).s
                     if let resolved = [[[Int]:[[Int]]]](getDict) {
                         if printo { print("START POSITIONS: \(resolved)") }
                         var newSaveMove = SaveMovement.init([], [])
@@ -228,7 +228,7 @@ extension NewEverMaze {
                         characters = start!.characters
                     }
                 } else {
-                    let getDict = line.dropFirst("\t- characters: ".count).s
+                    let getDict = line.dropFirst("    - characters: ".count).s
                     if let resolved = [[[Int]:[[Int]]]](getDict) {
                         if printo { print("END POSITIONS: \(resolved)") }
                         var newSaveMove = SaveMovement.init([], [])
@@ -241,8 +241,8 @@ extension NewEverMaze {
                         end?.movements = movementos
                     }
                 }
-            } else if line.hasPrefix("\t- movement: ") {
-                let getDict = line.dropFirst("\t- movement: ".count).s
+            } else if line.hasPrefix("    - movement: ") {
+                let getDict = line.dropFirst("    - movement: ".count).s
                 if let resolved = [[Int]](getDict) {
                     movementos = resolved.reduce([Pos]()) { $0 + [Pos($1)] }
                     //total = end?.movements.count ?? -1

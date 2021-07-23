@@ -50,13 +50,51 @@ extension NewEverMaze {
                     .setName("Ball \(on)") // i.name
                 dot1.xScale *= -1
             } else {
-                let dot1 = Sprite
-                    .image(.inky, parent: everNode)
-                    .setSize(maxWidth: 14, maxHeight: 14)
-                    .setZPosition(4)
-                    .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
-                    .setName("Ball \(on)") // i.name
-                dot1.xScale *= -1
+                
+                if i.covers == [[0,0]] {
+                    let dot1 = Sprite
+                        .image(.inky, parent: everNode)
+                        .setSize(maxWidth: 14, maxHeight: 14)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
+                    dot1.xScale *= -1
+                } else if i.covers == [[0,0],[0,1]] {
+                    let dot1 = Sprite
+                        .image(.inky_1_2, parent: everNode)
+                        .setSize(maxWidth: 14, maxHeight: 14*2)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
+                    dot1.xScale *= -1
+                } else if i.covers == [[0,0],[-1,0]] {
+                    let dot1 = Sprite
+                        .image(.inky_2_1, parent: everNode)
+                        .setSize(maxWidth: 14*2, maxHeight: 14)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
+                    dot1.xScale *= -1
+                } else if i.covers == [[0,0],[0,2]] {
+                    let dot1 = Sprite
+                        .image(.stretchInkyTall, parent: everNode)
+                        .setSize(maxWidth: 14, maxHeight: 14*3)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
+                    dot1.xScale *= -1
+                } else if i.covers == [[0,0],[-2,0]] {
+                    let dot1 = Sprite
+                        .image(.stretchInkyLong, parent: everNode)
+                        .setSize(maxWidth: 14*3, maxHeight: 14)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
+                    dot1.xScale *= -1
+                    
+                } else {
+                    fatalError()
+                }
             }
             
             var ooo = i
