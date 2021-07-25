@@ -16,8 +16,8 @@ class EverMazeSceneHost: HostingScene {
         EverMazeScene.winner = -2
         super.didMove(to: view)
         
-        let uwu = NewEverMaze.init(BreakOut9x9.level2, printo: true)
-        uwu.makeMaze()
+        let uwu = NewEverMaze.init(LARGESTMAZES.levelEVIL9, printo: true)
+        //uwu.makeMaze()
         
 //        var uwu = NewEverMaze.init(
 //            [SaveData.trueLevel,SaveData.trueLevel],

@@ -24,6 +24,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B1303CC26ACB2070093E726 /* LOTR.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LOTR.txt; sourceTree = "<group>"; };
+		1B1303CD26ACBAEE0093E726 /* Hobbit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hobbit.txt; sourceTree = "<group>"; };
+		1B1303CE26ACBC670093E726 /* 1970HobbitLOTR.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1970HobbitLOTR.txt; sourceTree = "<group>"; };
+		1B1303CF26ACBC670093E726 /* LOTRMovie.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LOTRMovie.txt; sourceTree = "<group>"; };
+		1B1303D026ACBC670093E726 /* HobbitMovie.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HobbitMovie.txt; sourceTree = "<group>"; };
+		1B1303D126ACC0330093E726 /* Silmarillion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Silmarillion.txt; sourceTree = "<group>"; };
 		1BE078C925ED921E002A3AC9 /* DonQuixote */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DonQuixote; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE078CC25ED921E002A3AC9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		1BE078D425ED9232002A3AC9 /* 996.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996.txt; sourceTree = "<group>"; };
@@ -73,6 +79,12 @@
 				1BE078D425ED9232002A3AC9 /* 996.txt */,
 				1BE0792425F2A746002A3AC9 /* 996Sally1.txt */,
 				1BE0792325F172F0002A3AC9 /* 996 WORKING.txt */,
+				1B1303CC26ACB2070093E726 /* LOTR.txt */,
+				1B1303CD26ACBAEE0093E726 /* Hobbit.txt */,
+				1B1303D126ACC0330093E726 /* Silmarillion.txt */,
+				1B1303CE26ACBC670093E726 /* 1970HobbitLOTR.txt */,
+				1B1303D026ACBC670093E726 /* HobbitMovie.txt */,
+				1B1303CF26ACBC670093E726 /* LOTRMovie.txt */,
 				1BE078CC25ED921E002A3AC9 /* main.swift */,
 				1BE078D825ED93FC002A3AC9 /* extensions.swift */,
 			);

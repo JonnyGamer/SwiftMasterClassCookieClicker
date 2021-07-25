@@ -282,7 +282,7 @@ extension NewEverMaze {
         if printo { print(walls) }
         printMe()
         
-        makeMaze()
+        //makeMaze()
         if printo { print(end!.movements) }
         
     }

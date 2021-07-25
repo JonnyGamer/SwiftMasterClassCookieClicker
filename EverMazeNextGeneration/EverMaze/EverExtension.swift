@@ -93,7 +93,13 @@ extension NewEverMaze {
                     dot1.xScale *= -1
                     
                 } else {
-                    fatalError()
+                    print("ERROR")
+                    let dot1 = Sprite
+                        .image(.inky, parent: everNode)
+                        .setSize(maxWidth: 14, maxHeight: 14)
+                        .setZPosition(4)
+                        .setPosition(.init(x: pos.x + magicMode.0, y: pos.y + magicMode.1))
+                        .setName("Ball \(on)") // i.name
                 }
             }
             

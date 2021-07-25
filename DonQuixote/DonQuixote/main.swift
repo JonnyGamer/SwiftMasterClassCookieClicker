@@ -6,13 +6,109 @@
 //
 
 import Foundation
-
+import NaturalLanguage
 
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/HP.txt"
 // let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/996es.txt"
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/996es.txt"
+let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/Hobbit.txt"
+let path2 = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/LOTR.txt"
+//let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/user_archive.csv"
+let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) + String(contentsOfFile: path2, encoding: String.Encoding.utf8)
 
-let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/user_archive.csv"
+
+
+
+func sentenceStructureMatches(matches: [NLTag], sentence: String) -> Bool {
+    return parseSentence(sentence).0 == matches
+}
+
+func parseSentence(_ thisSentence: String) -> ([NLTag], [String]) {
+    let text = thisSentence
+    let tagger = NLTagger(tagSchemes: [.lexicalClass])
+    tagger.string = text
+    let options: NLTagger.Options = [.omitPunctuation, .omitWhitespace]
+    var wo: [NLTag] = []
+    var wo2: [String] = []
+    
+    tagger.enumerateTags(in: text.startIndex..<text.endIndex, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange in
+        if let tag = tag {
+            wo.append(tag)
+            wo2.append(String(text[tokenRange]))
+            //print("\(text[tokenRange]): \(tag.rawValue)")
+        }
+        return true
+    }
+    return (wo, wo2)
+}
+
+//print(parseSentence("The ripe taste of cheese improves with age.").0)
+//print(parseSentence("The ripe taste of cheese improves with age.").1)
+//print(parseSentence("The magic nature of deer increases during experience.").1)
+
+let tokenizer = NLTokenizer(unit: .sentence)
+tokenizer.string = paragraph
+print("Reading.")
+
+// ["Pronoun", "Verb", "Noun", "Preposition", "Noun"]
+// ["Verb", "Pronoun", "Adverb", "Preposition", "Noun"]
+
+var remember: [String:[String]] = [:]
+
+tokenizer.enumerateTokens(in: paragraph.startIndex..<paragraph.endIndex) { tokenRange, _ in
+    //print(".")
+    let (woo, sent) = parseSentence(String(paragraph[tokenRange]))
+    let wooo = String(woo.map { $0.rawValue }.reduce("") { $0 + " - " + $1 }.dropFirst(3))
+    
+//    if wooo == ["Verb", "Pronoun", "Adverb", "Preposition", "Noun"] {
+//        print(sent.reduce("", { $0 + " " + $1 }), ".")
+//    }
+    if sent.contains("Precious") || sent.contains("precious") {
+        print(sent.reduce("") { $0 + " " + $1 })
+    }
+    
+    if woo.count > 2 { // wooo.count == 9,
+        if remember[wooo] == nil {
+            remember[wooo] = [sent.reduce("", { $0 + " " + $1 })]
+        } else {
+            remember[wooo]?.append(sent.reduce("", { $0 + " " + $1 }))
+        }
+        //print(wooo, sent)
+    }
+    
+//    if sentenceStructureMatches(
+//        matches: [.determiner, .adjective, .noun, .preposition, .noun, .verb, .preposition, .noun],
+//        sentence: String(paragraph[tokenRange])) {
+//        print(paragraph[tokenRange])
+//    }
+    return true
+}
+
+//extension Array
+
+for i in remember.sorted(by: { $0.key < $1.key }) {
+    if i.value.count >= 2 { // Copies of 2 or more will be printed
+        print(i.key)
+        for j in i.value {
+            print("   \(j)")
+        }
+    }
+}
+//print(remember)
+
+print(sentenceStructureMatches(
+        matches: [.determiner, .adjective, .noun, .preposition, .noun, .verb, .preposition, .noun],
+        sentence: "The ripe taste of cheese improves with age."
+))
+
+print(remember)
+fatalError()
+
+
+
+
+
+
 
 //let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
 //var seto: Set<String> = []
@@ -36,30 +132,44 @@ let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/Do
 //print(seto.count)
 //fatalError()
 
-let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
-var seto: Set<String> = []
+//for i in paragraph.split(whereSeparator: { $0 == "\n" || $0 == "." }) {
+//    for jj in i.split(separator: "\"") {
+//        var j = jj
+//        while j.hasPrefix(" ") { j.removeFirst() }
+//        print(j)
+//    }
+//}
+//fatalError()
+
+var wc = 0
+var seto: [String:Int] = [:]
 for i in paragraph.split(separator: "\n") {
-    for j in i.split(separator: ",") {
-        let o = String(j)
-        if o.contains("https") { continue }
-        if o.contains("2015-") { continue }
-        if o.contains("2016-") { continue }
-        if o.contains("2017-") { continue }
-        if o.contains("2018-") { continue }
-        if o.contains("2019-") { continue }
-        if o.contains("2020-") { continue }
-        if o.contains("2021-") { continue }
-        //if o.contains("-1"), !seto.contains(o) {
-        if o.count <= 1 { continue }
-        if !seto.contains(o), o.contains("magic") {
-            seto.insert(o)
-            print(o)
-            print()
+    for k in i.split(separator: " ") {
+        var a = ""
+        var prevLetter = Character(".")
+        for j in k.lowercased() {
+            if j.isLetter || j.isNumber || (j == "-" && !a.isEmpty) || (j == "'" && (prevLetter.isLetter || prevLetter.isNumber)) {
+                a.append(j)
+            }
+            prevLetter = j
         }
-        //}
+        while a.hasSuffix("'") || a.hasSuffix("-") { a.removeLast() }
+        if a.isEmpty { continue }
+        
+        wc += 1
+        seto[a] = (seto[a] ?? 0) + 1
     }
 }
+
+for i in seto.sorted(by: { $0.key.count > $1.key.count }) {
+    //if i.key.contains(where: { !$0.isASCII }) {
+        print(i.key)
+    //}
+}
+print(wc)
 print(seto.count)
+
+
 fatalError()
 
 
