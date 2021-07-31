@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "magic-kit",
+        "repositoryURL": "https://github.com/JonnyGamer/Magic",
+        "state": {
+          "branch": null,
+          "revision": "38572cc0f917c8ff751170a6f4b1c4eaf953f42f",
+          "version": "0.0.9"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

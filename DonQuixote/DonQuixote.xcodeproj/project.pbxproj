@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B1303D326ACEB6D0093E726 /* quotable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1303D226ACEB6D0093E726 /* quotable.swift */; };
 		1BE078CD25ED921E002A3AC9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE078CC25ED921E002A3AC9 /* main.swift */; };
 		1BE078D925ED93FC002A3AC9 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE078D825ED93FC002A3AC9 /* extensions.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		1B1303CF26ACBC670093E726 /* LOTRMovie.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LOTRMovie.txt; sourceTree = "<group>"; };
 		1B1303D026ACBC670093E726 /* HobbitMovie.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HobbitMovie.txt; sourceTree = "<group>"; };
 		1B1303D126ACC0330093E726 /* Silmarillion.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Silmarillion.txt; sourceTree = "<group>"; };
+		1B1303D226ACEB6D0093E726 /* quotable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quotable.swift; sourceTree = "<group>"; };
 		1BE078C925ED921E002A3AC9 /* DonQuixote */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DonQuixote; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BE078CC25ED921E002A3AC9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		1BE078D425ED9232002A3AC9 /* 996.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996.txt; sourceTree = "<group>"; };
@@ -40,6 +42,7 @@
 		1BE0792425F2A746002A3AC9 /* 996Sally1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 996Sally1.txt; sourceTree = "<group>"; };
 		1BF2513F266994E000E48C9A /* queued_posts.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = queued_posts.csv; sourceTree = "<group>"; };
 		1BF25140266994E000E48C9A /* user_archive.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = user_archive.csv; sourceTree = "<group>"; };
+		1BFF39CC26AE056B0084B5E0 /* Hopscotch.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hopscotch.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,7 @@
 		1BE078CB25ED921E002A3AC9 /* DonQuixote */ = {
 			isa = PBXGroup;
 			children = (
+				1BFF39CC26AE056B0084B5E0 /* Hopscotch.txt */,
 				1BF2513F266994E000E48C9A /* queued_posts.csv */,
 				1BF25140266994E000E48C9A /* user_archive.csv */,
 				1BE078DD25EDA52C002A3AC9 /* HP.txt */,
@@ -87,6 +91,7 @@
 				1B1303CF26ACBC670093E726 /* LOTRMovie.txt */,
 				1BE078CC25ED921E002A3AC9 /* main.swift */,
 				1BE078D825ED93FC002A3AC9 /* extensions.swift */,
+				1B1303D226ACEB6D0093E726 /* quotable.swift */,
 			);
 			path = DonQuixote;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B1303D326ACEB6D0093E726 /* quotable.swift in Sources */,
 				1BE078CD25ED921E002A3AC9 /* main.swift in Sources */,
 				1BE078D925ED93FC002A3AC9 /* extensions.swift in Sources */,
 			);

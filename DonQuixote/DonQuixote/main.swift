@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 import NaturalLanguage
 
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/HP.txt"
@@ -14,95 +15,20 @@ import NaturalLanguage
 let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/Hobbit.txt"
 let path2 = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/LOTR.txt"
 //let path = "/Users/jpappas/Code/PappasKit/SwiftMasterClassProjects/DonQuixote/DonQuixote/user_archive.csv"
-let paragraph = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) + String(contentsOfFile: path2, encoding: String.Encoding.utf8)
+let paragraph2 = try! String(contentsOfFile: path, encoding: String.Encoding.utf8) + String(contentsOfFile: path2, encoding: String.Encoding.utf8)
+
+let paragraph = """
+    In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole, and that means comfort.
+
+    It had a perfectly round door like a porthole, painted green, with a shiny yellow brass knob in the exact middle. The door opened on to a tube-shaped hall like a tunnel: a very comfortable tunnel without smoke, with panelled walls, and floors tiled and carpeted, provided with polished chairs, and lots and lots of pegs for hats and coats—the hobbit was fond of visitors. The tunnel wound on and on, going fairly but not quite straight into the side of the hill—The Hill, as all the people for many miles round called it—and many little round doors opened out of it, first on one side and then on another. No going upstairs for the hobbit: bedrooms, bathrooms, cellars, pantries (lots of these), wardrobes (he had whole rooms devoted to clothes), kitchens, dining-rooms, all were on the same floor, and indeed on the same passage. The best rooms were all on the left-hand side (going in), for these were the only ones to have windows, deep-set round windows looking over his garden, and meadows beyond, sloping down to the river.
+"""
+
+print("Yay beginning")
+SIMPLETOLKIEN(paragraph)
 
 
 
 
-func sentenceStructureMatches(matches: [NLTag], sentence: String) -> Bool {
-    return parseSentence(sentence).0 == matches
-}
-
-func parseSentence(_ thisSentence: String) -> ([NLTag], [String]) {
-    let text = thisSentence
-    let tagger = NLTagger(tagSchemes: [.lexicalClass])
-    tagger.string = text
-    let options: NLTagger.Options = [.omitPunctuation, .omitWhitespace]
-    var wo: [NLTag] = []
-    var wo2: [String] = []
-    
-    tagger.enumerateTags(in: text.startIndex..<text.endIndex, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange in
-        if let tag = tag {
-            wo.append(tag)
-            wo2.append(String(text[tokenRange]))
-            //print("\(text[tokenRange]): \(tag.rawValue)")
-        }
-        return true
-    }
-    return (wo, wo2)
-}
-
-//print(parseSentence("The ripe taste of cheese improves with age.").0)
-//print(parseSentence("The ripe taste of cheese improves with age.").1)
-//print(parseSentence("The magic nature of deer increases during experience.").1)
-
-let tokenizer = NLTokenizer(unit: .sentence)
-tokenizer.string = paragraph
-print("Reading.")
-
-// ["Pronoun", "Verb", "Noun", "Preposition", "Noun"]
-// ["Verb", "Pronoun", "Adverb", "Preposition", "Noun"]
-
-var remember: [String:[String]] = [:]
-
-tokenizer.enumerateTokens(in: paragraph.startIndex..<paragraph.endIndex) { tokenRange, _ in
-    //print(".")
-    let (woo, sent) = parseSentence(String(paragraph[tokenRange]))
-    let wooo = String(woo.map { $0.rawValue }.reduce("") { $0 + " - " + $1 }.dropFirst(3))
-    
-//    if wooo == ["Verb", "Pronoun", "Adverb", "Preposition", "Noun"] {
-//        print(sent.reduce("", { $0 + " " + $1 }), ".")
-//    }
-    if sent.contains("Precious") || sent.contains("precious") {
-        print(sent.reduce("") { $0 + " " + $1 })
-    }
-    
-    if woo.count > 2 { // wooo.count == 9,
-        if remember[wooo] == nil {
-            remember[wooo] = [sent.reduce("", { $0 + " " + $1 })]
-        } else {
-            remember[wooo]?.append(sent.reduce("", { $0 + " " + $1 }))
-        }
-        //print(wooo, sent)
-    }
-    
-//    if sentenceStructureMatches(
-//        matches: [.determiner, .adjective, .noun, .preposition, .noun, .verb, .preposition, .noun],
-//        sentence: String(paragraph[tokenRange])) {
-//        print(paragraph[tokenRange])
-//    }
-    return true
-}
-
-//extension Array
-
-for i in remember.sorted(by: { $0.key < $1.key }) {
-    if i.value.count >= 2 { // Copies of 2 or more will be printed
-        print(i.key)
-        for j in i.value {
-            print("   \(j)")
-        }
-    }
-}
-//print(remember)
-
-print(sentenceStructureMatches(
-        matches: [.determiner, .adjective, .noun, .preposition, .noun, .verb, .preposition, .noun],
-        sentence: "The ripe taste of cheese improves with age."
-))
-
-print(remember)
-fatalError()
 
 
 
@@ -141,10 +67,20 @@ fatalError()
 //}
 //fatalError()
 
+
+let www = NSSpellChecker.init()
+extension String {
+    func isWord() -> Bool {
+        return www.checkSpelling(of: self, startingAt: 0).location != 0
+    }
+
+}
+
 var wc = 0
+var tried: Set<String> = []
 var seto: [String:Int] = [:]
 for i in paragraph.split(separator: "\n") {
-    for k in i.split(separator: " ") {
+    for k in i.split(whereSeparator: { $0 == " " || $0 == "—" }) {
         var a = ""
         var prevLetter = Character(".")
         for j in k.lowercased() {
@@ -156,14 +92,29 @@ for i in paragraph.split(separator: "\n") {
         while a.hasSuffix("'") || a.hasSuffix("-") { a.removeLast() }
         if a.isEmpty { continue }
         
-        wc += 1
-        seto[a] = (seto[a] ?? 0) + 1
+        if a.contains("-") {
+            wc += 1
+            seto[a] = (seto[a] ?? 0) + 1
+        }
+        
+//        if !tried.contains(a) {
+//            tried.insert(a)
+//            if !a.isWord() {
+//                wc += 1
+//                seto[a] = (seto[a] ?? 0) + 1
+//            }
+//        } else {
+//            if seto[a] != nil {
+//                wc += 1
+//                seto[a] = (seto[a] ?? 0) + 1
+//            }
+//        }
     }
 }
 
-for i in seto.sorted(by: { $0.key.count > $1.key.count }) {
+for i in seto.sorted(by: { $0.value < $1.value }) {
     //if i.key.contains(where: { !$0.isASCII }) {
-        print(i.key)
+    print(i.key, i.value)
     //}
 }
 print(wc)
