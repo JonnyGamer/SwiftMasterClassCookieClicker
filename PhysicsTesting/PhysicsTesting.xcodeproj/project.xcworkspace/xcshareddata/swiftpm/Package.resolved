@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "EverMazeKit",
+        "repositoryURL": "https://github.com/JonnyGamer/EverMaze",
+        "state": {
+          "branch": null,
+          "revision": "1e4cb52a488818db9f9769dd97d8309f575f89be",
+          "version": "0.1.2"
+        }
+      },
+      {
         "package": "magic-kit",
         "repositoryURL": "https://github.com/JonnyGamer/Magic",
         "state": {
