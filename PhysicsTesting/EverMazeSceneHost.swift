@@ -35,6 +35,7 @@ class EverMazeSceneHost: HostingScene {
     }
 }
 
+// Extra Extensions
 extension Array where Element == Int {
     func next() -> Self {
         return map { $0 + 1 }

@@ -9,6 +9,9 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
+import Magic
+import EverMazeKit
+
 class GameViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -18,6 +21,9 @@ class GameViewController: UIViewController {
             // Load the SKScene from 'GameScene.sks'
             let scene = GameScene.init(size: .init(width: 1000 * (view.frame.width / view.frame.height), height: 1000))
             w = scene.frame.width
+            Magic.w = w
+            EverMazeKit.w = w
+            
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFit
             
