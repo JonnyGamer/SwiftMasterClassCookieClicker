@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/JonnyGamer/EverMaze",
         "state": {
           "branch": null,
-          "revision": "1e4cb52a488818db9f9769dd97d8309f575f89be",
-          "version": "0.1.2"
+          "revision": "1a3ebd47fb023142395e6a067b20d6b6fe5aa36a",
+          "version": "0.1.4"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/JonnyGamer/Magic",
         "state": {
           "branch": null,
-          "revision": "38572cc0f917c8ff751170a6f4b1c4eaf953f42f",
-          "version": "0.0.9"
+          "revision": "fe5bb01e2c6b6860209050e4704ac56dfac398eb",
+          "version": "0.1.1"
         }
       }
     ]

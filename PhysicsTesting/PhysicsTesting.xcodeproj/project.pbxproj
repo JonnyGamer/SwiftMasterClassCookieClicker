@@ -17,6 +17,16 @@
 		1B7446C426B88BF90094707E /* EversMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C326B88BF90094707E /* EversMazeScene.swift */; };
 		1B7446C626B88EC50094707E /* EverMazeSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */; };
 		1B7446C826B88ED60094707E /* CachedLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C726B88ED60094707E /* CachedLevels.swift */; };
+		1B7446D026B9F33D0094707E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446CF26B9F33D0094707E /* AppDelegate.swift */; };
+		1B7446D826B9F33D0094707E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446D726B9F33D0094707E /* GameViewController.swift */; };
+		1B7446DB26B9F33D0094707E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B7446D926B9F33D0094707E /* Main.storyboard */; };
+		1B7446DD26B9F33E0094707E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B7446DC26B9F33E0094707E /* Assets.xcassets */; };
+		1B7446E226B9F36A0094707E /* EversMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C326B88BF90094707E /* EversMazeScene.swift */; };
+		1B7446E326B9F36A0094707E /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2CB59926B5B8A800CDF222 /* MainMenu.swift */; };
+		1B7446E426B9F36A0094707E /* EverMazeSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */; };
+		1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C726B88ED60094707E /* CachedLevels.swift */; };
+		1B7446E826B9F3940094707E /* Magic in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446E726B9F3940094707E /* Magic */; };
+		1B7446EA26B9F3980094707E /* EverMazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446E926B9F3980094707E /* EverMazeKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +41,12 @@
 		1B7446C326B88BF90094707E /* EversMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EversMazeScene.swift; sourceTree = "<group>"; };
 		1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeSceneHost.swift; sourceTree = "<group>"; };
 		1B7446C726B88ED60094707E /* CachedLevels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedLevels.swift; sourceTree = "<group>"; };
+		1B7446CD26B9F33D0094707E /* PhysicsTestingIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhysicsTestingIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B7446CF26B9F33D0094707E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1B7446D726B9F33D0094707E /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		1B7446DA26B9F33D0094707E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1B7446DC26B9F33E0094707E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B7446DE26B9F33E0094707E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,14 +59,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1B7446CA26B9F33D0094707E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B7446EA26B9F3980094707E /* EverMazeKit in Frameworks */,
+				1B7446E826B9F3940094707E /* Magic in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1B2CB58726B5B8A800CDF222 = {
 			isa = PBXGroup;
 			children = (
+				1B2CB59926B5B8A800CDF222 /* MainMenu.swift */,
+				1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */,
+				1B7446C326B88BF90094707E /* EversMazeScene.swift */,
+				1B7446C726B88ED60094707E /* CachedLevels.swift */,
 				1B2CB59226B5B8A800CDF222 /* PhysicsTesting */,
+				1B7446CE26B9F33D0094707E /* PhysicsTestingIOS */,
 				1B2CB59126B5B8A800CDF222 /* Products */,
+				1B7446E626B9F3940094707E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				1B2CB59026B5B8A800CDF222 /* PhysicsTesting.app */,
+				1B7446CD26B9F33D0094707E /* PhysicsTestingIOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,16 +99,31 @@
 			children = (
 				1B2CB59326B5B8A800CDF222 /* AppDelegate.swift */,
 				1B2CB59B26B5B8A800CDF222 /* ViewController.swift */,
-				1B2CB59926B5B8A800CDF222 /* MainMenu.swift */,
-				1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */,
-				1B7446C726B88ED60094707E /* CachedLevels.swift */,
-				1B7446C326B88BF90094707E /* EversMazeScene.swift */,
 				1B2CB59D26B5B8A900CDF222 /* Assets.xcassets */,
 				1B2CB59F26B5B8A900CDF222 /* Main.storyboard */,
 				1B2CB5A226B5B8A900CDF222 /* Info.plist */,
 				1B2CB5A326B5B8A900CDF222 /* PhysicsTesting.entitlements */,
 			);
 			path = PhysicsTesting;
+			sourceTree = "<group>";
+		};
+		1B7446CE26B9F33D0094707E /* PhysicsTestingIOS */ = {
+			isa = PBXGroup;
+			children = (
+				1B7446CF26B9F33D0094707E /* AppDelegate.swift */,
+				1B7446D726B9F33D0094707E /* GameViewController.swift */,
+				1B7446D926B9F33D0094707E /* Main.storyboard */,
+				1B7446DC26B9F33E0094707E /* Assets.xcassets */,
+				1B7446DE26B9F33E0094707E /* Info.plist */,
+			);
+			path = PhysicsTestingIOS;
+			sourceTree = "<group>";
+		};
+		1B7446E626B9F3940094707E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -103,6 +150,27 @@
 			productReference = 1B2CB59026B5B8A800CDF222 /* PhysicsTesting.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1B7446CC26B9F33D0094707E /* PhysicsTestingIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B7446DF26B9F33E0094707E /* Build configuration list for PBXNativeTarget "PhysicsTestingIOS" */;
+			buildPhases = (
+				1B7446C926B9F33D0094707E /* Sources */,
+				1B7446CA26B9F33D0094707E /* Frameworks */,
+				1B7446CB26B9F33D0094707E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhysicsTestingIOS;
+			packageProductDependencies = (
+				1B7446E726B9F3940094707E /* Magic */,
+				1B7446E926B9F3980094707E /* EverMazeKit */,
+			);
+			productName = PhysicsTestingIOS;
+			productReference = 1B7446CD26B9F33D0094707E /* PhysicsTestingIOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -113,6 +181,9 @@
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					1B2CB58F26B5B8A800CDF222 = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					1B7446CC26B9F33D0094707E = {
 						CreatedOnToolsVersion = 12.5;
 					};
 				};
@@ -135,6 +206,7 @@
 			projectRoot = "";
 			targets = (
 				1B2CB58F26B5B8A800CDF222 /* PhysicsTesting */,
+				1B7446CC26B9F33D0094707E /* PhysicsTestingIOS */,
 			);
 		};
 /* End PBXProject section */
@@ -146,6 +218,15 @@
 			files = (
 				1B2CB59E26B5B8A900CDF222 /* Assets.xcassets in Resources */,
 				1B2CB5A126B5B8A900CDF222 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1B7446CB26B9F33D0094707E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B7446DB26B9F33D0094707E /* Main.storyboard in Resources */,
+				1B7446DD26B9F33E0094707E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +246,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1B7446C926B9F33D0094707E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B7446D826B9F33D0094707E /* GameViewController.swift in Sources */,
+				1B7446E426B9F36A0094707E /* EverMazeSceneHost.swift in Sources */,
+				1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */,
+				1B7446D026B9F33D0094707E /* AppDelegate.swift in Sources */,
+				1B7446E226B9F36A0094707E /* EversMazeScene.swift in Sources */,
+				1B7446E326B9F36A0094707E /* MainMenu.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -172,6 +266,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				1B2CB5A026B5B8A900CDF222 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1B7446D926B9F33D0094707E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B7446DA26B9F33D0094707E /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -338,6 +440,49 @@
 			};
 			name = Release;
 		};
+		1B7446E026B9F33E0094707E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = PhysicsTestingIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.PhysicsTestingIOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1B7446E126B9F33E0094707E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = R3PU6JKY2A;
+				INFOPLIST_FILE = PhysicsTestingIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubermaze.CloudKitTestMega.PhysicsTestingIOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -355,6 +500,15 @@
 			buildConfigurations = (
 				1B2CB5A726B5B8A900CDF222 /* Debug */,
 				1B2CB5A826B5B8A900CDF222 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B7446DF26B9F33E0094707E /* Build configuration list for PBXNativeTarget "PhysicsTestingIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B7446E026B9F33E0094707E /* Debug */,
+				1B7446E126B9F33E0094707E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -387,6 +541,16 @@
 			productName = Magic;
 		};
 		1B7446C126B88BC10094707E /* EverMazeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B7446C026B88BC10094707E /* XCRemoteSwiftPackageReference "EverMaze" */;
+			productName = EverMazeKit;
+		};
+		1B7446E726B9F3940094707E /* Magic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B31FB7E26B5C47B0071BB72 /* XCRemoteSwiftPackageReference "Magic" */;
+			productName = Magic;
+		};
+		1B7446E926B9F3980094707E /* EverMazeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1B7446C026B88BC10094707E /* XCRemoteSwiftPackageReference "EverMaze" */;
 			productName = EverMazeKit;

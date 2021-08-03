@@ -14,29 +14,57 @@ class EverMazeScene: SKSceneNode {
     
     static var winner: Int = -2
     var realWinner: Bool = false
+    var swipes = 0 {
+        didSet { swipeCount.text = "swipes: \(swipes)" }
+    }
+    let swipeCount = SKLabelNode.init(text: "swipes: 0")
+    
+    static var raceMode = false
+    
     
     override func begin() {
         print("foo")
         draggable = false
         backgroundColor(.black)
+    }
+    
+    func addLabels() {
+        let foo1 = SKLabelNode.init(text: "goal: \(o.goal) swipes")
+        foo1.fontColor = .white
+        foo1.fontSize *= (min((size.height * 0.7) / foo1.frame.width, (size.width * 0.65) / foo1.frame.width))
+        //foo1.setScale(min((size.height * 0.7) / foo1.frame.width, (size.width * 0.65) / foo1.frame.width))
+        foo1.verticalAlignmentMode = .center
+        //foo.horizontalAlignmentMode = .left
+        foo1.position.y = (size.height/2) - (size.height * 0.075)// + foo.frame.height
+        foo1.zPosition = .infinity
+        addChild(foo1)
         
-        //print("Let's GOOO!")
-        //let uwu = NewEverMaze.init([5,5], [.init(covers: [[0,0]], position: [0,0])], randomWalls: { oneIn(4) })
-        //uwu.makeMaze()
+        let foo = swipeCount
+        foo.fontColor = .white
+        foo.fontSize = foo1.fontSize
+        //foo.setScale(foo1.xScale)
+        foo.verticalAlignmentMode = .center
+        foo.horizontalAlignmentMode = .left
+        foo.position.x = (-size.width/2) + (size.width * 0.15)
+        
+        foo.position.y = (-size.height/2) + (size.height * 0.075)// + foo.frame.height
+        foo.zPosition = .infinity
+        addChild(foo)
     }
     
     func addEverMaze(_ maze: NewEverMaze) {
         let newEverMaze = maze
             .createTileSet((maze.size[0], maze.size[1]))
             .addTo(self)
-            //.setPosition(.midScreen)
-            //.setSize(maxWidth: w * 0.9, maxHeight: w > h ? h - 200 : h - 300)
         o.everMaze = maze
         o.everNode = newEverMaze
+        o.goal = maze.end?.movements.count ?? 0
+        
+        addLabels()
         
         let paddo = newEverMaze.padding
         paddo.centerAt(point: .zero)
-        paddo.keepInside(size)
+        paddo.keepInside(CGSize.init(width: size.width * 0.7, height: size.height * 0.7))
         
 
         func yupReset() {
@@ -63,18 +91,35 @@ class EverMazeScene: SKSceneNode {
             .image(.darkReplay, parent: self)
             .setSize(maxWidth: width * 0.15, maxHeight: height*0.1)
             .setName("Button 2")
-        redo.position = .init(x: (width/2)-redo.size.width-20, y: (height/2)-redo.size.height-20)
+        redo.position = .init(x: (width/2)-(redo.size.width*1.2), y: (height/2)-(redo.size.height*1.2))
         self.redo = redo
         
     }
     
     var redo: Sprite!
+    var cantSwipe = false
     
     override func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {
         if nodes.contains(redo) {
+            swipes = 0
+            cantSwipe = true
+            
             if realWinner {
-                SaveData.trueLevel += 1
-                scene?.view?.presentScene(EverMazeSceneHost(from: true))
+                let nextLevelSize = o.everMaze?.size.next() ?? []
+                //SaveData.trueLevel += 1
+                if Self.raceMode {
+                    let sc = EverMazeSceneHost(sizePlease: nextLevelSize)
+                    sc.scaleMode = .aspectFit
+                    scene?.view?.presentScene(sc)
+                } else {
+                    realWinner = false
+                    removeAllChildren()
+                    let uwu = NewEverMaze.regularPuzzle(nextLevelSize)
+                    addEverMaze(uwu.copy())
+                    begin()
+                }
+                
+                
             } else {
                 o.superYupReset()
             }
@@ -82,10 +127,10 @@ class EverMazeScene: SKSceneNode {
     }
     
     override func touchesMoved(_ at: CGVector) {
-
     }
     
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
+        if cantSwipe { cantSwipe = false; return }
         if release == .zero { return }
         if Self.winner == 0 { return }
         
@@ -97,8 +142,13 @@ class EverMazeScene: SKSceneNode {
         }
         
         let wow = o.everMaze?.swipe(swiped, everNode: o.everNode!)
+        if wow != nil {
+            swipes += 1
+        }
         if wow == true {
-            Self.winner += 1
+            if Self.raceMode {
+                Self.winner += 1
+            }
             realWinner = true
             o.everNode?.run(.fadeOut(withDuration: 0.3))
             //o.everNode?.removeFromParent()

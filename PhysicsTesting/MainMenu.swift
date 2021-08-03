@@ -11,7 +11,7 @@ import Magic
 
 
 
-class GameScene: SKScene {
+class GameScene: HostingScene {
     override func didMove(to view: SKView) {
         
         do {
@@ -36,12 +36,14 @@ class GameScene: SKScene {
         
     }
     
-    #if os(macOS) 
+    #if os(macOS)
     override func mouseDown(with event: NSEvent) {
         if let num = nodes(at: event.location(in: self)).first(where: { Int($0.name ?? "") != nil }),
            let n = Int(num.name ?? "") {
             EverMazeSceneHost.screens = n
-            view?.presentScene(EverMazeSceneHost.init(from: true))
+            let sc = EverMazeSceneHost.init(from: true)
+            sc.scaleMode = .aspectFit
+            view?.presentScene(sc)
         }
     }
     #endif
@@ -51,9 +53,14 @@ class GameScene: SKScene {
         if let num = nodes(at: touches.first?.location(in: self) ?? .zero).first(where: { Int($0.name ?? "") != nil }),
            let n = Int(num.name ?? "") {
             EverMazeSceneHost.screens = n
-            view?.presentScene(EverMazeSceneHost.init(from: true))
+            let sc = EverMazeSceneHost.init(from: true)
+            sc.scaleMode = .aspectFit
+            view?.presentScene(sc)
         }
     }
     #endif
+    
+    
+    
     
 }
