@@ -27,6 +27,8 @@
 		1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C726B88ED60094707E /* CachedLevels.swift */; };
 		1B7446E826B9F3940094707E /* Magic in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446E726B9F3940094707E /* Magic */; };
 		1B7446EA26B9F3980094707E /* EverMazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446E926B9F3980094707E /* EverMazeKit */; };
+		1B7446EC26BA02410094707E /* Recurse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446EB26BA02410094707E /* Recurse.swift */; };
+		1B7446ED26BA02440094707E /* Recurse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446EB26BA02410094707E /* Recurse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,7 @@
 		1B7446DA26B9F33D0094707E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1B7446DC26B9F33E0094707E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B7446DE26B9F33E0094707E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B7446EB26BA02410094707E /* Recurse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recurse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				1B2CB59926B5B8A800CDF222 /* MainMenu.swift */,
+				1B7446EB26BA02410094707E /* Recurse.swift */,
 				1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */,
 				1B7446C326B88BF90094707E /* EversMazeScene.swift */,
 				1B7446C726B88ED60094707E /* CachedLevels.swift */,
@@ -240,6 +244,7 @@
 				1B2CB59C26B5B8A800CDF222 /* ViewController.swift in Sources */,
 				1B7446C426B88BF90094707E /* EversMazeScene.swift in Sources */,
 				1B7446C826B88ED60094707E /* CachedLevels.swift in Sources */,
+				1B7446EC26BA02410094707E /* Recurse.swift in Sources */,
 				1B2CB59A26B5B8A800CDF222 /* MainMenu.swift in Sources */,
 				1B7446C626B88EC50094707E /* EverMazeSceneHost.swift in Sources */,
 				1B2CB59426B5B8A800CDF222 /* AppDelegate.swift in Sources */,
@@ -253,6 +258,7 @@
 				1B7446D826B9F33D0094707E /* GameViewController.swift in Sources */,
 				1B7446E426B9F36A0094707E /* EverMazeSceneHost.swift in Sources */,
 				1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */,
+				1B7446ED26BA02440094707E /* Recurse.swift in Sources */,
 				1B7446D026B9F33D0094707E /* AppDelegate.swift in Sources */,
 				1B7446E226B9F36A0094707E /* EversMazeScene.swift in Sources */,
 				1B7446E326B9F36A0094707E /* MainMenu.swift in Sources */,

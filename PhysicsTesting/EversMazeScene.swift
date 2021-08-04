@@ -108,7 +108,7 @@ class EverMazeScene: SKSceneNode {
                 let nextLevelSize = o.everMaze?.size.next() ?? []
                 //SaveData.trueLevel += 1
                 if Self.raceMode {
-                    let sc = EverMazeSceneHost(sizePlease: nextLevelSize)
+                    let sc = EverMazeSceneHost(sizePlease: nextLevelSize, screens: 1)
                     sc.scaleMode = .aspectFit
                     scene?.view?.presentScene(sc)
                 } else {
