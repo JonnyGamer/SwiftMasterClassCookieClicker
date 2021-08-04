@@ -20,6 +20,7 @@ class DragSceneHost: HostingScene {
         super.didMove(to: view)
         for i in 0..<c.count {
             if let io = (c[i].children[0] as? DragScene) {
+                io.draggable = false
                 io.screenID = i
                 io.addShadows()
             }
@@ -61,14 +62,30 @@ class DragScene: SKSceneNode {
         if drag {
             myNode.position.x += at.dx
             myNode.position.y += at.dy
+            myNode.draggingRangeWithin(size)
+            
             for i in Self.supraNode[myNode] ?? [] {
                 if i === myNode { continue }
-                i.position.x += at.dx
-                i.position.y += at.dy
+                i.position = myNode.position
             }
         }
     }
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
         drag = false
+    }
+}
+
+extension SKNode {
+    func draggingRangeWithin(_ size: CGSize) {
+        if minX < (-size.width/2) {
+            position.x = (-size.width/2) + halfWidth
+        } else if maxX > (size.width/2) {
+            position.x = (size.width/2) - halfWidth
+        }
+        if minY < (-size.height/2) {
+            position.y = (-size.height/2) + halfHeight
+        } else if maxY > (size.height/2) {
+            position.y = (size.height/2) - halfHeight
+        }
     }
 }
