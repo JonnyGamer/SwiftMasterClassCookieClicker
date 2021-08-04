@@ -59,10 +59,10 @@ class GameScene: HostingScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let num = nodes(at: touches.first?.location(in: self) ?? .zero).first(where: { Int($0.name ?? "") != nil }),
            let n = Int(num.name ?? "") {
-            //EverMazeSceneHost.screens = n
-            //let sc = EverMazeSceneHost.init(from: true)
-            launchScene = DragScene.self
-            let sc = DragSceneHost(screens: n)
+            launchScene = EverMazeScene.self
+            let sc = EverMazeSceneHost(screens: n)
+            //launchScene = DragScene.self
+            //let sc = DragSceneHost(screens: n)
             sc.scaleMode = .aspectFit
             view?.presentScene(sc)
         }

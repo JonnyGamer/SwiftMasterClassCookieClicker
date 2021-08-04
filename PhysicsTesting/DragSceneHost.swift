@@ -57,21 +57,30 @@ class DragScene: SKSceneNode {
         if nodes.contains(myNode) {
             drag = true
         }
+        if realPos(at).x > 0 {
+            myNode.position.x += 10
+        } else {
+            myNode.position.x -= 10
+        }
+        updateNode()
     }
     override func touchesMoved(_ at: CGVector) {
         if drag {
             myNode.position.x += at.dx
             myNode.position.y += at.dy
             myNode.draggingRangeWithin(size)
-            
-            for i in Self.supraNode[myNode] ?? [] {
-                if i === myNode { continue }
-                i.position = myNode.position
-            }
+            updateNode()
         }
     }
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
         drag = false
+    }
+    
+    func updateNode() {
+        for i in Self.supraNode[myNode] ?? [] {
+            if i === myNode { continue }
+            i.position = myNode.position
+        }
     }
 }
 
@@ -87,5 +96,11 @@ extension SKNode {
         } else if maxY > (size.height/2) {
             position.y = (size.height/2) - halfHeight
         }
+    }
+}
+extension SKSceneNode {
+    func realPos(_ from: CGPoint) -> CGPoint {
+        let anch = parent?.position ?? .zero
+        return .init(x: from.x - anch.x, y: from.y - anch.y)
     }
 }

@@ -99,7 +99,10 @@ class EverMazeScene: SKSceneNode {
     var redo: Sprite!
     var cantSwipe = false
     
+    var startTouch: CGPoint = .zero
     override func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {
+        startTouch = at
+        
         if nodes.contains(redo) {
             swipes = 0
             cantSwipe = true
@@ -129,7 +132,11 @@ class EverMazeScene: SKSceneNode {
     override func touchesMoved(_ at: CGVector) {
     }
     
+    var endTouch: CGPoint = .zero
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
+        endTouch = at
+        let release = CGVector(dx: endTouch.x - startTouch.x, dy: endTouch.y - startTouch.y)
+        
         if cantSwipe { cantSwipe = false; return }
         if release == .zero { return }
         if Self.winner == 0 { return }
