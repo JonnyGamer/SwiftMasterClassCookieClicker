@@ -9,7 +9,7 @@
 import GameplayKit
 import Magic
 
-
+var (w, h): (CGFloat, CGFloat) = (1000, 1000)
 
 class GameScene: HostingScene {
     override func didMove(to view: SKView) {
@@ -40,10 +40,15 @@ class GameScene: HostingScene {
     override func mouseDown(with event: NSEvent) {
         if let num = nodes(at: event.location(in: self)).first(where: { Int($0.name ?? "") != nil }),
            let n = Int(num.name ?? "") {
-            //EverMazeSceneHost.screens = n
-            //let sc = EverMazeSceneHost.init(from: true)
-            launchScene = GameScene2.self
-            let sc = RecurseHostScene(screens: n)
+            
+            launchScene = DragScene.self
+            let sc = DragSceneHost(screens: n)
+            
+            //launchScene = EverMazeScene.self
+            //let sc = EverMazeSceneHost(screens: n)
+            
+            //launchScene = GameScene2.self
+            //let sc = RecurseHostScene(screens: n)
             sc.scaleMode = .aspectFit
             view?.presentScene(sc)
         }

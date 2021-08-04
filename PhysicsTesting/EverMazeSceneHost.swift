@@ -8,7 +8,7 @@
 import Magic
 import EverMazeKit
 
-var (w, h): (CGFloat, CGFloat) = (1000, 1000)
+
 
 class EverMazeSceneHost: HostingScene {
     var levelSize: [Int] = [5,5]
@@ -21,11 +21,8 @@ class EverMazeSceneHost: HostingScene {
         launchScene = EverMazeScene.self
         EverMazeScene.winner = -2
         super.didMove(to: view)
-        
         //let uwu = NewEverMaze.regularPuzzle([5,5])
-        
         //let uwu = NewEverMaze.init(LARGESTMAZES.levelEVIL9, printo: true)
-        
         for i in c {
             let uwu = NewEverMaze.nPlayerPuzzle(players: 3, levelSize)// .regularPuzzle(levelSize)
             (i.children.first as? EverMazeScene)?.addEverMaze(uwu.copy())// ?.o.everMaze = uwu
