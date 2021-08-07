@@ -8,17 +8,22 @@
 import SpriteKit
 
 class Button: SKNode, SuperTouchable {
+    var touched = false
     func _touchBegan() {
+        touched = true
         button.run(.moveBy(x: 0, y: -size.times(0.1).height, duration: 0.1).circleOut())
         text.run(.moveBy(x: 0, y: -size.times(0.1).height, duration: 0.1).circleOut())
         touchBegan(self)
     }
     func _touchReleased() {
+        if !touched { return }
         button.run(.moveBy(x: 0, y: size.times(0.1).height, duration: 0.1).circleOut())
         text.run(.moveBy(x: 0, y: size.times(0.1).height, duration: 0.1).circleOut())
         touchReleased(self)
     }
     func _touchEndedOn() {
+        if !touched { return }
+        touched = false
         touchEndedOn(self)
     }
     var touchBegan: (Button) -> () = { _ in }

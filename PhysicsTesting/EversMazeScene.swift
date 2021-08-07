@@ -29,11 +29,8 @@ class EverMazeScene: SKSceneNode {
         
         let stacko = HStack.init(nodes: [
             Button(size: .hundred, text: "􀄪").then({
-                $0.touchBegan = { _ in
-                    print("I was touched")
-                }
-                $0.touchEndedOn = { _ in
-                    print("Let's MOVE ON")
+                $0.touchEndedOn = { [self] _ in
+                    launch(launch: GameScene(size: .init(width: w, height: h)))
                 }
             }).padding,
             Button(size: .hundred, text: "Ever Maze, Stage 1").padding,
@@ -41,7 +38,7 @@ class EverMazeScene: SKSceneNode {
         ])
         addChild(stacko)
         stacko.keepInside(size.times(0.9))
-        stacko.centerAt(point: .init(x: 0, y: 400))
+        stacko.centerAt(point: .init(x: 0, y: (height/2) - stacko.calculateAccumulatedFrame().height.half))
     }
     
     func addLabels() {
@@ -117,7 +114,6 @@ class EverMazeScene: SKSceneNode {
     
     var startTouch: CGPoint = .zero
     override func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {
-        nodes.touchBegan()
         startTouch = at
         
         if nodes.contains(redo) {

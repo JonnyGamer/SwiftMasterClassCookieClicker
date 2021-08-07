@@ -34,12 +34,21 @@ class EverMazeSceneHost: HostingScene {
     var nodesTouched: [SKNode] = []
     
     #if os(macOS)
+    var loc: CGPoint = .zero
     override func mouseDown(with event: NSEvent) {
+        loc = event.location(in: self)
+        c.forEach {
+            ($0.children.first as? SKSceneNode)?.touchesBegan(loc, nodes: nodes(at: loc))
+        }
         let nodesTouched = nodes(at: event.location(in: self))
         nodesTouched.touchBegan()
         self.nodesTouched += nodesTouched
     }
     override func mouseUp(with event: NSEvent) {
+        let newLoc = event.location(in: self)
+        c.forEach {
+            ($0.children.first as? SKSceneNode)?.touchesEnded(newLoc, release: .init(dx: loc.x - newLoc.x, dy: loc.y - newLoc.y))
+        }
         let nodesEndedOn = nodes(at: event.location(in: self))
         nodesTouched.touchReleased()
         nodesTouched = []
