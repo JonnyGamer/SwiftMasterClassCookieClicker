@@ -9,6 +9,9 @@ import Foundation
 import SpriteKit
 
 extension CGSize {
+    static var screen: Self {
+        return .init(width: w, height: h)
+    }
     func times(_ n: CGFloat) -> Self {
         return .init(width: width * n, height: height * n)
     }

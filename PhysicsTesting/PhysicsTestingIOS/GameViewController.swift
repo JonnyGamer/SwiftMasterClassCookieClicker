@@ -19,7 +19,7 @@ class GameViewController: UIViewController {
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
-            let scene = GameScene.init(size: .init(width: 1000 * (view.frame.width / view.frame.height), height: 1000))
+            let scene = LaunchScreen.init(size: .init(width: 1000 * (view.frame.width / view.frame.height), height: 1000))
             w = scene.frame.width
             Magic.w = w
             EverMazeKit.w = w
@@ -29,7 +29,7 @@ class GameViewController: UIViewController {
             
             // Present the scene
             view.presentScene(scene)
-            
+            view.preferredFramesPerSecond = 120
             view.ignoresSiblingOrder = true
             
             view.showsFPS = false

@@ -17,6 +17,8 @@
 		1B31FB8026B5C47B0071BB72 /* Magic in Frameworks */ = {isa = PBXBuildFile; productRef = 1B31FB7F26B5C47B0071BB72 /* Magic */; };
 		1B3FC62126BF445F0025B62F /* Hand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B3FC62026BF445F0025B62F /* Hand.ttf */; };
 		1B3FC62226BF445F0025B62F /* Hand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B3FC62026BF445F0025B62F /* Hand.ttf */; };
+		1B3FC62426BF4EA30025B62F /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */; };
+		1B3FC62526BF4EA30025B62F /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */; };
 		1B7446C226B88BC10094707E /* EverMazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446C126B88BC10094707E /* EverMazeKit */; };
 		1B7446C426B88BF90094707E /* EversMazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C326B88BF90094707E /* EversMazeScene.swift */; };
 		1B7446C626B88EC50094707E /* EverMazeSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */; };
@@ -56,6 +58,7 @@
 		1B2CB5A226B5B8A900CDF222 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B2CB5A326B5B8A900CDF222 /* PhysicsTesting.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhysicsTesting.entitlements; sourceTree = "<group>"; };
 		1B3FC62026BF445F0025B62F /* Hand.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hand.ttf; sourceTree = "<group>"; };
+		1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		1B7446C326B88BF90094707E /* EversMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EversMazeScene.swift; sourceTree = "<group>"; };
 		1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EverMazeSceneHost.swift; sourceTree = "<group>"; };
 		1B7446C726B88ED60094707E /* CachedLevels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedLevels.swift; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 		1B2CB58726B5B8A800CDF222 = {
 			isa = PBXGroup;
 			children = (
+				1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */,
 				1B2CB59926B5B8A800CDF222 /* MainMenu.swift */,
 				1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */,
 				1B7446C326B88BF90094707E /* EversMazeScene.swift */,
@@ -279,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B3FC62426BF4EA30025B62F /* LaunchScreen.swift in Sources */,
 				1BD644F826BF133F005BE7E9 /* SuperTouchable.swift in Sources */,
 				1B1BEFF426BAED7C00C4666B /* DragSceneHost.swift in Sources */,
 				1BD644FB26BF1350005BE7E9 /* ButtonClass.swift in Sources */,
@@ -299,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B3FC62526BF4EA30025B62F /* LaunchScreen.swift in Sources */,
 				1BD644F926BF133F005BE7E9 /* SuperTouchable.swift in Sources */,
 				1B1BEFF526BAED7C00C4666B /* DragSceneHost.swift in Sources */,
 				1BD644FC26BF1350005BE7E9 /* ButtonClass.swift in Sources */,

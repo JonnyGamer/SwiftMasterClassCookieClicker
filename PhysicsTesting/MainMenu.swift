@@ -18,6 +18,7 @@ extension SKNode {
         (self as? HostingNode)?.launchScene = launchScene
         launch.scaleMode = .aspectFit
         let foo = SKTransition.fade(with: .black, duration: 0.5)
+        foo.pausesOutgoingScene = false
         scene?.view?.presentScene(launch, transition: foo)
     }
 }
@@ -51,18 +52,16 @@ class GameScene: HostingScene {
     }
     
     override func didMove(to view: SKView) {
-        
-        let go = SeededGenerator.init(seed: 1)
-        for i in 1...100 {
+        for _ in 1...100 {
             let wo = SKSpriteNode.init(color: .gray, size: .hundred)
-            wo.setScale(CGFloat.random(in: CGFloat(0.1)...CGFloat(3), using: &go))
-            wo.zRotation = CGFloat.random(in: 1...100, using: &go)
-            wo.position.x = CGFloat.random(in: 1...w, using: &go)
-            wo.position.y = CGFloat.random(in: 1...h, using: &go)
+            wo.setScale(CGFloat.random(in: CGFloat(0.1)...CGFloat(3)))
+            wo.zRotation = CGFloat.random(in: 1...100)
+            wo.position.x = CGFloat.random(in: 1...w)
+            wo.position.y = CGFloat.random(in: 1...h)
             wo.zPosition = -1000
             wo.alpha = 0.1
             wo.run(.repeatForever(.sequence([
-                .wait(forDuration: Double.random(in: 0...10, using: &go)),
+                .wait(forDuration: Double.random(in: 0...10)),
                 .rotate(byAngle: .pi, duration: 4).circleOut()
             ])))
             addChild(wo)
@@ -71,11 +70,8 @@ class GameScene: HostingScene {
         print("􀄪")
         let stacko = HStack.init(nodes: [
             Button(size: .hundred, text: "􀄪").then({
-                $0.touchBegan = { _ in
-                    print("I was touched")
-                }
-                $0.touchEndedOn = { _ in
-                    print("Let's MOVE ON")
+                $0.touchEndedOn = { [self] _ in
+                    launch(launch: LaunchScreen(size: .screen))
                 }
             }).padding,
             Button(size: .hundred, text: "Ever Maze, Stage 1").padding,
