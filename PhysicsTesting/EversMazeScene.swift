@@ -135,7 +135,7 @@ class EverMazeScene: SKSceneNode {
     var endTouch: CGPoint = .zero
     override func touchesEnded(_ at: CGPoint, release: CGVector) {
         endTouch = at
-        let release = CGVector(dx: endTouch.x - startTouch.x, dy: endTouch.y - startTouch.y)
+        let release = CGVector(dx: (endTouch.x - startTouch.x) * xScale, dy: (endTouch.y - startTouch.y) * yScale)
         
         if cantSwipe { cantSwipe = false; return }
         if release == .zero { return }
