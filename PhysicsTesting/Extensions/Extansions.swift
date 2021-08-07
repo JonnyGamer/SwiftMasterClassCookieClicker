@@ -12,6 +12,9 @@ extension CGSize {
     func times(_ n: CGFloat) -> Self {
         return .init(width: width * n, height: height * n)
     }
+    func inverse() -> Self {
+        return .init(width: 1 / width, height: 1 / height)
+    }
 }
 extension SKAction {
     func easeInOut() -> SKAction {

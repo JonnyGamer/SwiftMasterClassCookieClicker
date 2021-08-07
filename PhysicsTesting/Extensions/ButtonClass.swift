@@ -28,20 +28,35 @@ class Button: SKNode, SuperTouchable {
     var size: CGSize
     var button: SKShapeNode
     var buttonShadow: SKShapeNode
-    var text: SKLabelNode
+    var text: SKNode
     
-    init(size: CGSize, text: String) {
+    convenience init(size: CGSize, text: String) {
+        self.init(size: size, node: SKLabelNode(text: text))
+    }
+    convenience init(size: CGSize, image: String) {
+        self.init(size: size, node: SKSpriteNode(imageNamed: image))
+    }
+    
+    init(size: CGSize, node: SKNode) {
 
-        self.text = SKLabelNode.init(text: text).then {
-            $0.verticalAlignmentMode = .center
-            $0.horizontalAlignmentMode = .center
-            $0.fontColor = .black
-            $0.zPosition = 1
-            $0.keepInside(.init(width: 1000.0, height: size.times(0.75).height))
-            $0.fontSize *= $0.xScale
-            $0.setScale(1)
+        self.text = node.then {
+            if $0 is SKLabelNode, let oo = $0 as? SKLabelNode {
+                oo.verticalAlignmentMode = .center
+                oo.horizontalAlignmentMode = .center
+                oo.fontColor = .black
+                oo.zPosition = 1
+                oo.keepInside(.init(width: 1000.0, height: size.times(0.75).height))
+                oo.fontSize *= $0.xScale
+                oo.setScale(1)
+                oo.fontName = "Hand"
+            } else {
+                $0.zPosition = 1
+                $0.keepInside(.init(width: 1000.0, height: size.times(0.75).height))
+                $0.centerAt(point: .zero)
+            }
         }
-        let newSize = CGSize.init(width: max(100, self.text.frame.size.padding(40).width), height: size.height)
+        let textFrame = text.calculateAccumulatedFrame()
+        let newSize = CGSize.init(width: max(100, textFrame.size.padding(40).width), height: size.height)
         self.size = newSize
         
         button = SKShapeNode(rectOf: newSize, cornerRadius: 10).then {

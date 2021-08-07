@@ -16,28 +16,43 @@ class GameScene: HostingScene {
     func levelsHStack(_ from: ClosedRange<Int>? = nil, this: [String] = []) -> HStack {
         var playerNodes: [SKNode] = []
         for i in from?.map({ String($0) }) ?? this {
-            playerNodes.append(Button(size: .hundred, text: "􀋃\(i)").padding)
-//
-//            let n1 = SKSpriteNode.init(color: .white, size: .hundred)
-//            let textBar = SKLabelNode.init(text: "􀎡\(i)")
-//            textBar.fontColor = .black
-//            textBar.fontSize = 70
-//            textBar.keepInside(n1.size.times(0.75))
-//            textBar.fontSize *= textBar.xScale
-//            textBar.setScale(1)
-//            textBar.centerOn(n1)
-//            n1.addChild(textBar)
-//            playerNodes.append(n1.padding)
-//            n1.name = "\(i)"
+            //let button = Button(size: .hundred, text: "􀎡\(i)")//image: "lock-fill")
+            let button = Button(size: .hundred, node: HStack.init(nodes: [
+                SKSpriteNode.init(imageNamed: "lock-fill").then({
+                    $0.keepInside(.hundred)
+                }).padding,
+                SKLabelNode(text: "\(i)").then({
+                    $0.horizontalAlignmentMode = .center
+                    $0.verticalAlignmentMode = .center
+                    $0.fontSize *= 3
+                    $0.fontColor = .black
+                    $0.fontName = "Hand"
+                })
+            ])).then({
+                $0.touchEndedOn = { [self] _ in
+                    launchScene = EverMazeScene.self
+                    let sc = EverMazeSceneHost(screens: 1)
+                    sc.scaleMode = .aspectFit
+                    let foo = SKTransition.fade(with: .black, duration: 0.5)
+                    view?.presentScene(sc, transition: foo)
+                }
+            })
+            playerNodes.append(button.padding)
         }
         let playerSelect = HStack.init(nodes: playerNodes)
         return playerSelect
     }
     
     override func didMove(to view: SKView) {
+        print("􀄪")
         let stacko = HStack.init(nodes: [
             Button(size: .hundred, text: "􀄪").then({
-                $0.touchBegan = { _ in print("I was touched") }
+                $0.touchBegan = { _ in
+                    print("I was touched")
+                }
+                $0.touchEndedOn = { _ in
+                    print("Let's MOVE ON")
+                }
             }).padding,
             Button(size: .hundred, text: "Ever Maze, Stage 1").padding,
             Button(size: .hundred, text: "􀎡").padding,
@@ -148,6 +163,10 @@ class GameScene: HostingScene {
     
     #if os(iOS)
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let nodesTouched = nodes(at: touches.first?.location(in: self) ?? .zero)
+        nodesTouched.touchBegan()
+        self.nodesTouched += nodesTouched
+        
         if let num = nodes(at: touches.first?.location(in: self) ?? .zero).first(where: { Int($0.name ?? "") != nil }),
            let n = Int(num.name ?? "") {
             launchScene = EverMazeScene.self
@@ -157,6 +176,12 @@ class GameScene: HostingScene {
             sc.scaleMode = .aspectFit
             view?.presentScene(sc)
         }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let nodesEndedOn = nodes(at: touches.first?.location(in: self) ?? .zero)
+        nodesTouched.touchReleased()
+        nodesTouched = []
+        nodesEndedOn.touchEndedOn()
     }
     #endif
     

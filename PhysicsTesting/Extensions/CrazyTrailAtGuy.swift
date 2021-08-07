@@ -31,6 +31,7 @@ extension SKSpriteNode {
                 $0.verticalAlignmentMode = .center
                 $0.horizontalAlignmentMode = .center
                 $0.fontColor = .black
+                $0.fontName = "Hand"
             }).padding.then({
                 $0.keepInside(.hundred.doubled.times(0.9))
             })
