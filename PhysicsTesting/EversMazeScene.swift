@@ -26,6 +26,22 @@ class EverMazeScene: SKSceneNode {
         print("foo")
         draggable = false
         backgroundColor(.black)
+        
+        let stacko = HStack.init(nodes: [
+            Button(size: .hundred, text: "􀄪").then({
+                $0.touchBegan = { _ in
+                    print("I was touched")
+                }
+                $0.touchEndedOn = { _ in
+                    print("Let's MOVE ON")
+                }
+            }).padding,
+            Button(size: .hundred, text: "Ever Maze, Stage 1").padding,
+            Button(size: .hundred, text: "􀎡").padding,
+        ])
+        addChild(stacko)
+        stacko.keepInside(size.times(0.9))
+        stacko.centerAt(point: .init(x: 0, y: 400))
     }
     
     func addLabels() {
@@ -101,6 +117,7 @@ class EverMazeScene: SKSceneNode {
     
     var startTouch: CGPoint = .zero
     override func touchesBegan(_ at: CGPoint, nodes: [SKNode]) {
+        nodes.touchBegan()
         startTouch = at
         
         if nodes.contains(redo) {

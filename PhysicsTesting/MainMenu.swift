@@ -90,14 +90,6 @@ class GameScene: HostingScene {
         
         let wow = VStack(
             nodes: [
-//                SKLabelNode.init(text: "Stage 1").then({
-//                    $0.fontSize *= 2
-//                    bring(dir: .down, node: $0, delay: 0.6)
-//                }),
-//                SKLabelNode.init(text: "can you beat the theme?").then({
-//                    $0.fontSize *= 1
-//                    bring(dir: .down, node: $0, delay: 0.5)
-//                }),
                 n1.then({ $0.run(odd); bring(dir: .up, node: $0, delay: 0.5) }),
                 n2.then({ $0.run(even); bring(dir: .up, node: $0, delay: 0.6) }),
                 n3.then({ $0.run(odd); bring(dir: .up, node: $0, delay: 0.7) }),
@@ -137,21 +129,6 @@ class GameScene: HostingScene {
         let nodesTouched = nodes(at: event.location(in: self))
         nodesTouched.touchBegan()
         self.nodesTouched += nodesTouched
-        
-        if let num = nodesTouched.first(where: { Int($0.name ?? "") != nil }),
-           let n = Int(num.name ?? "") {
-            
-            launchScene = DragScene.self
-            let sc = DragSceneHost(screens: n)
-            
-            //launchScene = EverMazeScene.self
-            //let sc = EverMazeSceneHost(screens: n)
-            
-            //launchScene = GameScene2.self
-            //let sc = RecurseHostScene(screens: n)
-            sc.scaleMode = .aspectFit
-            view?.presentScene(sc)
-        }
     }
     override func mouseUp(with event: NSEvent) {
         let nodesEndedOn = nodes(at: event.location(in: self))
@@ -166,16 +143,6 @@ class GameScene: HostingScene {
         let nodesTouched = nodes(at: touches.first?.location(in: self) ?? .zero)
         nodesTouched.touchBegan()
         self.nodesTouched += nodesTouched
-        
-        if let num = nodes(at: touches.first?.location(in: self) ?? .zero).first(where: { Int($0.name ?? "") != nil }),
-           let n = Int(num.name ?? "") {
-            launchScene = EverMazeScene.self
-            let sc = EverMazeSceneHost(screens: n)
-            //launchScene = DragScene.self
-            //let sc = DragSceneHost(screens: n)
-            sc.scaleMode = .aspectFit
-            view?.presentScene(sc)
-        }
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let nodesEndedOn = nodes(at: touches.first?.location(in: self) ?? .zero)

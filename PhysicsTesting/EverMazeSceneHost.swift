@@ -28,4 +28,36 @@ class EverMazeSceneHost: HostingScene {
             (i.children.first as? EverMazeScene)?.addEverMaze(uwu.copy())// ?.o.everMaze = uwu
         }
     }
+    
+    
+    // Touching Button Code
+    var nodesTouched: [SKNode] = []
+    
+    #if os(macOS)
+    override func mouseDown(with event: NSEvent) {
+        let nodesTouched = nodes(at: event.location(in: self))
+        nodesTouched.touchBegan()
+        self.nodesTouched += nodesTouched
+    }
+    override func mouseUp(with event: NSEvent) {
+        let nodesEndedOn = nodes(at: event.location(in: self))
+        nodesTouched.touchReleased()
+        nodesTouched = []
+        nodesEndedOn.touchEndedOn()
+    }
+    #endif
+    
+    #if os(iOS)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let nodesTouched = nodes(at: touches.first?.location(in: self) ?? .zero)
+        nodesTouched.touchBegan()
+        self.nodesTouched += nodesTouched
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let nodesEndedOn = nodes(at: touches.first?.location(in: self) ?? .zero)
+        nodesTouched.touchReleased()
+        nodesTouched = []
+        nodesEndedOn.touchEndedOn()
+    }
+    #endif
 }
