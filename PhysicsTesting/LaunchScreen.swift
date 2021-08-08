@@ -47,7 +47,9 @@ class LaunchScreen: HostingScene {
         
         let stacko = HStack.init(nodes: [
             Button(size: .hundred, text: "􀥏").then({
-                $0.touchEndedOn = { _ in }
+                $0.touchEndedOn = { [self] _ in
+                    launch(launch: MathScene(size: .screen))
+                }
             }).padding,
             Button(size: .hundred, text: "Ever Maze").padding,
             Button(size: .hundred, text: "􀎡").padding,

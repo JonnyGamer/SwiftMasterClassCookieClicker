@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1B1BEFF426BAED7C00C4666B /* DragSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1BEFF326BAED7C00C4666B /* DragSceneHost.swift */; };
 		1B1BEFF526BAED7C00C4666B /* DragSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1BEFF326BAED7C00C4666B /* DragSceneHost.swift */; };
+		1B1EF7B926BF6DA000717CA9 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EF7B826BF6DA000717CA9 /* Math.swift */; };
+		1B1EF7BA26BF6DA000717CA9 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EF7B826BF6DA000717CA9 /* Math.swift */; };
 		1B2CB59426B5B8A800CDF222 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2CB59326B5B8A800CDF222 /* AppDelegate.swift */; };
 		1B2CB59A26B5B8A800CDF222 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2CB59926B5B8A800CDF222 /* MainMenu.swift */; };
 		1B2CB59C26B5B8A800CDF222 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2CB59B26B5B8A800CDF222 /* ViewController.swift */; };
@@ -49,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		1B1BEFF326BAED7C00C4666B /* DragSceneHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragSceneHost.swift; sourceTree = "<group>"; };
+		1B1EF7B826BF6DA000717CA9 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		1B2CB59026B5B8A800CDF222 /* PhysicsTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhysicsTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B2CB59326B5B8A800CDF222 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B2CB59926B5B8A800CDF222 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 		1B2CB58726B5B8A800CDF222 = {
 			isa = PBXGroup;
 			children = (
+				1B1EF7B826BF6DA000717CA9 /* Math.swift */,
 				1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */,
 				1B2CB59926B5B8A800CDF222 /* MainMenu.swift */,
 				1B7446C526B88EC50094707E /* EverMazeSceneHost.swift */,
@@ -292,6 +296,7 @@
 				1B2CB59C26B5B8A800CDF222 /* ViewController.swift in Sources */,
 				1B7446C426B88BF90094707E /* EversMazeScene.swift in Sources */,
 				1B7446C826B88ED60094707E /* CachedLevels.swift in Sources */,
+				1B1EF7B926BF6DA000717CA9 /* Math.swift in Sources */,
 				1B7446EC26BA02410094707E /* Recurse.swift in Sources */,
 				1B2CB59A26B5B8A800CDF222 /* MainMenu.swift in Sources */,
 				1B7446C626B88EC50094707E /* EverMazeSceneHost.swift in Sources */,
@@ -313,6 +318,7 @@
 				1B7446D826B9F33D0094707E /* GameViewController.swift in Sources */,
 				1B7446E426B9F36A0094707E /* EverMazeSceneHost.swift in Sources */,
 				1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */,
+				1B1EF7BA26BF6DA000717CA9 /* Math.swift in Sources */,
 				1B7446ED26BA02440094707E /* Recurse.swift in Sources */,
 				1B7446D026B9F33D0094707E /* AppDelegate.swift in Sources */,
 				1B7446E226B9F36A0094707E /* EversMazeScene.swift in Sources */,

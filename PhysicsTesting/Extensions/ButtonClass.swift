@@ -9,14 +9,29 @@ import SpriteKit
 
 class Button: SKNode, SuperTouchable {
     var touched = false
+    var released = false
+    
     func _touchBegan() {
+        if touched { return }
         touched = true
+        
+        button.run(.customAction(withDuration: 0.1, actionBlock: { i, j in
+            let foo = (255 - (j * 10 * 128))/255
+            (i as? SKShapeNode)?.fillColor = .init(red: foo, green: foo, blue: foo, alpha: 1.0)
+        }))        
         button.run(.moveBy(x: 0, y: -size.times(0.1).height, duration: 0.1).circleOut())
         text.run(.moveBy(x: 0, y: -size.times(0.1).height, duration: 0.1).circleOut())
         touchBegan(self)
     }
     func _touchReleased() {
         if !touched { return }
+        touched = false
+        released = true
+        print("huh")
+        button.run(.customAction(withDuration: 0.1, actionBlock: { i, j in
+            let foo = ((j * 10 * 128) + 128)/255
+            (i as? SKShapeNode)?.fillColor = .init(red: foo, green: foo, blue: foo, alpha: 1.0)
+        }))
         button.run(.moveBy(x: 0, y: size.times(0.1).height, duration: 0.1).circleOut())
         text.run(.moveBy(x: 0, y: size.times(0.1).height, duration: 0.1).circleOut())
         touchReleased(self)
