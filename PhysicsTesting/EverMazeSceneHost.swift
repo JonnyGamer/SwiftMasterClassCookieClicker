@@ -10,7 +10,7 @@ import EverMazeKit
 
 
 
-class EverMazeSceneHost: HostingScene {
+class EverMazeSceneHost: TouchHostingScene {
     var levelSize: [Int] = [5,5]
     convenience init(sizePlease: [Int], screens: Int) {
         self.init(screens: screens)
@@ -30,43 +30,16 @@ class EverMazeSceneHost: HostingScene {
     }
     
     
-    // Touching Button Code
-    var nodesTouched: [SKNode] = []
     
-    #if os(macOS)
-    var loc: CGPoint = .zero
-    override func mouseDown(with event: NSEvent) {
-        loc = event.location(in: self)
+    override func realTouchBegan(at: CGPoint, nodes: [SKNode]) {
         c.forEach {
-            ($0.children.first as? SKSceneNode)?.touchesBegan(loc, nodes: nodes(at: loc))
+            ($0.children.first as? SKSceneNode)?.touchesBegan(at, nodes: nodes)
         }
-        let nodesTouched = nodes(at: event.location(in: self))
-        nodesTouched.touchBegan()
-        self.nodesTouched += nodesTouched
     }
-    override func mouseUp(with event: NSEvent) {
-        let newLoc = event.location(in: self)
+    override func realTouchEnd(at: CGPoint, with: CGVector) {
         c.forEach {
-            ($0.children.first as? SKSceneNode)?.touchesEnded(newLoc, release: .init(dx: loc.x - newLoc.x, dy: loc.y - newLoc.y))
+            ($0.children.first as? SKSceneNode)?.touchesEnded(at, release: with)
         }
-        let nodesEndedOn = nodes(at: event.location(in: self))
-        nodesTouched.touchReleased()
-        nodesTouched = []
-        nodesEndedOn.touchEndedOn()
     }
-    #endif
     
-    #if os(iOS)
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let nodesTouched = nodes(at: touches.first?.location(in: self) ?? .zero)
-        nodesTouched.touchBegan()
-        self.nodesTouched += nodesTouched
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let nodesEndedOn = nodes(at: touches.first?.location(in: self) ?? .zero)
-        nodesTouched.touchReleased()
-        nodesTouched = []
-        nodesEndedOn.touchEndedOn()
-    }
-    #endif
 }

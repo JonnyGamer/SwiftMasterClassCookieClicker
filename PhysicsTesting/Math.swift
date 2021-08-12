@@ -8,8 +8,7 @@
 import Foundation
 import Magic
 
-class Math: HostingScene {
-    var nodesTouched: Set<SKNode> = []
+class Math: TouchHostingScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = .darkGray
@@ -54,38 +53,6 @@ class Math: HostingScene {
         addChild(backArrow.padding)
         backArrow.centerAt(point: .init(x: (backArrow.button.frame.width/2)+20, y: (980 - (backArrow.button.frame.height/2))))
     }
-    
-    #if os(macOS)
-    override func mouseDown(with event: NSEvent) {
-        let nodesTouched = nodes(at: event.location(in: self))
-        nodesTouched.touchBegan()
-        self.nodesTouched = self.nodesTouched.union(nodesTouched)
-    }
-    override func mouseUp(with event: NSEvent) {
-        print("stop")
-        let nodesEndedOn = nodes(at: event.location(in: self))
-        Array(nodesTouched).touchReleased()
-        Array(nodesTouched.subtracting(nodesEndedOn)).touchEndedOn()
-        //nodesEndedOn.touchEndedOn()
-        nodesTouched = []
-        previous = .zero
-    }
-    #endif
-    
-    #if os(iOS)
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let nodesTouched = nodes(at: touches.first?.location(in: self) ?? .zero)
-        nodesTouched.touchBegan()
-        self.nodesTouched += nodesTouched
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let nodesEndedOn = nodes(at: touches.first?.location(in: self) ?? .zero)
-        nodesTouched.touchReleased()
-        nodesTouched = []
-        nodesEndedOn.touchEndedOn()
-
-    }
-    #endif
 }
 
 
@@ -162,17 +129,20 @@ class SquareRootScene: Math {
             words(["􀓪 Square Roots 􀓪"]).padding,
             words(["Lesson 1.","Welcome to Square Roots!","What are they?"]).padding,
             words(["􀓪 Square Roots"]).padding,
+            words(["􀓪 Square Roots"]).padding,
+            words(["􀓪 Square Roots"]).padding,
+            words(["􀓪 Square Roots"]).padding,
+            words(["􀓪 Square Roots"]).padding,
+            Button(size: .hundred, text: "foo"),
+            words(["􀓪 Square Roots"]).padding,
         ].reversed())
         addChild(stackem)
         stackem.centerAt(point: .midScreen)
     }
     
-    override func mouseDragged(with event: NSEvent) {
-        super.mouseDown(with: event)
-        if previous == .zero { previous = event.location(in: self); return }
-        stackem.position.y += event.location(in: self).y - previous.y
-        previous = event.location(in: self)
-        //stackem.draggingRangeWithin(size)
+    override func realTouchMoved(with: CGVector) {
+        if with == .zero { return }
+        stackem.position.y += with.dy
         
         let woo = stackem.calculateAccumulatedFrame()
         if woo.maxY < (size.height.half) {
