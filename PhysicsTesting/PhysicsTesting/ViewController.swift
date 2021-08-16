@@ -18,7 +18,8 @@ class ViewController: NSViewController {
 
         if let view = self.skView {
             // Load the SKScene from 'GameScene.sks'
-            let scene = LaunchScreen.init(size: .init(width: 1000.0, height: 1000.0))
+            let scene = EverMazeSceneHost(sizePlease: [5,5], screens: 1, players: 2)
+            //let scene = LaunchScreen.init(size: .init(width: 1000.0, height: 1000.0))
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFit
                 

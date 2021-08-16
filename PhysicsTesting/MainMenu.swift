@@ -42,7 +42,7 @@ class GameScene: TouchHostingScene {
                 })
             ])).then({
                 $0.touchEndedOn = { [self] _ in
-                    self.launch(launchScene: EverMazeScene.self, launch: EverMazeSceneHost(screens: 4))
+                    self.launch(launchScene: EverMazeScene.self, launch: EverMazeSceneHost(screens: 1))
                 }
             })
             playerNodes.append(button.padding)

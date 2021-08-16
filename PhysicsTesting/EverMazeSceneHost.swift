@@ -12,8 +12,10 @@ import EverMazeKit
 
 class EverMazeSceneHost: TouchHostingScene {
     var levelSize: [Int] = [5,5]
-    convenience init(sizePlease: [Int], screens: Int) {
+    var players: Int = 1
+    convenience init(sizePlease: [Int], screens: Int, players: Int = 1) {
         self.init(screens: screens)
+        self.players = players
         levelSize = sizePlease
     }
     
@@ -24,7 +26,8 @@ class EverMazeSceneHost: TouchHostingScene {
         //let uwu = NewEverMaze.regularPuzzle([5,5])
         //let uwu = NewEverMaze.init(LARGESTMAZES.levelEVIL9, printo: true)
         for i in c {
-            let uwu = NewEverMaze.nPlayerPuzzle(players: 3, levelSize)// .regularPuzzle(levelSize)
+            let uwu = NewEverMaze.nPlayerPuzzle(players: players, levelSize)// .regularPuzzle(levelSize)
+            (i.children.first as? EverMazeScene)?.players = players
             (i.children.first as? EverMazeScene)?.addEverMaze(uwu.copy())// ?.o.everMaze = uwu
         }
     }

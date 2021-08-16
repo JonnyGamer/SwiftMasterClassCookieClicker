@@ -17,8 +17,6 @@
 		1B2CB59E26B5B8A900CDF222 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B2CB59D26B5B8A900CDF222 /* Assets.xcassets */; };
 		1B2CB5A126B5B8A900CDF222 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B2CB59F26B5B8A900CDF222 /* Main.storyboard */; };
 		1B31FB8026B5C47B0071BB72 /* Magic in Frameworks */ = {isa = PBXBuildFile; productRef = 1B31FB7F26B5C47B0071BB72 /* Magic */; };
-		1B3C13D726C57D82008425A1 /* TouchHostingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3C13D626C57D82008425A1 /* TouchHostingScene.swift */; };
-		1B3C13D826C57D82008425A1 /* TouchHostingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3C13D626C57D82008425A1 /* TouchHostingScene.swift */; };
 		1B3FC62126BF445F0025B62F /* Hand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B3FC62026BF445F0025B62F /* Hand.ttf */; };
 		1B3FC62226BF445F0025B62F /* Hand.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B3FC62026BF445F0025B62F /* Hand.ttf */; };
 		1B3FC62426BF4EA30025B62F /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */; };
@@ -39,14 +37,6 @@
 		1B7446EA26B9F3980094707E /* EverMazeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B7446E926B9F3980094707E /* EverMazeKit */; };
 		1B7446EC26BA02410094707E /* Recurse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446EB26BA02410094707E /* Recurse.swift */; };
 		1B7446ED26BA02440094707E /* Recurse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7446EB26BA02410094707E /* Recurse.swift */; };
-		1BD644F126BF01ED005BE7E9 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F026BF01ED005BE7E9 /* Then.swift */; };
-		1BD644F226BF01ED005BE7E9 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F026BF01ED005BE7E9 /* Then.swift */; };
-		1BD644F426BF06EF005BE7E9 /* Extansions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F326BF06EF005BE7E9 /* Extansions.swift */; };
-		1BD644F526BF06EF005BE7E9 /* Extansions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F326BF06EF005BE7E9 /* Extansions.swift */; };
-		1BD644F826BF133F005BE7E9 /* SuperTouchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F726BF133F005BE7E9 /* SuperTouchable.swift */; };
-		1BD644F926BF133F005BE7E9 /* SuperTouchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644F726BF133F005BE7E9 /* SuperTouchable.swift */; };
-		1BD644FB26BF1350005BE7E9 /* ButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644FA26BF1350005BE7E9 /* ButtonClass.swift */; };
-		1BD644FC26BF1350005BE7E9 /* ButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644FA26BF1350005BE7E9 /* ButtonClass.swift */; };
 		1BD644FE26BF1361005BE7E9 /* CrazyTrailAtGuy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644FD26BF1361005BE7E9 /* CrazyTrailAtGuy.swift */; };
 		1BD644FF26BF1361005BE7E9 /* CrazyTrailAtGuy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD644FD26BF1361005BE7E9 /* CrazyTrailAtGuy.swift */; };
 /* End PBXBuildFile section */
@@ -62,7 +52,6 @@
 		1B2CB5A026B5B8A900CDF222 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1B2CB5A226B5B8A900CDF222 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B2CB5A326B5B8A900CDF222 /* PhysicsTesting.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhysicsTesting.entitlements; sourceTree = "<group>"; };
-		1B3C13D626C57D82008425A1 /* TouchHostingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHostingScene.swift; sourceTree = "<group>"; };
 		1B3FC62026BF445F0025B62F /* Hand.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hand.ttf; sourceTree = "<group>"; };
 		1B3FC62326BF4EA30025B62F /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		1B7446C326B88BF90094707E /* EversMazeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EversMazeScene.swift; sourceTree = "<group>"; };
@@ -75,10 +64,6 @@
 		1B7446DC26B9F33E0094707E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B7446DE26B9F33E0094707E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B7446EB26BA02410094707E /* Recurse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recurse.swift; sourceTree = "<group>"; };
-		1BD644F026BF01ED005BE7E9 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
-		1BD644F326BF06EF005BE7E9 /* Extansions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extansions.swift; sourceTree = "<group>"; };
-		1BD644F726BF133F005BE7E9 /* SuperTouchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTouchable.swift; sourceTree = "<group>"; };
-		1BD644FA26BF1350005BE7E9 /* ButtonClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonClass.swift; sourceTree = "<group>"; };
 		1BD644FD26BF1361005BE7E9 /* CrazyTrailAtGuy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrazyTrailAtGuy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,11 +152,6 @@
 		1BD644F626BF132F005BE7E9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1BD644F026BF01ED005BE7E9 /* Then.swift */,
-				1B3C13D626C57D82008425A1 /* TouchHostingScene.swift */,
-				1BD644F326BF06EF005BE7E9 /* Extansions.swift */,
-				1BD644F726BF133F005BE7E9 /* SuperTouchable.swift */,
-				1BD644FA26BF1350005BE7E9 /* ButtonClass.swift */,
 				1BD644FD26BF1361005BE7E9 /* CrazyTrailAtGuy.swift */,
 				1B3FC62026BF445F0025B62F /* Hand.ttf */,
 			);
@@ -292,11 +272,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B3FC62426BF4EA30025B62F /* LaunchScreen.swift in Sources */,
-				1BD644F826BF133F005BE7E9 /* SuperTouchable.swift in Sources */,
 				1B1BEFF426BAED7C00C4666B /* DragSceneHost.swift in Sources */,
-				1BD644FB26BF1350005BE7E9 /* ButtonClass.swift in Sources */,
 				1BD644FE26BF1361005BE7E9 /* CrazyTrailAtGuy.swift in Sources */,
-				1BD644F126BF01ED005BE7E9 /* Then.swift in Sources */,
 				1B2CB59C26B5B8A800CDF222 /* ViewController.swift in Sources */,
 				1B7446C426B88BF90094707E /* EversMazeScene.swift in Sources */,
 				1B7446C826B88ED60094707E /* CachedLevels.swift in Sources */,
@@ -305,8 +282,6 @@
 				1B2CB59A26B5B8A800CDF222 /* MainMenu.swift in Sources */,
 				1B7446C626B88EC50094707E /* EverMazeSceneHost.swift in Sources */,
 				1B2CB59426B5B8A800CDF222 /* AppDelegate.swift in Sources */,
-				1BD644F426BF06EF005BE7E9 /* Extansions.swift in Sources */,
-				1B3C13D726C57D82008425A1 /* TouchHostingScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,11 +290,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B3FC62526BF4EA30025B62F /* LaunchScreen.swift in Sources */,
-				1BD644F926BF133F005BE7E9 /* SuperTouchable.swift in Sources */,
 				1B1BEFF526BAED7C00C4666B /* DragSceneHost.swift in Sources */,
-				1BD644FC26BF1350005BE7E9 /* ButtonClass.swift in Sources */,
 				1BD644FF26BF1361005BE7E9 /* CrazyTrailAtGuy.swift in Sources */,
-				1BD644F226BF01ED005BE7E9 /* Then.swift in Sources */,
 				1B7446D826B9F33D0094707E /* GameViewController.swift in Sources */,
 				1B7446E426B9F36A0094707E /* EverMazeSceneHost.swift in Sources */,
 				1B7446E526B9F36A0094707E /* CachedLevels.swift in Sources */,
@@ -328,8 +300,6 @@
 				1B7446D026B9F33D0094707E /* AppDelegate.swift in Sources */,
 				1B7446E226B9F36A0094707E /* EversMazeScene.swift in Sources */,
 				1B7446E326B9F36A0094707E /* MainMenu.swift in Sources */,
-				1BD644F526BF06EF005BE7E9 /* Extansions.swift in Sources */,
-				1B3C13D826C57D82008425A1 /* TouchHostingScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

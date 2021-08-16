@@ -12,6 +12,7 @@ class EverMazeScene: SKSceneNode {
     
     var o: OO = OO()
     
+    var players: Int = 1
     static var winner: Int = -2
     var realWinner: Bool = false
     var swipes = 0 {
@@ -26,22 +27,23 @@ class EverMazeScene: SKSceneNode {
         print("foo")
         draggable = false
         backgroundColor(.black)
-        
+    }
+    
+    func addLabels() {
         let stacko = HStack.init(nodes: [
             Button(size: .hundred, text: "􀄪").then({
                 $0.touchEndedOn = { [self] _ in
                     launch(launch: GameScene(size: .init(width: w, height: h)))
                 }
             }).padding,
-            Button(size: .hundred, text: "Ever Maze, Stage 1").padding,
-            Button(size: .hundred, text: "􀎡").padding,
+            Button(size: .hundred, text: "Stage 1, goal: \(o.goal)").padding,
+            Button(size: .hundred, text: "􀱍").padding,
         ])
         addChild(stacko)
         stacko.keepInside(size.times(0.9))
         stacko.centerAt(point: .init(x: 0, y: (height/2) - stacko.calculateAccumulatedFrame().height.half))
-    }
-    
-    func addLabels() {
+        
+        
         let foo1 = SKLabelNode.init(text: "goal: \(o.goal) swipes")
         foo1.fontColor = .white
         foo1.fontSize *= (min((size.height * 0.7) / foo1.frame.width, (size.width * 0.65) / foo1.frame.width))
@@ -50,7 +52,7 @@ class EverMazeScene: SKSceneNode {
         //foo.horizontalAlignmentMode = .left
         foo1.position.y = (size.height/2) - (size.height * 0.075)// + foo.frame.height
         foo1.zPosition = .infinity
-        addChild(foo1)
+        //addChild(foo1)
         
         let foo = swipeCount
         foo.fontColor = .white
@@ -58,7 +60,8 @@ class EverMazeScene: SKSceneNode {
         //foo.setScale(foo1.xScale)
         foo.verticalAlignmentMode = .center
         foo.horizontalAlignmentMode = .left
-        foo.position.x = (-size.width/2) + (size.width * 0.15)
+        foo.position.x = (-size.width/2) + (size.width * 0.075)
+        foo.fontName = "Hand"
         
         foo.position.y = (-size.height/2) + (size.height * 0.075)// + foo.frame.height
         foo.zPosition = .infinity
@@ -92,10 +95,6 @@ class EverMazeScene: SKSceneNode {
                 paragraphStyle.lineSpacing = -270
                 attributedText.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
                 attributedText.addAttributes([NSAttributedString.Key.foregroundColor : NSColor.white, NSAttributedString.Key.font : UIFont.init(name: "Hand", size: 250) as Any], range: range)
-               // swipes.attributedText = attributedText
-                
-                //swipes.attributedText?.attr
-                //swipes.attributedText?.set .string = "Swipes: 0"
                 maze.reset(newEverMaze)
             }
         }
@@ -124,7 +123,7 @@ class EverMazeScene: SKSceneNode {
                 let nextLevelSize = o.everMaze?.size.next() ?? []
                 //SaveData.trueLevel += 1
                 if Self.raceMode {
-                    let sc = EverMazeSceneHost(sizePlease: nextLevelSize, screens: 1)
+                    let sc = EverMazeSceneHost(sizePlease: nextLevelSize, screens: 1, players: players)
                     sc.scaleMode = .aspectFit
                     scene?.view?.presentScene(sc)
                 } else {

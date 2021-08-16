@@ -106,22 +106,6 @@ class MathScene: Math {
 class SquareRootScene: Math {
     var stackem: VStack!
     
-    func words(_ string: [String]) -> SKShapeNode {
-        let text = SKLabelNode.init(text: string.reduce("") { $0 + "\n" + $1 })
-        text.text?.removeFirst()
-        text.fontName = "Hand"
-        text.numberOfLines = text.text?.split(separator: "\n").count ?? 1
-        text.horizontalAlignmentMode = .center
-        text.verticalAlignmentMode = .center
-        addChild(text)
-        text.framed()
-        text.fontSize *= 2
-        guard let frameParent = text.parent as? SKShapeNode else { fatalError() }
-        frameParent.centerAt(point: .midScreen)
-        frameParent.removeFromParent()
-        return frameParent
-    }
-    
     override func begin() {
         backArrow(MathScene(size: .screen))
         
